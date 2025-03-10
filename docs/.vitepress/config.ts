@@ -74,7 +74,7 @@ const versionLinks = ((): DefaultTheme.NavItemWithLink[] => {
 export default defineConfig({
   title: `Vite${additionalTitle}`,
   description: 'Next Generation Frontend Tooling',
-
+  // ignoreDeadLinks: true,
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     [
@@ -127,7 +127,74 @@ export default defineConfig({
   ],
 
   locales: {
-    root: { label: 'English' },
+    root: {
+      label: 'English',
+      lang: 'en',
+      link: 'en',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/en/guide/', activeMatch: '/en/guide/' },
+          { text: 'Config', link: '/en/config/', activeMatch: '/en/config/' },
+          {
+            text: 'Plugins',
+            link: '/en/plugins/',
+            activeMatch: '/en/plugins/',
+          },
+          {
+            text: 'Resources',
+            items: [
+              { text: 'Team', link: '/en/team' },
+              { text: 'Blog', link: '/en/blog' },
+              { text: 'Releases', link: '/en/releases' },
+              {
+                items: [
+                  {
+                    text: 'Bluesky',
+                    link: 'https://bsky.app/profile/vite.dev',
+                  },
+                  {
+                    text: 'Mastodon',
+                    link: 'https://elk.zone/m.webtoo.ls/@vite',
+                  },
+                  {
+                    text: 'X',
+                    link: 'https://x.com/vite_js',
+                  },
+                  {
+                    text: 'Discord Chat',
+                    link: 'https://chat.vite.dev',
+                  },
+                  {
+                    text: 'Awesome Vite',
+                    link: 'https://github.com/vitejs/awesome-vite',
+                  },
+                  {
+                    text: 'ViteConf',
+                    link: 'https://viteconf.org',
+                  },
+                  {
+                    text: 'DEV Community',
+                    link: 'https://dev.to/t/vite',
+                  },
+                  {
+                    text: 'Changelog',
+                    link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+                  },
+                  {
+                    text: 'Contributing',
+                    link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'Version',
+            items: versionLinks,
+          },
+        ],
+      },
+    },
     zh: { label: '简体中文', link: 'https://cn.vite.dev' },
     ja: { label: '日本語', link: 'https://ja.vite.dev' },
     es: { label: 'Español', link: 'https://es.vite.dev' },
@@ -170,64 +237,6 @@ export default defineConfig({
       message: `Released under the MIT License. (${commitRef})`,
       copyright: 'Copyright © 2019-present VoidZero Inc. & Vite Contributors',
     },
-
-    nav: [
-      { text: 'Guide', link: '/guide/', activeMatch: '/guide/' },
-      { text: 'Config', link: '/config/', activeMatch: '/config/' },
-      { text: 'Plugins', link: '/plugins/', activeMatch: '/plugins/' },
-      {
-        text: 'Resources',
-        items: [
-          { text: 'Team', link: '/team' },
-          { text: 'Blog', link: '/blog' },
-          { text: 'Releases', link: '/releases' },
-          {
-            items: [
-              {
-                text: 'Bluesky',
-                link: 'https://bsky.app/profile/vite.dev',
-              },
-              {
-                text: 'Mastodon',
-                link: 'https://elk.zone/m.webtoo.ls/@vite',
-              },
-              {
-                text: 'X',
-                link: 'https://x.com/vite_js',
-              },
-              {
-                text: 'Discord Chat',
-                link: 'https://chat.vite.dev',
-              },
-              {
-                text: 'Awesome Vite',
-                link: 'https://github.com/vitejs/awesome-vite',
-              },
-              {
-                text: 'ViteConf',
-                link: 'https://viteconf.org',
-              },
-              {
-                text: 'DEV Community',
-                link: 'https://dev.to/t/vite',
-              },
-              {
-                text: 'Changelog',
-                link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
-              },
-              {
-                text: 'Contributing',
-                link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        text: 'Version',
-        items: versionLinks,
-      },
-    ],
 
     sidebar: {
       '/guide/': [
