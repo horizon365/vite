@@ -37,7 +37,7 @@ Today, 16 months from the v2 launch we are happy to announce the release of Vite
 
 Quick links:
 
-- [Docs](/)
+- [Docs](/ja/)
 - [Migration Guide](https://v3.vite.dev/guide/migration.html)
 - [Changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#300-2022-07-13)
 

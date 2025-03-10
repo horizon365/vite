@@ -41,7 +41,7 @@ Today, the Vite [team](https://vite.dev/team) with the help of our ecosystem par
 
 Quick links:
 
-- [Docs](/)
+- [Docs](/ja/)
 - [Migration Guide](https://v4.vite.dev/guide/migration.html)
 - [Changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#400-2022-12-09)
 

@@ -33,7 +33,7 @@ _April 20, 2023_
 
 Quick links:
 
-- Docs: [English](/), [简体中文](https://cn.vite.dev/), [日本語](https://ja.vite.dev/), [Español](https://es.vite.dev/), [Português](https://pt.vite.dev/)
+- Docs: [English](/ja/), [简体中文](https://cn.vite.dev/), [日本語](https://ja.vite.dev/), [Español](https://es.vite.dev/), [Português](https://pt.vite.dev/)
 - [Vite 4.3 Changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#430-2023-04-20)
 
 ## Performance Improvements

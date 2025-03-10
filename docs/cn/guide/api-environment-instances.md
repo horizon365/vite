@@ -17,7 +17,7 @@ During dev, the available environments in a dev server can be accessed using `se
 
 ```js
 // create the server, or get it from the configureServer hook
-const server = await createServer(/* options */)
+const server = await createServer(/cn)* options */)
 
 const environment = server.environments.client
 environment.transformRequest(url)

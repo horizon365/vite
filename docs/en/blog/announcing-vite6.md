@@ -57,7 +57,7 @@ Vite 6 is the most significant major release since Vite 2. We're eager to partne
 
 Quick links:
 
-- [Docs](/)
+- [Docs](/en/)
 - Translations: [简体中文](https://cn.vite.dev/), [日本語](https://ja.vite.dev/), [Español](https://es.vite.dev/), [Português](https://pt.vite.dev/), [한국어](https://ko.vite.dev/), [Deutsch](https://de.vite.dev/)
 - [Migration Guide](/en/guide/migration)
 - [GitHub Changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#600-2024-11-26)

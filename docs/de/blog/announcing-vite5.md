@@ -43,7 +43,7 @@ Vite 5 focuses on cleaning up the API (removing deprecated features) and streaml
 
 Quick links:
 
-- [Docs](/)
+- [Docs](/de/)
 - [Migration Guide](/de/guide/migration)
 - [Changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#500-2023-11-16)
 
