@@ -1,0 +1,81 @@
+{
+  "redirects": [
+    {
+      "source": "/*",
+      "has": [
+        {
+          "type": "header",
+          "key": "Language",
+          "value": "de"
+        }
+      ],
+      "destination": "/de/:splat",
+      "statusCode": 302
+    },
+    {
+      "source": "/*",
+      "has": [
+        {
+          "type": "header",
+          "key": "Language",
+          "value": "en"
+        }
+      ],
+      "destination": "/en/:splat",
+      "statusCode": 302
+    },
+    {
+      "source": "/*",
+      "has": [
+        {
+          "type": "header",
+          "key": "Language",
+          "value": "es"
+        }
+      ],
+      "destination": "/es/:splat",
+      "statusCode": 302
+    },
+    {
+      "source": "/*",
+      "has": [
+        {
+          "type": "header",
+          "key": "Language",
+          "value": "ja"
+        }
+      ],
+      "destination": "/ja/:splat",
+      "statusCode": 302
+    },
+    {
+      "source": "/*",
+      "has": [
+        {
+          "type": "header",
+          "key": "Language",
+          "value": "ko"
+        }
+      ],
+      "destination": "/ko/:splat",
+      "statusCode": 302
+    },
+    {
+      "source": "/*",
+      "has": [
+        {
+          "type": "header",
+          "key": "Language",
+          "value": "pt"
+        }
+      ],
+      "destination": "/pt/:splat",
+      "statusCode": 302
+    },
+    {
+      "source": "/*",
+      "destination": "/cn/:splat",
+      "statusCode": 302
+    }
+  ]
+}
