@@ -1,7 +1,7 @@
 {
   "redirects": [
     {
-      "source": "/*",
+      "source": "/:path*",
       "has": [
         {
           "type": "header",
@@ -9,11 +9,11 @@
           "value": "de"
         }
       ],
-      "destination": "/de/:splat",
+      "destination": "/de/:path*",
       "statusCode": 302
     },
     {
-      "source": "/*",
+      "source": "/:path*",
       "has": [
         {
           "type": "header",
@@ -21,11 +21,11 @@
           "value": "en"
         }
       ],
-      "destination": "/en/:splat",
+      "destination": "/en/:path*",
       "statusCode": 302
     },
     {
-      "source": "/*",
+      "source": "/:path*",
       "has": [
         {
           "type": "header",
@@ -33,11 +33,11 @@
           "value": "es"
         }
       ],
-      "destination": "/es/:splat",
+      "destination": "/es/:path*",
       "statusCode": 302
     },
     {
-      "source": "/*",
+      "source": "/:path*",
       "has": [
         {
           "type": "header",
@@ -45,11 +45,11 @@
           "value": "ja"
         }
       ],
-      "destination": "/ja/:splat",
+      "destination": "/ja/:path*",
       "statusCode": 302
     },
     {
-      "source": "/*",
+      "source": "/:path*",
       "has": [
         {
           "type": "header",
@@ -57,11 +57,11 @@
           "value": "ko"
         }
       ],
-      "destination": "/ko/:splat",
+      "destination": "/ko/:path*",
       "statusCode": 302
     },
     {
-      "source": "/*",
+      "source": "/:path*",
       "has": [
         {
           "type": "header",
@@ -69,12 +69,12 @@
           "value": "pt"
         }
       ],
-      "destination": "/pt/:splat",
+      "destination": "/pt/:path*",
       "statusCode": 302
     },
     {
-      "source": "/*",
-      "destination": "/cn/:splat",
+      "source": "/:path*",
+      "destination": "/cn/:path*",
       "statusCode": 302
     }
   ]
