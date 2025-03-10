@@ -1,81 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "Language",
-          "value": "de"
-        }
-      ],
-      "destination": "/de/:path*",
-      "statusCode": 302
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "Language",
-          "value": "en"
-        }
-      ],
-      "destination": "/en/:path*",
-      "statusCode": 302
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "Language",
-          "value": "es"
-        }
-      ],
-      "destination": "/es/:path*",
-      "statusCode": 302
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "Language",
-          "value": "ja"
-        }
-      ],
-      "destination": "/ja/:path*",
-      "statusCode": 302
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "Language",
-          "value": "ko"
-        }
-      ],
-      "destination": "/ko/:path*",
-      "statusCode": 302
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "Language",
-          "value": "pt"
-        }
-      ],
-      "destination": "/pt/:path*",
-      "statusCode": 302
-    },
-    {
-      "source": "/:path*",
-      "destination": "/cn/:path*",
-      "statusCode": 302
+      "source": "/",
+      "destination": "/cn",
+      "permanent": true
     }
   ]
 }
