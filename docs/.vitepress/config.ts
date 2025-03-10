@@ -128,9 +128,77 @@ export default defineConfig({
 
   locales: {
     root: {
+      label: '简体中文',
+      lang: 'cn',
+      link: '/cn',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/cn/guide/', activeMatch: '/cn/guide/' },
+          { text: 'Config', link: '/cn/config/', activeMatch: '/cn/config/' },
+          {
+            text: 'Plugins',
+            link: '/cn/plugins/',
+            activeMatch: '/cn/plugins/',
+          },
+          {
+            text: 'Resources',
+            items: [
+              { text: 'Team', link: '/cn/team' },
+              { text: 'Blog', link: '/cn/blog' },
+              { text: 'Releases', link: '/cn/releases' },
+              {
+                items: [
+                  {
+                    text: 'Bluesky',
+                    link: 'https://bsky.app/profile/vite.dev',
+                  },
+                  {
+                    text: 'Mastodon',
+                    link: 'https://elk.zone/m.webtoo.ls/@vite',
+                  },
+                  {
+                    text: 'X',
+                    link: 'https://x.com/vite_js',
+                  },
+                  {
+                    text: 'Discord Chat',
+                    link: 'https://chat.vite.dev',
+                  },
+                  {
+                    text: 'Awesome Vite',
+                    link: 'https://github.com/vitejs/awesome-vite',
+                  },
+                  {
+                    text: 'ViteConf',
+                    link: 'https://viteconf.org',
+                  },
+                  {
+                    text: 'DEV Community',
+                    link: 'https://dev.to/t/vite',
+                  },
+                  {
+                    text: 'Changelog',
+                    link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+                  },
+                  {
+                    text: 'Contributing',
+                    link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'Version',
+            items: versionLinks,
+          },
+        ],
+      },
+    },
+    en: {
       label: 'English',
       lang: 'en',
-      link: 'en',
+      link: '/en',
       themeConfig: {
         nav: [
           { text: 'Guide', link: '/en/guide/', activeMatch: '/en/guide/' },
@@ -195,12 +263,341 @@ export default defineConfig({
         ],
       },
     },
-    zh: { label: '简体中文', link: 'https://cn.vite.dev' },
-    ja: { label: '日本語', link: 'https://ja.vite.dev' },
-    es: { label: 'Español', link: 'https://es.vite.dev' },
-    pt: { label: 'Português', link: 'https://pt.vite.dev' },
-    ko: { label: '한국어', link: 'https://ko.vite.dev' },
-    de: { label: 'Deutsch', link: 'https://de.vite.dev' },
+    ja: {
+      label: '日本語',
+      link: '/ja',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/ja/guide/', activeMatch: '/ja/guide/' },
+          { text: 'Config', link: '/ja/config/', activeMatch: '/ja/config/' },
+          {
+            text: 'Plugins',
+            link: '/ja/plugins/',
+            activeMatch: '/ja/plugins/',
+          },
+          {
+            text: 'Resources',
+            items: [
+              { text: 'Team', link: '/ja/team' },
+              { text: 'Blog', link: '/ja/blog' },
+              { text: 'Releases', link: '/ja/releases' },
+              {
+                items: [
+                  {
+                    text: 'Bluesky',
+                    link: 'https://bsky.app/profile/vite.dev',
+                  },
+                  {
+                    text: 'Mastodon',
+                    link: 'https://elk.zone/m.webtoo.ls/@vite',
+                  },
+                  {
+                    text: 'X',
+                    link: 'https://x.com/vite_js',
+                  },
+                  {
+                    text: 'Discord Chat',
+                    link: 'https://chat.vite.dev',
+                  },
+                  {
+                    text: 'Awesome Vite',
+                    link: 'https://github.com/vitejs/awesome-vite',
+                  },
+                  {
+                    text: 'ViteConf',
+                    link: 'https://viteconf.org',
+                  },
+                  {
+                    text: 'DEV Community',
+                    link: 'https://dev.to/t/vite',
+                  },
+                  {
+                    text: 'Changelog',
+                    link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+                  },
+                  {
+                    text: 'Contributing',
+                    link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'Version',
+            items: versionLinks,
+          },
+        ],
+      },
+    },
+    es: {
+      label: 'Español',
+      link: '/es',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/es/guide/', activeMatch: '/es/guide/' },
+          { text: 'Config', link: '/es/config/', activeMatch: '/es/config/' },
+          {
+            text: 'Plugins',
+            link: '/es/plugins/',
+            activeMatch: '/es/plugins/',
+          },
+          {
+            text: 'Resources',
+            items: [
+              { text: 'Team', link: '/es/team' },
+              { text: 'Blog', link: '/es/blog' },
+              { text: 'Releases', link: '/es/releases' },
+              {
+                items: [
+                  {
+                    text: 'Bluesky',
+                    link: 'https://bsky.app/profile/vite.dev',
+                  },
+                  {
+                    text: 'Mastodon',
+                    link: 'https://elk.zone/m.webtoo.ls/@vite',
+                  },
+                  {
+                    text: 'X',
+                    link: 'https://x.com/vite_js',
+                  },
+                  {
+                    text: 'Discord Chat',
+                    link: 'https://chat.vite.dev',
+                  },
+                  {
+                    text: 'Awesome Vite',
+                    link: 'https://github.com/vitejs/awesome-vite',
+                  },
+                  {
+                    text: 'ViteConf',
+                    link: 'https://viteconf.org',
+                  },
+                  {
+                    text: 'DEV Community',
+                    link: 'https://dev.to/t/vite',
+                  },
+                  {
+                    text: 'Changelog',
+                    link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+                  },
+                  {
+                    text: 'Contributing',
+                    link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'Version',
+            items: versionLinks,
+          },
+        ],
+      },
+    },
+    pt: {
+      label: 'Português',
+      link: '/pt',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/pt/guide/', activeMatch: '/pt/guide/' },
+          { text: 'Config', link: '/pt/config/', activeMatch: '/pt/config/' },
+          {
+            text: 'Plugins',
+            link: '/pt/plugins/',
+            activeMatch: '/pt/plugins/',
+          },
+          {
+            text: 'Resources',
+            items: [
+              { text: 'Team', link: '/pt/team' },
+              { text: 'Blog', link: '/pt/blog' },
+              { text: 'Releases', link: '/pt/releases' },
+              {
+                items: [
+                  {
+                    text: 'Bluesky',
+                    link: 'https://bsky.app/profile/vite.dev',
+                  },
+                  {
+                    text: 'Mastodon',
+                    link: 'https://elk.zone/m.webtoo.ls/@vite',
+                  },
+                  {
+                    text: 'X',
+                    link: 'https://x.com/vite_js',
+                  },
+                  {
+                    text: 'Discord Chat',
+                    link: 'https://chat.vite.dev',
+                  },
+                  {
+                    text: 'Awesome Vite',
+                    link: 'https://github.com/vitejs/awesome-vite',
+                  },
+                  {
+                    text: 'ViteConf',
+                    link: 'https://viteconf.org',
+                  },
+                  {
+                    text: 'DEV Community',
+                    link: 'https://dev.to/t/vite',
+                  },
+                  {
+                    text: 'Changelog',
+                    link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+                  },
+                  {
+                    text: 'Contributing',
+                    link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'Version',
+            items: versionLinks,
+          },
+        ],
+      },
+    },
+    ko: {
+      label: '한국어',
+      link: '/ko',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/ko/guide/', activeMatch: '/ko/guide/' },
+          { text: 'Config', link: '/ko/config/', activeMatch: '/ko/config/' },
+          {
+            text: 'Plugins',
+            link: '/ko/plugins/',
+            activeMatch: '/ko/plugins/',
+          },
+          {
+            text: 'Resources',
+            items: [
+              { text: 'Team', link: '/ko/team' },
+              { text: 'Blog', link: '/ko/blog' },
+              { text: 'Releases', link: '/ko/releases' },
+              {
+                items: [
+                  {
+                    text: 'Bluesky',
+                    link: 'https://bsky.app/profile/vite.dev',
+                  },
+                  {
+                    text: 'Mastodon',
+                    link: 'https://elk.zone/m.webtoo.ls/@vite',
+                  },
+                  {
+                    text: 'X',
+                    link: 'https://x.com/vite_js',
+                  },
+                  {
+                    text: 'Discord Chat',
+                    link: 'https://chat.vite.dev',
+                  },
+                  {
+                    text: 'Awesome Vite',
+                    link: 'https://github.com/vitejs/awesome-vite',
+                  },
+                  {
+                    text: 'ViteConf',
+                    link: 'https://viteconf.org',
+                  },
+                  {
+                    text: 'DEV Community',
+                    link: 'https://dev.to/t/vite',
+                  },
+                  {
+                    text: 'Changelog',
+                    link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+                  },
+                  {
+                    text: 'Contributing',
+                    link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'Version',
+            items: versionLinks,
+          },
+        ],
+      },
+    },
+    de: {
+      label: 'Deutsch',
+      link: '/de',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/de/guide/', activeMatch: '/de/guide/' },
+          { text: 'Config', link: '/de/config/', activeMatch: '/de/config/' },
+          {
+            text: 'Plugins',
+            link: '/de/plugins/',
+            activeMatch: '/de/plugins/',
+          },
+          {
+            text: 'Resources',
+            items: [
+              { text: 'Team', link: '/de/team' },
+              { text: 'Blog', link: '/de/blog' },
+              { text: 'Releases', link: '/de/releases' },
+              {
+                items: [
+                  {
+                    text: 'Bluesky',
+                    link: 'https://bsky.app/profile/vite.dev',
+                  },
+                  {
+                    text: 'Mastodon',
+                    link: 'https://elk.zone/m.webtoo.ls/@vite',
+                  },
+                  {
+                    text: 'X',
+                    link: 'https://x.com/vite_js',
+                  },
+                  {
+                    text: 'Discord Chat',
+                    link: 'https://chat.vite.dev',
+                  },
+                  {
+                    text: 'Awesome Vite',
+                    link: 'https://github.com/vitejs/awesome-vite',
+                  },
+                  {
+                    text: 'ViteConf',
+                    link: 'https://viteconf.org',
+                  },
+                  {
+                    text: 'DEV Community',
+                    link: 'https://dev.to/t/vite',
+                  },
+                  {
+                    text: 'Changelog',
+                    link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+                  },
+                  {
+                    text: 'Contributing',
+                    link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'Version',
+            items: versionLinks,
+          },
+        ],
+      },
+    },
   },
 
   themeConfig: {
