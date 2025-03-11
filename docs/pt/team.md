@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Meet the Team
-description: The development of Vite is guided by an international team.
+title: Conheça a equipe
+description: O desenvolvimento do Vite é guiado por uma equipe internacional.
 ---
 
 <script setup>

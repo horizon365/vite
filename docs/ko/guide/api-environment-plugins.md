@@ -1,25 +1,25 @@
-# Environment API for Plugins
+# 플러그인의 환경 API
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+환경 API는 실험적입니다. 우리는 Vite 6 동안 API를 안정적으로 유지하여 생태계를 실험하고 그 위에 구축 할 수 있도록 우리는 우리는 우리는 Vite 7의 잠재적 파괴 변화 로이 새로운 API를 안정화시킬 계획입니다.
 
-Resources:
+자원:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+- 우리가 새로운 API에 대한 피드백을 수집하는 [피드백 토론](https://github.com/vitejs/vite/discussions/16358) .
+- 새로운 API가 구현되고 검토 된 [환경 API PR](https://github.com/vitejs/vite/pull/16471) .
 
-Please share your feedback with us.
+귀하의 의견을 저희와 공유하십시오.
 :::
 
-## Accessing the Current Environment in Hooks
+## 후크에서 현재 환경에 액세스합니다
 
-Given that there were only two Environments until Vite 6 (`client` and `ssr`), a `ssr` boolean was enough to identify the current environment in Vite APIs. Plugin Hooks received a `ssr` boolean in the last options parameter, and several APIs expected an optional last `ssr` parameter to properly associate modules to the correct environment (for example `server.moduleGraph.getModuleByUrl(url, { ssr })`).
+Vite 6 ( `client` 및 `ssr` )까지 두 개의 환경이 있다는 점을 감안할 때, `ssr` 부울은 Vite API의 현재 환경을 식별하기에 충분했습니다. 플러그인 후크는 마지막 옵션 매개 변수에서 `ssr` 부울을 수신했으며, 여러 API는 모듈을 올바른 환경 (예 : `server.moduleGraph.getModuleByUrl(url, { ssr })` )에 올바르게 연결할 수있는 마지막 `ssr` 매개 변수를 예상했습니다.
 
-With the advent of configurable environments, we now have a uniform way to access their options and instance in plugins. Plugin hooks now expose `this.environment` in their context, and APIs that previously expected a `ssr` boolean are now scoped to the proper environment (for example `environment.moduleGraph.getModuleByUrl(url)`).
+구성 가능한 환경의 출현으로 이제 플러그인에서 옵션 및 인스턴스에 액세스 할 수있는 균일 한 방법이 있습니다. 플러그인 후크는 이제 컨텍스트에서 `this.environment` 노출 시키며, 이전에 예상 한 API는 이제 적절한 환경 (예 `environment.moduleGraph.getModuleByUrl(url)` `ssr` 에 스코핑되었습니다.
 
-The Vite server has a shared plugin pipeline, but when a module is processed it is always done in the context of a given environment. The `environment` instance is available in the plugin context.
+Vite 서버에는 공유 플러그인 파이프 라인이 있지만 모듈이 처리되면 항상 주어진 환경의 맥락에서 수행됩니다. `environment` 인스턴스는 플러그인 컨텍스트에서 사용할 수 있습니다.
 
-A plugin could use the `environment` instance to change how a module is processed depending on the configuration for the environment (which can be accessed using `environment.config`).
+플러그인은 `environment` 인스턴스를 사용하여 환경 구성 ( `environment.config` 사용하여 액세스 할 수 있음)에 따라 모듈 처리 방법을 변경할 수 있습니다.
 
 ```ts
   transform(code, id) {
@@ -27,9 +27,9 @@ A plugin could use the `environment` instance to change how a module is processe
   }
 ```
 
-## Registering New Environments Using Hooks
+## 후크를 사용하여 새로운 환경 등록
 
-Plugins can add new environments in the `config` hook (for example to have a separate module graph for [RSC](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components)):
+플러그인은 `config` 후크에 새로운 환경을 추가 할 수 있습니다 (예 : [RSC](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) 용 별도의 모듈 그래프가 있습니다).
 
 ```ts
   config(config: UserConfig) {
@@ -37,12 +37,12 @@ Plugins can add new environments in the `config` hook (for example to have a sep
   }
 ```
 
-An empty object is enough to register the environment, default values from the root level environment config.
+빈 객체는 환경을 등록하기에 충분합니다. 루트 레벨 환경 구성의 기본값은 기본값입니다.
 
-## Configuring Environment Using Hooks
+## 후크를 사용한 환경 구성
 
-While the `config` hook is running, the complete list of environments isn't yet known and the environments can be affected by both the default values from the root level environment config or explicitly through the `config.environments` record.
-Plugins should set default values using the `config` hook. To configure each environment, they can use the new `configEnvironment` hook. This hook is called for each environment with its partially resolved config including resolution of final defaults.
+`config` 후크가 실행되는 동안 전체 환경 목록은 아직 알려지지 않았으며 환경은 루트 레벨 환경 구성의 기본값 또는 `config.environments` 레코드를 통해 명시 적으로 영향을받을 수 있습니다.
+플러그인은 `config` 후크를 사용하여 기본값을 설정해야합니다. 각 환경을 구성하려면 새로운 `configEnvironment` 후크를 사용할 수 있습니다. 이 후크는 최종 기본값의 해상도를 포함하여 부분적으로 해결 된 구성으로 각 환경마다 호출됩니다.
 
 ```ts
   configEnvironment(name: string, options: EnvironmentOptions) {
@@ -50,12 +50,12 @@ Plugins should set default values using the `config` hook. To configure each env
       options.resolve.conditions = // ...
 ```
 
-## The `hotUpdate` Hook
+## `hotUpdate` 후크
 
-- **Type:** `(this: { environment: DevEnvironment }, options: HotUpdateOptions) => Array<EnvironmentModuleNode> | void | Promise<Array<EnvironmentModuleNode> | void>`
-- **See also:** [HMR API](./api-hmr)
+- **유형 :** `(this : {환경 : devenvironment}, 옵션 : hotupdateoptions) => 배열<EnvironmentModuleNode> | 무효의 | 약속 <배열<EnvironmentModuleNode> | void>`
+- [HMR API](./api-hmr) **도 참조하십시오**
 
-The `hotUpdate` hook allows plugins to perform custom HMR update handling for a given environment. When a file changes, the HMR algorithm is run for each environment in series according to the order in `server.environments`, so the `hotUpdate` hook will be called multiple times. The hook receives a context object with the following signature:
+`hotUpdate` 후크를 사용하면 플러그인을 사용하면 주어진 환경에 대한 사용자 정의 HMR 업데이트 처리를 수행 할 수 있습니다. 파일이 변경되면 `server.environments` 의 순서에 따라 각 환경에 대해 HMR 알고리즘이 직렬로 실행되므로 `hotUpdate` 후크는 여러 번 호출됩니다. 후크는 다음 서명이있는 컨텍스트 객체를 수신합니다.
 
 ```ts
 interface HotUpdateOptions {
@@ -68,24 +68,24 @@ interface HotUpdateOptions {
 }
 ```
 
-- `this.environment` is the module execution environment where a file update is currently being processed.
+- `this.environment` 은 파일 업데이트가 현재 처리중인 모듈 실행 환경입니다.
 
-- `modules` is an array of modules in this environment that are affected by the changed file. It's an array because a single file may map to multiple served modules (e.g. Vue SFCs).
+- `modules` 환경에서 변경된 파일의 영향을받는 모듈 배열입니다. 단일 파일이 여러 서비스 모듈 (예 : VUE SFC)에 매핑 될 수 있기 때문에 배열입니다.
 
-- `read` is an async read function that returns the content of the file. This is provided because, on some systems, the file change callback may fire too fast before the editor finishes updating the file, and direct `fs.readFile` will return empty content. The read function passed in normalizes this behavior.
+- `read` 파일의 내용을 반환하는 비동기 판독 함수입니다. 일부 시스템에서는 편집기가 파일 업데이트를 마치기 전에 파일 변경 콜백이 너무 빨리 발생할 수 있고 Direct `fs.readFile` 빈 콘텐츠를 반환하기 때문에 제공됩니다. 전달 된 읽기 기능은이 동작을 정상화합니다.
 
-The hook can choose to:
+후크는 다음을 선택할 수 있습니다.
 
-- Filter and narrow down the affected module list so that the HMR is more accurate.
+- HMR이 더 정확하도록 영향을받는 모듈 목록을 필터링하고 좁 힙니다.
 
-- Return an empty array and perform a full reload:
+- 빈 배열을 반환하고 전체 재 장전을 수행하십시오.
 
   ```js
   hotUpdate({ modules, timestamp }) {
     if (this.environment.name !== 'client')
       return
 
-    // Invalidate modules manually
+    // 수동으로 무효화 모듈
     const invalidatedModules = new Set()
     for (const mod of modules) {
       this.environment.moduleGraph.invalidateModule(
@@ -100,7 +100,7 @@ The hook can choose to:
   }
   ```
 
-- Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+- 빈 배열을 반환하고 클라이언트에 사용자 정의 이벤트를 보내서 완전한 사용자 정의 HMR 처리를 수행하십시오.
 
   ```js
   hotUpdate() {
@@ -116,44 +116,44 @@ The hook can choose to:
   }
   ```
 
-  Client code should register the corresponding handler using the [HMR API](./api-hmr) (this could be injected by the same plugin's `transform` hook):
+  클라이언트 코드는 [HMR API를](./api-hmr) 사용하여 해당 핸들러를 등록해야합니다 (동일한 플러그인의 `transform` 후크로 주입 할 수 있음).
 
   ```js
   if (import.meta.hot) {
     import.meta.hot.on('special-update', (data) => {
-      // perform custom update
+      // 사용자 정의 업데이트를 수행하십시오
     })
   }
   ```
 
-## Per-environment Plugins
+## 환경 당 플러그인
 
-A plugin can define what are the environments it should apply to with the `applyToEnvironment` function.
+플러그인은 `applyToEnvironment` 기능으로 적용 해야하는 환경을 정의 할 수 있습니다.
 
 ```js
 const UnoCssPlugin = () => {
-  // shared global state
+  // 공유 글로벌 주
   return {
     buildStart() {
-      // init per-environment state with WeakMap<Environment,Data>
-      // using this.environment
+      // 약점 <환경, 데이터>가있는 환경당 시작 상태
+      // 이를 사용하여 환경
     },
     configureServer() {
-      // use global hooks normally
+      // 일반적으로 글로벌 후크를 사용하십시오
     },
     applyToEnvironment(environment) {
-      // return true if this plugin should be active in this environment,
-      // or return a new plugin to replace it.
-      // if the hook is not used, the plugin is active in all environments
+      // 이 플러그인 이이 환경에서 활성화되면 true를 반환합니다.
+      // 또는 새 플러그인을 반환하여 교체하십시오.
+      // 후크를 사용하지 않으면 플러그인이 모든 환경에서 활성화됩니다.
     },
     resolveId(id, importer) {
-      // only called for environments this plugin apply to
+      // 이 플러그인이 적용되는 환경에만 요청되었습니다
     },
   }
 }
 ```
 
-If a plugin isn't environment aware and has state that isn't keyed on the current environment, the `applyToEnvironment` hook allows to easily make it per-environment.
+플러그인이 환경을 인식하지 못하고 현재 환경에 키가 표시되지 않은 상태가있는 경우 `applyToEnvironment` 후크를 사용하면 환경별로 쉽게 만들 수 있습니다.
 
 ```js
 import { nonShareablePlugin } from 'non-shareable-plugin'
@@ -170,7 +170,7 @@ export default defineConfig({
 })
 ```
 
-Vite exports a `perEnvironmentPlugin` helper to simplify these cases where no other hooks are required:
+Vite는 다른 후크가 필요하지 않은 경우 이러한 경우를 단순화하기 위해 `perEnvironmentPlugin` 도우미를 내 보냅니다.
 
 ```js
 import { nonShareablePlugin } from 'non-shareable-plugin'
@@ -184,39 +184,39 @@ export default defineConfig({
 })
 ```
 
-## Environment in Build Hooks
+## 빌드 후크의 환경
 
-In the same way as during dev, plugin hooks also receive the environment instance during build, replacing the `ssr` boolean.
-This also works for `renderChunk`, `generateBundle`, and other build only hooks.
+DEV와 같은 방식으로 플러그인 후크는 빌드 중에 환경 인스턴스를 수신하여 `ssr` 부울을 대체합니다.
+이것은 또한 `renderChunk` , `generateBundle` 및 기타 빌드 만 고리에 대해서도 작동합니다.
 
-## Shared Plugins During Build
+## 빌드 중 공유 플러그인
 
-Before Vite 6, the plugins pipelines worked in a different way during dev and build:
+Vite 6 이전에 플러그인 파이프 라인은 Dev 및 Build에서 다른 방식으로 작동했습니다.
 
-- **During dev:** plugins are shared
-- **During Build:** plugins are isolated for each environment (in different processes: `vite build` then `vite build --ssr`).
+- **개발 중 :** 플러그인이 공유됩니다
+- **빌드 중 :** 플러그인은 각 환경마다 분리됩니다 (다른 프로세스 : `vite build` 그 다음 `vite build --ssr` ).
 
-This forced frameworks to share state between the `client` build and the `ssr` build through manifest files written to the file system. In Vite 6, we are now building all environments in a single process so the way the plugins pipeline and inter-environment communication can be aligned with dev.
+이 프레임 워크는 파일 시스템에 작성된 Manifest 파일을 통해 `client` 빌드와 `ssr` 빌드간에 상태를 공유해야했습니다. Vite 6에서는 이제 단일 프로세스에서 모든 환경을 구축하여 플러그인 파이프 라인 및 환경 간 통신이 Dev와 정렬 될 수있는 방식입니다.
 
-In a future major (Vite 7 or 8), we aim to have complete alignment:
+향후 전공 (Vite 7 또는 8)에서 우리는 완전한 정렬을 목표로합니다.
 
-- **During both dev and build:** plugins are shared, with [per-environment filtering](#per-environment-plugins)
+- **Dev 및 Build :** 플러그인이 공유되며 [환경 별 필터링](#per-environment-plugins) 과 함께 공유됩니다.
 
-There will also be a single `ResolvedConfig` instance shared during build, allowing for caching at entire app build process level in the same way as we have been doing with `WeakMap<ResolvedConfig, CachedData>` during dev.
+빌드 중에 공유되는 단일 `ResolvedConfig` 인스턴스가있을 것이며, 전체 앱 빌드 프로세스 수준에서 DEV 동안 `WeakMap<ResolvedConfig, CachedData>` 과 동일한 방식으로 캐싱 할 수 있습니다.
 
-For Vite 6, we need to do a smaller step to keep backward compatibility. Ecosystem plugins are currently using `config.build` instead of `environment.config.build` to access configuration, so we need to create a new `ResolvedConfig` per-environment by default. A project can opt-in into sharing the full config and plugins pipeline setting `builder.sharedConfigBuild` to `true`.
+Vite 6의 경우, 우리는 뒤로 호환성을 유지하기 위해 더 작은 단계를 수행해야합니다. Ecosystem 플러그인은 현재 구성에 액세스하기 위해 `environment.config.build` 대신 `config.build` 사용하고 있으므로 기본적으로 새로운 `ResolvedConfig` 환경당을 만들어야합니다. 프로젝트는 전체 구성 및 플러그인 파이프 라인 설정을 `builder.sharedConfigBuild` ~ `true` 공유하는 데 선택할 수 있습니다.
 
-This option would only work of a small subset of projects at first, so plugin authors can opt-in for a particular plugin to be shared by setting the `sharedDuringBuild` flag to `true`. This allows for easily sharing state both for regular plugins:
+이 옵션은 처음에는 작은 프로젝트의 작은 부분 집합에서만 작동하므로 `sharedDuringBuild` 를 `true` 로 설정하여 특정 플러그인을 공유 할 수 있도록 플러그인 저자는 옵트 인 할 수 있습니다. 이를 통해 일반 플러그인에 대한 상태를 쉽게 공유 할 수 있습니다.
 
 ```js
 function myPlugin() {
-  // Share state among all environments in dev and build
+  // Dev 및 Build의 모든 환경 중 상태를 공유하십시오
   const sharedState = ...
   return {
     name: 'shared-plugin',
     transform(code, id) { ... },
 
-    // Opt-in into a single instance for all environments
+    // 모든 환경에 대한 단일 인스턴스로 선택합니다
     sharedDuringBuild: true,
   }
 }

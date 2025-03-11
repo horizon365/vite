@@ -1,41 +1,41 @@
-# Preview Options
+# Vorschauoptionen
 
-Unless noted, the options in this section are only applied to preview.
+Sofern nicht angegeben, werden die Optionen in diesem Abschnitt nur auf die Vorschau angewendet.
 
 ## preview.host
 
-- **Type:** `string | boolean`
-- **Default:** [`server.host`](./server-options#server-host)
+- **Typ:** `String | boolean`
+- **Standard:** [`server.host`](./server-options#server-host)
 
-Specify which IP addresses the server should listen on.
-Set this to `0.0.0.0` or `true` to listen on all addresses, including LAN and public addresses.
+Geben Sie an, welche IP -Adressen der Server anhören soll.
+Legen Sie dies auf `0.0.0.0` oder `true` ein, um alle Adressen, einschließlich LAN- und öffentlichen Adressen, zuzuhören.
 
-This can be set via the CLI using `--host 0.0.0.0` or `--host`.
+Dies kann über die CLI mit `--host 0.0.0.0` oder `--host` eingestellt werden.
 
 ::: tip NOTE
 
-There are cases when other servers might respond instead of Vite.
-See [`server.host`](./server-options#server-host) for more details.
+Es gibt Fälle, in denen andere Server anstelle von VITE reagieren könnten.
+Weitere Informationen finden Sie unter [`server.host`](./server-options#server-host) .
 
 :::
 
 ## preview.allowedHosts
 
-- **Type:** `string | true`
-- **Default:** [`server.allowedHosts`](./server-options#server-allowedhosts)
+- **Typ:** `String | wahr "
+- **Standard:** [`server.allowedHosts`](./server-options#server-allowedhosts)
 
-The hostnames that Vite is allowed to respond to.
+Die Hostnamen, auf die Vite reagieren dürfen.
 
-See [`server.allowedHosts`](./server-options#server-allowedhosts) for more details.
+Weitere Informationen finden Sie unter [`server.allowedHosts`](./server-options#server-allowedhosts) .
 
 ## preview.port
 
-- **Type:** `number`
-- **Default:** `4173`
+- **Typ:** `number`
+- **Standard:** `4173`
 
-Specify server port. Note if the port is already being used, Vite will automatically try the next available port so this may not be the actual port the server ends up listening on.
+Serverport angeben. Hinweis Wenn der Port bereits verwendet wird, wird VITE automatisch den nächsten verfügbaren Port aus versucht, sodass dies möglicherweise nicht der tatsächliche Port ist, den der Server am Ende hört.
 
-**Example:**
+**Beispiel:**
 
 ```js
 export default defineConfig({
@@ -50,49 +50,49 @@ export default defineConfig({
 
 ## preview.strictPort
 
-- **Type:** `boolean`
-- **Default:** [`server.strictPort`](./server-options#server-strictport)
+- **Typ:** `boolean`
+- **Standard:** [`server.strictPort`](./server-options#server-strictport)
 
-Set to `true` to exit if port is already in use, instead of automatically trying the next available port.
+Setzen Sie auf `true` um zu beenden, wenn der Port bereits verwendet wird, anstatt den nächsten verfügbaren Port automatisch zu versuchen.
 
 ## preview.https
 
-- **Type:** `https.ServerOptions`
-- **Default:** [`server.https`](./server-options#server-https)
+- **Typ:** `https.ServerOptions`
+- **Standard:** [`server.https`](./server-options#server-https)
 
-Enable TLS + HTTP/2. Note this downgrades to TLS only when the [`server.proxy` option](./server-options#server-proxy) is also used.
+Aktivieren Sie TLS + HTTP/2. Beachten Sie, dass diese Heruntergrades nur dann auf TLS herabstreift, wenn auch die [`server.proxy` -Option](./server-options#server-proxy) verwendet wird.
 
-The value can also be an [options object](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) passed to `https.createServer()`.
+Der Wert kann auch ein [Optionsobjekt](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) sein, das an `https.createServer()` übergeben wurde.
 
 ## preview.open
 
-- **Type:** `boolean | string`
-- **Default:** [`server.open`](./server-options#server-open)
+- **Typ:** `boolean | String`
+- **Standard:** [`server.open`](./server-options#server-open)
 
-Automatically open the app in the browser on server start. When the value is a string, it will be used as the URL's pathname. If you want to open the server in a specific browser you like, you can set the env `process.env.BROWSER` (e.g. `firefox`). You can also set `process.env.BROWSER_ARGS` to pass additional arguments (e.g. `--incognito`).
+Öffnen Sie die App automatisch im Browser auf dem Serverstart. Wenn der Wert eine Zeichenfolge ist, wird er als Pfadname der URL verwendet. Wenn Sie den Server in einem bestimmten Browser öffnen möchten, können Sie die Env `process.env.BROWSER` festlegen (z. B. `firefox` ). Sie können auch `process.env.BROWSER_ARGS` festlegen, um zusätzliche Argumente zu verabschieden (z. B. `--incognito` ).
 
-`BROWSER` and `BROWSER_ARGS` are also special environment variables you can set in the `.env` file to configure it. See [the `open` package](https://github.com/sindresorhus/open#app) for more details.
+`BROWSER` und `BROWSER_ARGS` sind auch spezielle Umgebungsvariablen, die Sie in der `.env` -Datei festlegen können, um sie zu konfigurieren. Weitere Informationen finden Sie [im `open` -Paket](https://github.com/sindresorhus/open#app) .
 
 ## preview.proxy
 
-- **Type:** `Record<string, string | ProxyOptions>`
-- **Default:** [`server.proxy`](./server-options#server-proxy)
+- **Typ:** `record <String, String | Proxyoptionen> `
+- **Standard:** [`server.proxy`](./server-options#server-proxy)
 
-Configure custom proxy rules for the preview server. Expects an object of `{ key: options }` pairs. If the key starts with `^`, it will be interpreted as a `RegExp`. The `configure` option can be used to access the proxy instance.
+Konfigurieren Sie benutzerdefinierte Proxy -Regeln für den Vorschau -Server. Erwartet ein Objekt von `{ key: options }` Paaren. Wenn der Schlüssel mit `^` beginnt, wird er als `RegExp` interpretiert. Die `configure` -Option kann verwendet werden, um auf die Proxy -Instanz zuzugreifen.
 
-Uses [`http-proxy`](https://github.com/http-party/node-http-proxy). Full options [here](https://github.com/http-party/node-http-proxy#options).
+Verwendet [`http-proxy`](https://github.com/http-party/node-http-proxy) . Vollständige Optionen [hier](https://github.com/http-party/node-http-proxy#options) .
 
 ## preview.cors
 
-- **Type:** `boolean | CorsOptions`
-- **Default:** [`server.cors`](./server-options#server-cors)
+- **Typ:** `boolean | Corsoptions '
+- **Standard:** [`server.cors`](./server-options#server-cors)
 
-Configure CORS for the preview server.
+Konfigurieren Sie CORs für den Vorschau -Server.
 
-See [`server.cors`](./server-options#server-cors) for more details.
+Weitere Informationen finden Sie unter [`server.cors`](./server-options#server-cors) .
 
 ## preview.headers
 
-- **Type:** `OutgoingHttpHeaders`
+- **Typ:** `OutgoingHttpHeaders`
 
-Specify server response headers.
+Geben Sie Server -Antwort -Header an.

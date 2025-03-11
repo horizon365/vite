@@ -1,50 +1,50 @@
-# Getting Started
+# はじめる
 
 <audio id="vite-audio">
   <source src="/vite.mp3" type="audio/mpeg">
 </audio>
 
-## Overview
+## 概要
 
 Vite (French word for "quick", pronounced `/vit/`<button style="border:none;padding:3px;border-radius:4px;vertical-align:bottom" id="play-vite-audio" onclick="document.getElementById('vite-audio').play();"><svg style="height:2em;width:2em"><use href="/voice.svg#voice" /></svg></button>, like "veet") is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two major parts:
 
-- A dev server that provides [rich feature enhancements](./features) over [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), for example extremely fast [Hot Module Replacement (HMR)](./features#hot-module-replacement).
+- たとえば、非常に高速な[ホットモジュール交換（HMR）](./features#hot-module-replacement)など、[ネイティブESモジュール](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)よりも[リッチな機能拡張機能](./features)を提供する開発サーバー。
 
-- A build command that bundles your code with [Rollup](https://rollupjs.org), pre-configured to output highly optimized static assets for production.
+- [ロールアップ](https://rollupjs.org)でコードをバンドルするビルドコマンド。
 
-Vite is opinionated and comes with sensible defaults out of the box. Read about what's possible in the [Features Guide](./features). Support for frameworks or integration with other tools is possible through [Plugins](./using-plugins). The [Config Section](../config/) explains how to adapt Vite to your project if needed.
+Viteは意見があり、箱から出して賢明なデフォルトが付属しています。[機能ガイド](./features)で何が可能かについて読んでください。フレームワークのサポートまたは他のツールとの統合は、[プラグイン](./using-plugins)を介して可能です。[構成セクションで](../config/)は、必要に応じてViteをプロジェクトに適応させる方法について説明します。
 
-Vite is also highly extensible via its [Plugin API](./api-plugin) and [JavaScript API](./api-javascript) with full typing support.
+Viteは、完全なタイピングサポートを備えた[プラグインAPI](./api-plugin)および[JavaScript API](./api-javascript)を介して非常に拡張可能です。
 
-You can learn more about the rationale behind the project in the [Why Vite](./why) section.
+[Why Vite](./why)セクションのプロジェクトの背後にある根拠について詳しく知ることができます。
 
-## Browser Support
+## ブラウザのサポート
 
-During development, Vite sets [`esnext` as the transform target](https://esbuild.github.io/api/#target), because we assume a modern browser is used and it supports all of the latest JavaScript and CSS features. This prevents syntax lowering, letting Vite serve modules as close as possible to the original source code.
+開発中、Viteは[`esnext`変換ターゲットとして](https://esbuild.github.io/api/#target)設定します。これは、最新のブラウザーが使用されており、最新のJavaScriptおよびCSS機能をすべてサポートすると仮定しているためです。これにより、構文の低下が防止され、Viteがモジュールを元のソースコードにできるだけ近いことを提供します。
 
-For the production build, by default Vite targets browsers that support modern JavaScript, such as [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta), [nullish coalescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing), and [BigInt](https://caniuse.com/bigint). Legacy browsers can be supported via the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy). See the [Building for Production](./build) section for more details.
+生産ビルドのために、デフォルトでは、[ネイティブESモジュール](https://caniuse.com/es6-module)、[ネイティブESMダイナミックインポート](https://caniuse.com/es6-module-dynamic-import)、 [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) 、 [Nullish Coulescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing) 、 [Bigint](https://caniuse.com/bigint)など、最新のJavaScriptをサポートするVite Targetsブラウザー。レガシーブラウザは[、 @Vitejs/Plugin-Legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)を介してサポートできます。詳細については、[生産セクションの建物](./build)をご覧ください。
 
-## Trying Vite Online
+## オンラインでviteを試してみます
 
-You can try Vite online on [StackBlitz](https://vite.new/). It runs the Vite-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine. You can navigate to `vite.new/{template}` to select which framework to use.
+[Stackblitz](https://vite.new/)でオンラインでViteを試すことができます。ブラウザでViteベースのビルドセットアップを直接実行するため、ローカルセットアップとほぼ同じですが、マシンに何かをインストールする必要はありません。 `vite.new/{template}`に移動して、使用するフレームワークを選択できます。
 
-The supported template presets are:
+サポートされているテンプレートプリセットは次のとおりです。
 
-|             JavaScript              |                TypeScript                 |
-| :---------------------------------: | :---------------------------------------: |
-| [vanilla](https://vite.new/vanilla) | [vanilla-ts](https://vite.new/vanilla-ts) |
-|     [vue](https://vite.new/vue)     |     [vue-ts](https://vite.new/vue-ts)     |
-|   [react](https://vite.new/react)   |   [react-ts](https://vite.new/react-ts)   |
-|  [preact](https://vite.new/preact)  |  [preact-ts](https://vite.new/preact-ts)  |
-|     [lit](https://vite.new/lit)     |     [lit-ts](https://vite.new/lit-ts)     |
-|  [svelte](https://vite.new/svelte)  |  [svelte-ts](https://vite.new/svelte-ts)  |
-|   [solid](https://vite.new/solid)   |   [solid-ts](https://vite.new/solid-ts)   |
-|    [qwik](https://vite.new/qwik)    |    [qwik-ts](https://vite.new/qwik-ts)    |
+|              JavaScript              |             タイプスクリプト             |
+| :----------------------------------: | :--------------------------------------: |
+|  [バニラ](https://vite.new/vanilla)  | [バニラ-ts](https://vite.new/vanilla-ts) |
+|     [vue](https://vite.new/vue)      |    [vue-ts](https://vite.new/vue-ts)     |
+| [反応します](https://vite.new/react) |  [React-ts](https://vite.new/react-ts)   |
+| [プアクト](https://vite.new/preact)  | [PREACT-TS](https://vite.new/preact-ts)  |
+|     [点灯](https://vite.new/lit)     |    [lit-ts](https://vite.new/lit-ts)     |
+|  [svelte](https://vite.new/svelte)   | [svelte-ts](https://vite.new/svelte-ts)  |
+|    [固体](https://vite.new/solid)    |    [固体](https://vite.new/solid-ts)     |
+|    [qwik](https://vite.new/qwik)     |   [qwik-ts](https://vite.new/qwik-ts)    |
 
-## Scaffolding Your First Vite Project
+## 最初のViteプロジェクトの足場
 
 ::: tip Compatibility Note
-Vite requires [Node.js](https://nodejs.org/en/) version 18+ or 20+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.
+Viteには[node.js](https://nodejs.org/ja/)バージョン18+または20+が必要です。ただし、一部のテンプレートでは、より高いnode.jsバージョンが機能する必要があります。パッケージマネージャーが警告している場合はアップグレードしてください。
 :::
 
 ::: code-group
@@ -67,14 +67,14 @@ $ bun create vite
 
 :::
 
-Then follow the prompts!
+次に、プロンプトに従ってください！
 
-You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold a Vite + Vue project, run:
+また、追加のコマンドラインオプションを介して使用するプロジェクト名とテンプレートを直接指定することもできます。たとえば、Vite + Vueプロジェクトを足場にするには、実行してください。
 
 ::: code-group
 
 ```bash [npm]
-# npm 7+, extra double-dash is needed:
+# NPM 7+、追加のダブルダッシュが必要です:
 $ npm create vite@latest my-vue-app -- --template vue
 ```
 
@@ -92,29 +92,29 @@ $ bun create vite my-vue-app --template vue
 
 :::
 
-See [create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) for more details on each supported template: `vanilla`, `vanilla-ts`, `vue`, `vue-ts`, `react`, `react-ts`, `react-swc`, `react-swc-ts`, `preact`, `preact-ts`, `lit`, `lit-ts`, `svelte`, `svelte-ts`, `solid`, `solid-ts`, `qwik`, `qwik-ts`.
+サポートされて`react-ts`各`react`の詳細`react-swc-ts`は`lit-ts` [Create-Vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) `qwik` `preact-ts` `vanilla` `lit` `vue` `react-swc` `vue-ts` `vanilla-ts` 、 `svelte` 、 `svelte-ts` 、 `solid` 、 `solid-ts` 、 `qwik-ts` `preact`
 
-You can use `.` for the project name to scaffold in the current directory.
+プロジェクト名に`.`使用して、現在のディレクトリの足場になります。
 
-## Community Templates
+## コミュニティテンプレート
 
-create-vite is a tool to quickly start a project from a basic template for popular frameworks. Check out Awesome Vite for [community maintained templates](https://github.com/vitejs/awesome-vite#templates) that include other tools or target different frameworks.
+Create-Viteは、一般的なフレームワークの基本テンプレートからプロジェクトをすばやく開始するツールです。他のツールやターゲットの異なるフレームワークを含む[コミュニティの維持テンプレート](https://github.com/vitejs/awesome-vite#templates)のAwesome Viteをご覧ください。
 
-For a template at `https://github.com/user/project`, you can try it out online using `https://github.stackblitz.com/user/project` (adding `.stackblitz` after `github` to the URL of the project).
+`https://github.com/user/project`のテンプレートの場合、 `https://github.stackblitz.com/user/project` （プロジェクトのURLに`github`後に`.stackblitz`追加）を使用してオンラインで試してみることができます。
 
-You can also use a tool like [degit](https://github.com/Rich-Harris/degit) to scaffold your project with one of the templates. Assuming the project is on GitHub and uses `main` as the default branch, you can create a local copy using:
+[Degit](https://github.com/Rich-Harris/degit)などのツールを使用して、テンプレートの1つでプロジェクトを足場にすることもできます。プロジェクトがGitHubにあり、デフォルトのブランチとして`main`を使用していると仮定すると、以下を使用してローカルコピーを作成できます。
 
 ```bash
-npx degit user/project#main my-project
+npx degit user/project#メインマイプロジェクト
 cd my-project
 
 npm install
 npm run dev
 ```
 
-## Manual Installation
+## 手動インストール
 
-In your project, you can install the `vite` CLI using:
+プロジェクトでは、以下を使用して`vite` CLIをインストールできます。
 
 ::: code-group
 
@@ -136,13 +136,13 @@ $ bun add -D vite
 
 :::
 
-And create an `index.html` file like this:
+次のような`index.html`ファイルを作成します。
 
 ```html
 <p>Hello Vite!</p>
 ```
 
-Then run the appropriate CLI command in your terminal:
+次に、ターミナルで適切なCLIコマンドを実行します。
 
 ::: code-group
 
@@ -164,26 +164,24 @@ $ bunx vite
 
 :::
 
-The `index.html` will be served on `http://localhost:5173`.
+`index.html`は`http://localhost:5173`に提供されます。
 
-## `index.html` and Project Root
+## `index.html`およびプロジェクトルート
 
-One thing you may have noticed is that in a Vite project, `index.html` is front-and-central instead of being tucked away inside `public`. This is intentional: during development Vite is a server, and `index.html` is the entry point to your application.
+気づいたかもしれないことの1つは、Viteプロジェクトでは、 `index.html` `public`内に押し出されるのではなく、最前線と中心部であるということです。これは意図的です。開発中はViteはサーバーであり、 `index.html`アプリケーションへのエントリポイントです。
 
-Vite treats `index.html` as source code and part of the module graph. It resolves `<script type="module" src="...">` that references your JavaScript source code. Even inline `<script type="module">` and CSS referenced via `<link href>` also enjoy Vite-specific features. In addition, URLs inside `index.html` are automatically rebased so there's no need for special `%PUBLIC_URL%` placeholders.
+静的HTTPサーバーと同様に、Viteにはファイルが提供される「ルートディレクトリ」の概念があります。残りのドキュメント全体で`<root>`と呼ばれることがわかります。ソースコードの絶対URLは、プロジェクトルートをベースとして使用して解決されるため、通常の静的ファイルサーバーを使用しているかのようにコードを記述できます（より強力です！）。 Viteは、ルート外のファイルシステムの場所に解決する依存関係を処理することもできます。これにより、モノレポベースのセットアップでも使用可能になります。
 
-Similar to static http servers, Vite has the concept of a "root directory" which your files are served from. You will see it referenced as `<root>` throughout the rest of the docs. Absolute URLs in your source code will be resolved using the project root as base, so you can write code as if you are working with a normal static file server (except way more powerful!). Vite is also capable of handling dependencies that resolve to out-of-root file system locations, which makes it usable even in a monorepo-based setup.
+Viteは、複数の`.html`エントリポイントを持つ[マルチページアプリ](./build#multi-page-app)もサポートしています。
 
-Vite also supports [multi-page apps](./build#multi-page-app) with multiple `.html` entry points.
+#### 代替ルートの指定
 
-#### Specifying Alternative Root
+`vite`実行すると、現在の作業ディレクトリをルートとして使用してDEVサーバーを起動します。 `vite serve some/sub/dir`で代替ルートを指定できます。
+Viteはプロジェクトルート内の[構成ファイル（すなわち`vite.config.js` ）](/ja/config/#configuring-vite)を解決するため、ルートが変更された場合は移動する必要があることに注意してください。
 
-Running `vite` starts the dev server using the current working directory as root. You can specify an alternative root with `vite serve some/sub/dir`.
-Note that Vite will also resolve [its config file (i.e. `vite.config.js`)](/ja/config/#configuring-vite) inside the project root, so you'll need to move it if the root is changed.
+## コマンドラインインターフェイス
 
-## Command Line Interface
-
-In a project where Vite is installed, you can use the `vite` binary in your npm scripts, or run it directly with `npx vite`. Here are the default npm scripts in a scaffolded Vite project:
+Viteがインストールされているプロジェクトでは、NPMスクリプトで`vite`バイナリを使用するか、 `npx vite`で直接実行できます。足場のViteプロジェクトのデフォルトのNPMスクリプトは次のとおりです。
 
 <!-- prettier-ignore -->
 ```json [package.json]
@@ -196,13 +194,13 @@ In a project where Vite is installed, you can use the `vite` binary in your npm 
 }
 ```
 
-You can specify additional CLI options like `--port` or `--open`. For a full list of CLI options, run `npx vite --help` in your project.
+`--port`または`--open`の追加のCLIオプションを指定できます。 CLIオプションの完全なリストについては、プロジェクトで`npx vite --help`実行してください。
 
-Learn more about the [Command Line Interface](./cli.md)
+[コマンドラインインターフェイス](./cli.md)の詳細をご覧ください
 
-## Using Unreleased Commits
+## 未発表のコミットを使用します
 
-If you can't wait for a new release to test the latest features, you can install a specific commit of Vite with https://pkg.pr.new:
+最新の機能をテストするための新しいリリースが待ちきれない場合は、https://pkg.pr.newでViteの特定のコミットをインストールできます。
 
 ::: code-group
 
@@ -224,9 +222,9 @@ $ bun add -D https://pkg.pr.new/vite@SHA
 
 :::
 
-Replace `SHA` with any of [Vite's commit SHAs](https://github.com/vitejs/vite/commits/main/). Note that only commits within the last month will work, as older commit releases are purged.
+`SHA` [ViteのCommit Shasの](https://github.com/vitejs/vite/commits/main/)いずれかに置き換えます。古いコミットリリースがパージされているため、先月内にのみコミットが機能することに注意してください。
 
-Alternatively, you can also clone the [vite repo](https://github.com/vitejs/vite) to your local machine and then build and link it yourself ([pnpm](https://pnpm.io/) is required):
+または、 [Vite Repo](https://github.com/vitejs/vite)をローカルマシンにクローンしてから自分で構築およびリンクすることもできます（ [PNPM](https://pnpm.io/)が必要です）。
 
 ```bash
 git clone https://github.com/vitejs/vite.git
@@ -234,15 +232,15 @@ cd vite
 pnpm install
 cd packages/vite
 pnpm run build
-pnpm link --global # use your preferred package manager for this step
+pnpm link --global # このステップには、お好みのパッケージマネージャーを使用してください
 ```
 
-Then go to your Vite based project and run `pnpm link --global vite` (or the package manager that you used to link `vite` globally). Now restart the development server to ride on the bleeding edge!
+次に、Viteベースのプロジェクトに移動して、 `pnpm link --global vite` （またはグローバルに`vite`リンクしていたパッケージマネージャー）を実行します。開発サーバーを再起動して、出血エッジに乗ってください！
 
 ::: tip Dependencies using Vite
-To replace the Vite version used by dependencies transitively, you should use [npm overrides](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#overrides) or [pnpm overrides](https://pnpm.io/package_json#pnpmoverrides).
+依存関係によって使用されるViteバージョンを交換して置き換えるには、 [NPMオーバーライド](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#overrides)または[PNPMオーバーライド](https://pnpm.io/package_json#pnpmoverrides)を使用する必要があります。
 :::
 
-## Community
+## コミュニティ
 
-If you have questions or need help, reach out to the community at [Discord](https://chat.vite.dev) and [GitHub Discussions](https://github.com/vitejs/vite/discussions).
+質問がある場合、または助けが必要な場合は、 [Discord](https://chat.vite.dev)と[Githubの議論](https://github.com/vitejs/vite/discussions)でコミュニティに連絡してください。

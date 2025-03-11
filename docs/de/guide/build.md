@@ -1,56 +1,56 @@
-# Building for Production
+# Gebäude für die Produktion
 
-When it is time to deploy your app for production, simply run the `vite build` command. By default, it uses `<root>/index.html` as the build entry point, and produces an application bundle that is suitable to be served over a static hosting service. Check out the [Deploying a Static Site](./static-deploy) for guides about popular services.
+Wenn es Zeit ist, Ihre App für die Produktion bereitzustellen, führen Sie einfach den Befehl `vite build` aus. Standardmäßig verwendet es `<root>/index.html` als Build -Einstiegspunkt und erzeugt ein Anwendungsbündel, das für einen statischen Hosting -Service geeignet ist. Schauen Sie sich die [Bereitstellung einer statischen Website](./static-deploy) für Führer über beliebte Dienste an.
 
-## Browser Compatibility
+## Browserkompatibilität
 
-By default, the production bundle assumes support for modern JavaScript, such as [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta), [nullish coalescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing), and [BigInt](https://caniuse.com/bigint). The default browser support range is:
+Standardmäßig übernimmt das Produktion Bundle die Unterstützung für moderne JavaScript wie [native ES -Module](https://caniuse.com/es6-module) , [native ESM -Dynamikimport](https://caniuse.com/es6-module-dynamic-import) , [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) , [Nullish Coalscing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing) und [Bigint](https://caniuse.com/bigint) . Der Standard -Browser -Support -Bereich lautet:
 
 <!-- Search for the `ESBUILD_MODULES_TARGET` constant for more information -->
 
-- Chrome >=87
-- Firefox >=78
-- Safari >=14
-- Edge >=88
+- Chrom> = 87
+- Firefox> = 78
+- Safari> = 14
+- Kante> = 88
 
-You can specify custom targets via the [`build.target` config option](/de/config/build-options.md#build-target), where the lowest target is `es2015`. If a lower target is set, Vite will still require these minimum browser support ranges as it relies on [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), and [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta):
+Sie können benutzerdefinierte Ziele über die [`build.target` -Konfigurationsoption](/de/config/build-options.md#build-target) angeben, wobei das niedrigste Ziel `es2015` ist. Wenn ein niedrigeres Ziel festgelegt ist, erfordert VITE weiterhin diese minimalen Browser -Support -Bereiche, da es sich auf [den nativen dynamischen ESM -Import](https://caniuse.com/es6-module-dynamic-import) stützt, und [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) :
 
 <!-- Search for the `defaultEsbuildSupported` constant for more information -->
 
-- Chrome >=64
-- Firefox >=67
-- Safari >=11.1
-- Edge >=79
+- Chrom> = 64
+- Firefox> = 67
+- Safari> = 11.1
+- Kante> = 79
 
-Note that by default, Vite only handles syntax transforms and **does not cover polyfills**. You can check out https://cdnjs.cloudflare.com/polyfill/ which automatically generates polyfill bundles based on the user's browser UserAgent string.
+Beachten Sie, dass VITE standardmäßig nur Syntax -Transformationen behandelt und **keine Polyfills abdeckt** . Sie können sich [https://cdnjs.cloudflare.com/polyfill/](https://cdnjs.cloudflare.com/polyfill/) ansehen, die automatisch Polyfill -Bündel basierend auf der Browser -Benutzeragent -Zeichenfolge des Benutzers generiert.
 
-Legacy browsers can be supported via [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy), which will automatically generate legacy chunks and corresponding ES language feature polyfills. The legacy chunks are conditionally loaded only in browsers that do not have native ESM support.
+Legacy-Browser können über [@viteJS/Plugin-Legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) unterstützt werden, die automatisch Legacy-Stücke und entsprechende Polyfills für die Sprachfunktion generieren. Die Legacy -Stücke sind nur in Browsern, die keine native ESM -Unterstützung haben, bedingt geladen.
 
-## Public Base Path
+## Öffentlicher Basisweg
 
-- Related: [Asset Handling](./assets)
+- Verwandte: [Vermögensumschlag](./assets)
 
-If you are deploying your project under a nested public path, simply specify the [`base` config option](/de/config/shared-options.md#base) and all asset paths will be rewritten accordingly. This option can also be specified as a command line flag, e.g. `vite build --base=/my/public/path/`.
+Wenn Sie Ihr Projekt unter einem verschachtelten öffentlichen Pfad bereitstellen, geben Sie einfach die [`base` -Konfigurationsoption](/de/config/shared-options.md#base) an und alle Anlagenpfade werden entsprechend umgeschrieben. Diese Option kann auch als Befehlszeilenflag angegeben werden, z. B. `vite build --base=/my/public/path/` .
 
-JS-imported asset URLs, CSS `url()` references, and asset references in your `.html` files are all automatically adjusted to respect this option during build.
+JS-importierte Asset-URLs, CSS `url()` Referenzen und Asset-Referenzen in Ihren `.html` Dateien werden automatisch angepasst, um diese Option während des Builds zu respektieren.
 
-The exception is when you need to dynamically concatenate URLs on the fly. In this case, you can use the globally injected `import.meta.env.BASE_URL` variable which will be the public base path. Note this variable is statically replaced during build so it must appear exactly as-is (i.e. `import.meta.env['BASE_URL']` won't work).
+Die Ausnahme ist, wenn Sie URLs im laufenden Betrieb dynamisch verkettet müssen. In diesem Fall können Sie die global injizierte `import.meta.env.BASE_URL` -Variable verwenden, die der öffentliche Basispfad ist. Beachten Sie, dass diese Variable während des Builds statisch ersetzt wird, sodass sie genau wie IS erscheinen muss (dh `import.meta.env['BASE_URL']` funktioniert nicht).
 
-For advanced base path control, check out [Advanced Base Options](#advanced-base-options).
+Weitere Informationen zur erweiterten Basispfad finden Sie unter [den erweiterten Basisoptionen](#advanced-base-options) .
 
-### Relative base
+### Relative Basis
 
-If you don't know the base path in advance, you may set a relative base path with `"base": "./"` or `"base": ""`. This will make all generated URLs to be relative to each file.
+Wenn Sie den Basispfad nicht im Voraus kennen, können Sie einen relativen Basispfad mit `"base": "./"` oder `"base": ""` festlegen. Dadurch werden alle generierten URLs in Bezug auf jede Datei relativ zu sein.
 
 :::warning Support for older browsers when using relative bases
 
-`import.meta` support is required for relative bases. If you need to support [browsers that do not support `import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta), you can use [the `legacy` plugin](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy).
+`import.meta` Unterstützung ist für relative Basen erforderlich. Wenn Sie [Browser unterstützen müssen, die `import.meta` nicht unterstützen](https://caniuse.com/mdn-javascript_operators_import_meta) , können Sie [das `legacy` -Plugin](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) verwenden.
 
 :::
 
-## Customizing the Build
+## Anpassen des Builds
 
-The build can be customized via various [build config options](/de/config/build-options.md). Specifically, you can directly adjust the underlying [Rollup options](https://rollupjs.org/configuration-options/) via `build.rollupOptions`:
+Der Build kann über verschiedene [Build -Konfigurationsoptionen](/de/config/build-options.md) angepasst werden. Insbesondere können Sie die zugrunde liegenden [Rollup -Optionen](https://rollupjs.org/configuration-options/) über `build.rollupOptions` direkt anpassen:
 
 ```js [vite.config.js]
 export default defineConfig({
@@ -62,27 +62,27 @@ export default defineConfig({
 })
 ```
 
-For example, you can specify multiple Rollup outputs with plugins that are only applied during build.
+Sie können beispielsweise mehrere Rollup -Ausgänge mit Plugins angeben, die nur während des Builds angewendet werden.
 
-## Chunking Strategy
+## Chunking -Strategie
 
-You can configure how chunks are split using `build.rollupOptions.output.manualChunks` (see [Rollup docs](https://rollupjs.org/configuration-options/#output-manualchunks)). If you use a framework, refer to their documentation for configuring how chunks are splitted.
+Sie können konfigurieren, wie Teile mit `build.rollupOptions.output.manualChunks` aufgeteilt werden (siehe [Rollup -Dokumente](https://rollupjs.org/configuration-options/#output-manualchunks) ). Wenn Sie ein Framework verwenden, finden Sie in der Dokumentation, um die Aufteilung der Teile zu konfigurieren.
 
-## Load Error Handling
+## Lastfehlerbehandlung
 
-Vite emits `vite:preloadError` event when it fails to load dynamic imports. `event.payload` contains the original import error. If you call `event.preventDefault()`, the error will not be thrown.
+Vite emitiert `vite:preloadError` Ereignis, wenn es nicht dynamische Importe laden kann. `event.payload` enthält den ursprünglichen Importfehler. Wenn Sie `event.preventDefault()` anrufen, wird der Fehler nicht geworfen.
 
 ```js twoslash
 window.addEventListener('vite:preloadError', (event) => {
-  window.location.reload() // for example, refresh the page
+  window.location.reload() // Zum Beispiel die Seite aktualisieren
 })
 ```
 
-When a new deployment occurs, the hosting service may delete the assets from previous deployments. As a result, a user who visited your site before the new deployment might encounter an import error. This error happens because the assets running on that user's device are outdated and it tries to import the corresponding old chunk, which is deleted. This event is useful for addressing this situation.
+Wenn eine neue Bereitstellung auftritt, kann der Hosting -Dienst die Vermögenswerte aus früheren Bereitstellungen löschen. Infolgedessen kann ein Benutzer, der Ihre Website vor der neuen Bereitstellung besucht hat, möglicherweise auf einen Importfehler stoßen. Dieser Fehler tritt auf, da die auf dem Gerät dieses Benutzers ausgeführten Assets veraltet sind und versucht, den entsprechenden alten Chunk zu importieren, der gelöscht wird. Dieses Ereignis ist nützlich, um diese Situation anzugehen.
 
-## Rebuild on Files Changes
+## Umbau Auf Dateienänderungen Änderungen
 
-You can enable rollup watcher with `vite build --watch`. Or, you can directly adjust the underlying [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch) via `build.watch`:
+Sie können den Rollup -Beobachter mit `vite build --watch` aktivieren. Oder Sie können den zugrunde liegenden [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch) über `build.watch` direkt anpassen:
 
 ```js [vite.config.js]
 export default defineConfig({
@@ -94,11 +94,11 @@ export default defineConfig({
 })
 ```
 
-With the `--watch` flag enabled, changes to the `vite.config.js`, as well as any files to be bundled, will trigger a rebuild.
+Wenn das `--watch` -Flag aktiviert ist, werden Änderungen an der `vite.config.js` sowie alle Dateien, die gebündelt werden, einen Umbau ausgelöst.
 
-## Multi-Page App
+## Mehrseitige App
 
-Suppose you have the following source code structure:
+Angenommen, Sie haben die folgende Quellcodestruktur:
 
 ```
 ├── package.json
@@ -110,9 +110,9 @@ Suppose you have the following source code structure:
     └── nested.js
 ```
 
-During dev, simply navigate or link to `/nested/` - it works as expected, just like for a normal static file server.
+Navigieren Sie während des Devs einfach navigieren oder link zu `/nested/` - es funktioniert wie erwartet, genau wie bei einem normalen statischen Dateiserver.
 
-During build, all you need to do is to specify multiple `.html` files as entry points:
+Während des Builds müssen Sie lediglich mehrere `.html` -Dateien als Einstiegspunkte angeben:
 
 ```js twoslash [vite.config.js]
 import { dirname, resolve } from 'node:path'
@@ -133,15 +133,15 @@ export default defineConfig({
 })
 ```
 
-If you specify a different root, remember that `__dirname` will still be the folder of your vite.config.js file when resolving the input paths. Therefore, you will need to add your `root` entry to the arguments for `resolve`.
+Wenn Sie ein anderes Root angeben, denken Sie daran, dass `__dirname` beim Auflösen der Eingabepfade immer noch der Ordner Ihrer Datei vite.config.js ist. Daher müssen Sie Ihren `root` zu den Argumenten für `resolve` hinzufügen.
 
-Note that for HTML files, Vite ignores the name given to the entry in the `rollupOptions.input` object and instead respects the resolved id of the file when generating the HTML asset in the dist folder. This ensures a consistent structure with the way the dev server works.
+Beachten Sie, dass VITE für HTML -Dateien den dem Eintrag im `rollupOptions.input` -Objekt angegebenen Namen ignoriert und stattdessen die aufgelöste ID der Datei beim Generieren des HTML -Asset im DIST -Ordner respektiert. Dies stellt eine konsistente Struktur mit der Funktionsweise des Dev -Servers sicher.
 
-## Library Mode
+## Bibliotheksmodus
 
-When you are developing a browser-oriented library, you are likely spending most of the time on a test/demo page that imports your actual library. With Vite, you can use your `index.html` for that purpose to get the smooth development experience.
+Wenn Sie eine Browser-orientierte Bibliothek entwickeln, verbringen Sie wahrscheinlich die meiste Zeit auf einer Test-/Demo-Seite, auf der Ihre tatsächliche Bibliothek importiert wird. Mit Vite können Sie Ihre `index.html` für diesen Zweck verwenden, um die reibungslose Entwicklungserfahrung zu sammeln.
 
-When it is time to bundle your library for distribution, use the [`build.lib` config option](/de/config/build-options.md#build-lib). Make sure to also externalize any dependencies that you do not want to bundle into your library, e.g. `vue` or `react`:
+Wenn es Zeit ist, Ihre Bibliothek für die Verteilung zu bündeln, verwenden Sie die [`build.lib` -Konfigurationsoption](/de/config/build-options.md#build-lib) . Stellen Sie sicher, dass Sie auch Abhängigkeiten externalen, die Sie nicht in Ihre Bibliothek bündeln möchten, z. B. `vue` oder `react` :
 
 ::: code-group
 
@@ -157,16 +157,16 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'lib/main.js'),
       name: 'MyLib',
-      // the proper extensions will be added
+      // Die richtigen Erweiterungen werden hinzugefügt
       fileName: 'my-lib',
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
+      // Stellen Sie sicher, dass Sie DEPs externalisieren, die nicht gebündelt werden sollten
+      // in Ihre Bibliothek
       external: ['vue'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
+        // Stellen Sie globale Variablen zur Verwendung im UMD -Build zur Verfügung
+        // für externalisierte DEPs
         globals: {
           vue: 'Vue',
         },
@@ -193,12 +193,12 @@ export default defineConfig({
       name: 'MyLib',
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
+      // Stellen Sie sicher, dass Sie DEPs externalisieren, die nicht gebündelt werden sollten
+      // in Ihre Bibliothek
       external: ['vue'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
+        // Stellen Sie globale Variablen zur Verwendung im UMD -Build zur Verfügung
+        // für externalisierte DEPs
         globals: {
           vue: 'Vue',
         },
@@ -210,7 +210,7 @@ export default defineConfig({
 
 :::
 
-The entry file would contain exports that can be imported by users of your package:
+Die Eintragsdatei würde Exporte enthalten, die von Benutzern Ihres Pakets importiert werden können:
 
 ```js [lib/main.js]
 import Foo from './Foo.vue'
@@ -218,12 +218,12 @@ import Bar from './Bar.vue'
 export { Foo, Bar }
 ```
 
-Running `vite build` with this config uses a Rollup preset that is oriented towards shipping libraries and produces two bundle formats:
+Mit dieser Konfiguration `vite build` verwendet eine Rollup -Voreinstellung, die an Versandbibliotheken ausgerichtet ist und zwei Bundle -Formate erzeugt:
 
-- `es` and `umd` (for single entry)
-- `es` and `cjs` (for multiple entries)
+- `es` und `umd` (für einzelne Eintrag)
+- `es` und `cjs` (für mehrere Einträge)
 
-The formats can be configured with the [`build.lib.formats`](/de/config/build-options.md#build-lib) option.
+Die Formate können mit der [`build.lib.formats`](/de/config/build-options.md#build-lib) -Option konfiguriert werden.
 
 ```
 $ vite build
@@ -232,7 +232,7 @@ dist/my-lib.js      0.08 kB / gzip: 0.07 kB
 dist/my-lib.umd.cjs 0.30 kB / gzip: 0.16 kB
 ```
 
-Recommended `package.json` for your lib:
+Empfohlen `package.json` für Ihre LIB:
 
 ::: code-group
 
@@ -274,11 +274,11 @@ Recommended `package.json` for your lib:
 
 :::
 
-### CSS support
+### CSS -Unterstützung
 
-If your library imports any CSS, it will be bundled as a single CSS file besides the built JS files, e.g. `dist/my-lib.css`. The name defaults to `build.lib.fileName`, but can also be changed with [`build.lib.cssFileName`](/de/config/build-options.md#build-lib).
+Wenn Ihre Bibliothek CSS importiert, wird sie neben den erstellten JS -Dateien als einzelne CSS -Datei gebündelt, z. B. `dist/my-lib.css` . Der Name ist standardmäßig `build.lib.fileName` , kann aber auch mit [`build.lib.cssFileName`](/de/config/build-options.md#build-lib) geändert werden.
 
-You can export the CSS file in your `package.json` to be imported by users:
+Sie können die CSS -Datei in Ihre `package.json` exportieren, um von Benutzern importiert zu werden:
 
 ```json {12}
 {
@@ -298,73 +298,73 @@ You can export the CSS file in your `package.json` to be imported by users:
 ```
 
 ::: tip File Extensions
-If the `package.json` does not contain `"type": "module"`, Vite will generate different file extensions for Node.js compatibility. `.js` will become `.mjs` and `.cjs` will become `.js`.
+Wenn die `package.json` nicht `"type": "module"` enthält, generiert VITE verschiedene Dateierweiterungen für die Kompatibilität von Node.js. `.js` wird `.mjs` und `.cjs` werden `.js` .
 :::
 
 ::: tip Environment Variables
-In library mode, all [`import.meta.env.*`](./env-and-mode.md) usage are statically replaced when building for production. However, `process.env.*` usage are not, so that consumers of your library can dynamically change it. If this is undesirable, you can use `define: { 'process.env.NODE_ENV': '"production"' }` for example to statically replace them, or use [`esm-env`](https://github.com/benmccann/esm-env) for better compatibility with bundlers and runtimes.
+Im Bibliotheksmodus werden alle [`import.meta.env.*`](./env-and-mode.md) -Nutzungen beim Aufbau zur Produktion statisch ersetzt. `process.env.*` Nutzung ist jedoch nicht, so dass Verbraucher Ihrer Bibliothek sie dynamisch ändern können. Wenn dies unerwünscht ist, können Sie `define: { 'process.env.NODE_ENV': '"production"' }` verwenden, um sie statisch zu ersetzen, oder [`esm-env`](https://github.com/benmccann/esm-env) für eine bessere Kompatibilität mit Bundler und Laufzeiten verwenden.
 :::
 
 ::: warning Advanced Usage
-Library mode includes a simple and opinionated configuration for browser-oriented and JS framework libraries. If you are building non-browser libraries, or require advanced build flows, you can use [Rollup](https://rollupjs.org) or [esbuild](https://esbuild.github.io) directly.
+Der Bibliotheksmodus enthält eine einfache und Meinung für die browserorientierte und js Framework-Bibliotheken. Wenn Sie nicht-Browser-Bibliotheken erstellen oder erweiterte Build-Flows benötigen, können Sie [Rollup](https://rollupjs.org) oder [Esbuild](https://esbuild.github.io) direkt verwenden.
 :::
 
-## Advanced Base Options
+## Erweiterte Basisoptionen
 
 ::: warning
-This feature is experimental. [Give Feedback](https://github.com/vitejs/vite/discussions/13834).
+Diese Funktion ist experimentell. [Feedback geben](https://github.com/vitejs/vite/discussions/13834) .
 :::
 
-For advanced use cases, the deployed assets and public files may be in different paths, for example to use different cache strategies.
-A user may choose to deploy in three different paths:
+Für fortgeschrittene Anwendungsfälle können die bereitgestellten Vermögenswerte und öffentlichen Dateien in verschiedenen Pfaden vorliegen, beispielsweise, um verschiedene Cache -Strategien zu verwenden.
+Ein Benutzer kann sich für die Bereitstellung auf drei verschiedenen Pfaden entscheiden:
 
-- The generated entry HTML files (which may be processed during SSR)
-- The generated hashed assets (JS, CSS, and other file types like images)
-- The copied [public files](assets.md#the-public-directory)
+- Die generierten HTML -Dateien für Einträge (die während der SSR verarbeitet werden können)
+- Die generierten Hash -Assets (JS, CSS und andere Dateitypen wie Bilder)
+- Die kopierten [öffentlichen Dateien](assets.md#the-public-directory)
 
-A single static [base](#public-base-path) isn't enough in these scenarios. Vite provides experimental support for advanced base options during build, using `experimental.renderBuiltUrl`.
+In diesen Szenarien reicht eine einzelne statische [Basis](#public-base-path) nicht aus. VITE bietet experimentelle Unterstützung für fortschrittliche Basisoptionen während des Builds unter Verwendung von `experimental.renderBuiltUrl` .
 
 ```ts twoslash
 import type { UserConfig } from 'vite'
-// prettier-ignore
+// hübscher
 const config: UserConfig = {
-// ---cut-before---
-experimental: {
-  renderBuiltUrl(filename, { hostType }) {
-    if (hostType === 'js') {
-      return { runtime: `window.__toCdnUrl(${JSON.stringify(filename)})` }
-    } else {
-      return { relative: true }
-    }
+  // --- geschnitten ---
+  experimental: {
+    renderBuiltUrl(filename, { hostType }) {
+      if (hostType === 'js') {
+        return { runtime: `window.__toCdnUrl(${JSON.stringify(filename)})` }
+      } else {
+        return { relative: true }
+      }
+    },
   },
-},
-// ---cut-after---
+  // --- Cut-After ---
 }
 ```
 
-If the hashed assets and public files aren't deployed together, options for each group can be defined independently using asset `type` included in the second `context` param given to the function.
+Wenn die Hashed -Vermögenswerte und öffentlichen Dateien nicht zusammen bereitgestellt werden, können Optionen für jede Gruppe `context` `type` definiert werden.
 
 ```ts twoslash
 import type { UserConfig } from 'vite'
 import path from 'node:path'
-// prettier-ignore
+// hübscher
 const config: UserConfig = {
-// ---cut-before---
-experimental: {
-  renderBuiltUrl(filename, { hostId, hostType, type }) {
-    if (type === 'public') {
-      return 'https://www.domain.com/' + filename
-    } else if (path.extname(hostId) === '.js') {
-      return {
-        runtime: `window.__assetsPath(${JSON.stringify(filename)})`
+  // --- geschnitten ---
+  experimental: {
+    renderBuiltUrl(filename, { hostId, hostType, type }) {
+      if (type === 'public') {
+        return 'https://www.domain.com/' + filename
+      } else if (path.extname(hostId) === '.js') {
+        return {
+          runtime: `window.__assetsPath(${JSON.stringify(filename)})`,
+        }
+      } else {
+        return 'https://cdn.domain.com/assets/' + filename
       }
-    } else {
-      return 'https://cdn.domain.com/assets/' + filename
-    }
+    },
   },
-},
-// ---cut-after---
+  // --- Cut-After ---
 }
 ```
 
-Note that the `filename` passed is a decoded URL, and if the function returns a URL string, it should also be decoded. Vite will handle the encoding automatically when rendering the URLs. If an object with `runtime` is returned, encoding should be handled yourself where needed as the runtime code will be rendered as is.
+Beachten Sie, dass es sich bei der Übergabe der `filename` -bestandenen URL handelt, und wenn die Funktion eine URL -Zeichenfolge zurückgibt, sollte sie auch dekodiert werden. VITE wird die Codierung automatisch bei der Rendern der URLs behandelt. Wenn ein Objekt mit `runtime` zurückgegeben wird, sollte die Codierung bei Bedarf gehandhabt werden, wenn der Laufzeitcode so gerendert wird.

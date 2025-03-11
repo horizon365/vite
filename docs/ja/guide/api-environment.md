@@ -1,38 +1,38 @@
-# Environment API
+# 環境API
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+環境APIは実験的です。 Vite 6の間、APIを安定させて、生態系を実験し、その上に構築します。 Vite 7の潜在的な破壊変化を伴うこれらの新しいAPIを安定させることを計画しています。
 
-Resources:
+リソース:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+- 新しいAPIに関するフィードバックを収集している[フィードバックディスカッション](https://github.com/vitejs/vite/discussions/16358)。
+- 新しいAPIが実装およびレビューされた[環境API PR](https://github.com/vitejs/vite/pull/16471) 。
 
-Please share your feedback with us.
+フィードバックを私たちと共有してください。
 :::
 
-## Formalizing Environments
+## 環境の形式化
 
-Vite 6 formalizes the concept of Environments. Until Vite 5, there were two implicit Environments (`client`, and optionally `ssr`). The new Environment API allows users and framework authors to create as many environments as needed to map the way their apps work in production. This new capability required a big internal refactoring, but a lot of effort has been placed on backward compatibility. The initial goal of Vite 6 is to move the ecosystem to the new major as smoothly as possible, delaying the adoption of these new experimental APIs until enough users have migrated and frameworks and plugin authors have validated the new design.
+Vite 6は、環境の概念を形式化します。 Vite 5まで、2つの暗黙的な環境がありました（ `client` 、およびオプションで`ssr` ）。新しい環境APIを使用すると、ユーザーとフレームワークの著者は、必要な数の環境を作成して、プロダクションでのアプリの動作方法をマッピングできます。この新しい機能には大きな内部リファクタリングが必要でしたが、後方互換性に多くの努力が払われています。 Vite 6の最初の目標は、エコシステムを可能な限りスムーズに新しい専攻に移動し、十分なユーザーが移行し、フレームワークとプラグインの著者が新しいデザインを検証するまで、これらの新しい実験APIの採用を遅らせることです。
 
-## Closing the Gap Between Build and Dev
+## ビルドと開発の間のギャップを閉じます
 
-For a simple SPA/MPA, no new APIs around environments are exposed to the config. Internally, Vite will apply the options to a `client` environment, but it's not necessary to know of this concept when configuring Vite. The config and behavior from Vite 5 should work seamlessly here.
+単純なSPA/MPAの場合、環境の周りの新しいAPIは構成にさらされていません。内部的には、Viteはオプションを`client`環境に適用しますが、Viteを構成する際にこの概念を知る必要はありません。 Vite 5の構成と動作は、ここでシームレスに動作するはずです。
 
-When we move to a typical server-side rendered (SSR) app, we'll have two environments:
+典型的なサーバー側のレンダリング（SSR）アプリに移動すると、2つの環境があります。
 
-- `client`: runs the app in the browser.
-- `server`: runs the app in node (or other server runtimes) which renders pages before sending them to the browser.
+- `client` :ブラウザでアプリを実行します。
+- `server` :ブラウザに送信する前にページをレンダリングするノード（または他のサーバーランタイム）でアプリを実行します。
 
-In dev, Vite executes the server code in the same Node process as the Vite dev server, giving a close approximation to the production environment. However, it is also possible for servers to run in other JS runtimes, like [Cloudflare's workerd](https://github.com/cloudflare/workerd) which have different constraints. Modern apps may also run in more than two environments, e.g. a browser, a node server, and an edge server. Vite 5 didn't allow to properly represent these environments.
+DEVでは、VITEはVite Devサーバーと同じノードプロセスでサーバーコードを実行し、生産環境に密接な近似値を与えます。ただし、さまざまな制約を持つ[CloudFlareのWorkerD](https://github.com/cloudflare/workerd)のように、サーバーが他のJSランタイムで実行される可能性もあります。最新のアプリは、ブラウザ、ノードサーバー、エッジサーバーなど、2つ以上の環境で実行される場合があります。 Vite 5は、これらの環境を適切に表現することを許可しませんでした。
 
-Vite 6 allows users to configure their app during build and dev to map all of its environments. During dev, a single Vite dev server can now be used to run code in multiple different environments concurrently. The app source code is still transformed by Vite dev server. On top of the shared HTTP server, middlewares, resolved config, and plugins pipeline, the Vite dev server now has a set of independent dev environments. Each of them is configured to match the production environment as closely as possible, and is connected to a dev runtime where the code is executed (for workerd, the server code can now run in miniflare locally). In the client, the browser imports and executes the code. In other environments, a module runner fetches and evaluates the transformed code.
+Vite 6を使用すると、ユーザーはビルド中および開発中にアプリを構成して、すべての環境をマッピングすることができます。開発中、単一のVite DEVサーバーを使用して、複数の異なる環境でコードを同時に実行できるようになりました。アプリソースコードは、Vite Devサーバーによって引き続き変換されます。共有HTTPサーバー、MiddleWares、Resolved Config、およびPlugins Pipelineの上に、Vite Dev Serverには独立したDEV環境のセットがあります。それらのそれぞれは、生産環境を可能な限り密接に一致させるように構成されており、コードが実行される開発時間に接続されています（WorkerDの場合、サーバーコードはMiniflareでローカルで実行できるようになりました）。クライアントでは、ブラウザがコードをインポートおよび実行します。他の環境では、モジュールランナーが変換されたコードを取得および評価します。
 
-![Vite Environments](../../images/vite-environments.svg)
+![Vite環境](../../images/vite-environments.svg)
 
-## Environments Configuration
+## 環境構成
 
-For an SPA/MPA, the configuration will look similar to Vite 5. Internally these options are used to configure the `client` environment.
+SPA/MPAの場合、構成はVite 5に似ています。内部的には、これらのオプションは`client`環境を構成するために使用されます。
 
 ```js
 export default defineConfig({
@@ -45,9 +45,9 @@ export default defineConfig({
 })
 ```
 
-This is important because we'd like to keep Vite approachable and avoid exposing new concepts until they are needed.
+これは重要です。なぜなら、私たちはViteを親しみやすく保ち、新しい概念が必要になるまで公開しないようにしたいからです。
 
-If the app is composed of several environments, then these environments can be configured explicitly with the `environments` config option.
+アプリがいくつかの環境で構成されている場合、これらの環境は`environments`構成オプションで明示的に構成できます。
 
 ```js
 export default {
@@ -68,9 +68,9 @@ export default {
 }
 ```
 
-When not explicitly documented, environment inherits the configured top-level config options (for example, the new `server` and `edge` environments will inherit the `build.sourcemap: false` option). A small number of top-level options, like `optimizeDeps`, only apply to the `client` environment, as they don't work well when applied as a default to server environments. The `client` environment can also be configured explicitly through `environments.client`, but we recommend to do it with the top-level options so the client config remains unchanged when adding new environments.
+明示的に文書化されていない場合、環境は構成されたトップレベルの構成オプションを継承します（たとえば、新しい`server`と`edge`環境は`build.sourcemap: false`オプションを継承します）。 `optimizeDeps`ような少数のトップレベルオプションは、デフォルトのサーバー環境に適用された場合にうまく機能しないため、 `client`環境にのみ適用されます。 `client`環境は`environments.client`で明示的に構成することもできますが、トップレベルのオプションでそれを行うことをお勧めします。これにより、クライアントの構成は新しい環境を追加するときに変更されません。
 
-The `EnvironmentOptions` interface exposes all the per-environment options. There are environment options that apply to both `build` and `dev`, like `resolve`. And there are `DevEnvironmentOptions` and `BuildEnvironmentOptions` for dev and build specific options (like `dev.warmup` or `build.outDir`). Some options like `optimizeDeps` only applies to dev, but is kept as top level instead of nested in `dev` for backward compatibility.
+`EnvironmentOptions`インターフェイスは、すべての環境ごとのオプションを公開します。 `resolve`などの`build`と`dev`両方に適用される環境オプションがあります。 DEVには`DevEnvironmentOptions`と`BuildEnvironmentOptions`があり、特定のオプションを作成します（ `dev.warmup`または`build.outDir`など）。 `optimizeDeps`ようないくつかのオプションは開発にのみ適用されますが、後方互換性のために`dev`にネストされる代わりにトップレベルとして保持されます。
 
 ```ts
 interface EnvironmentOptions {
@@ -83,20 +83,18 @@ interface EnvironmentOptions {
 }
 ```
 
-The `UserConfig` interface extends from the `EnvironmentOptions` interface, allowing to configure the client and defaults for other environments, configured through the `environments` option. The `client` and a server environment named `ssr` are always present during dev. This allows backward compatibility with `server.ssrLoadModule(url)` and `server.moduleGraph`. During build, the `client` environment is always present, and the `ssr` environment is only present if it is explicitly configured (using `environments.ssr` or for backward compatibility `build.ssr`). An app doesn't need to use the `ssr` name for its SSR environment, it could name it `server` for example.
+`UserConfig`インターフェイスは`EnvironmentOptions`インターフェイスから拡張され、 `environments`オプションを介して構成された他の環境のクライアントとデフォルトを構成できます。 `ssr`という名前の`client`およびサーバー環境は、開発中に常に存在します。これにより、 `server.ssrLoadModule(url)`および`server.moduleGraph`の後方互換性が可能になります。ビルド中、 `client`環境が常に存在し、 `ssr`環境が明示的に構成されている場合にのみ存在します（ `environments.ssr`または後方互換性`build.ssr`を使用）。アプリは、SSR環境に`ssr`名を使用する必要はありません。たとえば、 `server`にすることができます。
 
 ```ts
 interface UserConfig extends EnvironmentOptions {
   environments: Record<string, EnvironmentOptions>
-  // other options
+  // その他のオプション
 }
 ```
 
-Note that the `ssr` top-level property is going to be deprecated once the Environment API is stable. This option has the same role as `environments`, but for the default `ssr` environment and only allowed configuring of a small set of options.
+## カスタム環境インスタンス
 
-## Custom Environment Instances
-
-Low level configuration APIs are available so runtime providers can provide environments with proper defaults for their runtimes. These environments can also spawn other processes or threads to run the modules during dev in a closer runtime to the production environment.
+低レベルの構成APIが利用可能であるため、ランタイムプロバイダーは環境に適切なデフォルトを実行できるようにします。これらの環境は、生産環境に近いランタイムで開発中にモジュールを実行する他のプロセスまたはスレッドを生成することもできます。
 
 ```js
 import { customEnvironment } from 'vite-environment-provider'
@@ -115,26 +113,26 @@ export default {
 }
 ```
 
-## Backward Compatibility
+## 後方互換性
 
-The current Vite server API are not yet deprecated and are backward compatible with Vite 5. The new Environment API is experimental.
+現在のVite Server APIはまだ非推奨ではなく、Vite 5と後方互換性があります。新しい環境APIは実験的です。
 
-The `server.moduleGraph` returns a mixed view of the client and ssr module graphs. Backward compatible mixed module nodes will be returned from all its methods. The same scheme is used for the module nodes passed to `handleHotUpdate`.
+`server.moduleGraph`は、クライアントとSSRモジュールグラフの混合ビューを返します。後方互換の混合モジュールノードは、そのすべての方法から返されます。同じスキームが`handleHotUpdate`に渡されたモジュールノードに使用されます。
 
-We don't recommend switching to Environment API yet. We are aiming for a good portion of the user base to adopt Vite 6 before so plugins don't need to maintain two versions. Checkout the future breaking changes section for information on future deprecations and upgrade path:
+環境APIへの切り替えはまだお勧めしません。プラグインが2つのバージョンを維持する必要がないように、Vite 6を採用するためにユーザーベースのかなりの部分を目指しています。将来の非推奨とアップグレードパスに関する情報については、将来のブレイキング変更セクションをチェックアウトします。
 
-- [`this.environment` in Hooks](/ja/changes/this-environment-in-hooks)
-- [HMR `hotUpdate` Plugin Hook](/ja/changes/hotupdate-hook)
-- [Move to per-environment APIs](/ja/changes/per-environment-apis)
-- [SSR using `ModuleRunner` API](/ja/changes/ssr-using-modulerunner)
-- [Shared plugins during build](/ja/changes/shared-plugins-during-build)
+- [フックで`this.environment`](/ja/changes/this-environment-in-hooks)
+- [HMR `hotUpdate`プラグインフック](/ja/changes/hotupdate-hook)
+- [環境ごとのAPIに移動します](/ja/changes/per-environment-apis)
+- [`ModuleRunner` APIを使用したSSR](/ja/changes/ssr-using-modulerunner)
+- [ビルド中の共有プラグイン](/ja/changes/shared-plugins-during-build)
 
-## Target Users
+## ターゲットユーザー
 
-This guide provides the basic concepts about environments for end users.
+このガイドは、エンドユーザーの環境に関する基本概念を提供します。
 
-Plugin authors have a more consistent API available to interact with the current environment configuration. If you're building on top of Vite, the [Environment API Plugins Guide](./api-environment-plugins.md) guide describes the way extended plugin APIs available to support multiple custom environments.
+プラグインの著者は、現在の環境構成と対話するために、より一貫したAPIを利用できます。 Viteの上に構築されている場合、[環境APIプラグインガイド](./api-environment-plugins.md)ガイドは、複数のカスタム環境をサポートするために利用可能な拡張プラグインAPIを説明しています。
 
-Frameworks could decide to expose environments at different levels. If you're a framework author, continue reading the [Environment API Frameworks Guide](./api-environment-frameworks) to learn about the Environment API programmatic side.
+フレームワークは、さまざまなレベルで環境を公開することを決定できます。フレームワーク著者の場合は、[環境APIフレームワークガイド](./api-environment-frameworks)を読み続けて、環境APIプログラム側について学びます。
 
-For Runtime providers, the [Environment API Runtimes Guide](./api-environment-runtimes.md) explains how to offer custom environment to be consumed by frameworks and users.
+ランタイムプロバイダーの場合、[環境API Runtimesガイドは、](./api-environment-runtimes.md)フレームワークとユーザーによって消費されるカスタム環境を提供する方法について説明します。

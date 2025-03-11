@@ -1,39 +1,39 @@
-# Build Options
+# オプションを構築します
 
-Unless noted, the options in this section are only applied to build.
+記載されていない限り、このセクションのオプションはビルドにのみ適用されます。
 
 ## build.target
 
-- **Type:** `string | string[]`
-- **Default:** `'modules'`
-- **Related:** [Browser Compatibility](/ja/guide/build#browser-compatibility)
+- **タイプ:** `文字列 | 文字列[] `
+- **デフォルト:** `'modules'`
+- **関連:**[ブラウザの互換性](/ja/guide/build#browser-compatibility)
 
-Browser compatibility target for the final bundle. The default value is a Vite special value, `'modules'`, which targets browsers with [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), and [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) support. Vite will replace `'modules'` to `['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']`
+最終バンドルのブラウザ互換性ターゲット。デフォルト値は、[ネイティブESモジュール](https://caniuse.com/es6-module)、[ネイティブESMの動的インポート](https://caniuse.com/es6-module-dynamic-import)、 [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta)サポートを備えたブラウザをターゲットにするVite Special Value `'modules'`です。 Viteは`'modules'` `['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']`置き換えます
 
-Another special value is `'esnext'` - which assumes native dynamic imports support and will only perform minimal transpiling.
+別の特別な値は`'esnext'`です。これは、ネイティブの動的輸入サポートを想定しており、最小限の輸送のみを実行します。
 
-The transform is performed with esbuild and the value should be a valid [esbuild target option](https://esbuild.github.io/api/#target). Custom targets can either be an ES version (e.g. `es2015`), a browser with version (e.g. `chrome58`), or an array of multiple target strings.
+変換はesbuildで実行され、値は有効な[esbuildターゲットオプション](https://esbuild.github.io/api/#target)である必要があります。カスタムターゲットは、ESバージョン（EG `es2015` ）、バージョンを備えたブラウザ（ `chrome58` ）、または複数のターゲット文字列の配列のいずれかです。
 
-Note the build will fail if the code contains features that cannot be safely transpiled by esbuild. See [esbuild docs](https://esbuild.github.io/content-types/#javascript) for more details.
+注コードがEsbuildで安全に輸送できない機能が含まれている場合、ビルドが失敗することに注意してください。詳細については、 [esbuild docs](https://esbuild.github.io/content-types/#javascript)を参照してください。
 
 ## build.modulePreload
 
-- **Type:** `boolean | { polyfill?: boolean, resolveDependencies?: ResolveModulePreloadDependenciesFn }`
-- **Default:** `{ polyfill: true }`
+- **タイプ:** `Boolean | {polyfill？:boolean、resolvedependencies？:ResolvemodulePreloAddependenciesfn} `
+- **デフォルト:** `{ polyfill: true }`
 
-By default, a [module preload polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill) is automatically injected. The polyfill is auto injected into the proxy module of each `index.html` entry. If the build is configured to use a non-HTML custom entry via `build.rollupOptions.input`, then it is necessary to manually import the polyfill in your custom entry:
+デフォルトでは、[モジュールのプリロードポリフィルが](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill)自動的に注入されます。ポリフィルは、各`index.html`エントリのプロキシモジュールに自動注入されます。ビルドが`build.rollupOptions.input`介して非HTMLカスタムエントリを使用するように構成されている場合、カスタムエントリでポリフィルを手動でインポートする必要があります。
 
 ```js
 import 'vite/modulepreload-polyfill'
 ```
 
-Note: the polyfill does **not** apply to [Library Mode](/ja/guide/build#library-mode). If you need to support browsers without native dynamic import, you should probably avoid using it in your library.
+注:ポリフィルは[ライブラリモード](/ja/guide/build#library-mode)には適用され**ません**。ネイティブの動的インポートなしでブラウザをサポートする必要がある場合は、おそらくライブラリで使用を避ける必要があります。
 
-The polyfill can be disabled using `{ polyfill: false }`.
+ポリフィルは`{ polyfill: false }`を使用して無効にすることができます。
 
-The list of chunks to preload for each dynamic import is computed by Vite. By default, an absolute path including the `base` will be used when loading these dependencies. If the `base` is relative (`''` or `'./'`), `import.meta.url` is used at runtime to avoid absolute paths that depend on the final deployed base.
+各動的インポートのプリロードへのチャンクのリストは、Viteによって計算されます。デフォルトでは、これらの依存関係をロードするときに`base`を含む絶対パスが使用されます。 `base`が相対（ `''`または`'./'` ）の場合、実行時に`import.meta.url`使用され、最終展開されたベースに依存する絶対パスを回避します。
 
-There is experimental support for fine grained control over the dependencies list and their paths using the `resolveDependencies` function. [Give Feedback](https://github.com/vitejs/vite/discussions/13841). It expects a function of type `ResolveModulePreloadDependenciesFn`:
+`resolveDependencies`関数を使用して、依存関係リストとそれらのパスに対する細かい粒子制御を実験的にサポートしています。[フィードバックを与えます](https://github.com/vitejs/vite/discussions/13841)。タイプ`ResolveModulePreloadDependenciesFn`の関数を期待しています:
 
 ```ts
 type ResolveModulePreloadDependenciesFn = (
@@ -46,130 +46,130 @@ type ResolveModulePreloadDependenciesFn = (
 ) => string[]
 ```
 
-The `resolveDependencies` function will be called for each dynamic import with a list of the chunks it depends on, and it will also be called for each chunk imported in entry HTML files. A new dependencies array can be returned with these filtered or more dependencies injected, and their paths modified. The `deps` paths are relative to the `build.outDir`. The return value should be a relative path to the `build.outDir`.
+`resolveDependencies`関数は、それが依存するチャンクのリストを使用して各動的インポートに対して呼び出され、エントリHTMLファイルにインポートされた各チャンクに対しても呼び出されます。これらのフィルタリングされた依存関係またはより多くの依存関係を挿入し、それらのパスを変更して、新しい依存関係配列を返すことができます。 `deps`パスは`build.outDir`に関連しています。返品値は`build.outDir`への相対的なパスである必要があります。
 
 ```js twoslash
-/** @type {import('vite').UserConfig} */
+/** @type {import（ 'vite'）。userconfig} */
 const config = {
-  // prettier-ignore
+  // きれいなイグノア
   build: {
-// ---cut-before---
-modulePreload: {
-  resolveDependencies: (filename, deps, { hostId, hostType }) => {
-    return deps.filter(condition)
-  },
-},
-// ---cut-after---
+    // ---カット前---
+    modulePreload: {
+      resolveDependencies: (filename, deps, { hostId, hostType }) => {
+        return deps.filter(condition)
+      },
+    },
+    // ---カット後---
   },
 }
 ```
 
-The resolved dependency paths can be further modified using [`experimental.renderBuiltUrl`](../guide/build.md#advanced-base-options).
+分解された依存関係パスは、 [`experimental.renderBuiltUrl`](../guide/build.md#advanced-base-options)を使用してさらに変更できます。
 
 ## build.polyfillModulePreload
 
-- **Type:** `boolean`
-- **Default:** `true`
-- **Deprecated** use `build.modulePreload.polyfill` instead
+- **タイプ:** `boolean`
+- **デフォルト:** `true`
+- 代わりに非**推奨**使用`build.modulePreload.polyfill`
 
-Whether to automatically inject a [module preload polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill).
+[モジュールのプリロードポリフィル](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill)を自動的に挿入するかどうか。
 
 ## build.outDir
 
-- **Type:** `string`
-- **Default:** `dist`
+- **タイプ:** `string`
+- **デフォルト:** `dist`
 
-Specify the output directory (relative to [project root](/ja/guide/#index-html-and-project-root)).
+出力ディレクトリを指定します（[プロジェクトルート](/ja/guide/#index-html-and-project-root)に関連して）。
 
 ## build.assetsDir
 
-- **Type:** `string`
-- **Default:** `assets`
+- **タイプ:** `string`
+- **デフォルト:** `assets`
 
-Specify the directory to nest generated assets under (relative to `build.outDir`. This is not used in [Library Mode](/ja/guide/build#library-mode)).
+下のネスト生成資産にディレクトリを指定します（ `build.outDir`に比べて。これは[ライブラリモード](/ja/guide/build#library-mode)では使用されません）。
 
 ## build.assetsInlineLimit
 
-- **Type:** `number` | `((filePath: string, content: Buffer) => boolean | undefined)`
-- **Default:** `4096` (4 KiB)
+- **タイプ:** `number` | `（（filepath:string、content:buffer）=> boolean | 未定義） `
+- **デフォルト:** `4096` （4キブ）
 
-Imported or referenced assets that are smaller than this threshold will be inlined as base64 URLs to avoid extra http requests. Set to `0` to disable inlining altogether.
+このしきい値よりも小さいインポートまたは参照された資産は、追加のHTTP要求を避けるためにBase64 URLとしてインラードされます。 `0`に設定して、インラインを完全に無効にします。
 
-If a callback is passed, a boolean can be returned to opt-in or opt-out. If nothing is returned the default logic applies.
+コールバックが渡された場合、ブール値を返してオプトインまたはオプトアウトします。何も返されない場合、デフォルトのロジックが適用されます。
 
-Git LFS placeholders are automatically excluded from inlining because they do not contain the content of the file they represent.
+GIT LFSプレースホルダーは、表すファイルのコンテンツが含まれていないため、インラインから自動的に除外されます。
 
 ::: tip Note
-If you specify `build.lib`, `build.assetsInlineLimit` will be ignored and assets will always be inlined, regardless of file size or being a Git LFS placeholder.
+`build.lib`指定した場合、 `build.assetsInlineLimit`無視され、ファイルサイズやGit LFSプレースホルダーであることに関係なく、常に資産がインラキングされます。
 :::
 
 ## build.cssCodeSplit
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **タイプ:** `boolean`
+- **デフォルト:** `true`
 
-Enable/disable CSS code splitting. When enabled, CSS imported in async JS chunks will be preserved as chunks and fetched together when the chunk is fetched.
+CSSコードの分割を有効/無効にします。有効にすると、Async JSチャンクにインポートされたCSSは、チャンクとして保存され、チャンクがフェッチされると一緒にフェッチします。
 
-If disabled, all CSS in the entire project will be extracted into a single CSS file.
+無効になっている場合、プロジェクト全体のすべてのCSSが単一のCSSファイルに抽出されます。
 
 ::: tip Note
-If you specify `build.lib`, `build.cssCodeSplit` will be `false` as default.
+`build.lib`指定した場合、 `build.cssCodeSplit`デフォルトとして`false`になります。
 :::
 
 ## build.cssTarget
 
-- **Type:** `string | string[]`
-- **Default:** the same as [`build.target`](#build-target)
+- **タイプ:** `文字列 | 文字列[] `
+- **デフォルト:** [`build.target`](#build-target)と同じ
 
-This option allows users to set a different browser target for CSS minification from the one used for JavaScript transpilation.
+このオプションを使用すると、ユーザーはJavaScriptトランスピレーションに使用されているものからCSSの模倣の別のブラウザターゲットを設定できます。
 
-It should only be used when you are targeting a non-mainstream browser.
-One example is Android WeChat WebView, which supports most modern JavaScript features but not the [`#RGBA` hexadecimal color notation in CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb_colors).
-In this case, you need to set `build.cssTarget` to `chrome61` to prevent vite from transform `rgba()` colors into `#RGBA` hexadecimal notations.
+非メインストリームブラウザをターゲットにしている場合にのみ使用する必要があります。
+1つの例は、Android Wechat WebViewです。これは、ほとんどの最新のJavaScript機能をサポートしていますが、 [CSSの`#RGBA`ヘクサデシマルカラー表記を](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb_colors)サポートしていません。
+この場合、Viteが`rgba()`色を`#RGBA`進表に変換するのを防ぐために、 `build.cssTarget` `chrome61`設定する必要があります。
 
 ## build.cssMinify
 
-- **Type:** `boolean | 'esbuild' | 'lightningcss'`
-- **Default:** the same as [`build.minify`](#build-minify) for client, `'esbuild'` for SSR
+- **タイプ:** `Boolean | 「esbuild」 | 「lightningcss」
+- **デフォルト:**クライアントの[`build.minify`](#build-minify)と同じ、SSRの場合は`'esbuild'`
 
-This option allows users to override CSS minification specifically instead of defaulting to `build.minify`, so you can configure minification for JS and CSS separately. Vite uses `esbuild` by default to minify CSS. Set the option to `'lightningcss'` to use [Lightning CSS](https://lightningcss.dev/minification.html) instead. If selected, it can be configured using [`css.lightningcss`](./shared-options.md#css-lightningcss).
+このオプションを使用すると、ユーザーは`build.minify`ではなくCSSの模倣をオーバーライドすることができるため、JSとCSSの模倣を個別に構成できます。 Viteはデフォルトで`esbuild`使用してCSSを削除します。代わりに[稲妻CSS](https://lightningcss.dev/minification.html)を使用するには、オプションを`'lightningcss'`に設定します。選択した場合、 [`css.lightningcss`](./shared-options.md#css-lightningcss)使用して構成できます。
 
 ## build.sourcemap
 
-- **Type:** `boolean | 'inline' | 'hidden'`
-- **Default:** `false`
+- **タイプ:** `Boolean | '列をなして' | 「隠されています」
+- **デフォルト:** `false`
 
-Generate production source maps. If `true`, a separate sourcemap file will be created. If `'inline'`, the sourcemap will be appended to the resulting output file as a data URI. `'hidden'` works like `true` except that the corresponding sourcemap comments in the bundled files are suppressed.
+生産ソースマップを生成します。 `true`の場合、個別のSourceMapファイルが作成されます。 `'inline'`場合、sourcemapは結果の出力ファイルにデータURIとして追加されます。バンドルされたファイルの対応するSourceMapコメントが抑制されていることを除いて、 `true`ように`'hidden'`動作があります。
 
 ## build.rollupOptions
 
-- **Type:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
+- **タイプ:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
 
-Directly customize the underlying Rollup bundle. This is the same as options that can be exported from a Rollup config file and will be merged with Vite's internal Rollup options. See [Rollup options docs](https://rollupjs.org/configuration-options/) for more details.
+基礎となるロールアップバンドルを直接カスタマイズします。これは、ロールアップ構成ファイルからエクスポートできるオプションと同じで、Viteの内部ロールアップオプションと融合します。詳細については、[ロールアップオプションドキュメント](https://rollupjs.org/configuration-options/)を参照してください。
 
 ## build.commonjsOptions
 
-- **Type:** [`RollupCommonJSOptions`](https://github.com/rollup/plugins/tree/master/packages/commonjs#options)
+- **タイプ:** [`RollupCommonJSOptions`](https://github.com/rollup/plugins/tree/master/packages/commonjs#options)
 
-Options to pass on to [@rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs).
+[@rollup/Plugin-Commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs)に渡すオプション。
 
 ## build.dynamicImportVarsOptions
 
-- **Type:** [`RollupDynamicImportVarsOptions`](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#options)
-- **Related:** [Dynamic Import](/ja/guide/features#dynamic-import)
+- **タイプ:** [`RollupDynamicImportVarsOptions`](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#options)
+- **関連:**[動的インポート](/ja/guide/features#dynamic-import)
 
-Options to pass on to [@rollup/plugin-dynamic-import-vars](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars).
+[@rollup/plugin-dynamic-import-vars](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars)に渡すオプション。
 
 ## build.lib
 
-- **Type:** `{ entry: string | string[] | { [entryAlias: string]: string }, name?: string, formats?: ('es' | 'cjs' | 'umd' | 'iife')[], fileName?: string | ((format: ModuleFormat, entryName: string) => string), cssFileName?: string }`
-- **Related:** [Library Mode](/ja/guide/build#library-mode)
+- **タイプ:** `{entry:string | 弦[] | {[entrealias:string]:string}、name？:string、formats？:（ 'es' | 「CJS」 | 「umd」 | 'iife'）[]、filename？:文字列 | （（フォーマット:moduleformat、entryName:string）=> string）、cssfileName？:string} `
+- **関連:**[ライブラリモード](/ja/guide/build#library-mode)
 
-Build as a library. `entry` is required since the library cannot use HTML as entry. `name` is the exposed global variable and is required when `formats` includes `'umd'` or `'iife'`. Default `formats` are `['es', 'umd']`, or `['es', 'cjs']`, if multiple entries are used.
+ライブラリとして構築します。ライブラリはEntryとしてHTMLを使用できないため、 `entry`必要です。 `name`露出したグローバル変数であり、 `formats` `'umd'`または`'iife'`含む場合に必要です。複数のエントリが使用される場合、デフォルト`formats` `['es', 'umd']`または`['es', 'cjs']`です。
 
-`fileName` is the name of the package file output, which defaults to the `"name"` in `package.json`. It can also be defined as a function taking the `format` and `entryName` as arguments, and returning the file name.
+`fileName`はパッケージファイル出力の名前で、デフォルトは`package.json`分の`"name"`になります。また、 `format`と`entryName`引数として取得し、ファイル名を返す関数として定義することもできます。
 
-If your package imports CSS, `cssFileName` can be used to specify the name of the CSS file output. It defaults to the same value as `fileName` if it's set a string, otherwise it also falls back to the `"name"` in `package.json`.
+パッケージがCSSをインポートする場合、 `cssFileName`使用してCSSファイル出力の名前を指定できます。文字列を設定している場合、デフォルトは`fileName`と同じ値になります。そうしないと、 `package.json`分の`"name"`にも戻ります。
 
 ```js twoslash [vite.config.js]
 import { defineConfig } from 'vite'
@@ -187,56 +187,56 @@ export default defineConfig({
 
 ## build.manifest
 
-- **Type:** `boolean | string`
-- **Default:** `false`
-- **Related:** [Backend Integration](/ja/guide/backend-integration)
+- **タイプ:** `Boolean | string`
+- **デフォルト:** `false`
+- **関連:**[バックエンド統合](/ja/guide/backend-integration)
 
-Whether to generate a manifest file that contains a mapping of non-hashed asset filenames to their hashed versions, which can then be used by a server framework to render the correct asset links.
+ハッシュされたバージョンへの非ハッシュされたアセットファイル名のマッピングを含むマニフェストファイルを生成するかどうか。これをサーバーフレームワークで使用して、正しいアセットリンクをレンダリングすることができます。
 
-When the value is a string, it will be used as the manifest file path relative to `build.outDir`. When set to `true`, the path would be `.vite/manifest.json`.
+値が文字列の場合、 `build.outDir`に対するマニフェストファイルパスとして使用されます。 `true`に設定すると、パスは`.vite/manifest.json`なります。
 
 ## build.ssrManifest
 
-- **Type:** `boolean | string`
-- **Default:** `false`
-- **Related:** [Server-Side Rendering](/ja/guide/ssr)
+- **タイプ:** `Boolean | string`
+- **デフォルト:** `false`
+- **関連:**[サーバー側のレンダリング](/ja/guide/ssr)
 
-Whether to generate a SSR manifest file for determining style links and asset preload directives in production.
+スタイルリンクを決定するためのSSRマニフェストファイルを生成するかどうか、および生産におけるアセットプリロードディレクティブを決定します。
 
-When the value is a string, it will be used as the manifest file path relative to `build.outDir`. When set to `true`, the path would be `.vite/ssr-manifest.json`.
+値が文字列の場合、 `build.outDir`に対するマニフェストファイルパスとして使用されます。 `true`に設定すると、パスは`.vite/ssr-manifest.json`なります。
 
 ## build.ssr
 
-- **Type:** `boolean | string`
-- **Default:** `false`
-- **Related:** [Server-Side Rendering](/ja/guide/ssr)
+- **タイプ:** `Boolean | string`
+- **デフォルト:** `false`
+- **関連:**[サーバー側のレンダリング](/ja/guide/ssr)
 
-Produce SSR-oriented build. The value can be a string to directly specify the SSR entry, or `true`, which requires specifying the SSR entry via `rollupOptions.input`.
+SSR指向のビルドを生成します。値は、SSRエントリを直接指定する文字列`true`ある可能性があります`rollupOptions.input`
 
 ## build.emitAssets
 
-- **Type:** `boolean`
-- **Default:** `false`
+- **タイプ:** `boolean`
+- **デフォルト:** `false`
 
-During non-client builds, static assets aren't emitted as it is assumed they would be emitted as part of the client build. This option allows frameworks to force emitting them in other environments build. It is responsibility of the framework to merge the assets with a post build step.
+非クライアントビルド中、クライアントビルドの一部として放出されると想定されるため、静的資産は放出されません。このオプションにより、フレームワークは他の環境ビルドでそれらを強制的に放出できます。資産をポストビルドステップと統合することは、フレームワークの責任です。
 
 ## build.ssrEmitAssets
 
-- **Type:** `boolean`
-- **Default:** `false`
+- **タイプ:** `boolean`
+- **デフォルト:** `false`
 
-During the SSR build, static assets aren't emitted as it is assumed they would be emitted as part of the client build. This option allows frameworks to force emitting them in both the client and SSR build. It is responsibility of the framework to merge the assets with a post build step. This option will be replaced by `build.emitAssets` once Environment API is stable.
+SSRビルド中、クライアントビルドの一部として放出されると想定されるため、静的資産は放出されません。このオプションにより、フレームワークはクライアントとSSRビルドの両方でそれらを強制的に放出できます。資産をポストビルドステップと統合することは、フレームワークの責任です。このオプションは、環境APIが安定すると`build.emitAssets`に置き換えられます。
 
 ## build.minify
 
-- **Type:** `boolean | 'terser' | 'esbuild'`
-- **Default:** `'esbuild'` for client build, `false` for SSR build
+- **タイプ:** `Boolean | 「テルサー」 | 「esbuild」
+- **デフォルト:**クライアントビルドの場合は`'esbuild'` 、SSRビルドの`false`
 
-Set to `false` to disable minification, or specify the minifier to use. The default is [esbuild](https://github.com/evanw/esbuild) which is 20 ~ 40x faster than terser and only 1 ~ 2% worse compression. [Benchmarks](https://github.com/privatenumber/minification-benchmarks)
+`false`に設定して、削除を無効にするか、使用するミニファイアを指定します。デフォルトは、Terserより20〜40倍高速で、圧縮が1〜2％しか速い[esbuild](https://github.com/evanw/esbuild)です。[ベンチマーク](https://github.com/privatenumber/minification-benchmarks)
 
-Note the `build.minify` option does not minify whitespaces when using the `'es'` format in lib mode, as it removes pure annotations and breaks tree-shaking.
+`build.minify`オプションは、純粋な注釈を削除してツリーシェーキングを破壊するため、LIBモードで`'es'`形式を使用するときに、Whitespacesを縮小しないことに注意してください。
 
-Terser must be installed when it is set to `'terser'`.
+`'terser'`に設定されている場合は、Terserをインストールする必要があります。
 
 ```sh
 npm add -D terser
@@ -244,57 +244,57 @@ npm add -D terser
 
 ## build.terserOptions
 
-- **Type:** `TerserOptions`
+- **タイプ:** `TerserOptions`
 
-Additional [minify options](https://terser.org/docs/api-reference#minify-options) to pass on to Terser.
+Terserに渡すための追加の[マイニフィスオプション](https://terser.org/docs/api-reference#minify-options)。
 
-In addition, you can also pass a `maxWorkers: number` option to specify the max number of workers to spawn. Defaults to the number of CPUs minus 1.
+さらに、 `maxWorkers: number`オプションを渡して、最大数の労働者を指定してスポーンすることもできます。デフォルトはCPUマイナス1の数です。
 
 ## build.write
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **タイプ:** `boolean`
+- **デフォルト:** `true`
 
-Set to `false` to disable writing the bundle to disk. This is mostly used in [programmatic `build()` calls](/ja/guide/api-javascript#build) where further post processing of the bundle is needed before writing to disk.
+`false`に設定して、バンドルをディスクに書き込むことを無効にします。これは主に[プログラマティック`build()`コール](/ja/guide/api-javascript#build)で使用され、ディスクに書き込む前にバンドルのさらなる後処理が必要です。
 
 ## build.emptyOutDir
 
-- **Type:** `boolean`
-- **Default:** `true` if `outDir` is inside `root`
+- **タイプ:** `boolean`
+- **デフォルト:** `outDir`が`root`の場合は`true`
 
-By default, Vite will empty the `outDir` on build if it is inside project root. It will emit a warning if `outDir` is outside of root to avoid accidentally removing important files. You can explicitly set this option to suppress the warning. This is also available via command line as `--emptyOutDir`.
+デフォルトでは、Viteがプロジェクトルート内にある場合、ビルドで`outDir`を空にします。重要なファイルが誤って削除されないように、 `outDir`ルートの外側にある場合、警告が発生します。このオプションを明示的に設定して、警告を抑制できます。これは、コマンドラインから`--emptyOutDir`としても利用できます。
 
 ## build.copyPublicDir
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **タイプ:** `boolean`
+- **デフォルト:** `true`
 
-By default, Vite will copy files from the `publicDir` into the `outDir` on build. Set to `false` to disable this.
+デフォルトでは、Viteはビルドの`publicDir`から`outDir`にファイルをコピーします。これを無効にするために`false`に設定します。
 
 ## build.reportCompressedSize
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **タイプ:** `boolean`
+- **デフォルト:** `true`
 
-Enable/disable gzip-compressed size reporting. Compressing large output files can be slow, so disabling this may increase build performance for large projects.
+GZIP圧縮サイズのレポートを有効/無効にします。大規模な出力ファイルを圧縮すると遅くなる可能性があるため、これを無効にすると、大規模なプロジェクトのビルドパフォーマンスが向上する可能性があります。
 
 ## build.chunkSizeWarningLimit
 
-- **Type:** `number`
-- **Default:** `500`
+- **タイプ:** `number`
+- **デフォルト:** `500`
 
-Limit for chunk size warnings (in kB). It is compared against the uncompressed chunk size as the [JavaScript size itself is related to the execution time](https://v8.dev/blog/cost-of-javascript-2019).
+チャンクサイズの警告の制限（KB）。 [JavaScriptサイズ自体が実行時間に関連している](https://v8.dev/blog/cost-of-javascript-2019)ため、非圧縮チャンクサイズと比較されます。
 
 ## build.watch
 
-- **Type:** [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch)`| null`
-- **Default:** `null`
+- **タイプ:** [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch) `| null`
+- **デフォルト:** `null`
 
-Set to `{}` to enable rollup watcher. This is mostly used in cases that involve build-only plugins or integrations processes.
+ロールアップウォッチャーを有効にするには、 `{}`に設定します。これは、主にビルドのみのプラグインまたは統合プロセスを含む場合に使用されます。
 
 ::: warning Using Vite on Windows Subsystem for Linux (WSL) 2
 
-There are cases that file system watching does not work with WSL2.
-See [`server.watch`](./server-options.md#server-watch) for more details.
+ファイルシステムがWSL2で動作しない場合があります。
+詳細については、 [`server.watch`](./server-options.md#server-watch)参照してください。
 
 :::

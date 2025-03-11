@@ -1,10 +1,10 @@
-# Using Plugins
+# プラグインを使用します
 
-Vite can be extended using plugins, which are based on Rollup's well-designed plugin interface with a few extra Vite-specific options. This means that Vite users can rely on the mature ecosystem of Rollup plugins, while also being able to extend the dev server and SSR functionality as needed.
+Viteは、Rollupの適切に設計されたプラグインインターフェイスに基づいたプラグインを使用して拡張できます。これは、Viteユーザーがロールアッププラグインの成熟したエコシステムに頼ることができ、必要に応じてDEVサーバーとSSR機能を拡張することもできることを意味します。
 
-## Adding a Plugin
+## プラグインを追加します
 
-To use a plugin, it needs to be added to the `devDependencies` of the project and included in the `plugins` array in the `vite.config.js` config file. For example, to provide support for legacy browsers, the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) can be used:
+プラグインを使用するには、プロジェクトの`devDependencies`に追加し、 `vite.config.js`構成ファイルの`plugins`配列に含まれる必要があります。たとえば、レガシーブラウザのサポートを提供するために、 [@vitejs/プラグインレガシー](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)を使用できます。
 
 ```
 $ npm add -D @vitejs/plugin-legacy
@@ -23,27 +23,27 @@ export default defineConfig({
 })
 ```
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins` 、単一の要素としていくつかのプラグインを含むプリセットも受け入れます。これは、複数のプラグインを使用して実装されている複雑な機能（フレームワーク統合など）に役立ちます。配列は内部的に平らになります。
 
-Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
+Falsyプラグインは無視され、プラグインを簡単にアクティブ化または非アクティブ化するために使用できます。
 
-## Finding Plugins
+## プラグインを見つける
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+Viteは、一般的なWeb開発パターンにすぐに使用できるサポートを提供することを目指しています。 Viteまたは互換性のあるロールアッププラグインを検索する前に、[機能ガイド](../guide/features.md)をご覧ください。ロールアッププロジェクトでプラグインが必要になるケースの多くは、すでにViteでカバーされています。
 :::
 
-Check out the [Plugins section](../plugins/) for information about official plugins. Community plugins are listed in [awesome-vite](https://github.com/vitejs/awesome-vite#plugins).
+公式プラグインの詳細については、[プラグインセクション](../plugins/)をご覧ください。コミュニティプラグインは[Awesome-Vite](https://github.com/vitejs/awesome-vite#plugins)にリストされています。
 
-You can also find plugins that follow the [recommended conventions](./api-plugin.md#conventions) using a [npm search for vite-plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) for Vite plugins or a [npm search for rollup-plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) for Rollup plugins.
+また、Viteプラグイン用の[Vite-PluginのNPM検索](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity)、またはRollUpプラグインの[Rollup-PluginのNPM検索](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity)を使用して、[推奨コンベンション](./api-plugin.md#conventions)に従うプラグインを見つけることもできます。
 
-## Enforcing Plugin Ordering
+## プラグインの注文を施行します
 
-For compatibility with some Rollup plugins, it may be needed to enforce the order of the plugin or only apply at build time. This should be an implementation detail for Vite plugins. You can enforce the position of a plugin with the `enforce` modifier:
+一部のロールアッププラグインとの互換性のために、プラグインの順序を実施するか、ビルド時にのみ適用する必要がある場合があります。これは、Viteプラグインの実装の詳細である必要があります。 `enforce`モディファイアを使用してプラグインの位置を実施できます。
 
-- `pre`: invoke plugin before Vite core plugins
-- default: invoke plugin after Vite core plugins
-- `post`: invoke plugin after Vite build plugins
+- `pre` :Vite Coreプラグインの前にプラグインを呼び出します
+- デフォルト:Vite Coreプラグインの後にプラグインを呼び出します
+- `post` :Viteビルドプラグインの後にプラグインを呼び出します
 
 ```js twoslash [vite.config.js]
 import image from '@rollup/plugin-image'
@@ -59,11 +59,11 @@ export default defineConfig({
 })
 ```
 
-Check out [Plugins API Guide](./api-plugin.md#plugin-ordering) for detailed information.
+詳細については、[プラグインAPIガイド](./api-plugin.md#plugin-ordering)をご覧ください。
 
-## Conditional Application
+## 条件付きアプリケーション
 
-By default, plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+デフォルトでは、プラグインはサーブとビルドの両方に呼び出されます。プラグインをサーブまたはビルド中にのみ条件付きで適用する必要がある場合、 `apply`プロパティを使用して、 `'build'`または`'serve'`間にのみ呼び出します。
 
 ```js twoslash [vite.config.js]
 import typescript2 from 'rollup-plugin-typescript2'
@@ -79,6 +79,6 @@ export default defineConfig({
 })
 ```
 
-## Building Plugins
+## 建物のプラグイン
 
-Check out the [Plugins API Guide](./api-plugin.md) for documentation about creating plugins.
+プラグインの作成に関するドキュメントについては、[プラグインAPIガイド](./api-plugin.md)をご覧ください。

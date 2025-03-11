@@ -1,19 +1,19 @@
-# Environment API for Frameworks
+# API de entorno para marcos
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+El medio ambiente API es experimental. Mantendremos las API estables durante Vite 6 para dejar que el ecosistema experimente y construir sobre ella. Estamos planeando estabilizar estas nuevas API con posibles cambios de ruptura en Vite 7.
 
-Resources:
+Recursos:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+- [Discusión de comentarios](https://github.com/vitejs/vite/discussions/16358) Cuando estamos recopilando comentarios sobre las nuevas API.
+- [API ambiental PR](https://github.com/vitejs/vite/pull/16471) donde se implementó y revisó la nueva API.
 
-Please share your feedback with us.
+Comparta sus comentarios con nosotros.
 :::
 
-## Environments and frameworks
+## Entornos y marcos
 
-The implicit `ssr` environment and other non-client environments use a `RunnableDevEnvironment` by default during dev. While this requires the runtime to be the same with the one the Vite server is running in, this works similarly with `ssrLoadModule` and allows frameworks to migrate and enable HMR for their SSR dev story. You can guard any runnable environment with an `isRunnableDevEnvironment` function.
+El entorno `ssr` implícito y otros entornos que no son de client usan un `RunnableDevEnvironment` por defecto durante el desarrollo. Si bien esto requiere que el tiempo de ejecución sea el mismo con el que se está ejecutando el servidor VITE, esto funciona de manera similar con `ssrLoadModule` y permite que los marcos migren y habiliten HMR para su historia de desarrollo SSR. Puede proteger cualquier entorno ejecutable con una función `isRunnableDevEnvironment` .
 
 ```ts
 export class RunnableDevEnvironment extends DevEnvironment {
@@ -22,13 +22,13 @@ export class RunnableDevEnvironment extends DevEnvironment {
 
 class ModuleRunner {
   /**
-   * URL to execute.
-   * Accepts file path, server path, or id relative to the root.
-   * Returns an instantiated module (same as in ssrLoadModule)
+   * URL para ejecutar.
+   * Acepta la ruta del archivo, la ruta del servidor o la ID en relación con la raíz.
+   * Devuelve un módulo instanciado (igual que en SSRLoadModule)
    */
   public async import(url: string): Promise<Record<string, any>>
   /**
-   * Other ModuleRunner methods...
+   * Otros métodos de Modulerunner ...
    */
 }
 
@@ -38,12 +38,12 @@ if (isRunnableDevEnvironment(server.environments.ssr)) {
 ```
 
 :::warning
-The `runner` is evaluated eagerly when it's accessed for the first time. Beware that Vite enables source map support when the `runner` is created by calling `process.setSourceMapsEnabled` or by overriding `Error.prepareStackTrace` if it's not available.
+El `runner` se evalúa ansiosamente cuando se accede por primera vez. Tenga cuidado de que VITE habilita el soporte del mapa de origen cuando el `runner` se crea llamando `process.setSourceMapsEnabled` o anulando `Error.prepareStackTrace` si no está disponible.
 :::
 
-## Default `RunnableDevEnvironment`
+## Predeterminado `RunnableDevEnvironment`
 
-Given a Vite server configured in middleware mode as described by the [SSR setup guide](/es/guide/ssr#setting-up-the-dev-server), let's implement the SSR middleware using the environment API. Error handling is omitted.
+Dado un servidor VITE configurado en el modo de middleware, según lo descrito por la [Guía de configuración de SSR](/es/guide/ssr#setting-up-the-dev-server) , implementemos el middleware SSR utilizando la API de entorno. Se omite el manejo de errores.
 
 ```js
 import fs from 'node:fs'
@@ -58,61 +58,61 @@ const server = await createServer({
   appType: 'custom',
   environments: {
     server: {
-      // by default, modules are run in the same process as the vite server
+      // Por defecto, los módulos se ejecutan en el mismo proceso que el servidor VITE
     },
   },
 })
 
-// You might need to cast this to RunnableDevEnvironment in TypeScript or
-// use isRunnableDevEnvironment to guard the access to the runner
+// Es posible que deba lanzar esto para runnabledevenvironment en typeScript o
+// Use isrunnabledevenvironment para proteger el acceso al corredor
 const environment = server.environments.node
 
 app.use('*', async (req, res, next) => {
   const url = req.originalUrl
 
-  // 1. Read index.html
+  // 1. Leer index.html
   const indexHtmlPath = path.resolve(__dirname, 'index.html')
   let template = fs.readFileSync(indexHtmlPath, 'utf-8')
 
-  // 2. Apply Vite HTML transforms. This injects the Vite HMR client,
-  //    and also applies HTML transforms from Vite plugins, e.g. global
-  //    preambles from @vitejs/plugin-react
+  // 2. Aplique transformaciones VITE HTML. Esto inyecta el cliente VITE HMR,
+  //    y también aplica las transformaciones HTML de los complementos VITE, p. global
+  //    Preamplicles de @vitejs/plugin-react
   template = await server.transformIndexHtml(url, template)
 
-  // 3. Load the server entry. import(url) automatically transforms
-  //    ESM source code to be usable in Node.js! There is no bundling
-  //    required, and provides full HMR support.
+  // 3. Cargue la entrada del servidor. import (url) transforma automáticamente
+  //    El código fuente de ESM se puede utilizar en Node.js! No hay agrupación
+  //    requerido y proporciona soporte completo de HMR.
   const { render } = await environment.runner.import('/src/entry-server.js')
 
-  // 4. render the app HTML. This assumes entry-server.js's exported
-  //     `render` function calls appropriate framework SSR APIs,
-  //    e.g. ReactDOMServer.renderToString()
+  // 4. Renderiza la aplicación html. Esto supone que la entrada-server.js exportó
+  //     `render` la función llama a las API de SSR de marco apropiado,
+  //    p.ej. Reactomserver.renderToString ()
   const appHtml = await render(url)
 
-  // 5. Inject the app-rendered HTML into the template.
+  // 5. Inyecte el HTML renderizado con aplicaciones en la plantilla.
   const html = template.replace(`<!--ssr-outlet-->`, appHtml)
 
-  // 6. Send the rendered HTML back.
+  // 6. Envíe el HTML renderizado.
   res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
 })
 ```
 
-## Runtime Agnostic SSR
+## SSR agnóstico de tiempo de ejecución
 
-Since the `RunnableDevEnvironment` can only be used to run the code in the same runtime as the Vite server, it requires a runtime that can run the Vite Server (a runtime that is compatible with Node.js). This means that you will need to use the raw `DevEnvironment` to make it runtime agnostic.
+Dado que el `RunnableDevEnvironment` solo se puede usar para ejecutar el código en el mismo tiempo de ejecución que el servidor VITE, requiere un tiempo de ejecución que puede ejecutar el servidor VITE (un tiempo de ejecución que es compatible con Node.js). Esto significa que necesitará usar el RAW `DevEnvironment` para que sea agnóstico de tiempo de ejecución.
 
 :::info `FetchableDevEnvironment` proposal
 
-The initial proposal had a `run` method on the `DevEnvironment` class that would allow consumers to invoke an import on the runner side by using the `transport` option. During our testing we found out that the API was not universal enough to start recommending it. At the moment, we are looking for feedback on [the `FetchableDevEnvironment` proposal](https://github.com/vitejs/vite/discussions/18191).
+La propuesta inicial tenía un método `run` en la clase `DevEnvironment` que permitiría a los consumidores invocar una importación en el lado del corredor utilizando la opción `transport` . Durante nuestras pruebas descubrimos que la API no era lo suficientemente universal como para comenzar a recomendarlo. Por el momento, estamos buscando comentarios sobre [la propuesta `FetchableDevEnvironment`](https://github.com/vitejs/vite/discussions/18191) .
 
 :::
 
-`RunnableDevEnvironment` has a `runner.import` function that returns the value of the module. But this function is not available in the raw `DevEnvironment` and requires the code using the Vite's APIs and the user modules to be decoupled.
+`RunnableDevEnvironment` tiene una función `runner.import` que devuelve el valor del módulo. Pero esta función no está disponible en el RAW `DevEnvironment` y requiere el código que utiliza las API de Vite y los módulos de usuario para desacoplar.
 
-For example, the following example uses the value of the user module from the code using the Vite's APIs:
+Por ejemplo, el siguiente ejemplo utiliza el valor del módulo de usuario del código utilizando las API de Vite:
 
 ```ts
-// code using the Vite's APIs
+// código usando las API de Vite
 import { createServer } from 'vite'
 
 const server = createServer()
@@ -132,26 +132,26 @@ export function createHandler(input) {
 }
 ```
 
-If your code can run in the same runtime as the user modules (i.e., it does not rely on Node.js-specific APIs), you can use a virtual module. This approach eliminates the need to access the value from the code using Vite's APIs.
+Si su código puede ejecutarse en el mismo tiempo de ejecución que los módulos de usuario (es decir, no se basa en las API específicas de Node.js), puede usar un módulo virtual. Este enfoque elimina la necesidad de acceder al valor del código utilizando las API de Vite.
 
 ```ts
-// code using the Vite's APIs
+// código usando las API de Vite
 import { createServer } from 'vite'
 
 const server = createServer({
   plugins: [
-    // a plugin that handles `virtual:entrypoint`
+    // un complemento que maneja `virtual:entrypoint`
     {
       name: 'virtual-module',
-      /* plugin implementation */
+      /* implementación de complementos */
     },
   ],
 })
 const ssrEnvironment = server.environment.ssr
 const input = {}
 
-// use exposed functions by each environment factories that runs the code
-// check for each environment factories what they provide
+// Utilice funciones expuestas por cada entorno fábricas que ejecute el código
+// Compruebe para cada entorno fábrica lo que proporcionan
 if (ssrEnvironment instanceof RunnableDevEnvironment) {
   ssrEnvironment.runner.import('virtual:entrypoint')
 } else if (ssrEnvironment instanceof CustomDevEnvironment) {
@@ -161,7 +161,7 @@ if (ssrEnvironment instanceof RunnableDevEnvironment) {
 }
 
 // -------------------------------------
-// virtual:entrypoint
+// Virtual: EntryPoint
 const { createHandler } = await import('./entrypoint.js')
 const handler = createHandler(input)
 const response = handler(new Request('/'))
@@ -175,7 +175,7 @@ export function createHandler(input) {
 }
 ```
 
-For example, to call `transformIndexHtml` on the user module, the following plugin can be used:
+Por ejemplo, para llamar `transformIndexHtml` en el módulo de usuario, se puede usar el siguiente complemento:
 
 ```ts {13-21}
 function vitePluginVirtualIndexHtml(): Plugin {
@@ -206,26 +206,26 @@ function vitePluginVirtualIndexHtml(): Plugin {
 }
 ```
 
-If your code requires Node.js APIs, you can use `hot.send` to communicate with the code that uses Vite's APIs from the user modules. However, be aware that this approach may not work the same way after the build process.
+Si su código requiere Node.js API, puede usar `hot.send` para comunicarse con el código que utiliza las API de Vite de los módulos de usuario. Sin embargo, tenga en cuenta que este enfoque puede no funcionar de la misma manera después del proceso de compilación.
 
 ```ts
-// code using the Vite's APIs
+// código usando las API de Vite
 import { createServer } from 'vite'
 
 const server = createServer({
   plugins: [
-    // a plugin that handles `virtual:entrypoint`
+    // un complemento que maneja `virtual:entrypoint`
     {
       name: 'virtual-module',
-      /* plugin implementation */
+      /* implementación de complementos */
     },
   ],
 })
 const ssrEnvironment = server.environment.ssr
 const input = {}
 
-// use exposed functions by each environment factories that runs the code
-// check for each environment factories what they provide
+// Utilice funciones expuestas por cada entorno fábricas que ejecute el código
+// Compruebe para cada entorno fábrica lo que proporcionan
 if (ssrEnvironment instanceof RunnableDevEnvironment) {
   ssrEnvironment.runner.import('virtual:entrypoint')
 } else if (ssrEnvironment instanceof CustomDevEnvironment) {
@@ -248,7 +248,7 @@ const response = await new Promise((resolve) => {
 })
 
 // -------------------------------------
-// virtual:entrypoint
+// Virtual: EntryPoint
 const { createHandler } = await import('./entrypoint.js')
 const handler = createHandler(input)
 
@@ -269,11 +269,11 @@ export function createHandler(input) {
 }
 ```
 
-## Environments During Build
+## Entornos Durante La Construcción
 
-In the CLI, calling `vite build` and `vite build --ssr` will still build the client only and ssr only environments for backward compatibility.
+En la CLI, llamar `vite build` y `vite build --ssr` seguirá construyendo solo el cliente y solo entornos de SSR para la compatibilidad hacia atrás.
 
-When `builder` is not `undefined` (or when calling `vite build --app`), `vite build` will opt-in into building the entire app instead. This would later on become the default in a future major. A `ViteBuilder` instance will be created (build-time equivalent to a `ViteDevServer`) to build all configured environments for production. By default the build of environments is run in series respecting the order of the `environments` record. A framework or user can further configure how the environments are built using:
+Cuando `builder` no es `undefined` (o cuando llame `vite build --app` ), `vite build` optará por construir toda la aplicación. Más tarde, esto se convertiría en el valor predeterminado en una futura especialidad. Se creará una instancia `ViteBuilder` (tiempo de compilación equivalente a un `ViteDevServer` ) para crear todos los entornos configurados para la producción. Por defecto, la construcción de entornos se ejecuta en serie respetando el orden del registro `environments` . Un marco o usuario puede configurar aún más cómo se crean los entornos utilizando:
 
 ```js
 export default {
@@ -288,6 +288,6 @@ export default {
 }
 ```
 
-## Environment Agnostic Code
+## Código Agnóstico Del Medio Ambiente
 
-Most of the time, the current `environment` instance will be available as part of the context of the code being run so the need to access them through `server.environments` should be rare. For example, inside plugin hooks the environment is exposed as part of the `PluginContext`, so it can be accessed using `this.environment`. See [Environment API for Plugins](./api-environment-plugins.md) to learn about how to build environment aware plugins.
+La mayoría de las veces, la instancia `environment` actual estará disponible como parte del contexto del código que se ejecuta, por lo que la necesidad de acceder a ellos a través de `server.environments` debería ser rara. Por ejemplo, los ganchos de complementos internos, el entorno está expuesto como parte de los `PluginContext` , por lo que se puede acceder a él usando `this.environment` . Consulte [la API de entorno para complementos](./api-environment-plugins.md) para aprender sobre cómo construir complementos conscientes del entorno.

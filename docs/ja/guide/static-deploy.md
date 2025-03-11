@@ -1,10 +1,10 @@
-# Deploying a Static Site
+# 静的サイトの展開
 
-The following guides are based on some shared assumptions:
+次のガイドは、いくつかの共有仮定に基づいています。
 
-- You are using the default build output location (`dist`). This location [can be changed using `build.outDir`](/ja/config/build-options.md#build-outdir), and you can extrapolate instructions from these guides in that case.
-- You are using npm. You can use equivalent commands to run the scripts if you are using Yarn or other package managers.
-- Vite is installed as a local dev dependency in your project, and you have setup the following npm scripts:
+- デフォルトのビルド出力場所（ `dist` ）を使用しています。この場所は[`build.outDir`を使用して変更できます](/ja/config/build-options.md#build-outdir)。その場合、これらのガイドから指示を外挿できます。
+- NPMを使用しています。糸または他のパッケージマネージャーを使用している場合、同等のコマンドを使用してスクリプトを実行できます。
+- Viteはプロジェクトのローカル開発依存関係としてインストールされており、次のNPMスクリプトをセットアップしています。
 
 ```json [package.json]
 {
@@ -15,33 +15,33 @@ The following guides are based on some shared assumptions:
 }
 ```
 
-It is important to note that `vite preview` is intended for previewing the build locally and not meant as a production server.
+`vite preview` 、ビルドをローカルでプレビューすることを目的としていることに注意することが重要です。
 
 ::: tip NOTE
-These guides provide instructions for performing a static deployment of your Vite site. Vite also supports Server Side Rendering. SSR refers to front-end frameworks that support running the same application in Node.js, pre-rendering it to HTML, and finally hydrating it on the client. Check out the [SSR Guide](./ssr) to learn about this feature. On the other hand, if you are looking for integration with traditional server-side frameworks, check out the [Backend Integration guide](./backend-integration) instead.
+これらのガイドは、Viteサイトの静的展開を実行するための指示を提供します。 Viteはサーバーサイドレンダリングもサポートしています。 SSRとは、node.jsで同じアプリケーションの実行をサポートし、それをHTMLに事前にレンダリングし、最後にクライアントに潤いを与えるフロントエンドフレームワークを指します。この機能については、 [SSRガイド](./ssr)をご覧ください。一方、従来のサーバー側のフレームワークとの統合を探している場合は、代わりに[バックエンド統合ガイド](./backend-integration)をチェックしてください。
 :::
 
-## Building the App
+## アプリの構築
 
-You may run `npm run build` command to build the app.
+アプリを構築するために`npm run build`コマンドを実行できます。
 
 ```bash
 $ npm run build
 ```
 
-By default, the build output will be placed at `dist`. You may deploy this `dist` folder to any of your preferred platforms.
+デフォルトでは、ビルド出力は`dist`に配置されます。この`dist`フォルダーを、推奨されるプラットフォームのいずれかに展開できます。
 
-### Testing the App Locally
+### アプリをローカルでテストします
 
-Once you've built the app, you may test it locally by running `npm run preview` command.
+アプリを構築したら、 `npm run preview`コマンドを実行してローカルでテストできます。
 
 ```bash
 $ npm run preview
 ```
 
-The `vite preview` command will boot up a local static web server that serves the files from `dist` at `http://localhost:4173`. It's an easy way to check if the production build looks OK in your local environment.
+`vite preview`コマンドは、 `dist`から`http://localhost:4173`のファイルを提供するローカルStatic Webサーバーを起動します。これは、お近くの環境で生産ビルドが問題ないかどうかを確認する簡単な方法です。
 
-You may configure the port of the server by passing the `--port` flag as an argument.
+引数として`--port`フラグを渡すことにより、サーバーのポートを構成できます。
 
 ```json [package.json]
 {
@@ -51,43 +51,43 @@ You may configure the port of the server by passing the `--port` flag as an argu
 }
 ```
 
-Now the `preview` command will launch the server at `http://localhost:8080`.
+これで、 `preview`コマンドが`http://localhost:8080`にサーバーを起動します。
 
-## GitHub Pages
+## githubページ
 
-1. Set the correct `base` in `vite.config.js`.
+1. 正しい`base` `vite.config.js`に設定します。
 
-   If you are deploying to `https://<USERNAME>.github.io/`, or to a custom domain through GitHub Pages (eg. `www.example.com`), set `base` to `'/'`. Alternatively, you can remove `base` from the configuration, as it defaults to `'/'`.
+   `https://<USERNAME>.github.io/`に展開する場合、またはGitHubページを介してカスタムドメインに展開する場合（例: `www.example.com` ）、 `base` `'/'`設定します。または、デフォルトで`'/'`になるため、構成から`base`削除できます。
 
-   If you are deploying to `https://<USERNAME>.github.io/<REPO>/` (eg. your repository is at `https://github.com/<USERNAME>/<REPO>`), then set `base` to `'/<REPO>/'`.
+   `https://<USERNAME>.github.io/<REPO>/`に展開する場合（例えば、リポジトリが`https://github.com/<USERNAME>/<REPO>`である）、 `base` `'/<REPO>/'`設定します。
 
-2. Go to your GitHub Pages configuration in the repository settings page and choose the source of deployment as "GitHub Actions", this will lead you to create a workflow that builds and deploys your project, a sample workflow that installs dependencies and builds using npm is provided:
+2. リポジトリ設定ページのgithubページの構成に移動し、展開のソースを「githubアクション」として選択すると、プロジェクトを構築および展開するワークフローを作成します。
 
    ```yml
-   # Simple workflow for deploying static content to GitHub Pages
+   # GitHubページに静的コンテンツを展開するための簡単なワークフロー
    name: Deploy static content to Pages
 
    on:
-     # Runs on pushes targeting the default branch
+     # デフォルトのブランチをターゲットにするプッシュで実行されます
      push:
        branches: ['main']
 
-     # Allows you to run this workflow manually from the Actions tab
+     # [アクション]タブからこのワークフローを手動で実行できます
      workflow_dispatch:
 
-   # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+   # github_tokenアクセス許可を設定して、githubページへの展開を許可します
    permissions:
      contents: read
      pages: write
      id-token: write
 
-   # Allow one concurrent deployment
+   # 1つの同時展開を許可します
    concurrency:
      group: 'pages'
      cancel-in-progress: true
 
    jobs:
-     # Single deploy job since we're just deploying
+     # 単一の展開ジョブは展開しているだけなので
      deploy:
        environment:
          name: github-pages
@@ -110,22 +110,22 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
          - name: Upload artifact
            uses: actions/upload-pages-artifact@v3
            with:
-             # Upload dist folder
+             # DISTフォルダーをアップロードします
              path: './dist'
          - name: Deploy to GitHub Pages
            id: deployment
            uses: actions/deploy-pages@v4
    ```
 
-## GitLab Pages and GitLab CI
+## gitlabページとgitlab ci
 
-1. Set the correct `base` in `vite.config.js`.
+1. 正しい`base` `vite.config.js`に設定します。
 
-   If you are deploying to `https://<USERNAME or GROUP>.gitlab.io/`, you can omit `base` as it defaults to `'/'`.
+   `https://<USERNAME or GROUP>.gitlab.io/`に展開する場合は、デフォルトで`'/'`になるため、 `base`省略できます。
 
-   If you are deploying to `https://<USERNAME or GROUP>.gitlab.io/<REPO>/`, for example your repository is at `https://gitlab.com/<USERNAME>/<REPO>`, then set `base` to `'/<REPO>/'`.
+   `https://<USERNAME or GROUP>.gitlab.io/<REPO>/`に展開する場合、たとえばリポジトリが`https://gitlab.com/<USERNAME>/<REPO>`で、 `base` `'/<REPO>/'`設定します。
 
-2. Create a file called `.gitlab-ci.yml` in the root of your project with the content below. This will build and deploy your site whenever you make changes to your content:
+2. 以下のコンテンツを使用して、プロジェクトのルートで`.gitlab-ci.yml`というファイルを作成します。これにより、コンテンツを変更するたびにサイトが構築および展開されます。
 
    ```yaml [.gitlab-ci.yml]
    image: node:16.5.0
@@ -149,49 +149,49 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
    ```
 
-## Netlify
+## netlify
 
-### Netlify CLI
+### netlify cli
 
-1. Install the [Netlify CLI](https://cli.netlify.com/).
-2. Create a new site using `ntl init`.
-3. Deploy using `ntl deploy`.
+1. [Netlify CLI](https://cli.netlify.com/)をインストールします。
+2. `ntl init`を使用して新しいサイトを作成します。
+3. `ntl deploy`を使用して展開します。
 
 ```bash
-# Install the Netlify CLI
+# Netlify CLIをインストールします
 $ npm install -g netlify-cli
 
-# Create a new site in Netlify
+# Netlifyで新しいサイトを作成します
 $ ntl init
 
-# Deploy to a unique preview URL
+# 一意のプレビューURLに展開します
 $ ntl deploy
 ```
 
-The Netlify CLI will share with you a preview URL to inspect. When you are ready to go into production, use the `prod` flag:
+Netlify CLIは、検査するプレビューURLを共有します。生産に入る準備ができたら、 `prod`フラグを使用してください。
 
 ```bash
-# Deploy the site into production
+# サイトを生産に展開します
 $ ntl deploy --prod
 ```
 
-### Netlify with Git
+### gitでネットライフします
 
-1. Push your code to a git repository (GitHub, GitLab, BitBucket, Azure DevOps).
-2. [Import the project](https://app.netlify.com/start) to Netlify.
-3. Choose the branch, output directory, and set up environment variables if applicable.
-4. Click on **Deploy**.
-5. Your Vite app is deployed!
+1. コードをgitリポジトリ（github、gitlab、bitbucket、azure devops）にプッシュします。
+2. [プロジェクトをインポートして](https://app.netlify.com/start)netlifyにインポートします。
+3. 該当する場合は、ブランチ、出力ディレクトリ、および環境変数のセットアップを選択します。
+4. **[展開]**をクリックします。
+5. Viteアプリが展開されています！
 
-After your project has been imported and deployed, all subsequent pushes to branches other than the production branch along with pull requests will generate [Preview Deployments](https://docs.netlify.com/site-deploys/deploy-previews/), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://docs.netlify.com/site-deploys/overview/#definitions).
+プロジェクトがインポートおよび展開された後、プルリクエストとともにプロダクションブランチ以外の支店へのその後のすべてのプッシュは[プレビュー展開](https://docs.netlify.com/site-deploys/deploy-previews/)を生成し、生産ブランチ（一般に「メイン」）に行われたすべての変更により、[生産展開](https://docs.netlify.com/site-deploys/overview/#definitions)が行われます。
 
-## Vercel
+## ヴェルセル
 
-### Vercel CLI
+### VercelCli
 
-1. Install the [Vercel CLI](https://vercel.com/cli) and run `vercel` to deploy.
-2. Vercel will detect that you are using Vite and will enable the correct settings for your deployment.
-3. Your application is deployed! (e.g. [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
+1. [VercelCLI](https://vercel.com/cli)をインストールし、 `vercel`実行して展開します。
+2. Vercelは、Viteを使用していることを検出し、展開に正しい設定を有効にします。
+3. アプリケーションが展開されています！ （例: [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/) ）
 
 ```bash
 $ npm i -g vercel
@@ -201,61 +201,61 @@ Vercel CLI
 - To deploy, `cd vite` and run `vercel`.
 ```
 
-### Vercel for Git
+### gitのvercel
 
-1. Push your code to your git repository (GitHub, GitLab, Bitbucket).
-2. [Import your Vite project](https://vercel.com/new) into Vercel.
-3. Vercel will detect that you are using Vite and will enable the correct settings for your deployment.
-4. Your application is deployed! (e.g. [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
+1. コードをgitリポジトリ（Github、gitlab、bitbucket）にプッシュします。
+2. [ViteプロジェクトをVercelにインポートします](https://vercel.com/new)。
+3. Vercelは、Viteを使用していることを検出し、展開に正しい設定を有効にします。
+4. アプリケーションが展開されています！ （例: [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/) ）
 
-After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://vercel.com/docs/concepts/deployments/environments#preview), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://vercel.com/docs/concepts/deployments/environments#production).
+プロジェクトがインポートおよび展開された後、ブランチへのその後のすべてのプッシュは[プレビュー展開](https://vercel.com/docs/concepts/deployments/environments#preview)を生成し、生産ブランチ（一般的に「メイン」）に行われたすべての変更により、[生産展開](https://vercel.com/docs/concepts/deployments/environments#production)が行われます。
 
-Learn more about Vercel’s [Git Integration](https://vercel.com/docs/concepts/git).
+Vercelの[Git Integrationの](https://vercel.com/docs/concepts/git)詳細をご覧ください。
 
-## Cloudflare Pages
+## CloudFlareページ
 
-### Cloudflare Pages via Wrangler
+### Wrangler経由のCloudFlareページ
 
-1. Install [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/get-started/).
-2. Authenticate Wrangler with your Cloudflare account using `wrangler login`.
-3. Run your build command.
-4. Deploy using `npx wrangler pages deploy dist`.
+1. [ラングラーCLI](https://developers.cloudflare.com/workers/wrangler/get-started/)をインストールします。
+2. `wrangler login`使用して、クラウドフレーアカウントでラングラーを認証します。
+3. ビルドコマンドを実行します。
+4. `npx wrangler pages deploy dist`を使用して展開します。
 
 ```bash
-# Install Wrangler CLI
+# ラングラーCLIをインストールします
 $ npm install -g wrangler
 
-# Login to Cloudflare account from CLI
+# CLIからCloudFlareアカウントにログインします
 $ wrangler login
 
-# Run your build command
+# ビルドコマンドを実行します
 $ npm run build
 
-# Create new deployment
+# 新しい展開を作成します
 $ npx wrangler pages deploy dist
 ```
 
-After your assets are uploaded, Wrangler will give you a preview URL to inspect your site. When you log into the Cloudflare Pages dashboard, you will see your new project.
+資産がアップロードされた後、Wranglerはサイトを検査するプレビューURLを提供します。 CloudFlareページのダッシュボードにログインすると、新しいプロジェクトが表示されます。
 
-### Cloudflare Pages with Git
+### gitを使用したCloudflareページ
 
-1. Push your code to your git repository (GitHub, GitLab).
-2. Log in to the Cloudflare dashboard and select your account in **Account Home** > **Pages**.
-3. Select **Create a new Project** and the **Connect Git** option.
-4. Select the git project you want to deploy and click **Begin setup**
-5. Select the corresponding framework preset in the build setting depending on the Vite framework you have selected.
-6. Then save and deploy!
-7. Your application is deployed! (e.g `https://<PROJECTNAME>.pages.dev/`)
+1. コードをgitリポジトリ（github、gitlab）にプッシュします。
+2. CloudFlareダッシュボードにログインし、**アカウントホーム**>**ページ**でアカウントを選択します。
+3. **[新しいプロジェクト**と**Connect Git**オプションの作成]を選択します。
+4. 展開するgitプロジェクトを選択し、 **[セットアップの開始]を**クリックします
+5. 選択したViteフレームワークに応じて、ビルド設定で対応するフレームワークプリセットを選択します。
+6. その後、保存して展開します！
+7. アプリケーションが展開されています！ （例`https://<PROJECTNAME>.pages.dev/` ）
 
-After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://developers.cloudflare.com/pages/platform/preview-deployments/) unless specified not to in your [branch build controls](https://developers.cloudflare.com/pages/platform/branch-build-controls/). All changes to the Production Branch (commonly “main”) will result in a Production Deployment.
+プロジェクトがインポートおよび展開された後、ブランチへのその後のすべてのプッシュは[、ブランチビルドコントロール](https://developers.cloudflare.com/pages/platform/branch-build-controls/)に指定されていない限り[、プレビュー展開](https://developers.cloudflare.com/pages/platform/preview-deployments/)を生成します。生産ブランチ（一般に「メイン」）のすべての変更により、生産展開が行われます。
 
-You can also add custom domains and handle custom build settings on Pages. Learn more about [Cloudflare Pages Git Integration](https://developers.cloudflare.com/pages/get-started/#manage-your-site).
+また、カスタムドメインを追加して、ページのカスタムビルド設定を処理することもできます。 [CloudFlareページGit Integrationの](https://developers.cloudflare.com/pages/get-started/#manage-your-site)詳細をご覧ください。
 
 ## Google Firebase
 
-1. Make sure you have [firebase-tools](https://www.npmjs.com/package/firebase-tools) installed.
+1. [Firebase-Tools](https://www.npmjs.com/package/firebase-tools)がインストールされていることを確認してください。
 
-2. Create `firebase.json` and `.firebaserc` at the root of your project with the following content:
+2. 次のコンテンツを使用して、プロジェクトのルートで`firebase.json`と`.firebaserc`作成します。
 
    ```json [firebase.json]
    {
@@ -280,54 +280,54 @@ You can also add custom domains and handle custom build settings on Pages. Learn
    }
    ```
 
-3. After running `npm run build`, deploy using the command `firebase deploy`.
+3. `npm run build`実行した後、コマンド`firebase deploy`を使用して展開します。
 
-## Surge
+## うねり
 
-1. First install [surge](https://www.npmjs.com/package/surge), if you haven’t already.
+1. まだ不明であれば、最初に[サージ](https://www.npmjs.com/package/surge)をインストールしてください。
 
-2. Run `npm run build`.
+2. `npm run build`実行します。
 
-3. Deploy to surge by typing `surge dist`.
+3. `surge dist`を入力してサージに展開します。
 
-You can also deploy to a [custom domain](http://surge.sh/help/adding-a-custom-domain) by adding `surge dist yourdomain.com`.
+`surge dist yourdomain.com`を追加して、[カスタムドメイン](http://surge.sh/help/adding-a-custom-domain)に展開することもできます。
 
-## Azure Static Web Apps
+## Azure Static Webアプリ
 
-You can quickly deploy your Vite app with Microsoft Azure [Static Web Apps](https://aka.ms/staticwebapps) service. You need:
+Microsoft Azure [Static Web Apps](https://aka.ms/staticwebapps)サービスを使用して、Viteアプリをすばやく展開できます。あなたが必要です:
 
-- An Azure account and a subscription key. You can create a [free Azure account here](https://azure.microsoft.com/free).
-- Your app code pushed to [GitHub](https://github.com).
-- The [SWA Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) in [Visual Studio Code](https://code.visualstudio.com).
+- Azureアカウントとサブスクリプションキー。[ここで無料のAzureアカウント](https://azure.microsoft.com/free)を作成できます。
+- あなたのアプリコードは[Github](https://github.com)にプッシュされました。
+- [Visual Studioコード](https://code.visualstudio.com)の[SWA拡張機能](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps)。
 
-Install the extension in VS Code and navigate to your app root. Open the Static Web Apps extension, sign in to Azure, and click the '+' sign to create a new Static Web App. You will be prompted to designate which subscription key to use.
+VSコードに拡張機能をインストールし、アプリルートに移動します。 Static Webアプリの拡張機能を開き、Azureにサインインし、「+」サインをクリックして新しいStatic Webアプリを作成します。使用するサブスクリプションキーを指定するように求められます。
 
-Follow the wizard started by the extension to give your app a name, choose a framework preset, and designate the app root (usually `/`) and built file location `/dist`. The wizard will run and will create a GitHub action in your repo in a `.github` folder.
+拡張機能から開始されたウィザードをフォローして、アプリに名前を付け、フレームワークプリセットを選択し、アプリルート（通常`/` ）を指定し、ファイルの場所`/dist`作成します。ウィザードは実行され、 `.github`フォルダーのリポジトリにGitHubアクションが作成されます。
 
-The action will work to deploy your app (watch its progress in your repo's Actions tab) and, when successfully completed, you can view your app in the address provided in the extension's progress window by clicking the 'Browse Website' button that appears when the GitHub action has run.
+アクションは、アプリを展開するために機能し（リポジトリのアクションタブでその進行状況をご覧ください）、正常に完了すると、githubアクションが実行されたときに表示される[Webサイトを参照]ボタンをクリックして、拡張機能の進行状況ウィンドウで提供されるアドレスでアプリを表示できます。
 
-## Render
+## 与える
 
-You can deploy your Vite app as a Static Site on [Render](https://render.com/).
+[レンダリング](https://render.com/)上の静的サイトとしてViteアプリを展開できます。
 
-1. Create a [Render account](https://dashboard.render.com/register).
+1. [レンダリングアカウント](https://dashboard.render.com/register)を作成します。
 
-2. In the [Dashboard](https://dashboard.render.com/), click the **New** button and select **Static Site**.
+2. [ダッシュボード](https://dashboard.render.com/)で、[**新しい**]ボタンをクリックして、**静的サイト**を選択します。
 
-3. Connect your GitHub/GitLab account or use a public repository.
+3. github/gitlabアカウントを接続するか、パブリックリポジトリを使用します。
 
-4. Specify a project name and branch.
+4. プロジェクト名とブランチを指定します。
 
-   - **Build Command**: `npm install && npm run build`
-   - **Publish Directory**: `dist`
+   - **ビルドコマンド**: `npm install && npm run build`
+   - **ディレクトリの公開**: `dist`
 
-5. Click **Create Static Site**.
+5. **[静的サイトの作成]を**クリックします。
 
-   Your app should be deployed at `https://<PROJECTNAME>.onrender.com/`.
+   アプリは`https://<PROJECTNAME>.onrender.com/`に展開する必要があります。
 
-By default, any new commit pushed to the specified branch will automatically trigger a new deployment. [Auto-Deploy](https://render.com/docs/deploys#toggling-auto-deploy-for-a-service) can be configured in the project settings.
+デフォルトでは、指定されたブランチにプッシュされた新しいコミットは、新しい展開を自動的にトリガーします。[自動デプロイは、](https://render.com/docs/deploys#toggling-auto-deploy-for-a-service)プロジェクト設定で構成できます。
 
-You can also add a [custom domain](https://render.com/docs/custom-domains) to your project.
+プロジェクトに[カスタムドメイン](https://render.com/docs/custom-domains)を追加することもできます。
 
 <!--
   NOTE: The sections below are reserved for more deployment platforms not listed above.
@@ -343,14 +343,14 @@ You can also add a [custom domain](https://render.com/docs/custom-domains) to yo
   If a section is removed, we will ping the original PR authors before doing so.
 -->
 
-## Flightcontrol
+## FlightControl
 
-Deploy your static site using [Flightcontrol](https://www.flightcontrol.dev/?ref=docs-vite) by following these [instructions](https://www.flightcontrol.dev/docs/reference/examples/vite?ref=docs-vite).
+これらの[指示](https://www.flightcontrol.dev/docs/reference/examples/vite?ref=docs-vite)に従って、 [FlightControl](https://www.flightcontrol.dev/?ref=docs-vite)を使用して静的サイトを展開します。
 
-## Kinsta Static Site Hosting
+## Kinsta静的サイトホスティング
 
-Deploy your static site using [Kinsta](https://kinsta.com/static-site-hosting/) by following these [instructions](https://kinsta.com/docs/react-vite-example/).
+これらの[指示](https://kinsta.com/docs/react-vite-example/)に従って、 [Kinsta](https://kinsta.com/static-site-hosting/)を使用して静的サイトを展開します。
 
-## xmit Static Site Hosting
+## Xmit静的サイトホスティング
 
-Deploy your static site using [xmit](https://xmit.co) by following this [guide](https://xmit.dev/posts/vite-quickstart/).
+この[ガイド](https://xmit.dev/posts/vite-quickstart/)に従って[Xmit](https://xmit.co)を使用して静的サイトを展開します。

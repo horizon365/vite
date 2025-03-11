@@ -1,62 +1,62 @@
-# SSR Options
+# Opções de SSR
 
-Unless noted, the options in this section are applied to both dev and build.
+A menos que seja indicado, as opções nesta seção são aplicadas ao desenvolvimento e à construção.
 
 ## ssr.external
 
-- **Type:** `string[] | true`
-- **Related:** [SSR Externals](/pt/guide/ssr#ssr-externals)
+- **Tipo:** `string [] | true`
+- **Relacionado:** [SSR External](/pt/guide/ssr#ssr-externals)
 
-Externalize the given dependencies and their transitive dependencies for SSR. By default, all dependencies are externalized except for linked dependencies (for HMR). If you prefer to externalize the linked dependency, you can pass its name to this option.
+Externalize as dependências dadas e suas dependências transitivas para SSR. Por padrão, todas as dependências são externalizadas, exceto para dependências vinculadas (para HMR). Se você preferir externalizar a dependência vinculada, pode passar o nome para esta opção.
 
-If `true`, all dependencies including linked dependencies are externalized.
+Se `true` , todas as dependências, incluindo dependências vinculadas, são externalizadas.
 
-Note that the explicitly listed dependencies (using `string[]` type) will always take priority if they're also listed in `ssr.noExternal` (using any type).
+Observe que as dependências explicitamente listadas (usando o tipo `string[]` ) sempre terão prioridade se elas também estiverem listadas em `ssr.noExternal` (usando qualquer tipo).
 
 ## ssr.noExternal
 
-- **Type:** `string | RegExp | (string | RegExp)[] | true`
-- **Related:** [SSR Externals](/pt/guide/ssr#ssr-externals)
+- **Tipo:** `string | Regexp | (corda | Regexp) [] | true`
+- **Relacionado:** [SSR External](/pt/guide/ssr#ssr-externals)
 
-Prevent listed dependencies from being externalized for SSR, which they will get bundled in build. By default, only linked dependencies are not externalized (for HMR). If you prefer to externalize the linked dependency, you can pass its name to the `ssr.external` option.
+Impedir que as dependências listadas sejam externalizadas para SSR, que elas serão incluídas na construção. Por padrão, apenas dependências vinculadas não são externalizadas (para HMR). Se você preferir externalizar a dependência vinculada, pode passar o nome para a opção `ssr.external` .
 
-If `true`, no dependencies are externalized. However, dependencies explicitly listed in `ssr.external` (using `string[]` type) can take priority and still be externalized. If `ssr.target: 'node'` is set, Node.js built-ins will also be externalized by default.
+Se `true` , nenhuma dependência é externalizada. No entanto, as dependências listadas explicitamente em `ssr.external` (usando `string[]` tipo) podem ter prioridade e ainda são externalizadas. Se `ssr.target: 'node'` estiver definido, o Node.js Build-ins também será externalizado por padrão.
 
-Note that if both `ssr.noExternal: true` and `ssr.external: true` are configured, `ssr.noExternal` takes priority and no dependencies are externalized.
+Observe que se `ssr.noExternal: true` e `ssr.external: true` estiverem configurados, `ssr.noExternal` terá prioridade e nenhuma dependência será externalizada.
 
 ## ssr.target
 
-- **Type:** `'node' | 'webworker'`
-- **Default:** `node`
+- **Tipo:** `'nó' | 'webworker'
+- **Padrão:** `node`
 
-Build target for the SSR server.
+Construa o destino para o servidor SSR.
 
 ## ssr.resolve.conditions
 
-- **Type:** `string[]`
-- **Default:** `['module', 'node', 'development|production']` (`defaultServerConditions`) (`['module', 'browser', 'development|production']` (`defaultClientConditions`) for `ssr.target === 'webworker'`)
-- **Related:** [Resolve Conditions](./shared-options.md#resolve-conditions)
+- **Tipo:** `string[]`
+- **Padrão:** `['módulo', 'nó', 'desenvolvimento|Produção '] ` (`DefaultServerConditions`) (`[' Módulo ',' navegador ',' Desenvolvimento|Produção ']` (`DefaultClientConditions`) for ` ssr.target ===' WebWorker ')
+- **Relacionado:** [Resolva condições](./shared-options.md#resolve-conditions)
 
-These conditions are used in the plugin pipeline, and only affect non-externalized dependencies during the SSR build. Use `ssr.resolve.externalConditions` to affect externalized imports.
+Essas condições são usadas no pipeline do plug-in e afetam apenas dependências não excternizadas durante a construção SSR. Use `ssr.resolve.externalConditions` para afetar as importações externalizadas.
 
 ## ssr.resolve.externalConditions
 
-- **Type:** `string[]`
-- **Default:** `['node']`
+- **Tipo:** `string[]`
+- **Padrão:** `['node']`
 
-Conditions that are used during ssr import (including `ssrLoadModule`) of externalized direct dependencies (external dependencies imported by Vite).
+Condições usadas durante a importação de SSR (incluindo `ssrLoadModule` ) de dependências diretas externas (dependências externas importadas pelo Vite).
 
 :::tip
 
-When using this option, make sure to run Node with [`--conditions` flag](https://nodejs.org/docs/latest/api/cli.html#-c-condition---conditionscondition) with the same values in both dev and build to get a consistent behavior.
+Ao usar essa opção, execute o nó com [o sinalizador `--conditions`](https://nodejs.org/docs/latest/api/cli.html#-c-condition---conditionscondition) com os mesmos valores no dev e na construção para obter um comportamento consistente.
 
-For example, when setting `['node', 'custom']`, you should run `NODE_OPTIONS='--conditions custom' vite` in dev and `NODE_OPTIONS="--conditions custom" node ./dist/server.js` after build.
+Por exemplo, ao definir `['node', 'custom']` , você deve executar `NODE_OPTIONS='--conditions custom' vite` em Dev e `NODE_OPTIONS="--conditions custom" node ./dist/server.js` após a construção.
 
 :::
 
 ### ssr.resolve.mainFields
 
-- **Type:** `string[]`
-- **Default:** `['module', 'jsnext:main', 'jsnext']`
+- **Tipo:** `string[]`
+- **Padrão:** `['module', 'jsnext:main', 'jsnext']`
 
-List of fields in `package.json` to try when resolving a package's entry point. Note this takes lower precedence than conditional exports resolved from the `exports` field: if an entry point is successfully resolved from `exports`, the main field will be ignored. This setting only affect non-externalized dependencies.
+Lista de campos em `package.json` para tentar ao resolver o ponto de entrada de um pacote. Observe que isso leva menor precedência do que as exportações condicionais resolvidas no campo `exports` : se um ponto de entrada for resolvido com sucesso de `exports` , o campo principal será ignorado. Essa configuração afeta apenas dependências não externizadas.

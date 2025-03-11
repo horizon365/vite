@@ -1,16 +1,16 @@
 # JavaScript API
 
-Vite's JavaScript APIs are fully typed, and it's recommended to use TypeScript or enable JS type checking in VS Code to leverage the intellisense and validation.
+ViteのJavaScript APIは完全に入力されており、TypeScriptを使用するか、JSタイプのチェックを使用してIntelliSenseと検証を活用することをお勧めします。
 
 ## `createServer`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 async function createServer(inlineConfig?: InlineConfig): Promise<ViteDevServer>
 ```
 
-**Example Usage:**
+**使用例:**
 
 ```ts twoslash
 import { fileURLToPath } from 'node:url'
@@ -19,7 +19,7 @@ import { createServer } from 'vite'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const server = await createServer({
-  // any valid user config options, plus `mode` and `configFile`
+  // 有効なユーザー構成オプションに加えて、 `mode`および`configFile`
   configFile: false,
   root: __dirname,
   server: {
@@ -33,115 +33,85 @@ server.bindCLIShortcuts({ print: true })
 ```
 
 ::: tip NOTE
-When using `createServer` and `build` in the same Node.js process, both functions rely on `process.env.NODE_ENV` to work properly, which also depends on the `mode` config option. To prevent conflicting behavior, set `process.env.NODE_ENV` or the `mode` of the two APIs to `development`. Otherwise, you can spawn a child process to run the APIs separately.
+同じnode.jsプロセスで`createServer`と`build`使用する場合、両方の関数は`process.env.NODE_ENV`に依存して適切に動作します。これは`mode` configオプションにも依存します。矛盾する動作を防ぐために、 `process.env.NODE_ENV`または2つのAPIのうち`mode`を`development`に設定します。それ以外の場合は、子どものプロセスを生成してAPIを個別に実行できます。
 :::
 
 ::: tip NOTE
-When using [middleware mode](/ja/config/server-options.html#server-middlewaremode) combined with [proxy config for WebSocket](/ja/config/server-options.html#server-proxy), the parent http server should be provided in `middlewareMode` to bind the proxy correctly.
+[ミドルウェアモード](/ja/config/server-options.html#server-middlewaremode)を使用して[WebSockingのプロキシ構成](/ja/config/server-options.html#server-proxy)を組み合わせた場合、親HTTPサーバーを`middlewareMode`に提供して、プロキシを正しく結合する必要があります。
 
-<details>
-<summary>Example</summary>
-
-```ts twoslash
-import http from 'http'
-import { createServer } from 'vite'
-
-const parentServer = http.createServer() // or express, koa, etc.
-
-const vite = await createServer({
-  server: {
-    // Enable middleware mode
-    middlewareMode: {
-      // Provide the parent http server for proxy WebSocket
-      server: parentServer,
-    },
-    proxy: {
-      '/ws': {
-        target: 'ws://localhost:3000',
-        // Proxying WebSocket
-        ws: true,
-      },
-    },
-  },
-})
-
-// @noErrors: 2339
-parentServer.use(vite.middlewares)
-```
-
-</details>
+<details><summary>例</summary><pre><code class="language-ts">import http from 'http' import { createServer } from 'vite' const parentServer = http.createServer() // or express, koa, etc. const vite = await createServer({ server: { // Enable middleware mode middlewareMode: { // Provide the parent http server for proxy WebSocket server: parentServer, }, proxy: { '/ws': { target: 'ws://localhost:3000', // Proxying WebSocket ws: true, }, }, }, }) // @noErrors: 2339 parentServer.use(vite.middlewares)</code></pre></details>
 :::
 
 ## `InlineConfig`
 
-The `InlineConfig` interface extends `UserConfig` with additional properties:
+`InlineConfig`インターフェイスは、追加のプロパティで`UserConfig`拡張します。
 
-- `configFile`: specify config file to use. If not set, Vite will try to automatically resolve one from project root. Set to `false` to disable auto resolving.
-- `envFile`: Set to `false` to disable `.env` files.
+- `configFile` :使用する構成ファイルを指定します。設定されていない場合、ViteはProject Rootから1つを自動的に解決しようとします。自動解像度を無効にするために`false`に設定します。
+- `envFile` : `false`に設定して`.env`ファイルを無効にします。
 
 ## `ResolvedConfig`
 
-The `ResolvedConfig` interface has all the same properties of a `UserConfig`, except most properties are resolved and non-undefined. It also contains utilities like:
+`ResolvedConfig`インターフェイスには、ほとんどのプロパティが解決され、非不定であることを除いて、 `UserConfig`のすべての同じプロパティがあります。次のようなユーティリティも含まれています。
 
-- `config.assetsInclude`: A function to check if an `id` is considered an asset.
-- `config.logger`: Vite's internal logger object.
+- `config.assetsInclude` : `id`が資産と見なされるかどうかを確認する関数。
+- `config.logger` :Viteの内部ロガーオブジェクト。
 
 ## `ViteDevServer`
 
 ```ts
 interface ViteDevServer {
   /**
-   * The resolved Vite config object.
+   * 解決されたVite構成オブジェクト。
    */
   config: ResolvedConfig
   /**
-   * A connect app instance
-   * - Can be used to attach custom middlewares to the dev server.
-   * - Can also be used as the handler function of a custom http server
-   *   or as a middleware in any connect-style Node.js frameworks.
+   * 接続アプリインスタンス
+   *  - カスタムミドルウェアを開発サーバーに接続するために使用できます。
+   *  - カスタムHTTPサーバーのハンドラー関数としても使用できます
+   *   または、任意のConnectスタイルのnode.jsフレームワークのミドルウェアとして。
    *
    * https://github.com/senchalabs/connect#use-middleware
    */
   middlewares: Connect.Server
   /**
-   * Native Node http server instance.
-   * Will be null in middleware mode.
+   * ネイティブノードHTTPサーバーインスタンス。
+   * ミドルウェアモードでヌルになります。
    */
   httpServer: http.Server | null
   /**
-   * Chokidar watcher instance. If `config.server.watch` is set to `null`,
-   * it will not watch any files and calling `add` or `unwatch` will have no effect.
+   * Chokidarウォッチャーインスタンス。 `config.server.watch` `null`に設定されている場合、
+   * ファイルは視聴せず、 `add`または`unwatch`呼び出すことは効果がありません。
    * https://github.com/paulmillr/chokidar/tree/3.6.0#api
    */
   watcher: FSWatcher
   /**
-   * Web socket server with `send(payload)` method.
+   * `send(payload)`メソッドを備えたWebソケットサーバー。
    */
   ws: WebSocketServer
   /**
-   * Rollup plugin container that can run plugin hooks on a given file.
+   * 特定のファイルでプラグインフックを実行できるロールアッププラグインコンテナ。
    */
   pluginContainer: PluginContainer
   /**
-   * Module graph that tracks the import relationships, url to file mapping
-   * and hmr state.
+   * インポート関係を追跡するモジュールグラフ、ファイルマッピングへのURL
+   * およびHMR状態。
    */
   moduleGraph: ModuleGraph
   /**
-   * The resolved urls Vite prints on the CLI (URL-encoded). Returns `null`
-   * in middleware mode or if the server is not listening on any port.
+   * 解決されたURLSは、CLI（URLエンコード）に印刷されています。 `null`を返します
+   * ミドルウェアモードで、またはサーバーがポートで聞いていない場合。
    */
   resolvedUrls: ResolvedServerUrls | null
   /**
-   * Programmatically resolve, load and transform a URL and get the result
-   * without going through the http request pipeline.
+   * プログラム的に解決、ロード、変換され、結果を取得します
+   * HTTPリクエストパイプラインを通過することなく。
    */
   transformRequest(
     url: string,
     options?: TransformOptions,
   ): Promise<TransformResult | null>
   /**
-   * Apply Vite built-in HTML transforms and any plugin HTML transforms.
+   * vite内蔵のHTML変換と任意のプラグインHTML変換を適用します。
    */
   transformIndexHtml(
     url: string,
@@ -149,44 +119,44 @@ interface ViteDevServer {
     originalUrl?: string,
   ): Promise<string>
   /**
-   * Load a given URL as an instantiated module for SSR.
+   * 特定のURLをSSRのインスタンス化モジュールとしてロードします。
    */
   ssrLoadModule(
     url: string,
     options?: { fixStacktrace?: boolean },
   ): Promise<Record<string, any>>
   /**
-   * Fix ssr error stacktrace.
+   * SSRエラースタックトレースを修正します。
    */
   ssrFixStacktrace(e: Error): void
   /**
-   * Triggers HMR for a module in the module graph. You can use the `server.moduleGraph`
-   * API to retrieve the module to be reloaded. If `hmr` is false, this is a no-op.
+   * モジュールグラフのモジュールのHMRをトリガーします。 `server.moduleGraph`を使用できます
+   * リロードするモジュールを取得するAPI。 `hmr`が偽の場合、これはopです。
    */
   reloadModule(module: ModuleNode): Promise<void>
   /**
-   * Start the server.
+   * サーバーを起動します。
    */
   listen(port?: number, isRestart?: boolean): Promise<ViteDevServer>
   /**
-   * Restart the server.
+   * サーバーを再起動します。
    *
-   * @param forceOptimize - force the optimizer to re-bundle, same as --force cli flag
+   * @param forcoptimize-オプティマイザーに再びバンドルを強制します -   - フォースCLIフラグ
    */
   restart(forceOptimize?: boolean): Promise<void>
   /**
-   * Stop the server.
+   * サーバーを停止します。
    */
   close(): Promise<void>
   /**
-   * Bind CLI shortcuts
+   * CLIショートカットをバインドします
    */
   bindCLIShortcuts(options?: BindCLIShortcutsOptions<ViteDevServer>): void
   /**
-   * Calling `await server.waitForRequestsIdle(id)` will wait until all static imports
-   * are processed. If called from a load or transform plugin hook, the id needs to be
-   * passed as a parameter to avoid deadlocks. Calling this function after the first
-   * static imports section of the module graph has been processed will resolve immediately.
+   * 呼び出し`await server.waitForRequestsIdle(id)`は、すべての静的インポートがすべて待機されます
+   * 処理されています。ロードまたは変換プラグインフックから呼び出された場合、IDは
+   * デッドロックを避けるためにパラメーターとして渡されました。この関数を最初から呼び出します
+   * モジュールグラフの静的インポートセクションが処理され、すぐに解決されます。
    * @experimental
    */
   waitForRequestsIdle: (ignoredId?: string) => Promise<void>
@@ -194,12 +164,12 @@ interface ViteDevServer {
 ```
 
 :::info
-`waitForRequestsIdle` is meant to be used as a escape hatch to improve DX for features that can't be implemented following the on-demand nature of the Vite dev server. It can be used during startup by tools like Tailwind to delay generating the app CSS classes until the app code has been seen, avoiding flashes of style changes. When this function is used in a load or transform hook, and the default HTTP1 server is used, one of the six http channels will be blocked until the server processes all static imports. Vite's dependency optimizer currently uses this function to avoid full-page reloads on missing dependencies by delaying loading of pre-bundled dependencies until all imported dependencies have been collected from static imported sources. Vite may switch to a different strategy in a future major release, setting `optimizeDeps.crawlUntilStaticImports: false` by default to avoid the performance hit in large applications during cold start.
+`waitForRequestsIdle` 、Vite Devサーバーのオンデマンドの性質に従って実装できない機能のDXを改善するためのエスケープハッチとして使用することを目的としています。スタートアップ中にTailwindなどのツールで使用して、アプリコードが表示されるまでアプリCSSクラスの生成を遅らせ、スタイルの変更のフラッシュを回避できます。この関数が負荷または変換フックで使用され、デフォルトのHTTP1サーバーが使用されると、6つのHTTPチャネルの1つがすべての静的インポートを処理するまでブロックされます。現在、Viteの依存関係者は、この関数を使用して、すべてのインポートされた依存関係が静的なインポートされたソースから収集されるまで、事前にバンドルされた依存関係の負荷を遅らせることにより、欠落依存関係のフルページのリロードを回避しています。 Viteは、将来の主要なリリースで異なる戦略に切り替えることができ、デフォルトで`optimizeDeps.crawlUntilStaticImports: false`設定して、コールドスタート中の大規模なアプリケーションでのパフォーマンスのヒットを回避します。
 :::
 
 ## `build`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 async function build(
@@ -207,7 +177,7 @@ async function build(
 ): Promise<RollupOutput | RollupOutput[]>
 ```
 
-**Example Usage:**
+**使用例:**
 
 ```ts twoslash [vite.config.js]
 import path from 'node:path'
@@ -229,19 +199,19 @@ await build({
 
 ## `preview`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 async function preview(inlineConfig?: InlineConfig): Promise<PreviewServer>
 ```
 
-**Example Usage:**
+**使用例:**
 
 ```ts twoslash
 import { preview } from 'vite'
 
 const previewServer = await preview({
-  // any valid user config options, plus `mode` and `configFile`
+  // 有効なユーザー構成オプションに加えて、 `mode`および`configFile`
   preview: {
     port: 8080,
     open: true,
@@ -257,33 +227,33 @@ previewServer.bindCLIShortcuts({ print: true })
 ```ts
 interface PreviewServer {
   /**
-   * The resolved vite config object
+   * 解決されたVite構成オブジェクト
    */
   config: ResolvedConfig
   /**
-   * A connect app instance.
-   * - Can be used to attach custom middlewares to the preview server.
-   * - Can also be used as the handler function of a custom http server
-   *   or as a middleware in any connect-style Node.js frameworks
+   * 接続アプリインスタンス。
+   * -Previewサーバーにカスタムミドルウェアを添付するために使用できます。
+   *  - カスタムHTTPサーバーのハンドラー関数としても使用できます
+   *   または、任意のConnectスタイルのnode.jsフレームワークのミドルウェアとして
    *
    * https://github.com/senchalabs/connect#use-middleware
    */
   middlewares: Connect.Server
   /**
-   * native Node http server instance
+   * ネイティブノードHTTPサーバーインスタンス
    */
   httpServer: http.Server
   /**
-   * The resolved urls Vite prints on the CLI (URL-encoded). Returns `null`
-   * if the server is not listening on any port.
+   * 解決されたURLSは、CLI（URLエンコード）に印刷されています。 `null`を返します
+   * サーバーがポートで聞いていない場合。
    */
   resolvedUrls: ResolvedServerUrls | null
   /**
-   * Print server urls
+   * サーバーURLを印刷します
    */
   printUrls(): void
   /**
-   * Bind CLI shortcuts
+   * CLIショートカットをバインドします
    */
   bindCLIShortcuts(options?: BindCLIShortcutsOptions<PreviewServer>): void
 }
@@ -291,7 +261,7 @@ interface PreviewServer {
 
 ## `resolveConfig`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 async function resolveConfig(
@@ -303,11 +273,11 @@ async function resolveConfig(
 ): Promise<ResolvedConfig>
 ```
 
-The `command` value is `serve` in dev and preview, and `build` in build.
+`command`値はDEVとプレビューで`serve` 、ビルドで`build` 。
 
 ## `mergeConfig`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 function mergeConfig(
@@ -317,12 +287,12 @@ function mergeConfig(
 ): Record<string, any>
 ```
 
-Deeply merge two Vite configs. `isRoot` represents the level within the Vite config which is being merged. For example, set `false` if you're merging two `build` options.
+2つのVite構成を深くマージします。 `isRoot` 、マージされているVite構成内のレベルを表します。たとえば、2つの`build`オプションをマージしている場合は、 `false`設定します。
 
 ::: tip NOTE
-`mergeConfig` accepts only config in object form. If you have a config in callback form, you should call it before passing into `mergeConfig`.
+`mergeConfig`オブジェクトフォームの構成のみを受け入れます。コールバックフォームの構成がある場合は、 `mergeConfig`に渡す前に呼び出す必要があります。
 
-You can use the `defineConfig` helper to merge a config in callback form with another config:
+`defineConfig`ヘルパーを使用して、コールバックフォームの構成を別の構成とマージできます。
 
 ```ts twoslash
 import {
@@ -334,7 +304,7 @@ import {
 declare const configAsCallback: UserConfigFnObject
 declare const configAsObject: UserConfig
 
-// ---cut---
+//  - -カット - -
 export default defineConfig((configEnv) =>
   mergeConfig(configAsCallback(configEnv), configAsObject),
 )
@@ -344,7 +314,7 @@ export default defineConfig((configEnv) =>
 
 ## `searchForWorkspaceRoot`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 function searchForWorkspaceRoot(
@@ -353,18 +323,18 @@ function searchForWorkspaceRoot(
 ): string
 ```
 
-**Related:** [server.fs.allow](/ja/config/server-options.md#server-fs-allow)
+**関連:** [server.fs.allow](/ja/config/server-options.md#server-fs-allow)
 
-Search for the root of the potential workspace if it meets the following conditions, otherwise it would fallback to `root`:
+次の条件を満たしている場合は、潜在的なワークスペースのルートを検索します。そうしないと、 `root`にフォールバックします。
 
-- contains `workspaces` field in `package.json`
-- contains one of the following file
+- `package.json`に`workspaces`フィールドが含まれます
+- 次のファイルのいずれかが含まれています
   - `lerna.json`
   - `pnpm-workspace.yaml`
 
 ## `loadEnv`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 function loadEnv(
@@ -374,25 +344,25 @@ function loadEnv(
 ): Record<string, string>
 ```
 
-**Related:** [`.env` Files](./env-and-mode.md#env-files)
+**関連:** [`.env`ファイル](./env-and-mode.md#env-files)
 
-Load `.env` files within the `envDir`. By default, only env variables prefixed with `VITE_` are loaded, unless `prefixes` is changed.
+`envDir`内に`.env`ファイルをロードします。デフォルトでは、 `prefixes`変更されていない限り、 `VITE_`で付けられたENV変数のみがロードされます。
 
 ## `normalizePath`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 function normalizePath(id: string): string
 ```
 
-**Related:** [Path Normalization](./api-plugin.md#path-normalization)
+**関連:**[パス正規化](./api-plugin.md#path-normalization)
 
-Normalizes a path to interoperate between Vite plugins.
+Viteプラグイン間の相互運用へのパスを正規化します。
 
 ## `transformWithEsbuild`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 async function transformWithEsbuild(
@@ -403,11 +373,11 @@ async function transformWithEsbuild(
 ): Promise<ESBuildTransformResult>
 ```
 
-Transform JavaScript or TypeScript with esbuild. Useful for plugins that prefer matching Vite's internal esbuild transform.
+esbuildを使用してJavaScriptまたはTypeScriptを変換します。 Viteの内部Esbuild変換を一致させることを好むプラグインに役立ちます。
 
 ## `loadConfigFromFile`
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 async function loadConfigFromFile(
@@ -423,13 +393,13 @@ async function loadConfigFromFile(
 } | null>
 ```
 
-Load a Vite config file manually with esbuild.
+esbuildでVite構成ファイルを手動でロードします。
 
 ## `preprocessCSS`
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13815)
+- **実験:**[フィードバックを与える](https://github.com/vitejs/vite/discussions/13815)
 
-**Type Signature:**
+**タイプ署名:**
 
 ```ts
 async function preprocessCSS(
@@ -446,8 +416,8 @@ interface PreprocessCSSResult {
 }
 ```
 
-Pre-processes `.css`, `.scss`, `.sass`, `.less`, `.styl` and `.stylus` files to plain CSS so it can be used in browsers or parsed by other tools. Similar to the [built-in CSS pre-processing support](/ja/guide/features#css-pre-processors), the corresponding pre-processor must be installed if used.
+プリプロセス`.css` `.sass` `.stylus` CSSにファイルを`.scss` `.styl`て、ブラウザーで使用したり、他の`.less`で解析したりできます。[組み込みのCSS前処理サポート](/ja/guide/features#css-pre-processors)と同様に、使用する場合は、対応するプリプロセッサをインストールする必要があります。
 
-The pre-processor used is inferred from the `filename` extension. If the `filename` ends with `.module.{ext}`, it is inferred as a [CSS module](https://github.com/css-modules/css-modules) and the returned result will include a `modules` object mapping the original class names to the transformed ones.
+使用される前プロセッサは、 `filename`拡張子から推測されます。 `filename` `.module.{ext}`で終了する場合、 [CSSモジュール](https://github.com/css-modules/css-modules)として推測され、返された結果には、元のクラス名を変換された名前にマッピングする`modules`オブジェクトが含まれます。
 
-Note that pre-processing will not resolve URLs in `url()` or `image-set()`.
+前処理は`url()`または`image-set()`でURLを解決しないことに注意してください。

@@ -1,27 +1,27 @@
-# Project Philosophy
+# プロジェクト哲学
 
-## Lean Extendable Core
+## リーン拡張可能なコア
 
-Vite doesn't intend to cover every use case for every user. Vite aims to support the most common patterns to build Web apps out-of-the-box, but [Vite core](https://github.com/vitejs/vite) must remain lean with a small API surface to keep the project maintainable long-term. This goal is possible thanks to [Vite's rollup-based plugin system](./api-plugin.md). Features that can be implemented as external plugins will generally not be added to Vite core. [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) is a great example of what can be achieved out of Vite core, and there are a lot of [well maintained plugins](https://github.com/vitejs/awesome-vite#plugins) to cover your needs. Vite works closely with the Rollup project to ensure that plugins can be used in both plain-rollup and Vite projects as much as possible, trying to push needed extensions to the Plugin API upstream when possible.
+Viteは、すべてのユーザーのすべてのユースケースをカバーするつもりはありません。 Viteの目的は、最も一般的なパターンをサポートして、すぐにボックスでWebアプリを構築することを目的としていますが、 [Vite Coreは](https://github.com/vitejs/vite)プロジェクトを長期的に維持するために小さなAPI表面で無駄のないままでなければなりません。この目標は[、Viteのロールアップベースのプラグインシステム](./api-plugin.md)のおかげで可能です。外部プラグインとして実装できる機能は、通常、Vite Coreに追加されません。 [Vite-Plugin-PWAは、](https://vite-pwa-org.netlify.app/) Vite Coreから達成できるものの素晴らしい例であり、ニーズをカバーするための多くの[手入れの行き届いたプラグイン](https://github.com/vitejs/awesome-vite#plugins)があります。 Viteは、ロールアッププロジェクトと緊密に連携して、プラグインを可能な限りプレーンロールアッププロジェクトとViteプロジェクトの両方で使用できるようにし、可能な場合は上流に必要なプラグインAPIに必要な拡張機能をプッシュしようとします。
 
-## Pushing the Modern Web
+## 現代のウェブをプッシュします
 
-Vite provides opinionated features that push writing modern code. For example:
+Viteは、最新のコードを書くことをプッシュする意見のある機能を提供します。例えば:
 
-- The source code can only be written in ESM, where non-ESM dependencies need to be [pre-bundled as ESM](./dep-pre-bundling) in order to work.
-- Web workers are encouraged to be written with the [`new Worker` syntax](./features#web-workers) to follow modern standards.
-- Node.js modules cannot be used in the browser.
+- ソースコードは、ESMでのみ記述できます。ESMでは、ESM以外の依存関係を機能させるために[ESMとして事前にバンドルする](./dep-pre-bundling)必要があります。
+- Webワーカーは、最新の標準に従うために、 [`new Worker`構文](./features#web-workers)で書かれることをお勧めします。
+- node.jsモジュールは、ブラウザでは使用できません。
 
-When adding new features, these patterns are followed to create a future-proof API, which may not always be compatible with other build tools.
+新機能を追加すると、これらのパターンに続いて将来の耐性APIを作成します。これは、他のビルドツールと常に互換性があるとは限りません。
 
-## A Pragmatic Approach to Performance
+## パフォーマンスへの実用的なアプローチ
 
-Vite has been focused on performance since its [origins](./why.md). Its dev server architecture allows HMR that stays fast as projects scale. Vite uses native tools like [esbuild](https://esbuild.github.io/) and [SWC](https://github.com/vitejs/vite-plugin-react-swc) to implement intensive tasks but keeps the rest of the code in JS to balance speed with flexibility. When needed, framework plugins will tap into [Babel](https://babeljs.io/) to compile user code. And during build time Vite currently uses [Rollup](https://rollupjs.org/) where bundling size and having access to a wide ecosystem of plugins are more important than raw speed. Vite will continue to evolve internally, using new libraries as they appear to improve DX while keeping its API stable.
+Viteは、その[起源](./why.md)以来、パフォーマンスに焦点を合わせてきました。その開発サーバーアーキテクチャにより、プロジェクトスケールとして速く留まるHMRが可能になります。 Viteは[Esbuild](https://esbuild.github.io/)や[SWC](https://github.com/vitejs/vite-plugin-react-swc)などのネイティブツールを使用して集中タスクを実装しますが、JSの残りのコードを速度と柔軟性のバランスをとるために保持します。必要に応じて、フレームワークプラグインは[BABEL](https://babeljs.io/)をタップしてユーザーコードをコンパイルします。そして、ビルド時には、Viteは現在、バンドルサイズで[ロールアップ](https://rollupjs.org/)を使用し、プラグインの幅広いエコシステムにアクセスできることは、生の速度よりも重要です。 Viteは、APIを安定させながらDXを改善するように見える新しいライブラリを使用して、内部的に進化し続けます。
 
-## Building Frameworks on Top of Vite
+## Viteの上にフレームワークを構築します
 
-Although Vite can be used by users directly, it shines as a tool to create frameworks. Vite core is framework agnostic, but there are polished plugins for each UI framework. Its [JS API](./api-javascript.md) allows App Framework authors to use Vite features to create tailored experiences for their users. Vite includes support for [SSR primitives](./ssr.md), usually present in higher-level tools but fundamental to building modern web frameworks. And Vite plugins complete the picture by offering a way to share between frameworks. Vite is also a great fit when paired with [Backend frameworks](./backend-integration.md) like [Ruby](https://vite-ruby.netlify.app/) and [Laravel](https://laravel.com/docs/10.x/vite).
+Viteはユーザーが直接使用できますが、フレームワークを作成するツールとして輝いています。 Vite Coreはフレームワーク不可欠なものですが、UIフレームワークごとに磨かれたプラグインがあります。 [JS APIを](./api-javascript.md)使用すると、App Framework AuthorsはVite機能を使用して、ユーザーに合わせたエクスペリエンスを作成できます。 Viteには、通常は高レベルのツールに存在する[SSRプリミティブ](./ssr.md)のサポートが含まれていますが、最新のWebフレームワークの構築に基づいています。また、Viteプラグインは、フレームワーク間で共有する方法を提供することにより、写真を完成させます。 Viteは、 [Ruby](https://vite-ruby.netlify.app/)や[Laravel](https://laravel.com/docs/10.x/vite)などの[バックエンドフレームワーク](./backend-integration.md)と組み合わせると、ぴったりです。
 
-## An Active Ecosystem
+## アクティブなエコシステム
 
-Vite evolution is a cooperation between framework and plugin maintainers, users, and the Vite team. We encourage active participation in Vite's Core development once a project adopts Vite. We work closely with the main projects in the ecosystem to minimize regressions on each release, aided by tools like [vite-ecosystem-ci](https://github.com/vitejs/vite-ecosystem-ci). It allows us to run the CI of major projects using Vite on selected PRs and gives us a clear status of how the Ecosystem would react to a release. We strive to fix regressions before they hit users and allow projects to update to the next versions as soon as they are released. If you are working with Vite, we invite you to join [Vite's Discord](https://chat.vite.dev) and get involved in the project too.
+Vite Evolutionは、フレームワークとプラグインメンテナー、ユーザー、およびViteチームの間の協力です。プロジェクトがViteを採用すると、Viteのコア開発への積極的な参加を奨励します。エコシステムの主要なプロジェクトと緊密に連携して[、Vite-Ecosystem-CI](https://github.com/vitejs/vite-ecosystem-ci)などのツールによって支援された各リリースの回帰を最小限に抑えます。これにより、選択したPRSでViteを使用して主要プロジェクトのCIを実行することができ、エコシステムがリリースにどのように反応するかについての明確なステータスを提供できます。ユーザーがヒットする前に回帰を修正し、リリースされたらすぐにプロジェクトが次のバージョンに更新できるように努めています。あなたがViteで作業している場合、私たちはあなたに[Viteの不一致に](https://chat.vite.dev)参加し、プロジェクトにも参加することを勧めます。

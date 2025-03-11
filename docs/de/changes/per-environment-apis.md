@@ -1,15 +1,15 @@
-# Move to per-environment APIs
+# Wechseln Sie zu APIs pro Umwelt
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+Geben Sie uns Feedback bei [der Umwelt -API -Feedback -Diskussion](https://github.com/vitejs/vite/discussions/16358)
 :::
 
-Multiple APIs from `ViteDevServer` related to module graph and modules transforms have been moved to the `DevEnvironment` instances.
+Mehrere APIs aus `ViteDevServer` , die sich auf Moduldiagramme und Module in Bezug auf Transformationen beziehen, wurden in die `DevEnvironment` Instanzen verschoben.
 
-Affect scope: `Vite Plugin Authors`
+Umfang beeinflussen: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-The `Environment` instance was first introduced at `v6.0`. The deprecation of `server.moduleGraph` and other methods that are now in environments is planned for `v7.0`. We don't recommend moving away from server methods yet. To identify your usage, set these in your vite config.
+Die `Environment` -Instanz wurde erstmals bei `v6.0` eingeführt. Die Abwertung von `server.moduleGraph` und anderen Methoden, die sich jetzt in Umgebungen befinden, ist für `v7.0` geplant. Wir empfehlen noch nicht, sich von Servermethoden zu entfernen. Um Ihre Verwendung zu identifizieren, stellen Sie diese in Ihrer Vite -Konfiguration ein.
 
 ```ts
 future: {
@@ -22,11 +22,11 @@ future: {
 
 ## Motivation
 
-In Vite v5 and before, a single Vite dev server always had two environments (`client` and `ssr`). The `server.moduleGraph` had mixed modules from both of these environments. Nodes were connected through `clientImportedModules` and `ssrImportedModules` lists (but a single `importers` list was maintained for each). A transformed module was represented by an `id` and a `ssr` boolean. This boolean needed to be passed to APIs, for example `server.moduleGraph.getModuleByUrl(url, ssr)` and `server.transformRequest(url, { ssr })`.
+In Vite V5 und zuvor hatte ein einzelner Vite -Dev -Server immer zwei Umgebungen ( `client` und `ssr` ). Die `server.moduleGraph` hatten gemischte Module aus diesen beiden Umgebungen. Die Knoten wurden über `clientImportedModules` und `ssrImportedModules` Listen verbunden (aber für jeden wurde eine einzelne `importers` -Liste beibehalten). Ein transformiertes Modul wurde durch einen `id` und einen `ssr` Booleschen dargestellt. Dieser Boolesche musste an APIs übergeben werden, zum Beispiel `server.moduleGraph.getModuleByUrl(url, ssr)` und `server.transformRequest(url, { ssr })` .
 
-In Vite v6, it is now possible to create any number of custom environments (`client`, `ssr`, `edge`, etc). A single `ssr` boolean isn't enough anymore. Instead of changing the APIs to be of the form `server.transformRequest(url, { environment })`, we moved these methods to the environment instance allowing them to be called without a Vite dev server.
+In Vite V6 ist es jetzt möglich, eine beliebige Anzahl von benutzerdefinierten Umgebungen ( `client` , `ssr` , `edge` usw.) zu erstellen. Ein einzelner `ssr` Boolean ist nicht mehr aus. Anstatt die APIs aus dem Formular `server.transformRequest(url, { environment })` zu ändern, haben wir diese Methoden in die Umgebungsinstanz verschoben, sodass sie ohne Vite Dev Server aufgerufen werden können.
 
-## Migration Guide
+## Migrationsleitfaden
 
 - `server.moduleGraph` -> [`environment.moduleGraph`](/de/guide/api-environment#separate-module-graphs)
 - `server.transformRequest(url, ssr)` -> `environment.transformRequest(url)`

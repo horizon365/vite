@@ -1,50 +1,50 @@
-# Getting Started
+# 시작하기
 
 <audio id="vite-audio">
   <source src="/vite.mp3" type="audio/mpeg">
 </audio>
 
-## Overview
+## 개요
 
 Vite (French word for "quick", pronounced `/vit/`<button style="border:none;padding:3px;border-radius:4px;vertical-align:bottom" id="play-vite-audio" onclick="document.getElementById('vite-audio').play();"><svg style="height:2em;width:2em"><use href="/voice.svg#voice" /></svg></button>, like "veet") is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two major parts:
 
-- A dev server that provides [rich feature enhancements](./features) over [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), for example extremely fast [Hot Module Replacement (HMR)](./features#hot-module-replacement).
+- [기본 ES 모듈](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) (예 [: HMR)과 같은 기본 ES 모듈](./features#hot-module-replacement) 에 대한 [풍부한 기능 향상을](./features) 제공하는 개발자 서버.
 
-- A build command that bundles your code with [Rollup](https://rollupjs.org), pre-configured to output highly optimized static assets for production.
+- 생산을 위해 고도로 최적화 된 정적 자산을 출력하도록 사전 구성된 [롤업](https://rollupjs.org) 과 함께 코드를 묶는 빌드 명령.
 
-Vite is opinionated and comes with sensible defaults out of the box. Read about what's possible in the [Features Guide](./features). Support for frameworks or integration with other tools is possible through [Plugins](./using-plugins). The [Config Section](../config/) explains how to adapt Vite to your project if needed.
+Vite는 의견이 있으며 상자 밖에서 현명한 기본값이 제공됩니다. [기능 가이드](./features) 에서 가능한 것에 대해 읽으십시오. [플러그인을](./using-plugins) 통해 프레임 워크 지원 또는 다른 도구와의 통합이 가능합니다. [구성 섹션은](../config/) 필요한 경우 프로젝트에 Vite를 조정하는 방법을 설명합니다.
 
-Vite is also highly extensible via its [Plugin API](./api-plugin) and [JavaScript API](./api-javascript) with full typing support.
+Vite는 [플러그인 API](./api-plugin) 및 [JavaScript API](./api-javascript) 를 통해 전체 타이핑 지원을 통해 확장 가능합니다.
 
-You can learn more about the rationale behind the project in the [Why Vite](./why) section.
+[Why Vite](./why) Section에서 프로젝트의 이론적 근거에 대해 자세히 알아볼 수 있습니다.
 
-## Browser Support
+## 브라우저 지원
 
-During development, Vite sets [`esnext` as the transform target](https://esbuild.github.io/api/#target), because we assume a modern browser is used and it supports all of the latest JavaScript and CSS features. This prevents syntax lowering, letting Vite serve modules as close as possible to the original source code.
+개발 중에 Vite는 최신 브라우저가 사용되었다고 가정하고 모든 최신 JavaScript 및 CSS 기능을 지원하기 때문에 [`esnext` 변환 대상으로](https://esbuild.github.io/api/#target) 설정합니다. 이로 인해 구문이 낮아지면 Vite가 원래 소스 코드에 최대한 가깝게 모듈을 제공 할 수 있습니다.
 
-For the production build, by default Vite targets browsers that support modern JavaScript, such as [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta), [nullish coalescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing), and [BigInt](https://caniuse.com/bigint). Legacy browsers can be supported via the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy). See the [Building for Production](./build) section for more details.
+생산 빌드의 경우 기본적으로 Vite는 [기본 ES 모듈](https://caniuse.com/es6-module) , [기본 ESM Dynamic Import](https://caniuse.com/es6-module-dynamic-import) , [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) , [Nullish Coalescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing) 및 [Bigint](https://caniuse.com/bigint) 와 같은 최신 JavaScript를 지원하는 브라우저를 대상으로합니다. 레거시 브라우저는 공식 [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) 를 통해 지원할 수 있습니다. 자세한 내용은 [생산 섹션의 건물을](./build) 참조하십시오.
 
-## Trying Vite Online
+## 온라인으로 Vite를 시도합니다
 
-You can try Vite online on [StackBlitz](https://vite.new/). It runs the Vite-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine. You can navigate to `vite.new/{template}` to select which framework to use.
+[Stackblitz](https://vite.new/) 에서 Vite Online을 사용해 볼 수 있습니다. 브라우저에서 Vite 기반 빌드 설정을 직접 실행하므로 로컬 설정과 거의 동일하지만 컴퓨터에 아무것도 설치할 필요가 없습니다. `vite.new/{template}` 으로 이동하여 사용할 프레임 워크를 선택할 수 있습니다.
 
-The supported template presets are:
+지원되는 템플릿 사전 설정은 다음과 같습니다.
 
-|             JavaScript              |                TypeScript                 |
-| :---------------------------------: | :---------------------------------------: |
-| [vanilla](https://vite.new/vanilla) | [vanilla-ts](https://vite.new/vanilla-ts) |
-|     [vue](https://vite.new/vue)     |     [vue-ts](https://vite.new/vue-ts)     |
-|   [react](https://vite.new/react)   |   [react-ts](https://vite.new/react-ts)   |
-|  [preact](https://vite.new/preact)  |  [preact-ts](https://vite.new/preact-ts)  |
-|     [lit](https://vite.new/lit)     |     [lit-ts](https://vite.new/lit-ts)     |
-|  [svelte](https://vite.new/svelte)  |  [svelte-ts](https://vite.new/svelte-ts)  |
-|   [solid](https://vite.new/solid)   |   [solid-ts](https://vite.new/solid-ts)   |
-|    [qwik](https://vite.new/qwik)    |    [qwik-ts](https://vite.new/qwik-ts)    |
+|           자바 스크립트            |                TypeScript                 |
+| :--------------------------------: | :---------------------------------------: |
+| [바닐라](https://vite.new/vanilla) | [바닐라 -ts](https://vite.new/vanilla-ts) |
+|    [vue](https://vite.new/vue)     |     [vue-ts](https://vite.new/vue-ts)     |
+|   [반응](https://vite.new/react)   |   [React-ts](https://vite.new/react-ts)   |
+| [preact](https://vite.new/preact)  |  [preact-ts](https://vite.new/preact-ts)  |
+|    [문학](https://vite.new/lit)    |     [lit-ts](https://vite.new/lit-ts)     |
+| [날씬한](https://vite.new/svelte)  |  [svelte-ts](https://vite.new/svelte-ts)  |
+|  [단단한](https://vite.new/solid)  |     [고체](https://vite.new/solid-ts)     |
+|   [QWIK](https://vite.new/qwik)    |    [QWIK-TS](https://vite.new/qwik-ts)    |
 
-## Scaffolding Your First Vite Project
+## 첫 번째 vite 프로젝트 스캐 폴딩
 
 ::: tip Compatibility Note
-Vite requires [Node.js](https://nodejs.org/en/) version 18+ or 20+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.
+Vite에는 [Node.js](https://nodejs.org/ko/) 버전 18+ 또는 20+가 필요합니다. 그러나 일부 템플릿은 작동하려면 더 높은 Node.js 버전이 필요합니다. 패키지 관리자가 경고하면 업그레이드하십시오.
 :::
 
 ::: code-group
@@ -67,14 +67,14 @@ $ bun create vite
 
 :::
 
-Then follow the prompts!
+그런 다음 프롬프트를 따르십시오!
 
-You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold a Vite + Vue project, run:
+추가 명령 줄 옵션을 통해 사용하려는 프로젝트 이름과 템플릿을 직접 지정할 수도 있습니다. 예를 들어, Vite + Vue 프로젝트를 발판하려면 실행하십시오.
 
 ::: code-group
 
 ```bash [npm]
-# npm 7+, extra double-dash is needed:
+# NPM 7+, 추가 이중계가 필요합니다.
 $ npm create vite@latest my-vue-app -- --template vue
 ```
 
@@ -92,29 +92,29 @@ $ bun create vite my-vue-app --template vue
 
 :::
 
-See [create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) for more details on each supported template: `vanilla`, `vanilla-ts`, `vue`, `vue-ts`, `react`, `react-ts`, `react-swc`, `react-swc-ts`, `preact`, `preact-ts`, `lit`, `lit-ts`, `svelte`, `svelte-ts`, `solid`, `solid-ts`, `qwik`, `qwik-ts`.
+각 지원되는 각 템플릿에 대한 자세한 내용은 [생성 VITE를](https://github.com/vitejs/vite/tree/main/packages/create-vite) 참조하십시오 : `vanilla` , `vanilla-ts` , `vue` , `vue-ts` , `react` , `react-ts` , `react-swc` , `react-swc-ts` , `preact` , `preact-ts` , `lit` , `lit-ts` , `svelte` , `svelte-ts` , `solid` , `solid-ts` , `qwik` , `qwik-ts`
 
-You can use `.` for the project name to scaffold in the current directory.
+현재 디렉토리에서 프로젝트 이름의 스캐 폴드에 `.` 사용할 수 있습니다.
 
-## Community Templates
+## 커뮤니티 템플릿
 
-create-vite is a tool to quickly start a project from a basic template for popular frameworks. Check out Awesome Vite for [community maintained templates](https://github.com/vitejs/awesome-vite#templates) that include other tools or target different frameworks.
+Create-Vite는 인기있는 프레임 워크를위한 기본 템플릿에서 프로젝트를 신속하게 시작하는 도구입니다. 다른 도구 또는 다른 프레임 워크를 포함하는 [커뮤니티 유지 관리 템플릿을](https://github.com/vitejs/awesome-vite#templates) 위한 멋진 Vite를 확인하십시오.
 
-For a template at `https://github.com/user/project`, you can try it out online using `https://github.stackblitz.com/user/project` (adding `.stackblitz` after `github` to the URL of the project).
+`https://github.com/user/project` 의 템플릿의 경우 `https://github.stackblitz.com/user/project` (프로젝트의 URL에 `github` 후 `.stackblitz` 추가)을 사용하여 온라인으로 시도해 볼 수 있습니다.
 
-You can also use a tool like [degit](https://github.com/Rich-Harris/degit) to scaffold your project with one of the templates. Assuming the project is on GitHub and uses `main` as the default branch, you can create a local copy using:
+[Degit과](https://github.com/Rich-Harris/degit) 같은 도구를 사용하여 템플릿 중 하나를 사용하여 프로젝트를 발판 할 수 있습니다. 프로젝트가 github에 있고 기본 분기로 `main` 사용한다고 가정하면 다음을 사용하여 로컬 사본을 만들 수 있습니다.
 
 ```bash
-npx degit user/project#main my-project
+npx degit user/project#메인 내 프로젝트
 cd my-project
 
 npm install
 npm run dev
 ```
 
-## Manual Installation
+## 수동 설치
 
-In your project, you can install the `vite` CLI using:
+프로젝트에서 다음을 사용하여 `vite` CLI를 설치할 수 있습니다.
 
 ::: code-group
 
@@ -136,13 +136,13 @@ $ bun add -D vite
 
 :::
 
-And create an `index.html` file like this:
+다음과 같은 `index.html` 파일을 만듭니다.
 
 ```html
 <p>Hello Vite!</p>
 ```
 
-Then run the appropriate CLI command in your terminal:
+그런 다음 터미널에서 적절한 CLI 명령을 실행하십시오.
 
 ::: code-group
 
@@ -164,26 +164,26 @@ $ bunx vite
 
 :::
 
-The `index.html` will be served on `http://localhost:5173`.
+`index.html` `http://localhost:5173` 에 제공됩니다.
 
-## `index.html` and Project Root
+## `index.html` 및 프로젝트 루트
 
-One thing you may have noticed is that in a Vite project, `index.html` is front-and-central instead of being tucked away inside `public`. This is intentional: during development Vite is a server, and `index.html` is the entry point to your application.
+당신이 알아 차린 한 가지는 Vite 프로젝트에서 `index.html` `public` 내부에 집어 넣는 대신 앞면 중앙이라는 것입니다. 이것은 의도적입니다 : 개발 중에 Vite는 서버이고 `index.html` 응용 프로그램의 진입 점입니다.
 
-Vite treats `index.html` as source code and part of the module graph. It resolves `<script type="module" src="...">` that references your JavaScript source code. Even inline `<script type="module">` and CSS referenced via `<link href>` also enjoy Vite-specific features. In addition, URLs inside `index.html` are automatically rebased so there's no need for special `%PUBLIC_URL%` placeholders.
+Vite는 `index.html` 소스 코드 및 모듈 그래프의 일부로 취급합니다. JavaScript 소스 코드를 참조하는 `<script type="module" src="...">` 해결합니다. `<link href>` 통해 참조 된 Inline `<script type="module">` 와 CSS조차도 Vite 특유의 기능을 즐깁니다. 또한 `index.html` 내부의 URL은 자동으로 재조정되므로 특별 `%PUBLIC_URL%` 자리 표시자가 필요하지 않습니다.
 
-Similar to static http servers, Vite has the concept of a "root directory" which your files are served from. You will see it referenced as `<root>` throughout the rest of the docs. Absolute URLs in your source code will be resolved using the project root as base, so you can write code as if you are working with a normal static file server (except way more powerful!). Vite is also capable of handling dependencies that resolve to out-of-root file system locations, which makes it usable even in a monorepo-based setup.
+정적 HTTP 서버와 유사하게 Vite는 파일이 제공되는 "루트 디렉토리"개념을 가지고 있습니다. 당신은 그것이 문서의 나머지 부분에서 `<root>` 으로 참조 할 것입니다. 소스 코드의 절대 URL은 프로젝트 루트를 기본으로 사용하여 해결되므로 일반적인 정적 파일 서버로 작업하는 것처럼 코드를 작성할 수 있습니다 (더 강력한 방법을 제외하고). Vite는 또한 root 외부 파일 시스템 위치로 해결되는 종속성을 처리 할 수 있으므로 Monorepo 기반 설정에서도 사용할 수 있습니다.
 
-Vite also supports [multi-page apps](./build#multi-page-app) with multiple `.html` entry points.
+Vite는 또한 여러 `.html` 입력 지점이있는 [다중 페이지 앱](./build#multi-page-app) 도 지원합니다.
 
-#### Specifying Alternative Root
+#### 대체 루트 지정
 
-Running `vite` starts the dev server using the current working directory as root. You can specify an alternative root with `vite serve some/sub/dir`.
-Note that Vite will also resolve [its config file (i.e. `vite.config.js`)](/ko/config/#configuring-vite) inside the project root, so you'll need to move it if the root is changed.
+실행 `vite` 현재 작업 디렉토리를 루트로 사용하여 개발 서버를 시작합니다. `vite serve some/sub/dir` 으로 대체 루트를 지정할 수 있습니다.
+VITE는 프로젝트 루트 내부 [의 구성 파일 (예 : `vite.config.js` )을](/ko/config/#configuring-vite) 해결하므로 루트가 변경되면 이동해야합니다.
 
-## Command Line Interface
+## 명령 줄 인터페이스
 
-In a project where Vite is installed, you can use the `vite` binary in your npm scripts, or run it directly with `npx vite`. Here are the default npm scripts in a scaffolded Vite project:
+Vite가 설치된 프로젝트에서는 NPM 스크립트에서 `vite` 바이너리를 사용하거나 `npx vite` 으로 직접 실행할 수 있습니다. 다음은 스캐 폴드 Vite 프로젝트의 기본 NPM 스크립트입니다.
 
 <!-- prettier-ignore -->
 ```json [package.json]
@@ -196,13 +196,13 @@ In a project where Vite is installed, you can use the `vite` binary in your npm 
 }
 ```
 
-You can specify additional CLI options like `--port` or `--open`. For a full list of CLI options, run `npx vite --help` in your project.
+`--port` 또는 `--open` 같은 추가 CLI 옵션을 지정할 수 있습니다. CLI 옵션의 전체 목록을 보려면 프로젝트에서 `npx vite --help` 실행하십시오.
 
-Learn more about the [Command Line Interface](./cli.md)
+[명령 줄 인터페이스](./cli.md) 에 대해 자세히 알아보십시오
 
-## Using Unreleased Commits
+## 미공개 커밋을 사용합니다
 
-If you can't wait for a new release to test the latest features, you can install a specific commit of Vite with https://pkg.pr.new:
+최신 기능을 테스트하기 위해 새 릴리스가 기다릴 수 없다면 https://pkg.pr.new를 사용하여 특정 Vite 커밋을 설치할 수 있습니다.
 
 ::: code-group
 
@@ -224,9 +224,9 @@ $ bun add -D https://pkg.pr.new/vite@SHA
 
 :::
 
-Replace `SHA` with any of [Vite's commit SHAs](https://github.com/vitejs/vite/commits/main/). Note that only commits within the last month will work, as older commit releases are purged.
+[Vite의 Commit Shas](https://github.com/vitejs/vite/commits/main/) 로 `SHA` 교체하십시오. 오래된 커밋 릴리스가 제거되므로 지난 달에 커밋 만 작동합니다.
 
-Alternatively, you can also clone the [vite repo](https://github.com/vitejs/vite) to your local machine and then build and link it yourself ([pnpm](https://pnpm.io/) is required):
+또는 [Vite Repo를](https://github.com/vitejs/vite) 로컬 컴퓨터로 복제 한 다음 직접 빌드하여 연결할 수도 있습니다 ( [PNPM](https://pnpm.io/) 이 필요함).
 
 ```bash
 git clone https://github.com/vitejs/vite.git
@@ -234,15 +234,15 @@ cd vite
 pnpm install
 cd packages/vite
 pnpm run build
-pnpm link --global # use your preferred package manager for this step
+pnpm link --global # 이 단계에서 선호하는 패키지 관리자를 사용하십시오
 ```
 
-Then go to your Vite based project and run `pnpm link --global vite` (or the package manager that you used to link `vite` globally). Now restart the development server to ride on the bleeding edge!
+그런 다음 Vite 기반 프로젝트로 이동하여 `pnpm link --global vite` (또는 전 세계적으로 `vite` 연결하는 데 사용한 패키지 관리자)을 실행하십시오. 이제 개발 서버를 다시 시작하여 출혈 가장자리를 타십시오!
 
 ::: tip Dependencies using Vite
-To replace the Vite version used by dependencies transitively, you should use [npm overrides](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#overrides) or [pnpm overrides](https://pnpm.io/package_json#pnpmoverrides).
+종속성에서 사용하는 VITE 버전을 전환 적으로 교체하려면 [NPM 재정의](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#overrides) 또는 [PNPM 재정의](https://pnpm.io/package_json#pnpmoverrides) 사용을 사용해야합니다.
 :::
 
-## Community
+## 지역 사회
 
-If you have questions or need help, reach out to the community at [Discord](https://chat.vite.dev) and [GitHub Discussions](https://github.com/vitejs/vite/discussions).
+질문이 있거나 도움이 필요한 경우 [Discord](https://chat.vite.dev) 및 [Github 토론](https://github.com/vitejs/vite/discussions) 에서 커뮤니티에 연락하십시오.

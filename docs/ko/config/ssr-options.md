@@ -4,59 +4,47 @@ Unless noted, the options in this section are applied to both dev and build.
 
 ## ssr.external
 
-- **Type:** `string[] | true`
-- **Related:** [SSR Externals](/ko/guide/ssr#ssr-externals)
+- **유형 :** `String [] | 진실
+-
 
 Externalize the given dependencies and their transitive dependencies for SSR. By default, all dependencies are externalized except for linked dependencies (for HMR). If you prefer to externalize the linked dependency, you can pass its name to this option.
 
-If `true`, all dependencies including linked dependencies are externalized.
-
-Note that the explicitly listed dependencies (using `string[]` type) will always take priority if they're also listed in `ssr.noExternal` (using any type).
-
 ## ssr.noExternal
 
-- **Type:** `string | RegExp | (string | RegExp)[] | true`
-- **Related:** [SSR Externals](/ko/guide/ssr#ssr-externals)
+- **유형 :** `문자열 | RegExp | (끈 | | 진실
+-
 
-Prevent listed dependencies from being externalized for SSR, which they will get bundled in build. By default, only linked dependencies are not externalized (for HMR). If you prefer to externalize the linked dependency, you can pass its name to the `ssr.external` option.
+If `true` , no dependencies are externalized. However, dependencies explicitly listed in `ssr.external` (using `string[]` type) can take priority and still be externalized. `ssr.target: 'node'` 설정되면 Node.js 내장도 기본적으로 외부화됩니다.
 
-If `true`, no dependencies are externalized. However, dependencies explicitly listed in `ssr.external` (using `string[]` type) can take priority and still be externalized. If `ssr.target: 'node'` is set, Node.js built-ins will also be externalized by default.
-
-Note that if both `ssr.noExternal: true` and `ssr.external: true` are configured, `ssr.noExternal` takes priority and no dependencies are externalized.
+`ssr.noExternal: true` 과 `ssr.external: true` 모두 구성되면 `ssr.noExternal` 우선 순위를 정하고 종속성이 외부화되지 않습니다.
 
 ## ssr.target
 
-- **Type:** `'node' | 'webworker'`
-- **Default:** `node`
+- |
+- **기본값 :** `node`
 
 Build target for the SSR server.
 
 ## ssr.resolve.conditions
 
-- **Type:** `string[]`
-- **Default:** `['module', 'node', 'development|production']` (`defaultServerConditions`) (`['module', 'browser', 'development|production']` (`defaultClientConditions`) for `ssr.target === 'webworker'`)
-- **Related:** [Resolve Conditions](./shared-options.md#resolve-conditions)
-
-These conditions are used in the plugin pipeline, and only affect non-externalized dependencies during the SSR build. Use `ssr.resolve.externalConditions` to affect externalized imports.
+- **유형 :** `string[]`
+- **기본값 :** `[ 'module', 'node', '개발||
+-
 
 ## ssr.resolve.externalConditions
 
-- **Type:** `string[]`
-- **Default:** `['node']`
-
-Conditions that are used during ssr import (including `ssrLoadModule`) of externalized direct dependencies (external dependencies imported by Vite).
+- **유형 :** `string[]`
+- **기본값 :** `['node']`
 
 :::tip
 
-When using this option, make sure to run Node with [`--conditions` flag](https://nodejs.org/docs/latest/api/cli.html#-c-condition---conditionscondition) with the same values in both dev and build to get a consistent behavior.
-
-For example, when setting `['node', 'custom']`, you should run `NODE_OPTIONS='--conditions custom' vite` in dev and `NODE_OPTIONS="--conditions custom" node ./dist/server.js` after build.
+이 옵션을 사용할 때는 DEV에서 동일한 값을 가진 [`--conditions` 플래그](https://nodejs.org/docs/latest/api/cli.html#-c-condition---conditionscondition) 로 노드를 실행하고 일관된 동작을 얻으려면 빌드하십시오.
 
 :::
 
 ### ssr.resolve.mainFields
 
-- **Type:** `string[]`
-- **Default:** `['module', 'jsnext:main', 'jsnext']`
+- **유형 :** `string[]`
+- **기본값 :** `['module', 'jsnext:main', 'jsnext']`
 
-List of fields in `package.json` to try when resolving a package's entry point. Note this takes lower precedence than conditional exports resolved from the `exports` field: if an entry point is successfully resolved from `exports`, the main field will be ignored. This setting only affect non-externalized dependencies.
+패키지의 진입 점을 해결할 때 시도 할 `package.json` 의 필드 목록. 참고 이것은 `exports` 필드에서 해결 된 조건부 수출보다 우선 순위가 낮습니다. `exports` 에서 진입 점이 성공적으로 해결되면 메인 필드는 무시됩니다. 이 설정은 비 저전방 종속성에만 영향을 미칩니다.

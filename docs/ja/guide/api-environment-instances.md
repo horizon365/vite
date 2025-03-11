@@ -1,66 +1,66 @@
-# Using `Environment` Instances
+# `Environment`インスタンスを使用します
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+環境APIは実験的です。 Vite 6の間、APIを安定させて、生態系を実験し、その上に構築します。 Vite 7の潜在的な破壊変化を伴うこれらの新しいAPIを安定させることを計画しています。
 
-Resources:
+リソース:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+- 新しいAPIに関するフィードバックを収集している[フィードバックディスカッション](https://github.com/vitejs/vite/discussions/16358)。
+- 新しいAPIが実装およびレビューされた[環境API PR](https://github.com/vitejs/vite/pull/16471) 。
 
-Please share your feedback with us.
+フィードバックを私たちと共有してください。
 :::
 
-## Accessing the Environments
+## 環境へのアクセス
 
-During dev, the available environments in a dev server can be accessed using `server.environments`:
+開発中、開発サーバー内の利用可能な環境に`server.environments`を使用してアクセスできます。
 
 ```js
-// create the server, or get it from the configureServer hook
-const server = await createServer(/* options */)
+// サーバーを作成するか、configureServerフックから取得します
+const server = await createServer(/* オプション */)
 
 const environment = server.environments.client
 environment.transformRequest(url)
 console.log(server.environments.ssr.moduleGraph)
 ```
 
-You can also access the current environment from plugins. See the [Environment API for Plugins](./api-environment-plugins.md#accessing-the-current-environment-in-hooks) for more details.
+プラグインから現在の環境にアクセスすることもできます。詳細については、[プラグインについては環境APIを](./api-environment-plugins.md#accessing-the-current-environment-in-hooks)参照してください。
 
-## `DevEnvironment` class
+## `DevEnvironment`クラス
 
-During dev, each environment is an instance of the `DevEnvironment` class:
+開発中、各環境は`DevEnvironment`クラスのインスタンスです。
 
 ```ts
 class DevEnvironment {
   /**
-   * Unique identifier for the environment in a Vite server.
-   * By default Vite exposes 'client' and 'ssr' environments.
+   * Viteサーバー内の環境の一意の識別子。
+   * デフォルトでは、Viteは「クライアント」と「SSR」環境を公開します。
    */
   name: string
   /**
-   * Communication channel to send and receive messages from the
-   * associated module runner in the target runtime.
+   * メッセージを送信および受信する通信チャネル
+   * ターゲットランタイムの関連モジュールランナー。
    */
   hot: NormalizedHotChannel
   /**
-   * Graph of module nodes, with the imported relationship between
-   * processed modules and the cached result of the processed code.
+   * インポートされた関係があるモジュールノードのグラフ
+   * 処理されたモジュールと、処理されたコードのキャッシュ結果。
    */
   moduleGraph: EnvironmentModuleGraph
   /**
-   * Resolved plugins for this environment, including the ones
-   * created using the per-environment `create` hook
+   * この環境を含むこの環境の解決されたプラグイン
+   * 環境`create`のフックを使用して作成されました
    */
   plugins: Plugin[]
   /**
-   * Allows to resolve, load, and transform code through the
-   * environment plugins pipeline
+   * コードを解決、ロード、および変換することができます
+   * 環境プラグインパイプライン
    */
   pluginContainer: EnvironmentPluginContainer
   /**
-   * Resolved config options for this environment. Options at the server
-   * global scope are taken as defaults for all environments, and can
-   * be overridden (resolve conditions, external, optimizedDeps)
+   * この環境の構成オプションを解決しました。サーバーのオプション
+   * グローバルスコープは、すべての環境のデフォルトとして取得され、
+   * オーバーライドする（条件を解決、外部、最適化されたデップ）
    */
   config: ResolvedConfig & ResolvedDevEnvironmentOptions
 
@@ -71,22 +71,22 @@ class DevEnvironment {
   )
 
   /**
-   * Resolve the URL to an id, load it, and process the code using the
-   * plugins pipeline. The module graph is also updated.
+   * URLをIDに解決し、ロードし、次のようにコードを処理します
+   * プラグインパイプライン。モジュールグラフも更新されます。
    */
   async transformRequest(url: string): Promise<TransformResult | null>
 
   /**
-   * Register a request to be processed with low priority. This is useful
-   * to avoid waterfalls. The Vite server has information about the
-   * imported modules by other requests, so it can warmup the module graph
-   * so the modules are already processed when they are requested.
+   * 低い優先度で処理されるリクエストを登録します。これは便利です
+   * 滝を避けるため。 Viteサーバーには、
+   * 他のリクエストによってインポートされたモジュールを使用すると、モジュールグラフをウォームアップできます
+   * そのため、モジュールは要求されたときにすでに処理されています。
    */
   async warmupRequest(url: string): Promise<void>
 }
 ```
 
-With `DevEnvironmentContext` being:
+`DevEnvironmentContext`がある:
 
 ```ts
 interface DevEnvironmentContext {
@@ -100,7 +100,7 @@ interface DevEnvironmentContext {
 }
 ```
 
-and with `TransformResult` being:
+そして`TransformResult`があります:
 
 ```ts
 interface TransformResult {
@@ -112,21 +112,21 @@ interface TransformResult {
 }
 ```
 
-An environment instance in the Vite server lets you process a URL using the `environment.transformRequest(url)` method. This function will use the plugin pipeline to resolve the `url` to a module `id`, load it (reading the file from the file system or through a plugin that implements a virtual module), and then transform the code. While transforming the module, imports and other metadata will be recorded in the environment module graph by creating or updating the corresponding module node. When processing is done, the transform result is also stored in the module.
+Viteサーバーの環境インスタンスを使用すると、 `environment.transformRequest(url)`メソッドを使用してURLを処理できます。この関数は、プラグインパイプラインを使用して`url`モジュール`id`に解決し、それをロードし（ファイルシステムまたは仮想モジュールを実装するプラグインを介してファイルを読み取ります）、コードを変換します。モジュールの変換中、インポートおよびその他のメタデータは、対応するモジュールノードを作成または更新することにより、環境モジュールグラフに記録されます。処理が行われると、変換結果もモジュールに保存されます。
 
 :::info transformRequest naming
-We are using `transformRequest(url)` and `warmupRequest(url)` in the current version of this proposal so it is easier to discuss and understand for users used to Vite's current API. Before releasing, we can take the opportunity to review these names too. For example, it could be named `environment.processModule(url)` or `environment.loadModule(url)` taking a page from Rollup's `context.load(id)` in plugin hooks. For the moment, we think keeping the current names and delaying this discussion is better.
+この提案の現在のバージョンで`transformRequest(url)`と`warmupRequest(url)`使用しているため、Viteの現在のAPIに使用されるユーザーについて議論して理解しやすくなります。リリースする前に、これらの名前を確認する機会を得ることができます。たとえば、Rollupの`context.load(id)`プラグインフックからページを撮影する`environment.processModule(url)`または`environment.loadModule(url)`名前が付けられます。とりあえず、現在の名前を維持し、この議論を遅らせる方が良いと思います。
 :::
 
-## Separate Module Graphs
+## 個別のモジュールグラフ
 
-Each environment has an isolated module graph. All module graphs have the same signature, so generic algorithms can be implemented to crawl or query the graph without depending on the environment. `hotUpdate` is a good example. When a file is modified, the module graph of each environment will be used to discover the affected modules and perform HMR for each environment independently.
+各環境には、分離モジュールグラフがあります。すべてのモジュールグラフには同じ署名があるため、環境に依存せずにグラフをクロールまたはクエリするために一般的なアルゴリズムを実装できます。 `hotUpdate`は良い例です。ファイルが変更されると、各環境のモジュールグラフを使用して、影響を受けるモジュールを発見し、各環境のHMRを独立して実行します。
 
 ::: info
-Vite v5 had a mixed Client and SSR module graph. Given an unprocessed or invalidated node, it isn't possible to know if it corresponds to the Client, SSR, or both environments. Module nodes have some properties prefixed, like `clientImportedModules` and `ssrImportedModules` (and `importedModules` that returns the union of both). `importers` contains all importers from both the Client and SSR environment for each module node. A module node also has `transformResult` and `ssrTransformResult`. A backward compatibility layer allows the ecosystem to migrate from the deprecated `server.moduleGraph`.
+Vite V5には、クライアントとSSRモジュールの混合グラフがありました。未処理または無効なノードを考えると、クライアント、SSR、または両方の環境に対応するかどうかを知ることはできません。モジュールノードには、 `clientImportedModules`と`ssrImportedModules`のいくつかのプロパティが付いています（および両方の組合を返す`importedModules` ）。 `importers`は、各モジュールノードのクライアント環境とSSR環境の両方からのすべての輸入業者が含まれています。モジュールノードには`transformResult`と`ssrTransformResult`あります。後方互換性レイヤーにより、エコシステムは非推奨`server.moduleGraph`から移行できます。
 :::
 
-Each module is represented by a `EnvironmentModuleNode` instance. Modules may be registered in the graph without yet being processed (`transformResult` would be `null` in that case). `importers` and `importedModules` are also updated after the module is processed.
+各モジュールは、 `EnvironmentModuleNode`インスタンスで表されます。モジュールは、まだ処理されていない場合はグラフに登録できます（その場合、 `transformResult` `null`になります）。モジュールが処理された後、 `importers`と`importedModules`も更新されます。
 
 ```ts
 class EnvironmentModuleNode {
@@ -154,7 +154,7 @@ class EnvironmentModuleNode {
 }
 ```
 
-`environment.moduleGraph` is an instance of `EnvironmentModuleGraph`:
+`environment.moduleGraph`は`EnvironmentModuleGraph`のインスタンスです。
 
 ```ts
 export class EnvironmentModuleGraph {

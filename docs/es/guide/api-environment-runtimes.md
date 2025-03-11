@@ -1,19 +1,19 @@
-# Environment API for Runtimes
+# API ambiental para tiempos de ejecución
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+El medio ambiente API es experimental. Mantendremos las API estables durante Vite 6 para dejar que el ecosistema experimente y construir sobre ella. Estamos planeando estabilizar estas nuevas API con posibles cambios de ruptura en Vite 7.
 
-Resources:
+Recursos:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+- [Discusión de comentarios](https://github.com/vitejs/vite/discussions/16358) Cuando estamos recopilando comentarios sobre las nuevas API.
+- [API ambiental PR](https://github.com/vitejs/vite/pull/16471) donde se implementó y revisó la nueva API.
 
-Please share your feedback with us.
+Comparta sus comentarios con nosotros.
 :::
 
-## Environment Factories
+## Fábricas Del Medio Ambiente
 
-Environments factories are intended to be implemented by Environment providers like Cloudflare, and not by end users. Environment factories return a `EnvironmentOptions` for the most common case of using the target runtime for both dev and build environments. The default environment options can also be set so the user doesn't need to do it.
+Las fábricas de entornos están destinadas a ser implementadas por proveedores de entorno como CloudFlare, y no por usuarios finales. Las fábricas de entorno devuelven un `EnvironmentOptions` para el caso más común de usar el tiempo de ejecución de destino para entornos de desarrollo y compilación. Las opciones de entorno predeterminadas también se pueden configurar para que el usuario no sea necesario hacerlo.
 
 ```ts
 function createWorkerdEnvironment(
@@ -45,7 +45,7 @@ function createWorkerdEnvironment(
 }
 ```
 
-Then the config file can be written as:
+Entonces el archivo de configuración se puede escribir como:
 
 ```js
 import { createWorkerdEnvironment } from 'vite-environment-workerd'
@@ -66,21 +66,21 @@ export default {
 }
 ```
 
-and frameworks can use an environment with the workerd runtime to do SSR using:
+y los marcos pueden usar un entorno con el tiempo de ejecución de Workerd para hacer SSR usando:
 
 ```js
 const ssrEnvironment = server.environments.ssr
 ```
 
-## Creating a New Environment Factory
+## Creando Una Nueva Fábrica De Entorno
 
-A Vite dev server exposes two environments by default: a `client` environment and an `ssr` environment. The client environment is a browser environment by default, and the module runner is implemented by importing the virtual module `/@vite/client` to client apps. The SSR environment runs in the same Node runtime as the Vite server by default and allows application servers to be used to render requests during dev with full HMR support.
+Un servidor Vite Dev expone dos entornos por defecto: un entorno `client` y un entorno `ssr` . El entorno del cliente es un entorno de navegador de forma predeterminada, y el corredor del módulo se implementa importando el módulo virtual `/@vite/client` a las aplicaciones del cliente. El entorno SSR se ejecuta en el mismo tiempo de ejecución del nodo que el servidor VITE de forma predeterminada y permite que los servidores de aplicaciones se usen para representar las solicitudes durante el desarrollo con soporte HMR completo.
 
-The transformed source code is called a module, and the relationships between the modules processed in each environment are kept in a module graph. The transformed code for these modules is sent to the runtimes associated with each environment to be executed. When a module is evaluated in the runtime, its imported modules will be requested triggering the processing of a section of the module graph.
+El código fuente transformado se llama módulo, y las relaciones entre los módulos procesados en cada entorno se mantienen en un gráfico de módulo. El código transformado para estos módulos se envía a los tiempos de ejecución asociados con cada entorno que se ejecutará. Cuando se evalúa un módulo en el tiempo de ejecución, se solicitará a sus módulos importados que activen el procesamiento de una sección del gráfico del módulo.
 
-A Vite Module Runner allows running any code by processing it with Vite plugins first. It is different from `server.ssrLoadModule` because the runner implementation is decoupled from the server. This allows library and framework authors to implement their layer of communication between the Vite server and the runner. The browser communicates with its corresponding environment using the server Web Socket and through HTTP requests. The Node Module runner can directly do function calls to process modules as it is running in the same process. Other environments could run modules connecting to a JS runtime like workerd, or a Worker Thread as Vitest does.
+Un corredor de módulo VITE permite ejecutar cualquier código procesando primero con complementos VITE. Es diferente de `server.ssrLoadModule` porque la implementación del corredor se desacopla desde el servidor. Esto permite a los autores de biblioteca y marco implementar su capa de comunicación entre el servidor VITE y el corredor. El navegador se comunica con su entorno correspondiente utilizando el socket web del servidor y mediante solicitudes HTTP. El corredor del módulo de nodo puede hacer directamente las llamadas de función para procesar módulos, ya que se ejecuta en el mismo proceso. Otros entornos podrían ejecutar módulos que se conectan a un tiempo de ejecución JS como Workerd, o un hilo de trabajadores como lo hace Vitest.
 
-One of the goals of this feature is to provide a customizable API to process and run code. Users can create new environment factories using the exposed primitives.
+Uno de los objetivos de esta característica es proporcionar una API personalizable para procesar y ejecutar código. Los usuarios pueden crear nuevas fábricas de entorno utilizando las primitivas expuestas.
 
 ```ts
 import { DevEnvironment, HotChannel } from 'vite'
@@ -110,9 +110,9 @@ function createWorkerdDevEnvironment(
 
 ## `ModuleRunner`
 
-A module runner is instantiated in the target runtime. All APIs in the next section are imported from `vite/module-runner` unless stated otherwise. This export entry point is kept as lightweight as possible, only exporting the minimal needed to create module runners.
+Un corredor de módulo se instancia en el tiempo de ejecución de destino. Todas las API en la siguiente sección se importan de `vite/module-runner` a menos que se indique lo contrario. Este punto de entrada de exportación se mantiene lo más liviano posible, solo exporta lo mínimo necesario para crear corredores de módulos.
 
-**Type Signature:**
+**Tipo de firma:**
 
 ```ts
 export class ModuleRunner {
@@ -122,31 +122,31 @@ export class ModuleRunner {
     private debug?: ModuleRunnerDebugger,
   ) {}
   /**
-   * URL to execute.
-   * Accepts file path, server path, or id relative to the root.
+   * URL para ejecutar.
+   * Acepta la ruta del archivo, la ruta del servidor o la ID en relación con la raíz.
    */
   public async import<T = any>(url: string): Promise<T>
   /**
-   * Clear all caches including HMR listeners.
+   * Borre todos los cachés, incluidos los oyentes de HMR.
    */
   public clearCache(): void
   /**
-   * Clear all caches, remove all HMR listeners, reset sourcemap support.
-   * This method doesn't stop the HMR connection.
+   * Borre todos los cachés, elimine a todos los oyentes de HMR, restablezca el soporte de SourCeMap.
+   * Este método no detiene la conexión HMR.
    */
   public async close(): Promise<void>
   /**
-   * Returns `true` if the runner has been closed by calling `close()`.
+   * Devuelve `true` si el corredor ha sido cerrado llamando `close()` .
    */
   public isClosed(): boolean
 }
 ```
 
-The module evaluator in `ModuleRunner` is responsible for executing the code. Vite exports `ESModulesEvaluator` out of the box, it uses `new AsyncFunction` to evaluate the code. You can provide your own implementation if your JavaScript runtime doesn't support unsafe evaluation.
+El evaluador del módulo en `ModuleRunner` es responsable de ejecutar el código. VITE exporta `ESModulesEvaluator` de la caja, usa `new AsyncFunction` para evaluar el código. Puede proporcionar su propia implementación si su tiempo de ejecución de JavaScript no admite una evaluación insegura.
 
-Module runner exposes `import` method. When Vite server triggers `full-reload` HMR event, all affected modules will be re-executed. Be aware that Module Runner doesn't update `exports` object when this happens (it overrides it), you would need to run `import` or get the module from `evaluatedModules` again if you rely on having the latest `exports` object.
+El corredor del módulo expone el método `import` . Cuando Vite Server desencadena un evento de `full-reload` HMR, todos los módulos afectados se volverán a ejecutarse. Tenga en cuenta que Module Runner no actualiza el objeto `exports` cuando esto sucede (lo anula), deberá ejecutar `import` u obtener el módulo de `evaluatedModules` nuevamente si confía en tener el último objeto `exports` .
 
-**Example Usage:**
+**Ejemplo de uso:**
 
 ```js
 import { ModuleRunner, ESModulesEvaluator } from 'vite/module-runner'
@@ -174,22 +174,22 @@ import type { Debug } from '@type-challenges/utils'
 
 type InterceptorOptions = Debug<InterceptorOptionsRaw>
 type ModuleRunnerHmr = Debug<ModuleRunnerHmrRaw>
-/** see below */
+/** vea abajo */
 type ModuleRunnerTransport = unknown
 
-// ---cut---
+// ---cortar---
 interface ModuleRunnerOptions {
   /**
-   * A set of methods to communicate with the server.
+   * Un conjunto de métodos para comunicarse con el servidor.
    */
   transport: ModuleRunnerTransport
   /**
-   * Configure how source maps are resolved.
-   * Prefers `node` if `process.setSourceMapsEnabled` is available.
-   * Otherwise it will use `prepareStackTrace` by default which overrides
-   * `Error.prepareStackTrace` method.
-   * You can provide an object to configure how file contents and
-   * source maps are resolved for files that were not processed by Vite.
+   * Configure cómo se resuelven los mapas de origen.
+   * Prefiere `node` si `process.setSourceMapsEnabled` está disponible.
+   * De lo contrario, usará `prepareStackTrace` por defecto que anule
+   * `Error.prepareStackTrace` Método.
+   * Puede proporcionar un objeto para configurar cómo el contenido del archivo y
+   * Los mapas de origen se resuelven para archivos que no fueron procesados por VITE.
    */
   sourcemapInterceptor?:
     | false
@@ -197,14 +197,14 @@ interface ModuleRunnerOptions {
     | 'prepareStackTrace'
     | InterceptorOptions
   /**
-   * Disable HMR or configure HMR options.
+   * Deshabilite HMR o configure las opciones de HMR.
    *
-   * @default true
+   * @default verdad
    */
   hmr?: boolean | ModuleRunnerHmr
   /**
-   * Custom module cache. If not provided, it creates a separate module
-   * cache for each module runner instance.
+   * Cache de módulo personalizado. Si no se proporciona, crea un módulo separado
+   * caché para cada instancia de corredor de módulo.
    */
   evaluatedModules?: EvaluatedModules
 }
@@ -212,7 +212,7 @@ interface ModuleRunnerOptions {
 
 ## `ModuleEvaluator`
 
-**Type Signature:**
+**Tipo de firma:**
 
 ```ts twoslash
 import type { ModuleRunnerContext as ModuleRunnerContextRaw } from 'vite/module-runner'
@@ -220,17 +220,17 @@ import type { Debug } from '@type-challenges/utils'
 
 type ModuleRunnerContext = Debug<ModuleRunnerContextRaw>
 
-// ---cut---
+// ---cortar---
 export interface ModuleEvaluator {
   /**
-   * Number of prefixed lines in the transformed code.
+   * Número de líneas prefijadas en el código transformado.
    */
   startOffset?: number
   /**
-   * Evaluate code that was transformed by Vite.
-   * @param context Function context
-   * @param code Transformed code
-   * @param id ID that was used to fetch the module
+   * Evaluar el código que fue transformado por VITE.
+   * @Param Context Function Context
+   * Código de código de param Código transformado
+   * @Param ID ID que se usó para obtener el módulo
    */
   runInlinedModule(
     context: ModuleRunnerContext,
@@ -238,24 +238,24 @@ export interface ModuleEvaluator {
     id: string,
   ): Promise<any>
   /**
-   * evaluate externalized module.
-   * @param file File URL to the external module
+   * Evaluar el módulo externalizado.
+   * URL de archivo de archivo de @param al módulo externo
    */
   runExternalModule(file: string): Promise<any>
 }
 ```
 
-Vite exports `ESModulesEvaluator` that implements this interface by default. It uses `new AsyncFunction` to evaluate code, so if the code has inlined source map it should contain an [offset of 2 lines](https://tc39.es/ecma262/#sec-createdynamicfunction) to accommodate for new lines added. This is done automatically by the `ESModulesEvaluator`. Custom evaluators will not add additional lines.
+VITE exporta `ESModulesEvaluator` que implementa esta interfaz de forma predeterminada. Utiliza `new AsyncFunction` para evaluar el código, por lo que si el código ha inclinado el mapa fuente, debe contener un [desplazamiento de 2 líneas](https://tc39.es/ecma262/#sec-createdynamicfunction) para acomodar nuevas líneas agregadas. Esto se hace automáticamente por el `ESModulesEvaluator` . Los evaluadores personalizados no agregarán líneas adicionales.
 
 ## `ModuleRunnerTransport`
 
-**Type Signature:**
+**Tipo de firma:**
 
 ```ts twoslash
 import type { ModuleRunnerTransportHandlers } from 'vite/module-runner'
-/** an object */
+/** un objeto */
 type HotPayload = unknown
-// ---cut---
+// ---cortar---
 interface ModuleRunnerTransport {
   connect?(handlers: ModuleRunnerTransportHandlers): Promise<void> | void
   disconnect?(): Promise<void> | void
@@ -265,9 +265,9 @@ interface ModuleRunnerTransport {
 }
 ```
 
-Transport object that communicates with the environment via an RPC or by directly calling the function. When `invoke` method is not implemented, the `send` method and `connect` method is required to be implemented. Vite will construct the `invoke` internally.
+Transporte el objeto que se comunica con el entorno a través de un RPC o llamando directamente a la función. Cuando no se implementa el método `invoke` , se requiere implementar el método `send` y `connect` método. Vite construirá los `invoke` internamente.
 
-You need to couple it with the `HotChannel` instance on the server like in this example where module runner is created in the worker thread:
+Debe acoplarlo con la instancia `HotChannel` en el servidor como en este ejemplo donde el corredor de módulo se crea en el hilo de trabajadores:
 
 ::: code-group
 
@@ -276,7 +276,7 @@ import { parentPort } from 'node:worker_threads'
 import { fileURLToPath } from 'node:url'
 import { ESModulesEvaluator, ModuleRunner } from 'vite/module-runner'
 
-/** @type {import('vite/module-runner').ModuleRunnerTransport} */
+/** @Type {import ('Vite/Module-Runner'). ModulerUnnerTransport} */
 const transport = {
   connect({ onMessage, onDisconnection }) {
     parentPort.on('message', onMessage)
@@ -349,7 +349,7 @@ await createServer({
 
 :::
 
-A different example using an HTTP request to communicate between the runner and the server:
+Un ejemplo diferente utilizando una solicitud HTTP para comunicarse entre el corredor y el servidor:
 
 ```ts
 import { ESModulesEvaluator, ModuleRunner } from 'vite/module-runner'
@@ -365,7 +365,7 @@ export const runner = new ModuleRunner(
         return response.json()
       },
     },
-    hmr: false, // disable HMR as HMR requires transport.connect
+    hmr: false, // Deshabilitar HMR ya que HMR requiere transporte. Conexión
   },
   new ESModulesEvaluator(),
 )
@@ -373,7 +373,7 @@ export const runner = new ModuleRunner(
 await runner.import('/entry.js')
 ```
 
-In this case, the `handleInvoke` method in the `NormalizedHotChannel` can be used:
+En este caso, se puede usar el método `handleInvoke` en el `NormalizedHotChannel` :
 
 ```ts
 const customEnvironment = new DevEnvironment(name, config, context)
@@ -389,6 +389,6 @@ server.onRequest((request: Request) => {
 })
 ```
 
-But note that for HMR support, `send` and `connect` methods are required. The `send` method is usually called when the custom event is triggered (like, `import.meta.hot.send("my-event")`).
+Pero tenga en cuenta que para el soporte de HMR, se requieren métodos `send` y `connect` . El método `send` generalmente se llama cuando se activa el evento personalizado (como, `import.meta.hot.send("my-event")` ).
 
-Vite exports `createServerHotChannel` from the main entry point to support HMR during Vite SSR.
+VITE exporta `createServerHotChannel` desde el punto de entrada principal para admitir HMR durante VITE SSR.

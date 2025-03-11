@@ -1,16 +1,16 @@
-# JavaScript API
+# API JavaScript
 
-Vite's JavaScript APIs are fully typed, and it's recommended to use TypeScript or enable JS type checking in VS Code to leverage the intellisense and validation.
+As APIs JavaScript da Vite estão totalmente digitadas e é recomendável usar o TypeScript ou ativar o tipo de verificação do tipo JS no código VS para alavancar o IntelliSense e a validação.
 
 ## `createServer`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 async function createServer(inlineConfig?: InlineConfig): Promise<ViteDevServer>
 ```
 
-**Example Usage:**
+**Exemplo de uso:**
 
 ```ts twoslash
 import { fileURLToPath } from 'node:url'
@@ -19,7 +19,7 @@ import { createServer } from 'vite'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const server = await createServer({
-  // any valid user config options, plus `mode` and `configFile`
+  // Quaisquer opções de configuração de usuário válidas, mais `mode` e `configFile`
   configFile: false,
   root: __dirname,
   server: {
@@ -33,115 +33,85 @@ server.bindCLIShortcuts({ print: true })
 ```
 
 ::: tip NOTE
-When using `createServer` and `build` in the same Node.js process, both functions rely on `process.env.NODE_ENV` to work properly, which also depends on the `mode` config option. To prevent conflicting behavior, set `process.env.NODE_ENV` or the `mode` of the two APIs to `development`. Otherwise, you can spawn a child process to run the APIs separately.
+Ao usar `createServer` e `build` no mesmo processo Node.js, ambas as funções dependem de `process.env.NODE_ENV` para funcionar corretamente, o que também depende da opção de configuração `mode` . Para evitar comportamentos conflitantes, defina `process.env.NODE_ENV` ou `mode` das duas APIs a `development` . Caso contrário, você pode gerar um processo filho para executar as APIs separadamente.
 :::
 
 ::: tip NOTE
-When using [middleware mode](/pt/config/server-options.html#server-middlewaremode) combined with [proxy config for WebSocket](/pt/config/server-options.html#server-proxy), the parent http server should be provided in `middlewareMode` to bind the proxy correctly.
+Ao usar [o modo de middleware](/pt/config/server-options.html#server-middlewaremode) combinado com [a configuração proxy para websocket](/pt/config/server-options.html#server-proxy) , o servidor HTTP pai deve ser fornecido em `middlewareMode` para vincular o proxy corretamente.
 
-<details>
-<summary>Example</summary>
-
-```ts twoslash
-import http from 'http'
-import { createServer } from 'vite'
-
-const parentServer = http.createServer() // or express, koa, etc.
-
-const vite = await createServer({
-  server: {
-    // Enable middleware mode
-    middlewareMode: {
-      // Provide the parent http server for proxy WebSocket
-      server: parentServer,
-    },
-    proxy: {
-      '/ws': {
-        target: 'ws://localhost:3000',
-        // Proxying WebSocket
-        ws: true,
-      },
-    },
-  },
-})
-
-// @noErrors: 2339
-parentServer.use(vite.middlewares)
-```
-
-</details>
+<details><summary>Exemplo</summary><pre> <code class="language-ts">import http from 'http' import { createServer } from 'vite' const parentServer = http.createServer() // or express, koa, etc. const vite = await createServer({ server: { // Enable middleware mode middlewareMode: { // Provide the parent http server for proxy WebSocket server: parentServer, }, proxy: { '/ws': { target: 'ws://localhost:3000', // Proxying WebSocket ws: true, }, }, }, }) // @noErrors: 2339 parentServer.use(vite.middlewares)</code></pre></details>
 :::
 
 ## `InlineConfig`
 
-The `InlineConfig` interface extends `UserConfig` with additional properties:
+A interface `InlineConfig` se estende `UserConfig` com propriedades adicionais:
 
-- `configFile`: specify config file to use. If not set, Vite will try to automatically resolve one from project root. Set to `false` to disable auto resolving.
-- `envFile`: Set to `false` to disable `.env` files.
+- `configFile` : Especifique o arquivo de configuração a ser usado. Se não estiver definido, o Vite tentará resolver automaticamente um do Project Root. Defina como `false` para desativar a resolução automática.
+- `envFile` : Defina como `false` para desativar `.env` arquivos.
 
 ## `ResolvedConfig`
 
-The `ResolvedConfig` interface has all the same properties of a `UserConfig`, except most properties are resolved and non-undefined. It also contains utilities like:
+A interface `ResolvedConfig` possui todas as mesmas propriedades de um `UserConfig` , exceto que a maioria das propriedades é resolvida e não consoleada. Ele também contém utilitários como:
 
-- `config.assetsInclude`: A function to check if an `id` is considered an asset.
-- `config.logger`: Vite's internal logger object.
+- `config.assetsInclude` : uma função para verificar se um `id` é considerado um ativo.
+- `config.logger` : Objeto interno do Logger da Vite.
 
 ## `ViteDevServer`
 
 ```ts
 interface ViteDevServer {
   /**
-   * The resolved Vite config object.
+   * O objeto de configuração Vite resolvido.
    */
   config: ResolvedConfig
   /**
-   * A connect app instance
-   * - Can be used to attach custom middlewares to the dev server.
-   * - Can also be used as the handler function of a custom http server
-   *   or as a middleware in any connect-style Node.js frameworks.
+   * Uma instância do aplicativo Connect
+   * - pode ser usado para anexar utensílios médios personalizados ao servidor dev.
+   * - também pode ser usado como a função manipuladora de um servidor HTTP personalizado
+   *   ou como um middleware em qualquer estrutura Node.js de estilo Connect.
    *
    * https://github.com/senchalabs/connect#use-middleware
    */
   middlewares: Connect.Server
   /**
-   * Native Node http server instance.
-   * Will be null in middleware mode.
+   * Instância do servidor HTTP do nó nativo.
+   * Será nulo no modo de middleware.
    */
   httpServer: http.Server | null
   /**
-   * Chokidar watcher instance. If `config.server.watch` is set to `null`,
-   * it will not watch any files and calling `add` or `unwatch` will have no effect.
+   * Instância do observador de Chokidar. Se `config.server.watch` estiver definido como `null` ,
+   * Ele não assistirá a nenhum arquivo e a chamada `add` ou `unwatch` não terá efeito.
    * https://github.com/paulmillr/chokidar/tree/3.6.0#api
    */
   watcher: FSWatcher
   /**
-   * Web socket server with `send(payload)` method.
+   * Servidor de soquete da web com o método `send(payload)` .
    */
   ws: WebSocketServer
   /**
-   * Rollup plugin container that can run plugin hooks on a given file.
+   * Rollup Plugin Container que pode executar ganchos de plug -in em um determinado arquivo.
    */
   pluginContainer: PluginContainer
   /**
-   * Module graph that tracks the import relationships, url to file mapping
-   * and hmr state.
+   * Gráfico do módulo que rastreia os relacionamentos de importação, URL para mapear arquivos
+   * e estado de HMR.
    */
   moduleGraph: ModuleGraph
   /**
-   * The resolved urls Vite prints on the CLI (URL-encoded). Returns `null`
-   * in middleware mode or if the server is not listening on any port.
+   * O URLS resolvido é impressa na CLI (codificada por URL). Retorna `null`
+   * no modo de middleware ou se o servidor não estiver ouvindo em nenhuma porta.
    */
   resolvedUrls: ResolvedServerUrls | null
   /**
-   * Programmatically resolve, load and transform a URL and get the result
-   * without going through the http request pipeline.
+   * Resolver, carregar, carregar e transformar um URL programaticamente
+   * sem passar pelo pipeline de solicitação HTTP.
    */
   transformRequest(
     url: string,
     options?: TransformOptions,
   ): Promise<TransformResult | null>
   /**
-   * Apply Vite built-in HTML transforms and any plugin HTML transforms.
+   * Aplique as transformações HTML integradas do Vite e quaisquer transformadas HTML do plug-in.
    */
   transformIndexHtml(
     url: string,
@@ -149,44 +119,44 @@ interface ViteDevServer {
     originalUrl?: string,
   ): Promise<string>
   /**
-   * Load a given URL as an instantiated module for SSR.
+   * Carregue um dado URL como um módulo instanciado para SSR.
    */
   ssrLoadModule(
     url: string,
     options?: { fixStacktrace?: boolean },
   ): Promise<Record<string, any>>
   /**
-   * Fix ssr error stacktrace.
+   * Corrija o erro de erro SSR.
    */
   ssrFixStacktrace(e: Error): void
   /**
-   * Triggers HMR for a module in the module graph. You can use the `server.moduleGraph`
-   * API to retrieve the module to be reloaded. If `hmr` is false, this is a no-op.
+   * Desencadeia HMR para um módulo no gráfico do módulo. Você pode usar o `server.moduleGraph`
+   * API para recuperar o módulo a ser recarregado. Se `hmr` for falso, isso é um não-OP.
    */
   reloadModule(module: ModuleNode): Promise<void>
   /**
-   * Start the server.
+   * Inicie o servidor.
    */
   listen(port?: number, isRestart?: boolean): Promise<ViteDevServer>
   /**
-   * Restart the server.
+   * Reinicie o servidor.
    *
-   * @param forceOptimize - force the optimizer to re-bundle, same as --force cli flag
+   * @param forcePtimize -Force o otimizador a se refrescar, o mesmo que -Force CLI Flag
    */
   restart(forceOptimize?: boolean): Promise<void>
   /**
-   * Stop the server.
+   * Pare o servidor.
    */
   close(): Promise<void>
   /**
-   * Bind CLI shortcuts
+   * Vincular atalhos da CLI
    */
   bindCLIShortcuts(options?: BindCLIShortcutsOptions<ViteDevServer>): void
   /**
-   * Calling `await server.waitForRequestsIdle(id)` will wait until all static imports
-   * are processed. If called from a load or transform plugin hook, the id needs to be
-   * passed as a parameter to avoid deadlocks. Calling this function after the first
-   * static imports section of the module graph has been processed will resolve immediately.
+   * Ligue para `await server.waitForRequestsIdle(id)` aguardará até todas as importações estáticas
+   * são processados. Se chamado de um gancho de plug -in de carga ou transformação, o ID precisa ser
+   * Passado como um parâmetro para evitar impasse. Chamando esta função após o primeiro
+   * A seção de importações estáticas do gráfico do módulo foi processada será resolvida imediatamente.
    * @experimental
    */
   waitForRequestsIdle: (ignoredId?: string) => Promise<void>
@@ -194,12 +164,12 @@ interface ViteDevServer {
 ```
 
 :::info
-`waitForRequestsIdle` is meant to be used as a escape hatch to improve DX for features that can't be implemented following the on-demand nature of the Vite dev server. It can be used during startup by tools like Tailwind to delay generating the app CSS classes until the app code has been seen, avoiding flashes of style changes. When this function is used in a load or transform hook, and the default HTTP1 server is used, one of the six http channels will be blocked until the server processes all static imports. Vite's dependency optimizer currently uses this function to avoid full-page reloads on missing dependencies by delaying loading of pre-bundled dependencies until all imported dependencies have been collected from static imported sources. Vite may switch to a different strategy in a future major release, setting `optimizeDeps.crawlUntilStaticImports: false` by default to avoid the performance hit in large applications during cold start.
+`waitForRequestsIdle` deve ser usado como uma escotilha de fuga para melhorar o DX para recursos que não podem ser implementados após a natureza sob demanda do servidor de dev vite. Ele pode ser usado durante a inicialização por ferramentas como o Tailwind para atrasar a geração das classes CSS do aplicativo até que o código do aplicativo tenha sido visto, evitando flashes de alterações de estilo. Quando essa função é usada em um gancho de carga ou transformação e o servidor HTTP1 padrão é usado, um dos seis canais HTTP será bloqueado até que o servidor processe todas as importações estáticas. Atualmente, o otimizador de dependência da Vite usa essa função para evitar recarregamentos de página inteira sobre as dependências ausentes, atrasando o carregamento de dependências pré-conceituadas até que todas as dependências importadas tenham sido coletadas de fontes importadas estáticas. O Vite pode mudar para uma estratégia diferente em uma versão importante futura, definindo `optimizeDeps.crawlUntilStaticImports: false` por padrão para evitar que o desempenho atingisse grandes aplicações durante o início do frio.
 :::
 
 ## `build`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 async function build(
@@ -207,7 +177,7 @@ async function build(
 ): Promise<RollupOutput | RollupOutput[]>
 ```
 
-**Example Usage:**
+**Exemplo de uso:**
 
 ```ts twoslash [vite.config.js]
 import path from 'node:path'
@@ -229,19 +199,19 @@ await build({
 
 ## `preview`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 async function preview(inlineConfig?: InlineConfig): Promise<PreviewServer>
 ```
 
-**Example Usage:**
+**Exemplo de uso:**
 
 ```ts twoslash
 import { preview } from 'vite'
 
 const previewServer = await preview({
-  // any valid user config options, plus `mode` and `configFile`
+  // Quaisquer opções de configuração de usuário válidas, mais `mode` e `configFile`
   preview: {
     port: 8080,
     open: true,
@@ -257,33 +227,33 @@ previewServer.bindCLIShortcuts({ print: true })
 ```ts
 interface PreviewServer {
   /**
-   * The resolved vite config object
+   * O objeto de configuração de vite resolvido
    */
   config: ResolvedConfig
   /**
-   * A connect app instance.
-   * - Can be used to attach custom middlewares to the preview server.
-   * - Can also be used as the handler function of a custom http server
-   *   or as a middleware in any connect-style Node.js frameworks
+   * Uma instância do aplicativo Connect.
+   * - Pode ser usado para anexar utensílios médios personalizados ao servidor de visualização.
+   * - também pode ser usado como a função manipuladora de um servidor HTTP personalizado
+   *   ou como middleware em qualquer estrutura de node.js de estilo de conexão
    *
    * https://github.com/senchalabs/connect#use-middleware
    */
   middlewares: Connect.Server
   /**
-   * native Node http server instance
+   * Instância do servidor HTTP norno nativo
    */
   httpServer: http.Server
   /**
-   * The resolved urls Vite prints on the CLI (URL-encoded). Returns `null`
-   * if the server is not listening on any port.
+   * O URLS resolvido é impressa na CLI (codificada por URL). Retorna `null`
+   * Se o servidor não estiver ouvindo em nenhuma porta.
    */
   resolvedUrls: ResolvedServerUrls | null
   /**
-   * Print server urls
+   * URLs do servidor de impressão
    */
   printUrls(): void
   /**
-   * Bind CLI shortcuts
+   * Vincular atalhos da CLI
    */
   bindCLIShortcuts(options?: BindCLIShortcutsOptions<PreviewServer>): void
 }
@@ -291,7 +261,7 @@ interface PreviewServer {
 
 ## `resolveConfig`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 async function resolveConfig(
@@ -303,11 +273,11 @@ async function resolveConfig(
 ): Promise<ResolvedConfig>
 ```
 
-The `command` value is `serve` in dev and preview, and `build` in build.
+O valor `command` é `serve` em dev e visualização e `build` em construção.
 
 ## `mergeConfig`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 function mergeConfig(
@@ -317,12 +287,12 @@ function mergeConfig(
 ): Record<string, any>
 ```
 
-Deeply merge two Vite configs. `isRoot` represents the level within the Vite config which is being merged. For example, set `false` if you're merging two `build` options.
+Mesclar profundamente duas configurações de vite. `isRoot` representa o nível dentro da configuração Vite que está sendo mesclada. Por exemplo, defina `false` se você estiver mesclando duas `build` opções.
 
 ::: tip NOTE
-`mergeConfig` accepts only config in object form. If you have a config in callback form, you should call it before passing into `mergeConfig`.
+`mergeConfig` aceita apenas configuração em forma de objeto. Se você tiver uma configuração no formulário de retorno de chamada, deve chamá -lo antes de passar para `mergeConfig` .
 
-You can use the `defineConfig` helper to merge a config in callback form with another config:
+Você pode usar o auxiliar `defineConfig` para mesclar uma configuração no formulário de retorno de chamada com outra configuração:
 
 ```ts twoslash
 import {
@@ -334,7 +304,7 @@ import {
 declare const configAsCallback: UserConfigFnObject
 declare const configAsObject: UserConfig
 
-// ---cut---
+// ---corte---
 export default defineConfig((configEnv) =>
   mergeConfig(configAsCallback(configEnv), configAsObject),
 )
@@ -344,7 +314,7 @@ export default defineConfig((configEnv) =>
 
 ## `searchForWorkspaceRoot`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 function searchForWorkspaceRoot(
@@ -353,18 +323,18 @@ function searchForWorkspaceRoot(
 ): string
 ```
 
-**Related:** [server.fs.allow](/pt/config/server-options.md#server-fs-allow)
+**Relacionado:** [Server.fs.allow](/pt/config/server-options.md#server-fs-allow)
 
-Search for the root of the potential workspace if it meets the following conditions, otherwise it would fallback to `root`:
+Procure a raiz do espaço de trabalho em potencial se atender às seguintes condições, caso contrário, ele fará fallback para `root` :
 
-- contains `workspaces` field in `package.json`
-- contains one of the following file
+- contém `workspaces` campo em `package.json`
+- contém um dos seguintes arquivos
   - `lerna.json`
   - `pnpm-workspace.yaml`
 
 ## `loadEnv`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 function loadEnv(
@@ -374,25 +344,25 @@ function loadEnv(
 ): Record<string, string>
 ```
 
-**Related:** [`.env` Files](./env-and-mode.md#env-files)
+**Relacionado:** [`.env` arquivos](./env-and-mode.md#env-files)
 
-Load `.env` files within the `envDir`. By default, only env variables prefixed with `VITE_` are loaded, unless `prefixes` is changed.
+Carregue `.env` arquivos dentro do `envDir` . Por padrão, apenas as variáveis ENV prefixadas com `VITE_` são carregadas, a menos que `prefixes` seja alterado.
 
 ## `normalizePath`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 function normalizePath(id: string): string
 ```
 
-**Related:** [Path Normalization](./api-plugin.md#path-normalization)
+**Relacionado:** [Normalização do caminho](./api-plugin.md#path-normalization)
 
-Normalizes a path to interoperate between Vite plugins.
+Normaliza um caminho para interoperar entre os plug -ins de vite.
 
 ## `transformWithEsbuild`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 async function transformWithEsbuild(
@@ -403,11 +373,11 @@ async function transformWithEsbuild(
 ): Promise<ESBuildTransformResult>
 ```
 
-Transform JavaScript or TypeScript with esbuild. Useful for plugins that prefer matching Vite's internal esbuild transform.
+Transforme JavaScript ou TypeScript com Esbuild. Útil para plug -ins que preferem a transformação interna da ESBUILD da Vite.
 
 ## `loadConfigFromFile`
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 async function loadConfigFromFile(
@@ -423,13 +393,13 @@ async function loadConfigFromFile(
 } | null>
 ```
 
-Load a Vite config file manually with esbuild.
+Carregue um arquivo de configuração vite manualmente com ESBuild.
 
 ## `preprocessCSS`
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13815)
+- **Experimental:** [dê feedback](https://github.com/vitejs/vite/discussions/13815)
 
-**Type Signature:**
+**Tipo de assinatura:**
 
 ```ts
 async function preprocessCSS(
@@ -446,8 +416,8 @@ interface PreprocessCSSResult {
 }
 ```
 
-Pre-processes `.css`, `.scss`, `.sass`, `.less`, `.styl` and `.stylus` files to plain CSS so it can be used in browsers or parsed by other tools. Similar to the [built-in CSS pre-processing support](/pt/guide/features#css-pre-processors), the corresponding pre-processor must be installed if used.
+Pré-processos `.css` , `.scss` , `.sass` , `.less` , `.styl` e `.stylus` arquivos para simples CSS para que possam ser usados em navegadores ou analisados por outras ferramentas. Semelhante ao [suporte de pré-processamento CSS interno](/pt/guide/features#css-pre-processors) , o pré-processador correspondente deve ser instalado se usado.
 
-The pre-processor used is inferred from the `filename` extension. If the `filename` ends with `.module.{ext}`, it is inferred as a [CSS module](https://github.com/css-modules/css-modules) and the returned result will include a `modules` object mapping the original class names to the transformed ones.
+O pré-processador usado é inferido da extensão `filename` . Se o `filename` termina com `.module.{ext}` , ele será inferido como um [módulo CSS](https://github.com/css-modules/css-modules) e o resultado retornado incluirá um objeto `modules` mapeando os nomes originais da classe para os transformados.
 
-Note that pre-processing will not resolve URLs in `url()` or `image-set()`.
+Observe que o pré-processamento não resolverá URLs em `url()` ou `image-set()` .

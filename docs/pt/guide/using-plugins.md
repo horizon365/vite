@@ -1,10 +1,10 @@
-# Using Plugins
+# Usando Plugins
 
-Vite can be extended using plugins, which are based on Rollup's well-designed plugin interface with a few extra Vite-specific options. This means that Vite users can rely on the mature ecosystem of Rollup plugins, while also being able to extend the dev server and SSR functionality as needed.
+O Vite pode ser estendido usando plug-ins, que são baseados na interface do plug-in bem projetada do Rollup com algumas opções específicas de vite extra. Isso significa que os usuários do Vite podem confiar no ecossistema maduro de plugins de rollup, além de poder estender a funcionalidade de servidor de desenvolvimento e SSR, conforme necessário.
 
-## Adding a Plugin
+## Adicionando um plugin
 
-To use a plugin, it needs to be added to the `devDependencies` of the project and included in the `plugins` array in the `vite.config.js` config file. For example, to provide support for legacy browsers, the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) can be used:
+Para usar um plug -in, ele precisa ser adicionado ao `devDependencies` do projeto e incluído na matriz `plugins` no arquivo de configuração `vite.config.js` . Por exemplo, para fornecer suporte para navegadores herdados, o oficial [@vitejs/plug-in-leis](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) pode ser usado:
 
 ```
 $ npm add -D @vitejs/plugin-legacy
@@ -23,27 +23,27 @@ export default defineConfig({
 })
 ```
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins` também aceita predefinições, incluindo vários plugins como um único elemento. Isso é útil para recursos complexos (como integração da estrutura) que são implementados usando vários plugins. A matriz será achatada internamente.
 
-Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
+Os plug -ins falsamente serão ignorados, que podem ser usados para ativar ou desativar facilmente os plugins.
 
-## Finding Plugins
+## Encontrando Plugins
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+A Vite visa fornecer suporte fora da caixa para padrões comuns de desenvolvimento da Web. Antes de procurar um plug -in de rollup vite ou compatível, consulte o [guia de recursos](../guide/features.md) . Muitos dos casos em que um plug -in seria necessário em um projeto de rollup já está coberto de vite.
 :::
 
-Check out the [Plugins section](../plugins/) for information about official plugins. Community plugins are listed in [awesome-vite](https://github.com/vitejs/awesome-vite#plugins).
+Confira a [seção Plugins](../plugins/) para obter informações sobre plugins oficiais. Os plugins comunitários estão listados em [vítimas impressionantes](https://github.com/vitejs/awesome-vite#plugins) .
 
-You can also find plugins that follow the [recommended conventions](./api-plugin.md#conventions) using a [npm search for vite-plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) for Vite plugins or a [npm search for rollup-plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) for Rollup plugins.
+Você também pode encontrar plug-ins que seguem as [convenções recomendadas](./api-plugin.md#conventions) usando uma [pesquisa de NPM por plugin de vite](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) para vite ou uma [pesquisa de npm por plugin rollup](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) para plugins de rollup.
 
-## Enforcing Plugin Ordering
+## Aplicação Do Pedido Do Plug -In
 
-For compatibility with some Rollup plugins, it may be needed to enforce the order of the plugin or only apply at build time. This should be an implementation detail for Vite plugins. You can enforce the position of a plugin with the `enforce` modifier:
+Para compatibilidade com alguns plug -ins de rollup, pode ser necessário fazer cumprir a ordem do plug -in ou aplicar apenas no momento da construção. Este deve ser um detalhe de implementação para plugins de vite. Você pode aplicar a posição de um plugin com o modificador `enforce` :
 
-- `pre`: invoke plugin before Vite core plugins
-- default: invoke plugin after Vite core plugins
-- `post`: invoke plugin after Vite build plugins
+- `pre` : Invoque o plug -in antes dos plug -ins do vite
+- Padrão: Invoque o plug -in após os plug -ins de núcleo do vite
+- `post` : Invoque o plug -in após os plugins de construção do vite
 
 ```js twoslash [vite.config.js]
 import image from '@rollup/plugin-image'
@@ -59,11 +59,11 @@ export default defineConfig({
 })
 ```
 
-Check out [Plugins API Guide](./api-plugin.md#plugin-ordering) for detailed information.
+Confira [o Guia da API dos Plugins](./api-plugin.md#plugin-ordering) para obter informações detalhadas.
 
-## Conditional Application
+## Aplicação Condicional
 
-By default, plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+Por padrão, os plug -ins são chamados para servir e construir. Nos casos em que um plug -in precisa ser aplicado condicionalmente apenas durante o serviço ou a construção, use a propriedade `apply` para invocá -los apenas durante `'build'` ou `'serve'` :
 
 ```js twoslash [vite.config.js]
 import typescript2 from 'rollup-plugin-typescript2'
@@ -79,6 +79,6 @@ export default defineConfig({
 })
 ```
 
-## Building Plugins
+## Plugins De Construção
 
-Check out the [Plugins API Guide](./api-plugin.md) for documentation about creating plugins.
+Confira o [Guia da API do Plugins](./api-plugin.md) para obter documentação sobre a criação de plugins.

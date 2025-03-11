@@ -1,66 +1,66 @@
-# Using `Environment` Instances
+# Usando `Environment` instâncias
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+A API do ambiente é experimental. Manteremos as APIs estáveis durante o Vite 6 para permitir que o ecossistema experimente e construa sobre ele. Planejamos estabilizar essas novas APIs com possíveis mudanças de quebra no Vite 7.
 
-Resources:
+Recursos:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+- [Discussão sobre feedback](https://github.com/vitejs/vite/discussions/16358) onde estamos recebendo feedback sobre as novas APIs.
+- [API PR do ambiente](https://github.com/vitejs/vite/pull/16471) , onde a nova API foi implementada e revisada.
 
-Please share your feedback with us.
+Compartilhe seu feedback conosco.
 :::
 
-## Accessing the Environments
+## Acessando os ambientes
 
-During dev, the available environments in a dev server can be accessed using `server.environments`:
+Durante o Dev, os ambientes disponíveis em um servidor de desenvolvimento podem ser acessados usando `server.environments` :
 
 ```js
-// create the server, or get it from the configureServer hook
-const server = await createServer(/* options */)
+// Crie o servidor ou obtenha -o no gancho ConfigureServer
+const server = await createServer(/* opções */)
 
 const environment = server.environments.client
 environment.transformRequest(url)
 console.log(server.environments.ssr.moduleGraph)
 ```
 
-You can also access the current environment from plugins. See the [Environment API for Plugins](./api-environment-plugins.md#accessing-the-current-environment-in-hooks) for more details.
+Você também pode acessar o ambiente atual a partir de plugins. Consulte a [API do ambiente para plugins](./api-environment-plugins.md#accessing-the-current-environment-in-hooks) para obter mais detalhes.
 
-## `DevEnvironment` class
+## `DevEnvironment` classe
 
-During dev, each environment is an instance of the `DevEnvironment` class:
+Durante o Dev, cada ambiente é uma instância da classe `DevEnvironment` :
 
 ```ts
 class DevEnvironment {
   /**
-   * Unique identifier for the environment in a Vite server.
-   * By default Vite exposes 'client' and 'ssr' environments.
+   * Identificador exclusivo para o ambiente em um servidor vite.
+   * Por padrão, o Vite expõe ambientes 'Cliente' e 'SSR'.
    */
   name: string
   /**
-   * Communication channel to send and receive messages from the
-   * associated module runner in the target runtime.
+   * Canal de comunicação para enviar e receber mensagens do
+   * Runner de módulo associado no tempo de execução do destino.
    */
   hot: NormalizedHotChannel
   /**
-   * Graph of module nodes, with the imported relationship between
-   * processed modules and the cached result of the processed code.
+   * Gráfico dos nós do módulo, com a relação importada entre
+   * Módulos processados e o resultado em cache do código processado.
    */
   moduleGraph: EnvironmentModuleGraph
   /**
-   * Resolved plugins for this environment, including the ones
-   * created using the per-environment `create` hook
+   * Plugins resolvidos para este ambiente, incluindo os
+   * Criado usando o gancho por 0,itário `create`
    */
   plugins: Plugin[]
   /**
-   * Allows to resolve, load, and transform code through the
-   * environment plugins pipeline
+   * Permite resolver, carregar e transformar código através do
+   * Plug -ins de ambiente Pipeline
    */
   pluginContainer: EnvironmentPluginContainer
   /**
-   * Resolved config options for this environment. Options at the server
-   * global scope are taken as defaults for all environments, and can
-   * be overridden (resolve conditions, external, optimizedDeps)
+   * Opções de configuração resolvidas para esse ambiente. Opções no servidor
+   * o escopo global são tomados como padrões para todos os ambientes e podem
+   * ser substituído (resolver condições, externo, otimizedDeps)
    */
   config: ResolvedConfig & ResolvedDevEnvironmentOptions
 
@@ -71,22 +71,22 @@ class DevEnvironment {
   )
 
   /**
-   * Resolve the URL to an id, load it, and process the code using the
-   * plugins pipeline. The module graph is also updated.
+   * Resolva o URL para um ID, carregá -lo e processe o código usando o
+   * Plugins Pipeline. O gráfico do módulo também é atualizado.
    */
   async transformRequest(url: string): Promise<TransformResult | null>
 
   /**
-   * Register a request to be processed with low priority. This is useful
-   * to avoid waterfalls. The Vite server has information about the
-   * imported modules by other requests, so it can warmup the module graph
-   * so the modules are already processed when they are requested.
+   * Registre uma solicitação a ser processada com baixa prioridade. Isso é útil
+   * para evitar cachoeiras. O servidor Vite tem informações sobre o
+   * Módulos importados por outros pedidos, para que possa aquecer o gráfico do módulo
+   * Portanto, os módulos já são processados quando são solicitados.
    */
   async warmupRequest(url: string): Promise<void>
 }
 ```
 
-With `DevEnvironmentContext` being:
+Com `DevEnvironmentContext` ser:
 
 ```ts
 interface DevEnvironmentContext {
@@ -100,7 +100,7 @@ interface DevEnvironmentContext {
 }
 ```
 
-and with `TransformResult` being:
+E com `TransformResult` ser:
 
 ```ts
 interface TransformResult {
@@ -112,21 +112,21 @@ interface TransformResult {
 }
 ```
 
-An environment instance in the Vite server lets you process a URL using the `environment.transformRequest(url)` method. This function will use the plugin pipeline to resolve the `url` to a module `id`, load it (reading the file from the file system or through a plugin that implements a virtual module), and then transform the code. While transforming the module, imports and other metadata will be recorded in the environment module graph by creating or updating the corresponding module node. When processing is done, the transform result is also stored in the module.
+Uma instância do ambiente no servidor Vite permite processar um URL usando o método `environment.transformRequest(url)` . Esta função usará o pipeline do plug -in para resolver o `url` para um módulo `id` , carregar -o (lendo o arquivo do sistema de arquivos ou através de um plug -in que implementa um módulo virtual) e depois transformará o código. Ao transformar o módulo, as importações e outros metadados serão registrados no gráfico do módulo de ambiente, criando ou atualizando o nó do módulo correspondente. Quando o processamento é feito, o resultado da transformação também é armazenado no módulo.
 
 :::info transformRequest naming
-We are using `transformRequest(url)` and `warmupRequest(url)` in the current version of this proposal so it is easier to discuss and understand for users used to Vite's current API. Before releasing, we can take the opportunity to review these names too. For example, it could be named `environment.processModule(url)` or `environment.loadModule(url)` taking a page from Rollup's `context.load(id)` in plugin hooks. For the moment, we think keeping the current names and delaying this discussion is better.
+Estamos usando `transformRequest(url)` e `warmupRequest(url)` na versão atual desta proposta, para que seja mais fácil discutir e entender para os usuários usados para a API atual da Vite. Antes de lançar, também podemos aproveitar a oportunidade para revisar esses nomes. Por exemplo, pode ser nomeado `environment.processModule(url)` ou `environment.loadModule(url)` pegando uma página do Rollup's `context.load(id)` em ganchos de plug -in. No momento, achamos que manter os nomes atuais e atrasar essa discussão é melhor.
 :::
 
-## Separate Module Graphs
+## Gráficos De Módulos Separados
 
-Each environment has an isolated module graph. All module graphs have the same signature, so generic algorithms can be implemented to crawl or query the graph without depending on the environment. `hotUpdate` is a good example. When a file is modified, the module graph of each environment will be used to discover the affected modules and perform HMR for each environment independently.
+Cada ambiente possui um gráfico de módulo isolado. Todos os gráficos de módulos têm a mesma assinatura, para que os algoritmos genéricos possam ser implementados para rastejar ou consultar o gráfico sem depender do ambiente. `hotUpdate` é um bom exemplo. Quando um arquivo é modificado, o gráfico do módulo de cada ambiente será usado para descobrir os módulos afetados e executar a HMR para cada ambiente de forma independente.
 
 ::: info
-Vite v5 had a mixed Client and SSR module graph. Given an unprocessed or invalidated node, it isn't possible to know if it corresponds to the Client, SSR, or both environments. Module nodes have some properties prefixed, like `clientImportedModules` and `ssrImportedModules` (and `importedModules` that returns the union of both). `importers` contains all importers from both the Client and SSR environment for each module node. A module node also has `transformResult` and `ssrTransformResult`. A backward compatibility layer allows the ecosystem to migrate from the deprecated `server.moduleGraph`.
+O Vite V5 tinha um cliente misto e um gráfico do módulo SSR. Dado um nó não processado ou invalidado, não é possível saber se corresponde ao cliente, SSR ou ambos. Os nós do módulo têm algumas propriedades prefixadas, como `clientImportedModules` e `ssrImportedModules` (e `importedModules` que retornam a união de ambos). `importers` Contém todos os importadores do ambiente cliente e SSR para cada nó do módulo. Um nó do módulo também tem `transformResult` e `ssrTransformResult` . Uma camada de compatibilidade com versões anteriores permite que o ecossistema migre do `server.moduleGraph` depreciado.
 :::
 
-Each module is represented by a `EnvironmentModuleNode` instance. Modules may be registered in the graph without yet being processed (`transformResult` would be `null` in that case). `importers` and `importedModules` are also updated after the module is processed.
+Cada módulo é representado por uma instância `EnvironmentModuleNode` . Os módulos podem ser registrados no gráfico sem serem processados ( `transformResult` seria `null` nesse caso). `importers` e `importedModules` também são atualizados após o processamento do módulo.
 
 ```ts
 class EnvironmentModuleNode {
@@ -154,7 +154,7 @@ class EnvironmentModuleNode {
 }
 ```
 
-`environment.moduleGraph` is an instance of `EnvironmentModuleGraph`:
+`environment.moduleGraph` é uma instância de `EnvironmentModuleGraph` :
 
 ```ts
 export class EnvironmentModuleGraph {

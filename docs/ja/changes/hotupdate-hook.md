@@ -1,20 +1,14 @@
-# HMR `hotUpdate` Plugin Hook
+# HMR `hotUpdate`プラグインフック
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+[環境APIフィードバックディスカッション](https://github.com/vitejs/vite/discussions/16358)でフィードバックを提供してください
 :::
-
-We're planning to deprecate the `handleHotUpdate` plugin hook in favor of [`hotUpdate` hook](/ja/guide/api-environment#the-hotupdate-hook) to be [Environment API](/ja/guide/api-environment.md) aware, and handle additional watch events with `create` and `delete`.
-
-Affected scope: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`hotUpdate` was first introduced in `v6.0`. The deprecation of `handleHotUpdate` is planned for `v7.0`. We don't yet recommend moving away from `handleHotUpdate` yet. If you want to experiment and give us feedback, you can use the `future.removePluginHookHandleHotUpdate` to `"warn"` in your vite config.
+`hotUpdate` was first introduced in `v6.0` . `handleHotUpdate`の非推奨は`v7.0`で計画されています。 We don't yet recommend moving away from `handleHotUpdate` yet. If you want to experiment and give us feedback, you can use the `future.removePluginHookHandleHotUpdate` to `"warn"` in your vite config.
 :::
 
-## Motivation
-
-The [`handleHotUpdate` hook](/ja/guide/api-plugin.md#handlehotupdate) allows to perform custom HMR update handling. A list of modules to be updated is passed in the `HmrContext`
+## モチベーション
 
 ```ts
 interface HmrContext {
@@ -28,8 +22,6 @@ interface HmrContext {
 
 This hook is called once for all environments, and the passed modules have mixed information from the Client and SSR environments only. Once frameworks move to custom environments, a new hook that is called for each of them is needed.
 
-The new `hotUpdate` hook works in the same way as `handleHotUpdate` but it is called for each environment and receives a new `HotUpdateOptions` instance:
-
 ```ts
 interface HotUpdateOptions {
   type: 'create' | 'update' | 'delete'
@@ -41,13 +33,9 @@ interface HotUpdateOptions {
 }
 ```
 
-The current dev environment can be accessed like in other Plugin hooks with `this.environment`. The `modules` list will now be module nodes from the current environment only. Each environment update can define different update strategies.
+## 移行ガイド
 
-This hook is also now called for additional watch events and not only for `'update'`. Use `type` to differentiate between them.
-
-## Migration Guide
-
-Filter and narrow down the affected module list so that the HMR is more accurate.
+HMRがより正確になるように、影響を受けるモジュールリストをフィルターして絞り込みます。
 
 ```js
 handleHotUpdate({ modules }) {
@@ -61,11 +49,11 @@ hotUpdate({ modules }) {
 }
 ```
 
-Return an empty array and perform a full reload:
+空の配列を返し、完全なリロードを実行します。
 
 ```js
 handleHotUpdate({ server, modules, timestamp }) {
-  // Invalidate modules manually
+  // モジュールを手動で無効にします
   const invalidatedModules = new Set()
   for (const mod of modules) {
     server.moduleGraph.invalidateModule(
@@ -82,7 +70,7 @@ handleHotUpdate({ server, modules, timestamp }) {
 // Migrate to:
 
 hotUpdate({ modules, timestamp }) {
-  // Invalidate modules manually
+  // モジュールを手動で無効にします
   const invalidatedModules = new Set()
   for (const mod of modules) {
     this.environment.moduleGraph.invalidateModule(
@@ -97,7 +85,7 @@ hotUpdate({ modules, timestamp }) {
 }
 ```
 
-Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+空の配列を返し、クライアントにカスタムイベントを送信して、完全なカスタムHMR処理を実行します。
 
 ```js
 handleHotUpdate({ server }) {

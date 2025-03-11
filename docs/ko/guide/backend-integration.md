@@ -1,42 +1,42 @@
-# Backend Integration
+# 백엔드 통합
 
 :::tip Note
-If you want to serve the HTML using a traditional backend (e.g. Rails, Laravel) but use Vite for serving assets, check for existing integrations listed in [Awesome Vite](https://github.com/vitejs/awesome-vite#integrations-with-backends).
+기존 백엔드 (EG Rails, Laravel)를 사용하여 HTML에 서비스를 제공하려면 자산을 제공하는 데 Vite를 사용하려면 [멋진 Vite](https://github.com/vitejs/awesome-vite#integrations-with-backends) 에 나열된 기존 통합을 확인하십시오.
 
-If you need a custom integration, you can follow the steps in this guide to configure it manually
+사용자 정의 통합이 필요한 경우이 안내서의 단계를 따라 수동으로 구성 할 수 있습니다.
 :::
 
-1. In your Vite config, configure the entry and enable build manifest:
+1. Vite 구성에서 항목을 구성하고 빌드 매니페스트를 활성화합니다.
 
    ```js twoslash [vite.config.js]
    import { defineConfig } from 'vite'
-   // ---cut---
+   // ---자르다---
    export default defineConfig({
      server: {
        cors: {
-         // the origin you will be accessing via browser
+         // 브라우저를 통해 액세스 할 원점
          origin: 'http://my-backend.example.com',
        },
      },
      build: {
-       // generate .vite/manifest.json in outDir
+       // Outdir에서 .vite/manifest.json을 생성하십시오
        manifest: true,
        rollupOptions: {
-         // overwrite default .html entry
+         // 기본 .html 항목을 덮어 쓰십시오
          input: '/path/to/main.js',
        },
      },
    })
    ```
 
-   If you haven't disabled the [module preload polyfill](/ko/config/build-options.md#build-polyfillmodulepreload), you also need to import the polyfill in your entry
+   [Module Poload Polyfill 모듈을](/ko/config/build-options.md#build-polyfillmodulepreload) 비활성화하지 않은 경우 항목에서 PolyFill도 가져와야합니다.
 
    ```js
-   // add the beginning of your app entry
+   // 앱 항목의 시작을 추가하십시오
    import 'vite/modulepreload-polyfill'
    ```
 
-2. For development, inject the following in your server's HTML template (substitute `http://localhost:5173` with the local URL Vite is running at):
+2. 개발을 위해 서버의 HTML 템플릿에 다음을 주입하십시오 (로컬 URL VITE와 함께 대체 `http://localhost:5173` 실행 중) :
 
    ```html
    <!-- if development -->
@@ -44,14 +44,14 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <script type="module" src="http://localhost:5173/main.js"></script>
    ```
 
-   In order to properly serve assets, you have two options:
+   자산을 올바르게 제공하려면 두 가지 옵션이 있습니다.
 
-   - Make sure the server is configured to proxy static assets requests to the Vite server
-   - Set [`server.origin`](/ko/config/server-options.md#server-origin) so that generated asset URLs will be resolved using the back-end server URL instead of a relative path
+   - 서버가 Vite 서버에 정적 자산 요청을 프록시하도록 구성되어 있는지 확인하십시오.
+   - 생성 된 자산 URL이 상대 경로 대신 백엔드 서버 URL을 사용하여 해결되도록 [`server.origin`](/ko/config/server-options.md#server-origin) 설정하십시오.
 
-   This is needed for assets such as images to load properly.
+   이미지와 같은 자산이 제대로로드하는 데 필요합니다.
 
-   Note if you are using React with `@vitejs/plugin-react`, you'll also need to add this before the above scripts, since the plugin is not able to modify the HTML you are serving (substitute `http://localhost:5173` with the local URL Vite is running at):
+   참고 0 With `@vitejs/plugin-react` 을 사용하는 경우 플러그인이 서빙중인 HTML을 수정할 수 없으므로 위의 스크립트 전에 추가해야합니다 (로컬 URL VITE와 함께 대체 `http://localhost:5173` 실행 중임).
 
    ```html
    <script type="module">
@@ -63,7 +63,7 @@ If you need a custom integration, you can follow the steps in this guide to conf
    </script>
    ```
 
-3. For production: after running `vite build`, a `.vite/manifest.json` file will be generated alongside other asset files. An example manifest file looks like this:
+3. 생산의 경우 : `vite build` 실행 한 후 다른 자산 파일과 함께 `.vite/manifest.json` 파일이 생성됩니다. 예제 Manifest 파일은 다음과 같습니다.
 
    ```json [.vite/manifest.json]
    {
@@ -101,17 +101,17 @@ If you need a custom integration, you can follow the steps in this guide to conf
    }
    ```
 
-   - The manifest has a `Record<name, chunk>` structure
-   - For entry or dynamic entry chunks, the key is the relative src path from project root.
-   - For non entry chunks, the key is the base name of the generated file prefixed with `_`.
-   - For the CSS file generated when [`build.cssCodeSplit`](/ko/config/build-options.md#build-csscodesplit) is `false`, the key is `style.css`.
-   - Chunks will contain information on its static and dynamic imports (both are keys that map to the corresponding chunk in the manifest), and also its corresponding CSS and asset files (if any).
+   - 매니페스트에는 `Record<name, chunk>` 구조가 있습니다
+   - 항목 또는 동적 입력 청크의 경우 키는 프로젝트 루트의 상대 SRC 경로입니다.
+   - 비 입력 청크의 경우 키는 `_` 으로 접두사가 발표 된 생성 된 파일의 기본 이름입니다.
+   - [`build.cssCodeSplit`](/ko/config/build-options.md#build-csscodesplit) `false` 인 경우 생성 된 CSS 파일의 경우 키는 `style.css` 입니다.
+   - 청크에는 정적 및 동적 수입에 대한 정보 (둘 다 매니페스트의 해당 청크에 매핑되는 키) 및 해당 CSS 및 자산 파일 (있는 경우)이 포함됩니다.
 
-4. You can use this file to render links or preload directives with hashed filenames.
+4. 이 파일을 사용하여 해시 파일 이름으로 링크 또는 예압 지시문을 렌더링 할 수 있습니다.
 
-   Here is an example HTML template to render the proper links. The syntax here is for
-   explanation only, substitute with your server templating language. The `importedChunks`
-   function is for illustration and isn't provided by Vite.
+   다음은 적절한 링크를 렌더링하는 예제 HTML 템플릿입니다. 여기 구문은
+   설명 만, 서버 템플릿 언어로 대체하십시오. `importedChunks`
+   기능은 그림을위한 것이며 Vite에서 제공하지 않습니다.
 
    ```html
    <!-- if production -->
@@ -129,18 +129,18 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <link rel="modulepreload" href="/{{ chunk.file }}" />
    ```
 
-   Specifically, a backend generating HTML should include the following tags given a manifest
-   file and an entry point:
+   구체적으로, HTML을 생성하는 백엔드에는 매니페스트가 주어진 다음 태그가 포함되어야합니다.
+   파일 및 진입 점 :
 
-   - A `<link rel="stylesheet">` tag for each file in the entry point chunk's `css` list
-   - Recursively follow all chunks in the entry point's `imports` list and include a
-     `<link rel="stylesheet">` tag for each CSS file of each imported chunk.
-   - A tag for the `file` key of the entry point chunk (`<script type="module">` for JavaScript,
-     or `<link rel="stylesheet">` for CSS)
-   - Optionally, `<link rel="modulepreload">` tag for the `file` of each imported JavaScript
-     chunk, again recursively following the imports starting from the entry point chunk.
+   - 진입 점 청크의 `css` 목록에있는 각 파일에 대한 `<link rel="stylesheet">` 태그
+   - Entry Point의 `imports` 목록에있는 모든 청크를 재귀 적으로 팔로우하고
+     가져 오기 각각의 각 CSS 파일에 대해 `<link rel="stylesheet">` 태그.
+   - 진입 점 덩어리의 `file` 키에 대한 태그 (JavaScript의 경우 `<script type="module">` ,
+     또는 CSS의 경우 `<link rel="stylesheet">` )
+   - 선택적으로, 각 수입 된 JavaScript의 `file` 에 대한 `<link rel="modulepreload">` 태그
+     덩어리는 진입 점 청크에서 시작하여 수입을 다시 재귀 적으로 따릅니다.
 
-   Following the above example manifest, for the entry point `views/foo.js` the following tags should be included in production:
+   위의 예제에 따라 진입 점 `views/foo.js` 의 경우 다음 태그가 생산에 포함되어야합니다.
 
    ```html
    <link rel="stylesheet" href="assets/foo-5UjPuW-k.css" />
@@ -150,7 +150,7 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <link rel="modulepreload" href="assets/shared-B7PI925R.js" />
    ```
 
-   While the following should be included for the entry point `views/bar.js`:
+   진입 점 `views/bar.js` 에 대해 다음이 포함되어야하지만
 
    ```html
    <link rel="stylesheet" href="assets/shared-ChJ_j-JJ.css" />
@@ -160,8 +160,8 @@ If you need a custom integration, you can follow the steps in this guide to conf
    ```
 
    ::: details Pseudo implementation of `importedChunks`
-   An example pseudo implementation of `importedChunks` in TypeScript (This will
-   need to be adapted for your programming language and templating language):
+   TypeScript에서 `importedChunks` 의 예를 들어있는 예제 (이것은
+   프로그래밍 언어 및 템플릿 언어에 적응해야합니다) :
 
    ```ts
    import type { Manifest, ManifestChunk } from 'vite'

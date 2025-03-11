@@ -1,48 +1,48 @@
-# Shared Options
+# 共有オプション
 
-Unless noted, the options in this section are applied to all dev, build, and preview.
+記載されていない限り、このセクションのオプションはすべての開発、ビルド、プレビューに適用されます。
 
-## root
+## 根
 
-- **Type:** `string`
-- **Default:** `process.cwd()`
+- **タイプ:** `string`
+- **デフォルト:** `process.cwd()`
 
-Project root directory (where `index.html` is located). Can be an absolute path, or a path relative to the current working directory.
+プロジェクトルートディレクトリ（ `index.html`があります）。絶対的なパス、または現在の作業ディレクトリに対するパスにすることができます。
 
-See [Project Root](/ja/guide/#index-html-and-project-root) for more details.
+詳細については、 [Project Rootを](/ja/guide/#index-html-and-project-root)参照してください。
 
-## base
+## ベース
 
-- **Type:** `string`
-- **Default:** `/`
-- **Related:** [`server.origin`](/ja/config/server-options.md#server-origin)
+- **タイプ:** `string`
+- **デフォルト:** `/`
+- **関連:** [`server.origin`](/ja/config/server-options.md#server-origin)
 
-Base public path when served in development or production. Valid values include:
+開発または生産で提供される場合のパブリックパス。有効な値は次のとおりです。
 
-- Absolute URL pathname, e.g. `/foo/`
-- Full URL, e.g. `https://bar.com/foo/` (The origin part won't be used in development so the value is the same as `/foo/`)
-- Empty string or `./` (for embedded deployment)
+- Absolute URL PathName、Eg `/foo/`
+- フルURL、例えば`https://bar.com/foo/` （原点部分は開発では使用されないため、値は`/foo/`と同じです）
+- 空の文字列または`./` （埋め込み展開用）
 
-See [Public Base Path](/ja/guide/build#public-base-path) for more details.
+詳細については、[パブリックベースパス](/ja/guide/build#public-base-path)を参照してください。
 
-## mode
+## モード
 
-- **Type:** `string`
-- **Default:** `'development'` for serve, `'production'` for build
+- **タイプ:** `string`
+- **デフォルト:**サーブ`'development'` 、ビルド用`'production'`
 
-Specifying this in config will override the default mode for **both serve and build**. This value can also be overridden via the command line `--mode` option.
+これを構成で指定すると**、サーブとビルドの両方の**デフォルトモードがオーバーライドされます。この値は、コマンドライン`--mode`オプションを介してオーバーライドすることもできます。
 
-See [Env Variables and Modes](/ja/guide/env-and-mode) for more details.
+詳細については、 [ENV変数とモード](/ja/guide/env-and-mode)を参照してください。
 
-## define
+## 定義する
 
-- **Type:** `Record<string, any>`
+- **タイプ:** `Record<string, any>`
 
-Define global constant replacements. Entries will be defined as globals during dev and statically replaced during build.
+グローバルな定数交換を定義します。エントリは、開発中にグローバルとして定義され、ビルド中に静的に交換されます。
 
-Vite uses [esbuild defines](https://esbuild.github.io/api/#define) to perform replacements, so value expressions must be a string that contains a JSON-serializable value (null, boolean, number, string, array, or object) or a single identifier. For non-string values, Vite will automatically convert it to a string with `JSON.stringify`.
+Viteは[Esbuildが定義して](https://esbuild.github.io/api/#define)交換を実行するため、Value式はJSON-Serializable値（Null、Boolean、Number、String、Array、またはオブジェクト）または単一の識別子を含む文字列でなければなりません。非弦の値の場合、Viteは自動的に`JSON.stringify`の文字列に変換します。
 
-**Example:**
+**例:**
 
 ```js
 export default defineConfig({
@@ -54,74 +54,74 @@ export default defineConfig({
 ```
 
 ::: tip NOTE
-For TypeScript users, make sure to add the type declarations in the `env.d.ts` or `vite-env.d.ts` file to get type checks and Intellisense.
+TypeScriptユーザーの場合、タイプチェックとIntelliSenseを取得するには、 `env.d.ts`または`vite-env.d.ts`ファイルにタイプ宣言を追加してください。
 
-Example:
+例:
 
 ```ts
-// vite-env.d.ts
+// Vite-env.d.ts
 declare const __APP_VERSION__: string
 ```
 
 :::
 
-## plugins
+## プラグイン
 
-- **Type:** `(Plugin | Plugin[] | Promise<Plugin | Plugin[]>)[]`
+- **タイプ:** `（プラグイン | プラグイン[] | 約束<プラグイン | プラグイン[]>）[] `
 
-Array of plugins to use. Falsy plugins are ignored and arrays of plugins are flattened. If a promise is returned, it would be resolved before running. See [Plugin API](/ja/guide/api-plugin) for more details on Vite plugins.
+使用するプラグインの配列。 Falsyプラグインは無視され、プラグインの配列が平らになります。約束が返された場合、実行する前に解決されます。 Viteプラグインの詳細については、[プラグインAPIを](/ja/guide/api-plugin)参照してください。
 
-## publicDir
+## publicdir
 
-- **Type:** `string | false`
-- **Default:** `"public"`
+- **タイプ:** `文字列 | false`
+- **デフォルト:** `"public"`
 
-Directory to serve as plain static assets. Files in this directory are served at `/` during dev and copied to the root of `outDir` during build, and are always served or copied as-is without transform. The value can be either an absolute file system path or a path relative to project root.
+単純な静的資産として機能するディレクトリ。このディレクトリのファイルは、開発中に`/`で提供され、ビルド中に`outDir`のルートにコピーされ、変換なしで常に提供またはコピーされます。値は、絶対ファイルシステムパスまたはプロジェクトルートに対するパスのいずれかです。
 
-Defining `publicDir` as `false` disables this feature.
+`publicDir` `false`として定義すると、この機能は無効になります。
 
-See [The `public` Directory](/ja/guide/assets#the-public-directory) for more details.
+詳細については、 [`public`ディレクトリ](/ja/guide/assets#the-public-directory)を参照してください。
 
-## cacheDir
+## CACHEDIR
 
-- **Type:** `string`
-- **Default:** `"node_modules/.vite"`
+- **タイプ:** `string`
+- **デフォルト:** `"node_modules/.vite"`
 
-Directory to save cache files. Files in this directory are pre-bundled deps or some other cache files generated by vite, which can improve the performance. You can use `--force` flag or manually delete the directory to regenerate the cache files. The value can be either an absolute file system path or a path relative to project root. Default to `.vite` when no package.json is detected.
+キャッシュファイルを保存するディレクトリ。このディレクトリのファイルは、事前にバンドルされたDEPまたはViteによって生成されたその他のキャッシュファイルであり、パフォーマンスを改善できます。 `--force`フラグを使用するか、ディレクトリを手動で削除してキャッシュファイルを再生できます。値は、絶対ファイルシステムパスまたはプロジェクトルートに対するパスのいずれかです。 package.jsonが検出されない場合、デフォルト`.vite`にデフォルト。
 
 ## resolve.alias
 
-- **Type:**
-  `Record<string, string> | Array<{ find: string | RegExp, replacement: string, customResolver?: ResolverFunction | ResolverObject }>`
+- **タイプ:**
+  `record <string、string> | 配列<{find:string | regexp、交換:文字列、CustomResolver？:ResolverFunction | ResolverObject}> `
 
-Will be passed to `@rollup/plugin-alias` as its [entries option](https://github.com/rollup/plugins/tree/master/packages/alias#entries). Can either be an object, or an array of `{ find, replacement, customResolver }` pairs.
+[エントリオプション](https://github.com/rollup/plugins/tree/master/packages/alias#entries)として`@rollup/plugin-alias`に渡されます。オブジェクトまたは`{ find, replacement, customResolver }`ペアの配列のいずれかにすることができます。
 
-When aliasing to file system paths, always use absolute paths. Relative alias values will be used as-is and will not be resolved into file system paths.
+システムパスをファイルするためにエイリアシングするときは、常に絶対パスを使用します。相対的なエイリアス値はAS-ISで使用され、ファイルシステムパスに解決されません。
 
-More advanced custom resolution can be achieved through [plugins](/ja/guide/api-plugin).
+[プラグイン](/ja/guide/api-plugin)を介して、より高度なカスタム解像度を実現できます。
 
 ::: warning Using with SSR
-If you have configured aliases for [SSR externalized dependencies](/ja/guide/ssr.md#ssr-externals), you may want to alias the actual `node_modules` packages. Both [Yarn](https://classic.yarnpkg.com/en/docs/cli/add/#toc-yarn-add-alias) and [pnpm](https://pnpm.io/aliases/) support aliasing via the `npm:` prefix.
+[SSR外部化された依存関係](/ja/guide/ssr.md#ssr-externals)のエイリアスを構成している場合は、実際の`node_modules`パッケージをエイリアスすることができます。 [YARN](https://classic.yarnpkg.com/ja/docs/cli/add/#toc-yarn-add-alias)と[PNPMの](https://pnpm.io/aliases/)両方が、 `npm:`プレフィックスを介してエイリアシングをサポートします。
 :::
 
 ## resolve.dedupe
 
-- **Type:** `string[]`
+- **タイプ:** `string[]`
 
-If you have duplicated copies of the same dependency in your app (likely due to hoisting or linked packages in monorepos), use this option to force Vite to always resolve listed dependencies to the same copy (from project root).
+アプリの同じ依存関係のコピーを複製している場合（おそらくモノレポスの巻き戻しまたはリンクパッケージが原因）、このオプションを使用して、Viteを強制的に（プロジェクトルートから）同じコピーにリストされた依存関係を常に解決します。
 
 :::warning SSR + ESM
-For SSR builds, deduplication does not work for ESM build outputs configured from `build.rollupOptions.output`. A workaround is to use CJS build outputs until ESM has better plugin support for module loading.
+SSRビルドの場合、 `build.rollupOptions.output`から構成されたESMビルド出力で重複排除は機能しません。回避策は、ESMがモジュールの読み込みにより良いプラグインサポートがあるまで、CJSビルド出力を使用することです。
 :::
 
 ## resolve.conditions
 
-- **Type:** `string[]`
-- **Default:** `['module', 'browser', 'development|production']` (`defaultClientConditions`)
+- **タイプ:** `string[]`
+- **デフォルト:** `['Module'、 'Browser'、 '開発|生産 '] ` (` DefaultClientConditions`）
 
-Additional allowed conditions when resolving [Conditional Exports](https://nodejs.org/api/packages.html#packages_conditional_exports) from a package.
+パッケージから[条件付き輸出](https://nodejs.org/api/packages.html#packages_conditional_exports)を解決する際の追加の条件。
 
-A package with conditional exports may have the following `exports` field in its `package.json`:
+条件付き輸出を備えたパッケージには、 `package.json`に次の`exports`フィールドがある場合があります。
 
 ```json
 {
@@ -134,50 +134,50 @@ A package with conditional exports may have the following `exports` field in its
 }
 ```
 
-Here, `import` and `require` are "conditions". Conditions can be nested and should be specified from most specific to least specific.
+ここでは、 `import`と`require`は「条件」です。条件はネストでき、最も特定のものから最も特異的なものに指定する必要があります。
 
-`development|production` is a special value that is replaced with `production` or `development` depending on the value of `process.env.NODE_ENV`. It is replaced with `production` when `process.env.NODE_ENV === 'production'` and `development` otherwise.
+`開発|生産`is a special value that is replaced with`生産`or`開発`depending on the value of`Process.ENV.NODE_ENV`. It is replaced with `生産`when`プロセス。ENV.NODE_ENV=== '生産' `and`開発 `。
 
-Note that `import`, `require`, `default` conditions are always applied if the requirements are met.
+要件が満たされている場合、 `import` `require`条件が常に`default`されることに注意してください。
 
 :::warning Resolving subpath exports
-Export keys ending with "/" is deprecated by Node and may not work well. Please contact the package author to use [`*` subpath patterns](https://nodejs.org/api/packages.html#package-entry-points) instead.
+「/」で終わるエクスポートキーはノードによって非推奨であり、うまく機能しない場合があります。代わりに、パッケージの著者に連絡して、 [`*`サブパスパターン](https://nodejs.org/api/packages.html#package-entry-points)を使用してください。
 :::
 
 ## resolve.mainFields
 
-- **Type:** `string[]`
-- **Default:** `['browser', 'module', 'jsnext:main', 'jsnext']` (`defaultClientMainFields`)
+- **タイプ:** `string[]`
+- **デフォルト:** `['browser', 'module', 'jsnext:main', 'jsnext']` （ `defaultClientMainFields` ）
 
-List of fields in `package.json` to try when resolving a package's entry point. Note this takes lower precedence than conditional exports resolved from the `exports` field: if an entry point is successfully resolved from `exports`, the main field will be ignored.
+パッケージのエントリポイントを解決するときに試してみる`package.json`のフィールドのリスト。注これは、 `exports`フィールドから解決された条件付きエクスポートよりも優先されます。2 `exports`エントリポイントが正常に解決された場合、メインフィールドは無視されます。
 
 ## resolve.extensions
 
-- **Type:** `string[]`
-- **Default:** `['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json']`
+- **タイプ:** `string[]`
+- **デフォルト:** `['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json']`
 
-List of file extensions to try for imports that omit extensions. Note it is **NOT** recommended to omit extensions for custom import types (e.g. `.vue`) since it can interfere with IDE and type support.
+拡張機能を省略するインポートを試すファイル拡張子のリスト。 IDEとタイプのサポートに干渉できるため、カスタムインポートタイプの拡張機能を省略することはお勧めし**ません**（例: `.vue` ）。
 
 ## resolve.preserveSymlinks
 
-- **Type:** `boolean`
-- **Default:** `false`
+- **タイプ:** `boolean`
+- **デフォルト:** `false`
 
-Enabling this setting causes vite to determine file identity by the original file path (i.e. the path without following symlinks) instead of the real file path (i.e. the path after following symlinks).
+この設定を有効にすると、Viteは、実際のファイルパス（つまり、シンリンク後の後のパス）の代わりに、元のファイルパス（つまり、シンリンクに従わないパス）でファイルIDを決定します。
 
-- **Related:** [esbuild#preserve-symlinks](https://esbuild.github.io/api/#preserve-symlinks), [webpack#resolve.symlinks
-  ](https://webpack.js.org/configuration/resolve/#resolvesymlinks)
+- **関連:** [esbuild＃preserve-symlinks](https://esbuild.github.io/api/#preserve-symlinks) 、[webpack＃resolve.symlinks
+  ]（ [https://webpack.js.org/configuration/Resolve/#resolvesymlinks](https://webpack.js.org/configuration/resolve/#resolvesymlinks) ）
 
 ## html.cspNonce
 
-- **Type:** `string`
-- **Related:** [Content Security Policy (CSP)](/ja/guide/features#content-security-policy-csp)
+- **タイプ:** `string`
+- **関連:**[コンテンツセキュリティポリシー（CSP）](/ja/guide/features#content-security-policy-csp)
 
-A nonce value placeholder that will be used when generating script / style tags. Setting this value will also generate a meta tag with nonce value.
+スクリプト /スタイルのタグを生成するときに使用されるNonCE値プレースホルダー。この値を設定すると、NonCe値のメタタグも生成されます。
 
 ## css.modules
 
-- **Type:**
+- **タイプ:**
   ```ts
   interface CSSModulesOptions {
     getJSON?: (
@@ -193,7 +193,7 @@ A nonce value placeholder that will be used when generating script / style tags.
       | ((name: string, filename: string, css: string) => string)
     hashPrefix?: string
     /**
-     * default: undefined
+     * デフォルト:未定義
      */
     localsConvention?:
       | 'camelCase'
@@ -208,36 +208,36 @@ A nonce value placeholder that will be used when generating script / style tags.
   }
   ```
 
-Configure CSS modules behavior. The options are passed on to [postcss-modules](https://github.com/css-modules/postcss-modules).
+CSSモジュールの動作を構成します。オプションは[PostCSSモジュール](https://github.com/css-modules/postcss-modules)に渡されます。
 
-This option doesn't have any effect when using [Lightning CSS](../guide/features.md#lightning-css). If enabled, [`css.lightningcss.cssModules`](https://lightningcss.dev/css-modules.html) should be used instead.
+このオプションは[、Lightning CSS](../guide/features.md#lightning-css)を使用する場合、効果はありません。有効にする場合、代わりに[`css.lightningcss.cssModules`](https://lightningcss.dev/css-modules.html)使用する必要があります。
 
 ## css.postcss
 
-- **Type:** `string | (postcss.ProcessOptions & { plugins?: postcss.AcceptedPlugin[] })`
+- **タイプ:** `文字列 | （postcss.processoptions＆{プラグイン？:postcss.acceptedplugin []}） `
 
-Inline PostCSS config or a custom directory to search PostCSS config from (default is project root).
+インラインPOSTCSS構成または（デフォルトはProject Root）からPOSTCSS構成を検索するカスタムディレクトリ。
 
-For inline PostCSS config, it expects the same format as `postcss.config.js`. But for `plugins` property, only [array format](https://github.com/postcss/postcss-load-config/blob/main/README.md#array) can be used.
+インラインPOSTCSS構成の場合、 `postcss.config.js`と同じ形式が予想されます。ただし、 `plugins`プロパティでは、[配列形式](https://github.com/postcss/postcss-load-config/blob/main/README.md#array)のみを使用できます。
 
-The search is done using [postcss-load-config](https://github.com/postcss/postcss-load-config) and only the supported config file names are loaded. Config files outside the workspace root (or the [project root](/ja/guide/#index-html-and-project-root) if no workspace is found) are not searched by default. You can specify a custom path outside of the root to load the specific config file instead if needed.
+検索は[PostCSS-Load-Config](https://github.com/postcss/postcss-load-config)を使用して行われ、サポートされている構成ファイル名のみがロードされます。ワークスペースルート（またはワークスペースが見つからない場合は[プロジェクトルート](/ja/guide/#index-html-and-project-root)）の外側の構成ファイルは、デフォルトで検索されません。必要に応じて、ルートの外側のカスタムパスを指定して、代わりに特定の構成ファイルを代わりにロードできます。
 
-Note if an inline config is provided, Vite will not search for other PostCSS config sources.
+注インライン構成が提供されている場合、Viteは他のPostCSS構成ソースを検索しません。
 
 ## css.preprocessorOptions
 
-- **Type:** `Record<string, object>`
+- **タイプ:** `Record<string, object>`
 
-Specify options to pass to CSS pre-processors. The file extensions are used as keys for the options. The supported options for each preprocessor can be found in their respective documentation:
+CSSの前処理者に渡すオプションを指定します。ファイル拡張機能は、オプションのキーとして使用されます。各プリプロセッサのサポートされているオプションは、それぞれのドキュメントにあります。
 
-- `sass`/`scss`:
-  - Select the sass API to use with `api: "modern-compiler" | "modern" | "legacy"` (default `"modern-compiler"` if `sass-embedded` is installed, otherwise `"modern"`). For the best performance, it's recommended to use `api: "modern-compiler"` with the `sass-embedded` package. The `"legacy"` API is deprecated and will be removed in Vite 7.
-  - [Options (modern)](https://sass-lang.com/documentation/js-api/interfaces/stringoptions/)
-  - [Options (legacy)](https://sass-lang.com/documentation/js-api/interfaces/LegacyStringOptions).
-- `less`: [Options](https://lesscss.org/usage/#less-options).
-- `styl`/`stylus`: Only [`define`](https://stylus-lang.com/docs/js.html#define-name-node) is supported, which can be passed as an object.
+- `sass` / `scss` :
+  - `API:" Modern-Compiler "で使用するSASS APIを選択します | "モダンな" | 「レガシー」 `(default`「モダンコンパイラ」`if`サス埋め込まれた`is installed, otherwise`「モダン」`). For the best performance, it's recommended to use `API: "Modern-compiler"`with the` Sass-埋め込まれた`package. The`"レガシー"`APIは非推奨で、Vite 7で削除されます。
+  - [オプション（モダン）](https://sass-lang.com/documentation/js-api/interfaces/stringoptions/)
+  - [オプション（レガシー）](https://sass-lang.com/documentation/js-api/interfaces/LegacyStringOptions) 。
+- `less` :[オプション](https://lesscss.org/usage/#less-options)。
+- `styl` / `stylus` :サポートされているのは[`define`](https://stylus-lang.com/docs/js.html#define-name-node)だけで、オブジェクトとして渡すことができます。
 
-**Example:**
+**例:**
 
 ```js
 export default defineConfig({
@@ -252,7 +252,7 @@ export default defineConfig({
         },
       },
       scss: {
-        api: 'modern-compiler', // or "modern", "legacy"
+        api: 'modern-compiler', // または「モダン」、「レガシー」
         importers: [
           // ...
         ],
@@ -264,11 +264,11 @@ export default defineConfig({
 
 ### css.preprocessorOptions[extension].additionalData
 
-- **Type:** `string | ((source: string, filename: string) => (string | { content: string; map?: SourceMap }))`
+- **タイプ:** `文字列 | （（ソース:string、filename:string）=>（string | {content:string;マップ？:sourcemap}）） `
 
-This option can be used to inject extra code for each style content. Note that if you include actual styles and not just variables, those styles will be duplicated in the final bundle.
+このオプションは、各スタイルコンテンツに追加のコードを挿入するために使用できます。変数だけでなく実際のスタイルを含める場合、これらのスタイルは最終バンドルで複製されることに注意してください。
 
-**Example:**
+**例:**
 
 ```js
 export default defineConfig({
@@ -284,36 +284,36 @@ export default defineConfig({
 
 ## css.preprocessorMaxWorkers
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/15835)
-- **Type:** `number | true`
-- **Default:** `0` (does not create any workers and run in the main thread)
+- **実験:**[フィードバックを与える](https://github.com/vitejs/vite/discussions/15835)
+- **タイプ:** `番号 | true`
+- **デフォルト:** `0` （労働者を作成してメインスレッドで実行しません）
 
-If this option is set, CSS preprocessors will run in workers when possible. `true` means the number of CPUs minus 1.
+このオプションが設定されている場合、CSSプレプロセッサは可能な場合は労働者で実行されます。 `true` 、CPUマイナス1の数を意味します。
 
 ## css.devSourcemap
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13845)
-- **Type:** `boolean`
-- **Default:** `false`
+- **実験:**[フィードバックを与える](https://github.com/vitejs/vite/discussions/13845)
+- **タイプ:** `boolean`
+- **デフォルト:** `false`
 
-Whether to enable sourcemaps during dev.
+開発中にSourcemapsを有効にするかどうか。
 
 ## css.transformer
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13835)
-- **Type:** `'postcss' | 'lightningcss'`
-- **Default:** `'postcss'`
+- **実験:**[フィードバックを与える](https://github.com/vitejs/vite/discussions/13835)
+- **タイプ:** `'postcss' | 「lightningcss」
+- **デフォルト:** `'postcss'`
 
-Selects the engine used for CSS processing. Check out [Lightning CSS](../guide/features.md#lightning-css) for more information.
+CSS処理に使用されるエンジンを選択します。詳細については、 [Lightning CSS](../guide/features.md#lightning-css)をご覧ください。
 
 ::: info Duplicate `@import`s
-Note that postcss (postcss-import) has a different behavior with duplicated `@import` from browsers. See [postcss/postcss-import#462](https://github.com/postcss/postcss-import/issues/462).
+PostCSS（PostCSS-Import）は、ブラウザから`@import`複製した異なる動作をしていることに注意してください。 [postcss/postcss-import＃462を](https://github.com/postcss/postcss-import/issues/462)参照してください。
 :::
 
 ## css.lightningcss
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13835)
-- **Type:**
+- **実験:**[フィードバックを与える](https://github.com/vitejs/vite/discussions/13835)
+- **タイプ:**
 
 ```js
 import type {
@@ -340,29 +340,29 @@ import type {
 }
 ```
 
-Configures Lightning CSS. Full transform options can be found in [the Lightning CSS repo](https://github.com/parcel-bundler/lightningcss/blob/master/node/index.d.ts).
+Lightning CSSを構成します。完全な変換オプションは[、Lightning CSSリポジトリ](https://github.com/parcel-bundler/lightningcss/blob/master/node/index.d.ts)にあります。
 
 ## json.namedExports
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **タイプ:** `boolean`
+- **デフォルト:** `true`
 
-Whether to support named imports from `.json` files.
+`.json`ファイルからの名前付きインポートをサポートするかどうか。
 
 ## json.stringify
 
-- **Type:** `boolean | 'auto'`
-- **Default:** `'auto'`
+- **タイプ:** `Boolean | 'auto' `
+- **デフォルト:** `'auto'`
 
-If set to `true`, imported JSON will be transformed into `export default JSON.parse("...")` which is significantly more performant than Object literals, especially when the JSON file is large.
+`true`に設定すると、インポートされたJSONは`export default JSON.parse("...")`に変換されます。これは、特にJSONファイルが大きい場合、オブジェクトリテラルよりもはるかにパフォーマンスがあります。
 
-If set to `'auto'`, the data will be stringified only if [the data is bigger than 10kB](https://v8.dev/blog/cost-of-javascript-2019#json:~:text=A%20good%20rule%20of%20thumb%20is%20to%20apply%20this%20technique%20for%20objects%20of%2010%20kB%20or%20larger).
+`'auto'`に設定されている場合、データ[が10kbより大きい](https://v8.dev/blog/cost-of-javascript-2019#json:~:text=A%20good%20rule%20of%20thumb%20is%20to%20apply%20this%20technique%20for%20objects%20of%2010%20kB%20or%20larger)場合にのみ、データが描画されます。
 
 ## esbuild
 
-- **Type:** `ESBuildOptions | false`
+- **タイプ:** `esbuildoptions | false`
 
-`ESBuildOptions` extends [esbuild's own transform options](https://esbuild.github.io/api/#transform). The most common use case is customizing JSX:
+`ESBuildOptions` [Esbuild自身の変換オプション](https://esbuild.github.io/api/#transform)を拡張します。最も一般的なユースケースは、JSXのカスタマイズです。
 
 ```js
 export default defineConfig({
@@ -373,9 +373,9 @@ export default defineConfig({
 })
 ```
 
-By default, esbuild is applied to `ts`, `jsx` and `tsx` files. You can customize this with `esbuild.include` and `esbuild.exclude`, which can be a regex, a [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or an array of either.
+デフォルトでは、EsBuildは`ts` `jsx`ファイルに適用されます`tsx`これは、 `esbuild.include`と`esbuild.exclude`でカスタマイズできます。これは、正規表現、[ピコマッチ](https://github.com/micromatch/picomatch#globbing-features)パターン、またはどちらの配列でもあります。
 
-In addition, you can also use `esbuild.jsxInject` to automatically inject JSX helper imports for every file transformed by esbuild:
+さらに、 `esbuild.jsxInject`使用して、esbuildによって変換されたすべてのファイルに対してJSXヘルパーのインポートを自動的に注入することもできます。
 
 ```js
 export default defineConfig({
@@ -385,24 +385,24 @@ export default defineConfig({
 })
 ```
 
-When [`build.minify`](./build-options.md#build-minify) is `true`, all minify optimizations are applied by default. To disable [certain aspects](https://esbuild.github.io/api/#minify) of it, set any of `esbuild.minifyIdentifiers`, `esbuild.minifySyntax`, or `esbuild.minifyWhitespace` options to `false`. Note the `esbuild.minify` option can't be used to override `build.minify`.
+[`build.minify`](./build-options.md#build-minify)が`true`場合、すべてのマイニル最適化がデフォルトで適用されます。その[特定の側面](https://esbuild.github.io/api/#minify)を無効にするには、 `esbuild.minifyIdentifiers` 、または`esbuild.minifyWhitespace` `esbuild.minifySyntax`を`false`に設定します。注`esbuild.minify`オプションを使用して`build.minify`オーバーライドできません。
 
-Set to `false` to disable esbuild transforms.
+`false`に設定して、ESBUILD変換を無効にします。
 
-## assetsInclude
+## AssetsClude
 
-- **Type:** `string | RegExp | (string | RegExp)[]`
-- **Related:** [Static Asset Handling](/ja/guide/assets)
+- **タイプ:** `文字列 | regexp | （弦 | regexp）[] `
+- **関連:**[静的資産処理](/ja/guide/assets)
 
-Specify additional [picomatch patterns](https://github.com/micromatch/picomatch#globbing-features) to be treated as static assets so that:
+静的資産として扱う追加の[Picomatchパターン](https://github.com/micromatch/picomatch#globbing-features)を指定して、次のように指定してください。
 
-- They will be excluded from the plugin transform pipeline when referenced from HTML or directly requested over `fetch` or XHR.
+- HTMLから参照される場合、または`fetch`またはXHRを超えて直接要求されると、プラグイン変換パイプラインから除外されます。
 
-- Importing them from JS will return their resolved URL string (this can be overwritten if you have a `enforce: 'pre'` plugin to handle the asset type differently).
+- JSからそれらをインポートすると、解決されたURL文字列が返されます（アセットタイプを異なる方法で処理するための`enforce: 'pre'`プラグインがある場合、これは上書きできます）。
 
-The built-in asset type list can be found [here](https://github.com/vitejs/vite/blob/main/packages/vite/src/node/constants.ts).
+組み込みの資産タイプリストは[こちらを](https://github.com/vitejs/vite/blob/main/packages/vite/src/node/constants.ts)ご覧ください。
 
-**Example:**
+**例:**
 
 ```js
 export default defineConfig({
@@ -410,15 +410,15 @@ export default defineConfig({
 })
 ```
 
-## logLevel
+## loglevel
 
-- **Type:** `'info' | 'warn' | 'error' | 'silent'`
+- **タイプ:** `'info' | 「警告」 | 'エラー' | 「サイレント」
 
-Adjust console output verbosity. Default is `'info'`.
+コンソール出力の冗長性を調整します。デフォルトは`'info'`です。
 
-## customLogger
+## CustomLogger
 
-- **Type:**
+- **タイプ:**
   ```ts
   interface Logger {
     info(msg: string, options?: LogOptions): void
@@ -431,7 +431,7 @@ Adjust console output verbosity. Default is `'info'`.
   }
   ```
 
-Use a custom logger to log messages. You can use Vite's `createLogger` API to get the default logger and customize it to, for example, change the message or filter out certain warnings.
+カスタムロガーを使用してメッセージを記録します。 Viteの`createLogger` APIを使用してデフォルトのロガーを取得し、たとえばメッセージを変更したり、特定の警告をフィルタリングしたりするようにカスタマイズできます。
 
 ```ts twoslash
 import { createLogger, defineConfig } from 'vite'
@@ -440,7 +440,7 @@ const logger = createLogger()
 const loggerWarn = logger.warn
 
 logger.warn = (msg, options) => {
-  // Ignore empty CSS files warning
+  // 空のCSSファイルの警告を無視します
   if (msg.includes('vite:css') && msg.includes(' is empty')) return
   loggerWarn(msg, options)
 }
@@ -450,33 +450,33 @@ export default defineConfig({
 })
 ```
 
-## clearScreen
+## クリアスクリーン
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **タイプ:** `boolean`
+- **デフォルト:** `true`
 
-Set to `false` to prevent Vite from clearing the terminal screen when logging certain messages. Via command line, use `--clearScreen false`.
+特定のメッセージを記録するときに、Viteが端子画面をクリアするのを防ぐために`false`に設定します。コマンドラインを介して、 `--clearScreen false`使用します。
 
-## envDir
+## envdir
 
-- **Type:** `string`
-- **Default:** `root`
+- **タイプ:** `string`
+- **デフォルト:** `root`
 
-The directory from which `.env` files are loaded. Can be an absolute path, or a path relative to the project root.
+`.env`ファイルがロードされるディレクトリ。絶対的なパス、またはプロジェクトルートに関連するパスにすることができます。
 
-See [here](/ja/guide/env-and-mode#env-files) for more about environment files.
+環境ファイルの詳細については、[こちらを](/ja/guide/env-and-mode#env-files)ご覧ください。
 
-## envPrefix
+## envprefix
 
-- **Type:** `string | string[]`
-- **Default:** `VITE_`
+- **タイプ:** `文字列 | 文字列[] `
+- **デフォルト:** `VITE_`
 
-Env variables starting with `envPrefix` will be exposed to your client source code via import.meta.env.
+`envPrefix`から始まるenv変数は、import.meta.envを介してクライアントソースコードに公開されます。
 
 :::warning SECURITY NOTES
-`envPrefix` should not be set as `''`, which will expose all your env variables and cause unexpected leaking of sensitive information. Vite will throw an error when detecting `''`.
+`envPrefix` `''`として設定しないでください。これにより、すべてのENV変数が公開され、機密情報の予期せぬ漏れが発生します。 Viteは`''`検出するときにエラーを投げます。
 
-If you would like to expose an unprefixed variable, you can use [define](#define) to expose it:
+再固定されていない変数を公開する場合は、[定義](#define)を使用してそれを公開できます。
 
 ```js
 define: {
@@ -486,24 +486,24 @@ define: {
 
 :::
 
-## appType
+## AppType
 
-- **Type:** `'spa' | 'mpa' | 'custom'`
-- **Default:** `'spa'`
+- **タイプ:** `'スパ' | 「MPA」 | 「カスタム」
+- **デフォルト:** `'spa'`
 
-Whether your application is a Single Page Application (SPA), a [Multi Page Application (MPA)](../guide/build#multi-page-app), or Custom Application (SSR and frameworks with custom HTML handling):
+アプリケーションが単一ページアプリケーション（SPA）、[マルチページアプリケーション（MPA）](../guide/build#multi-page-app) 、またはカスタムアプリケーション（カスタムHTML処理を備えたSSRおよびフレームワーク）であるかどうか:
 
-- `'spa'`: include HTML middlewares and use SPA fallback. Configure [sirv](https://github.com/lukeed/sirv) with `single: true` in preview
-- `'mpa'`: include HTML middlewares
-- `'custom'`: don't include HTML middlewares
+- `'spa'` :HTMLミドルウェアを含め、スパフォールバックを使用します。プレビューで`single: true`で[SIRV](https://github.com/lukeed/sirv)を構成します
+- `'mpa'` :HTML MiddleWaresを含めます
+- `'custom'` :HTML MiddleWaresを含めないでください
 
-Learn more in Vite's [SSR guide](/ja/guide/ssr#vite-cli). Related: [`server.middlewareMode`](./server-options#server-middlewaremode).
+Viteの[SSRガイド](/ja/guide/ssr#vite-cli)で詳細をご覧ください。関連: [`server.middlewareMode`](./server-options#server-middlewaremode) 。
 
-## future
+## 未来
 
-- **Type:** `Record<string, 'warn' | undefined>`
-- **Related:** [Breaking Changes](/ja/changes/)
+- **タイプ:** `レコード<文字列、 '警告' | 未定義> `
+- **関連:**[変更を破る](/ja/changes/)
 
-Enable future breaking changes to prepare for a smooth migration to the next major version of Vite. The list may be updated, added, or removed at any time as new features are developed.
+将来の破壊的な変更を有効にして、Viteの次のメジャーバージョンへのスムーズな移行に備えます。リストは、新機能が開発されているため、いつでも更新、追加、または削除することができます。
 
-See the [Breaking Changes](/ja/changes/) page for details of the possible options.
+可能なオプションの詳細については、 [Breaking Change](/ja/changes/)ページを参照してください。

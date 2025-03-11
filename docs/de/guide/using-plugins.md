@@ -1,10 +1,10 @@
-# Using Plugins
+# Mit Plugins
 
-Vite can be extended using plugins, which are based on Rollup's well-designed plugin interface with a few extra Vite-specific options. This means that Vite users can rely on the mature ecosystem of Rollup plugins, while also being able to extend the dev server and SSR functionality as needed.
+VITE kann mit Plugins erweitert werden, die auf der gut gestalteten Plugin-Schnittstelle von Rollup mit einigen zusätzlichen vite-spezifischen Optionen basieren. Dies bedeutet, dass VITE -Benutzer sich auf das ausgereifte Ökosystem von Rollup -Plugins verlassen können und gleichzeitig die Dev -Server- und SSR -Funktionalität nach Bedarf erweitern können.
 
-## Adding a Plugin
+## Hinzufügen eines Plugins
 
-To use a plugin, it needs to be added to the `devDependencies` of the project and included in the `plugins` array in the `vite.config.js` config file. For example, to provide support for legacy browsers, the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) can be used:
+Um ein Plugin zu verwenden, muss es der `devDependencies` des Projekts hinzugefügt und im `plugins` -Array in der `vite.config.js` Konfigurationsdatei enthalten sein. Zum Beispiel kann der offizielle [@vitejs/Plugin-Legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) verwendet werden, um Legacy-Browser zu unterstützen:
 
 ```
 $ npm add -D @vitejs/plugin-legacy
@@ -23,27 +23,27 @@ export default defineConfig({
 })
 ```
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins` akzeptiert auch Voreinstellungen, einschließlich mehrerer Plugins als einzelnes Element. Dies ist nützlich für komplexe Funktionen (z. B. Framework -Integration), die mit mehreren Plugins implementiert werden. Das Array wird intern abgeflacht.
 
-Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
+Falsy -Plugins werden ignoriert, mit denen Plugins einfach aktiviert oder deaktiviert werden können.
 
-## Finding Plugins
+## Plugins Finden
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+VITE zielt darauf ab, außergewöhnliche Unterstützung für gemeinsame Webentwicklungsmuster zu unterstützen. Bevor Sie nach einem vite- oder kompatiblen Rollup -Plugin suchen, lesen Sie die [Features -Handbuch](../guide/features.md) . Viele der Fälle, in denen ein Plugin in einem Rollup -Projekt benötigt wird, sind bereits in vite behandelt.
 :::
 
-Check out the [Plugins section](../plugins/) for information about official plugins. Community plugins are listed in [awesome-vite](https://github.com/vitejs/awesome-vite#plugins).
+Weitere Informationen zu offiziellen Plugins finden Sie im [Abschnitt Plugins](../plugins/) . Community-Plugins sind in [Awesome-Vite](https://github.com/vitejs/awesome-vite#plugins) aufgeführt.
 
-You can also find plugins that follow the [recommended conventions](./api-plugin.md#conventions) using a [npm search for vite-plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) for Vite plugins or a [npm search for rollup-plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) for Rollup plugins.
+Sie können auch Plugins finden, die den [empfohlenen Konventionen](./api-plugin.md#conventions) mit einer [NPM-Suche nach Vite-Plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) für Vite-Plugins oder einer [NPM-Suche nach Rollup-Plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) für Rollup-Plugins folgen.
 
-## Enforcing Plugin Ordering
+## Durchsetzung Der Plugin -Bestellung
 
-For compatibility with some Rollup plugins, it may be needed to enforce the order of the plugin or only apply at build time. This should be an implementation detail for Vite plugins. You can enforce the position of a plugin with the `enforce` modifier:
+Für die Kompatibilität mit einigen Rollup -Plugins ist möglicherweise erforderlich, um die Reihenfolge des Plugins durchzusetzen oder nur zum Bauzeit zu bewerben. Dies sollte ein Implementierungsdetail für vite -Plugins sein. Sie können die Position eines Plugins mit dem `enforce` -Modifikator durchsetzen:
 
-- `pre`: invoke plugin before Vite core plugins
-- default: invoke plugin after Vite core plugins
-- `post`: invoke plugin after Vite build plugins
+- `pre` : Rufen Sie Plugin vor vite Core -Plugins auf
+- Standardeinstellung: Rufen Sie Plugin nach vite Core -Plugins auf
+- `post` : Ruf Plugin nach vite Build -Plugins auf
 
 ```js twoslash [vite.config.js]
 import image from '@rollup/plugin-image'
@@ -59,11 +59,11 @@ export default defineConfig({
 })
 ```
 
-Check out [Plugins API Guide](./api-plugin.md#plugin-ordering) for detailed information.
+Weitere Informationen finden Sie unter [dem Plugins -API -Handbuch](./api-plugin.md#plugin-ordering) .
 
-## Conditional Application
+## Bedingte Anwendung
 
-By default, plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+Standardmäßig werden Plugins sowohl für den Servieren als auch für den Build aufgerufen. In Fällen, in denen ein Plugin nur während des Aufschlags oder des Builds bedingt angewendet werden muss, verwenden Sie die `apply` -Eigenschaft, um sie nur während `'build'` oder `'serve'` aufzurufen:
 
 ```js twoslash [vite.config.js]
 import typescript2 from 'rollup-plugin-typescript2'
@@ -79,6 +79,6 @@ export default defineConfig({
 })
 ```
 
-## Building Plugins
+## Gebäude -Plugins
 
-Check out the [Plugins API Guide](./api-plugin.md) for documentation about creating plugins.
+In der [Plugins -API -Handbuch](./api-plugin.md) zum Erstellen von Plugins finden Sie die Plugins -API -Handbuch.

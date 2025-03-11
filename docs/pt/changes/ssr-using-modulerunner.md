@@ -1,21 +1,21 @@
-# SSR using `ModuleRunner` API
+# SSR usando `ModuleRunner` API
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+Dê -nos feedback na [discussão sobre feedback da API ambiente](https://github.com/vitejs/vite/discussions/16358)
 :::
 
-`server.ssrLoadModule` has been replaced by importing from a [Module Runner](/pt/guide/api-environment#modulerunner).
+`server.ssrLoadModule` foi substituído pela importação de um [corredor do módulo](/pt/guide/api-environment#modulerunner) .
 
-Affect scope: `Vite Plugin Authors`
+AFETO ACENDE: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`ModuleRunner` was first introduce in `v6.0`. The deprecation of `server.ssrLoadModule` is planned for a future major. To identify your usage, set `future.removeSsrLoadModule` to `"warn"` in your vite config.
+`ModuleRunner` foi introduzido pela primeira vez em `v6.0` . A depreciação de `server.ssrLoadModule` está planejada para um futuro major. Para identificar seu uso, defina `future.removeSsrLoadModule` a `"warn"` na sua configuração Vite.
 :::
 
-## Motivation
+## Motivação
 
-The `server.ssrLoadModule(url)` only allows importing modules in the `ssr` environment and can only execute the modules in the same process as the Vite dev server. For apps with custom environments, each is associated with a `ModuleRunner` that may be running in a separate thread or process. To import modules, we now have `moduleRunner.import(url)`.
+O `server.ssrLoadModule(url)` apenas permite a importação de módulos no ambiente `ssr` e só pode executar os módulos no mesmo processo que o servidor de dev vite. Para aplicativos com ambientes personalizados, cada um está associado a um `ModuleRunner` que pode estar em execução em um encadeamento ou processo separado. Para importar módulos, agora temos `moduleRunner.import(url)` .
 
-## Migration Guide
+## Guia De Migração
 
-Check out the [Environment API for Frameworks Guide](../guide/api-environment-frameworks.md).
+Confira a [API do ambiente para o Guia de estruturas](../guide/api-environment-frameworks.md) .

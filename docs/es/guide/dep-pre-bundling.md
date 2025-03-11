@@ -1,45 +1,45 @@
-# Dependency Pre-Bundling
+# Prevenimiento De Dependencia
 
-When you run `vite` for the first time, Vite prebundles your project dependencies before loading your site locally. It is done automatically and transparently by default.
+Cuando ejecuta `vite` por primera vez, Vite prebunda las dependencias de su proyecto antes de cargar su sitio localmente. Se realiza de forma automática y transparente de forma predeterminada.
 
-## The Why
+## El Por Qué
 
-This is Vite performing what we call "dependency pre-bundling". This process serves two purposes:
+Este es VITE que realiza lo que llamamos "pre-Bunding de dependencia". Este proceso tiene dos propósitos:
 
-1. **CommonJS and UMD compatibility:** During development, Vite's dev serves all code as native ESM. Therefore, Vite must convert dependencies that are shipped as CommonJS or UMD into ESM first.
+1. **CommonJS y UMD Compatibilidad:** durante el desarrollo, Vite's Dev sirve todo el código como ESM nativo. Por lo tanto, Vite debe convertir dependencias que se envían como CommonJs o UMD en ESM primero.
 
-   When converting CommonJS dependencies, Vite performs smart import analysis so that named imports to CommonJS modules will work as expected even if the exports are dynamically assigned (e.g. React):
+   Al convertir las dependencias de CommonJS, VITE realiza un análisis de importación inteligente para que las importaciones nombradas a módulos CommonJS funcionen como se esperaba incluso si las exportaciones se asignan dinámicamente (por ejemplo, reaccionar):
 
    ```js
-   // works as expected
+   // Funciona como se esperaba
    import React, { useState } from 'react'
    ```
 
-2. **Performance:** Vite converts ESM dependencies with many internal modules into a single module to improve subsequent page load performance.
+2. **Rendimiento:** VITE convierte las dependencias de ESM con muchos módulos internos en un solo módulo para mejorar el rendimiento de carga de la página posterior.
 
-   Some packages ship their ES modules builds as many separate files importing one another. For example, [`lodash-es` has over 600 internal modules](https://unpkg.com/browse/lodash-es/)! When we do `import { debounce } from 'lodash-es'`, the browser fires off 600+ HTTP requests at the same time! Even though the server has no problem handling them, the large amount of requests create a network congestion on the browser side, causing the page to load noticeably slower.
+   Algunos paquetes envían sus módulos ES construye ya que muchos archivos separados se importan entre sí. ¡Por ejemplo, [`lodash-es` tiene más de 600 módulos internos](https://unpkg.com/browse/lodash-es/) ! ¡Cuando hacemos `import { debounce } from 'lodash-es'` , el navegador dispara más de 600 solicitudes HTTP al mismo tiempo! Aunque el servidor no tiene problemas para manejarlos, la gran cantidad de solicitudes crean una congestión de red en el lado del navegador, lo que hace que la página se cargue notablemente más lenta.
 
-   By pre-bundling `lodash-es` into a single module, we now only need one HTTP request instead!
+   Al pre-Bundling `lodash-es` en un solo módulo, ¡ahora solo necesitamos una solicitud HTTP!
 
 ::: tip NOTE
-Dependency pre-bundling only applies in development mode, and uses `esbuild` to convert dependencies to ESM. In production builds, `@rollup/plugin-commonjs` is used instead.
+El preinculado de dependencia solo se aplica en modo de desarrollo y usa `esbuild` para convertir dependencias a ESM. En las compilaciones de producción, `@rollup/plugin-commonjs` se usa en su lugar.
 :::
 
-## Automatic Dependency Discovery
+## Descubrimiento De Dependencia Automática
 
-If an existing cache is not found, Vite will crawl your source code and automatically discover dependency imports (i.e. "bare imports" that expect to be resolved from `node_modules`) and use these found imports as entry points for the pre-bundle. The pre-bundling is performed with `esbuild` so it's typically very fast.
+Si no se encuentra un caché existente, VITE rastreará su código fuente y descubrirá automáticamente las importaciones de dependencia (es decir, "importaciones desnudas" que esperan resolverse desde `node_modules` ) y usará estas importaciones encontradas como puntos de entrada para el Anuncio previo. El pre-Bundling se realiza con `esbuild` por lo que generalmente es muy rápido.
 
-After the server has already started, if a new dependency import is encountered that isn't already in the cache, Vite will re-run the dep bundling process and reload the page if needed.
+Una vez que el servidor ya ha comenzado, si se encuentra una nueva importación de dependencia que no está en el caché, VITE volverá a ejecutar el proceso de agrupación DEP y recargará la página si es necesario.
 
-## Monorepos and Linked Dependencies
+## Monorepos Y Dependencias Vinculadas
 
-In a monorepo setup, a dependency may be a linked package from the same repo. Vite automatically detects dependencies that are not resolved from `node_modules` and treats the linked dep as source code. It will not attempt to bundle the linked dep, and will analyze the linked dep's dependency list instead.
+En una configuración de Monorepo, una dependencia puede ser un paquete vinculado del mismo repositorio. VITE detecta automáticamente las dependencias que no se resuelven de `node_modules` y trata el DEP vinculado como código fuente. No intentará agrupar el DEP vinculado y analizará la lista de dependencia de Dep vinculada.
 
-However, this requires the linked dep to be exported as ESM. If not, you can add the dependency to [`optimizeDeps.include`](/es/config/dep-optimization-options.md#optimizedeps-include) and [`build.commonjsOptions.include`](/es/config/build-options.md#build-commonjsoptions) in your config.
+Sin embargo, esto requiere que el DEP vinculado se exporte como ESM. Si no, puede agregar la dependencia a [`optimizeDeps.include`](/es/config/dep-optimization-options.md#optimizedeps-include) y [`build.commonjsOptions.include`](/es/config/build-options.md#build-commonjsoptions) en su configuración.
 
 ```js twoslash [vite.config.js]
 import { defineConfig } from 'vite'
-// ---cut---
+// ---cortar---
 export default defineConfig({
   optimizeDeps: {
     include: ['linked-dep'],
@@ -52,37 +52,35 @@ export default defineConfig({
 })
 ```
 
-When making changes to the linked dep, restart the dev server with the `--force` command line option for the changes to take effect.
+Al realizar cambios en el DEP vinculado, reinicie el servidor Dev con la opción de línea de comando `--force` para que los cambios entren en vigencia.
 
-## Customizing the Behavior
+## Personalizando el comportamiento
 
-The default dependency discovery heuristics may not always be desirable. In cases where you want to explicitly include/exclude dependencies from the list, use the [`optimizeDeps` config options](/es/config/dep-optimization-options.md).
+La heurística de descubrimiento de dependencia predeterminada puede no ser siempre deseable. En los casos en que desea incluir/excluir explícitamente las dependencias de la lista, use las [opciones de configuración `optimizeDeps`](/es/config/dep-optimization-options.md) .
 
-A typical use case for `optimizeDeps.include` or `optimizeDeps.exclude` is when you have an import that is not directly discoverable in the source code. For example, maybe the import is created as a result of a plugin transform. This means Vite won't be able to discover the import on the initial scan - it can only discover it after the file is requested by the browser and transformed. This will cause the server to immediately re-bundle after server start.
+Un caso de uso típico para `optimizeDeps.include` o `optimizeDeps.exclude` es cuando tiene una importación que no se puede descubrir directamente en el código fuente. Por ejemplo, tal vez la importación se crea como resultado de una transformación de complemento. Esto significa que Vite no podrá descubrir la importación en el escaneo inicial: solo puede descubrirlo después de que el navegador solicite el archivo y se transforme. Esto hará que el servidor se vuelva a pasar inmediatamente después del inicio del servidor.
 
-Both `include` and `exclude` can be used to deal with this. If the dependency is large (with many internal modules) or is CommonJS, then you should include it; If the dependency is small and is already valid ESM, you can exclude it and let the browser load it directly.
+Tanto `include` como `exclude` se pueden usar para lidiar con esto. Si la dependencia es grande (con muchos módulos internos) o es común, entonces debe incluirla; Si la dependencia es pequeña y ya es ESM válida, puede excluirla y dejar que el navegador lo cargue directamente.
 
-You can further customize esbuild too with the [`optimizeDeps.esbuildOptions` option](/es/config/dep-optimization-options.md#optimizedeps-esbuildoptions). For example, adding an esbuild plugin to handle special files in dependencies or changing the [build `target`](https://esbuild.github.io/api/#target).
+También puede personalizar ESBuild con la [opción `optimizeDeps.esbuildOptions`](/es/config/dep-optimization-options.md#optimizedeps-esbuildoptions) . Por ejemplo, agregando un complemento ESBuild para manejar archivos especiales en dependencias o cambiar la [compilación `target`](https://esbuild.github.io/api/#target) .
 
-## Caching
+## Almacenamiento en Caché
 
-### File System Cache
+### Caché Del Sistema De Archivos
 
-Vite caches the pre-bundled dependencies in `node_modules/.vite`. It determines whether it needs to re-run the pre-bundling step based on a few sources:
+Vite almacena en caché las dependencias previas a Bundled en `node_modules/.vite` . Determina si necesita volver a ejecutar el paso previo a la bolsa en función de algunas fuentes:
 
-- Package manager lockfile content, e.g. `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml` or `bun.lockb`.
-- Patches folder modification time.
-- Relevant fields in your `vite.config.js`, if present.
-- `NODE_ENV` value.
+- Contenido de LockFile de bloqueo del Administrador de paquetes, por ejemplo, `package-lock.json` , `yarn.lock` , `pnpm-lock.yaml` o `bun.lockb` .
+- Tiempo de modificación de la carpeta de parches.
+- Campos relevantes en su `vite.config.js` , si está presente.
+- `NODE_ENV` valor.
 
-The pre-bundling step will only need to be re-run when one of the above has changed.
+El paso previo a Bundling solo deberá volver a ejecutar cuando uno de los anteriores haya cambiado.
 
-If for some reason you want to force Vite to re-bundle deps, you can either start the dev server with the `--force` command line option, or manually delete the `node_modules/.vite` cache directory.
+Si por alguna razón desea obligar a Vite a volver a superar los DEPS, puede iniciar el servidor Dev con la opción de línea de comando `--force` o eliminar manualmente el directorio de caché `node_modules/.vite` .
 
-### Browser Cache
+### Caché Del Navegador
 
-Resolved dependency requests are strongly cached with HTTP headers `max-age=31536000,immutable` to improve page reload performance during dev. Once cached, these requests will never hit the dev server again. They are auto invalidated by the appended version query if a different version is installed (as reflected in your package manager lockfile). If you want to debug your dependencies by making local edits, you can:
-
-1. Temporarily disable cache via the Network tab of your browser devtools;
-2. Restart Vite dev server with the `--force` flag to re-bundle the deps;
-3. Reload the page.
+1. Deshabilite temporalmente el caché a través de la pestaña de red de su navegador DevTools;
+2. Reinicie Vite Dev Server con el indicador `--force` para volver a superar el DEPS;
+3. Recargar la página.

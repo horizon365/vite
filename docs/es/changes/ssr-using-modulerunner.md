@@ -1,21 +1,21 @@
-# SSR using `ModuleRunner` API
+# SSR usando `ModuleRunner` API
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+Danos comentarios en [la discusión de comentarios de la API ambiental](https://github.com/vitejs/vite/discussions/16358)
 :::
 
-`server.ssrLoadModule` has been replaced by importing from a [Module Runner](/es/guide/api-environment#modulerunner).
+`server.ssrLoadModule` ha sido reemplazado por importación de un [corredor de módulo](/es/guide/api-environment#modulerunner) .
 
-Affect scope: `Vite Plugin Authors`
+Afectar el alcance: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`ModuleRunner` was first introduce in `v6.0`. The deprecation of `server.ssrLoadModule` is planned for a future major. To identify your usage, set `future.removeSsrLoadModule` to `"warn"` in your vite config.
+`ModuleRunner` se introdujo primero en `v6.0` . La deprecación de `server.ssrLoadModule` está planeada para una futura especialidad. Para identificar su uso, establezca de `future.removeSsrLoadModule` a `"warn"` en su configuración VITE.
 :::
 
-## Motivation
+## Motivación
 
-The `server.ssrLoadModule(url)` only allows importing modules in the `ssr` environment and can only execute the modules in the same process as the Vite dev server. For apps with custom environments, each is associated with a `ModuleRunner` that may be running in a separate thread or process. To import modules, we now have `moduleRunner.import(url)`.
+El `server.ssrLoadModule(url)` solo permite importar módulos en el entorno `ssr` y solo puede ejecutar los módulos en el mismo proceso que el servidor VITE DEV. Para aplicaciones con entornos personalizados, cada una está asociada con un `ModuleRunner` que puede estar ejecutándose en un hilo o proceso separado. Para importar módulos, ahora tenemos `moduleRunner.import(url)` .
 
-## Migration Guide
+## Guía De Migración
 
-Check out the [Environment API for Frameworks Guide](../guide/api-environment-frameworks.md).
+Echa un vistazo a la [Guía API de Medio Ambiente para Frameworks](../guide/api-environment-frameworks.md) .

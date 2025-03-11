@@ -1,48 +1,48 @@
-# Env Variables and Modes
+# ENV 변수 및 모드
 
-Vite exposes certain constants under the special `import.meta.env` object. These constants are defined as global variables during dev and statically replaced at build time to make tree-shaking effective.
+Vite는 특수 `import.meta.env` 객체 아래에 특정 상수를 노출시킵니다. 이러한 상수는 DEV 동안 글로벌 변수로 정의되며 빌드 시점에 정적으로 교체하여 트리 쉐이킹을 효과적으로 대체합니다.
 
-## Built-in constants
+## 내장 상수
 
-Some built-in constants are available in all cases:
+일부 내장 상수는 모든 경우에 사용할 수 있습니다.
 
-- **`import.meta.env.MODE`**: {string} the [mode](#modes) the app is running in.
+- **`import.meta.env.MODE`** : {string} 앱이 실행중인 [모드](#modes) 입니다.
 
-- **`import.meta.env.BASE_URL`**: {string} the base url the app is being served from. This is determined by the [`base` config option](/ko/config/shared-options.md#base).
+- **`import.meta.env.BASE_URL`** : {string} 앱이 제공되는 기본 URL. 이것은 [`base` 구성 옵션](/ko/config/shared-options.md#base) 에 의해 결정됩니다.
 
-- **`import.meta.env.PROD`**: {boolean} whether the app is running in production (running the dev server with `NODE_ENV='production'` or running an app built with `NODE_ENV='production'`).
+- **`import.meta.env.PROD`** : {boolean} 앱이 생산 중이 있는지 여부 ( `NODE_ENV='production'` 로 개발 서버를 실행하거나 `NODE_ENV='production'` 로 구축 된 앱을 실행).
 
-- **`import.meta.env.DEV`**: {boolean} whether the app is running in development (always the opposite of `import.meta.env.PROD`)
+- **`import.meta.env.DEV`** : {boolean} 앱이 개발 중인지 여부 (항상 `import.meta.env.PROD` )
 
-- **`import.meta.env.SSR`**: {boolean} whether the app is running in the [server](./ssr.md#conditional-logic).
+- **`import.meta.env.SSR`** : {boolean} 앱이 [서버](./ssr.md#conditional-logic) 에서 실행 중인지 여부.
 
-## Env Variables
+## ENV 변수
 
-Vite exposes env variables under `import.meta.env` object as strings automatically.
+vite는 `import.meta.env` 개체 아래에 ENV 변수를 문자열로 노출시킵니다.
 
-To prevent accidentally leaking env variables to the client, only variables prefixed with `VITE_` are exposed to your Vite-processed code. e.g. for the following env variables:
+실수로 ENV 변수가 클라이언트에 유출되는 것을 방지하기 위해 `VITE_` 으로 접두사 한 변수 만 VITE 처리 코드에 노출됩니다. 예를 들어 다음과 같은 ENV 변수에 대해서는 다음과 같습니다.
 
 ```[.env]
 VITE_SOME_KEY=123
 DB_PASSWORD=foobar
 ```
 
-Only `VITE_SOME_KEY` will be exposed as `import.meta.env.VITE_SOME_KEY` to your client source code, but `DB_PASSWORD` will not.
+`VITE_SOME_KEY` 만이 클라이언트 소스 코드에 `import.meta.env.VITE_SOME_KEY` 으로 노출되지만 `DB_PASSWORD` 그렇지 않습니다.
 
 ```js
 console.log(import.meta.env.VITE_SOME_KEY) // "123"
-console.log(import.meta.env.DB_PASSWORD) // undefined
+console.log(import.meta.env.DB_PASSWORD) // 한정되지 않은
 ```
 
-If you want to customize the env variables prefix, see the [envPrefix](/ko/config/shared-options.html#envprefix) option.
+ENV 변수 접두사를 사용자 정의하려면 [EnvPrefix](/ko/config/shared-options.html#envprefix) 옵션을 참조하십시오.
 
 :::tip Env parsing
-As shown above, `VITE_SOME_KEY` is a number but returns a string when parsed. The same would also happen for boolean env variables. Make sure to convert to the desired type when using it in your code.
+위에서 볼 수 있듯이 `VITE_SOME_KEY` 은 숫자이지만 구문 분석하면 문자열을 반환합니다. 부울 ENV 변수에 대해서도 마찬가지입니다. 코드에서 사용할 때 원하는 유형으로 변환하십시오.
 :::
 
-### `.env` Files
+### `.env` 파일
 
-Vite uses [dotenv](https://github.com/motdotla/dotenv) to load additional environment variables from the following files in your [environment directory](/ko/config/shared-options.md#envdir):
+Vite는 [dotenv를](https://github.com/motdotla/dotenv) 사용하여 [환경 디렉토리의](/ko/config/shared-options.md#envdir) 다음 파일에서 추가 환경 변수를로드합니다.
 
 ```
 .env                # loaded in all cases
@@ -53,19 +53,19 @@ Vite uses [dotenv](https://github.com/motdotla/dotenv) to load additional enviro
 
 :::tip Env Loading Priorities
 
-An env file for a specific mode (e.g. `.env.production`) will take higher priority than a generic one (e.g. `.env`).
+특정 모드 (예 : `.env.production` )의 ENV 파일은 일반적인 모드 (예 : `.env` )보다 우선 순위가 높습니다.
 
-Vite will always load `.env` and `.env.local` in addition to the mode-specific `.env.[mode]` file. Variables declared in mode-specific files will take precedence over those in generic files, but variables defined only in `.env` or `.env.local` will still be available in the environment.
+Vite는 모드 별 `.env.[mode]` 파일 외에 항상 `.env` 과 `.env.local` 로드합니다. 모드 별 파일로 선언 된 변수는 일반 파일의 변수보다 우선하지만 `.env` 또는 `.env.local` 로만 정의 된 변수는 여전히 환경에서 사용할 수 있습니다.
 
-In addition, environment variables that already exist when Vite is executed have the highest priority and will not be overwritten by `.env` files. For example, when running `VITE_SOME_KEY=123 vite build`.
+또한 VITE가 실행될 때 이미 존재하는 환경 변수는 우선 순위가 가장 높으며 `.env` 파일로 덮어 쓰지 않습니다. 예를 들어, 실행할 때 `VITE_SOME_KEY=123 vite build` .
 
-`.env` files are loaded at the start of Vite. Restart the server after making changes.
+VITE 시작시 `.env` 파일이로드됩니다. 변경 후 서버를 다시 시작하십시오.
 
 :::
 
-Also, Vite uses [dotenv-expand](https://github.com/motdotla/dotenv-expand) to expand variables written in env files out of the box. To learn more about the syntax, check out [their docs](https://github.com/motdotla/dotenv-expand#what-rules-does-the-expansion-engine-follow).
+또한 Vite는 [DOTENV-EXPAND를](https://github.com/motdotla/dotenv-expand) 사용하여 상자에서 ENV 파일로 작성된 변수를 확장합니다. 구문에 대한 자세한 내용은 [문서를](https://github.com/motdotla/dotenv-expand#what-rules-does-the-expansion-engine-follow) 확인하십시오.
 
-Note that if you want to use `$` inside your environment value, you have to escape it with `\`.
+환경 값 내부에서 `$` 사용하려면 `\` 로 탈출해야합니다.
 
 ```[.env]
 KEY=123
@@ -76,41 +76,41 @@ NEW_KEY3=test$KEY   # test123
 
 :::warning SECURITY NOTES
 
-- `.env.*.local` files are local-only and can contain sensitive variables. You should add `*.local` to your `.gitignore` to avoid them being checked into git.
+- `.env.*.local` 파일은 로컬 전용이며 민감한 변수를 포함 할 수 있습니다. git에 체크인하지 않도록 `.gitignore` 에 `*.local` 추가해야합니다.
 
-- Since any variables exposed to your Vite source code will end up in your client bundle, `VITE_*` variables should _not_ contain any sensitive information.
+- Vite 소스 코드에 노출 된 변수는 클라이언트 번들에 있으므로 `VITE_*` 변수에는 민감한 정보가 포함되어 있지 _않아야_ 합니다.
 
 :::
 
 ::: details Expanding variables in reverse order
 
-Vite supports expanding variables in reverse order.
-For example, the `.env` below will be evaluated as `VITE_FOO=foobar`, `VITE_BAR=bar`.
+VITE는 변수 확장을 역순으로 지원합니다.
+예를 들어, 아래 `.env` 은 `VITE_FOO=foobar` , `VITE_BAR=bar` 로 평가됩니다.
 
 ```[.env]
 VITE_FOO=foo${VITE_BAR}
 VITE_BAR=bar
 ```
 
-This does not work in shell scripts and other tools like `docker-compose`.
-That said, Vite supports this behavior as this has been supported by `dotenv-expand` for a long time and other tools in JavaScript ecosystem uses older versions that supports this behavior.
+이것은 쉘 스크립트 및 `docker-compose` 과 같은 다른 도구에서는 작동하지 않습니다.
+즉, Vite는 오랫동안 `dotenv-expand` 으로 지원 되었기 때문에이 동작을 지원하고 JavaScript Ecosystem의 다른 도구는이 동작을 지원하는 이전 버전을 사용합니다.
 
-To avoid interop issues, it is recommended to avoid relying on this behavior. Vite may start emitting warnings for this behavior in the future.
+인터 로프 문제를 피하려면이 동작에 의존하지 않는 것이 좋습니다. Vite는 앞으로이 행동에 대한 경고를 방출하기 시작할 수 있습니다.
 
 :::
 
-## IntelliSense for TypeScript
+## TypeScript에 대한 IntellIsense
 
-By default, Vite provides type definitions for `import.meta.env` in [`vite/client.d.ts`](https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts). While you can define more custom env variables in `.env.[mode]` files, you may want to get TypeScript IntelliSense for user-defined env variables that are prefixed with `VITE_`.
+기본적으로 Vite는 [`vite/client.d.ts`](https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts) 에서 `import.meta.env` 에 대한 유형 정의를 제공합니다. `.env.[mode]` 파일에서 더 많은 사용자 정의 ENV 변수를 정의 할 수 있지만 `VITE_` 로 접두사가있는 사용자 정의 ENV 변수에 대해 TypeScript IntellIsense를 얻을 수 있습니다.
 
-To achieve this, you can create an `vite-env.d.ts` in `src` directory, then augment `ImportMetaEnv` like this:
+이를 달성하려면 `src` 디렉토리에서 0에서 `vite-env.d.ts` 생성 한 다음 다음과 같은 `ImportMetaEnv` 증강시킬 수 있습니다.
 
 ```typescript [vite-env.d.ts]
-/// <reference types="vite/client" />
+///<reference types="vite/client">
 
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string
-  // more env variables...
+  // 더 많은 env 변수 ...
 }
 
 interface ImportMeta {
@@ -118,7 +118,7 @@ interface ImportMeta {
 }
 ```
 
-If your code relies on types from browser environments such as [DOM](https://github.com/microsoft/TypeScript/blob/main/src/lib/dom.generated.d.ts) and [WebWorker](https://github.com/microsoft/TypeScript/blob/main/src/lib/webworker.generated.d.ts), you can update the [lib](https://www.typescriptlang.org/tsconfig#lib) field in `tsconfig.json`.
+코드가 [DOM](https://github.com/microsoft/TypeScript/blob/main/src/lib/dom.generated.d.ts) 및 [WebWorker](https://github.com/microsoft/TypeScript/blob/main/src/lib/webworker.generated.d.ts) 와 같은 브라우저 환경의 유형에 의존하는 경우 [LIB](https://www.typescriptlang.org/tsconfig#lib) 필드를 `tsconfig.json` 으로 업데이트 할 수 있습니다.
 
 ```json [tsconfig.json]
 {
@@ -128,73 +128,73 @@ If your code relies on types from browser environments such as [DOM](https://git
 
 :::warning Imports will break type augmentation
 
-If the `ImportMetaEnv` augmentation does not work, make sure you do not have any `import` statements in `vite-env.d.ts`. See the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/2/modules.html#how-javascript-modules-are-defined) for more information.
+`ImportMetaEnv` 보강이 작동하지 않으면 `vite-env.d.ts` 에 `import` 명령문이 없는지 확인하십시오. 자세한 내용은 [TypeScript 문서를](https://www.typescriptlang.org/docs/handbook/2/modules.html#how-javascript-modules-are-defined) 참조하십시오.
 
 :::
 
-## HTML Constant Replacement
+## HTML 상수 교체
 
-Vite also supports replacing constants in HTML files. Any properties in `import.meta.env` can be used in HTML files with a special `%CONST_NAME%` syntax:
+Vite는 또한 HTML 파일의 상수를 교체하는 것을 지원합니다. `import.meta.env` 의 모든 속성은 특별 `%CONST_NAME%` 구문이있는 HTML 파일에서 사용할 수 있습니다.
 
 ```html
 <h1>Vite is running in %MODE%</h1>
 <p>Using data from %VITE_API_URL%</p>
 ```
 
-If the env doesn't exist in `import.meta.env`, e.g. `%NON_EXISTENT%`, it will be ignored and not replaced, unlike `import.meta.env.NON_EXISTENT` in JS where it's replaced as `undefined`.
+ENT가 `import.meta.env` , 예를 들어 `%NON_EXISTENT%` 에 존재하지 않으면 `undefined` 으로 교체되는 JS의 `import.meta.env.NON_EXISTENT` 와 달리 무시되고 교체되지 않습니다.
 
-Given that Vite is used by many frameworks, it is intentionally unopinionated about complex replacements like conditionals. Vite can be extended using [an existing userland plugin](https://github.com/vitejs/awesome-vite#transformers) or a custom plugin that implements the [`transformIndexHtml` hook](./api-plugin#transformindexhtml).
+Vite가 많은 프레임 워크에서 사용한다는 점을 감안할 때 조건부와 같은 복잡한 교체에 대해서는 의도적으로 구현되지 않습니다. [기존 사용자 랜드 플러그인](https://github.com/vitejs/awesome-vite#transformers) 또는 [`transformIndexHtml` 후크를](./api-plugin#transformindexhtml) 구현하는 사용자 정의 플러그인을 사용하여 vite를 확장 할 수 있습니다.
 
-## Modes
+## 모드
 
-By default, the dev server (`dev` command) runs in `development` mode and the `build` command runs in `production` mode.
+기본적으로 Dev Server ( `dev` 명령)는 `development` 모드로 실행되고 `build` 명령은 `production` 모드에서 실행됩니다.
 
-This means when running `vite build`, it will load the env variables from `.env.production` if there is one:
+이것은 `vite build` 실행할 때 ENV 변수가 1이 있으면 `.env.production` 에서 1에서로드한다는 것을 의미합니다.
 
 ```[.env.production]
 VITE_APP_TITLE=My App
 ```
 
-In your app, you can render the title using `import.meta.env.VITE_APP_TITLE`.
+앱에서 `import.meta.env.VITE_APP_TITLE` 사용하여 제목을 렌더링 할 수 있습니다.
 
-In some cases, you may want to run `vite build` with a different mode to render a different title. You can overwrite the default mode used for a command by passing the `--mode` option flag. For example, if you want to build your app for a staging mode:
+경우에 따라 다른 제목을 렌더링하기 위해 다른 모드로 `vite build` 실행할 수 있습니다. `--mode` 옵션 플래그를 전달하여 명령에 사용되는 기본 모드를 덮어 쓸 수 있습니다. 예를 들어, 스테이징 모드를 위해 앱을 구축하려는 경우 :
 
 ```bash
 vite build --mode staging
 ```
 
-And create a `.env.staging` file:
+`.env.staging` 파일을 만듭니다.
 
 ```[.env.staging]
 VITE_APP_TITLE=My App (staging)
 ```
 
-As `vite build` runs a production build by default, you can also change this and run a development build by using a different mode and `.env` file configuration:
+`vite build` 은 기본적으로 생산 빌드를 실행하므로 다른 모드와 `.env` 파일 구성을 사용하여이를 변경하고 개발 빌드를 실행할 수 있습니다.
 
 ```[.env.testing]
 NODE_ENV=development
 ```
 
-### NODE_ENV and Modes
+### node_env 및 모드
 
-It's important to note that `NODE_ENV` (`process.env.NODE_ENV`) and modes are two different concepts. Here's how different commands affect the `NODE_ENV` and mode:
+`NODE_ENV` ( `process.env.NODE_ENV` )과 모드는 두 가지 다른 개념이라는 점에 유의해야합니다. 다른 명령이 `NODE_ENV` 및 모드에 어떤 영향을 미치는지는 다음과 같습니다.
 
-| Command                                              | NODE_ENV        | Mode            |
+| 명령                                                 | node_env        | 방법            |
 | ---------------------------------------------------- | --------------- | --------------- |
 | `vite build`                                         | `"production"`  | `"production"`  |
 | `vite build --mode development`                      | `"production"`  | `"development"` |
 | `NODE_ENV=development vite build`                    | `"development"` | `"production"`  |
 | `NODE_ENV=development vite build --mode development` | `"development"` | `"development"` |
 
-The different values of `NODE_ENV` and mode also reflect on its corresponding `import.meta.env` properties:
+`NODE_ENV` 과 모드의 다른 값은 해당 `import.meta.env` 속성에도 반영됩니다.
 
-| Command                | `import.meta.env.PROD` | `import.meta.env.DEV` |
+| 명령                   | `import.meta.env.PROD` | `import.meta.env.DEV` |
 | ---------------------- | ---------------------- | --------------------- |
 | `NODE_ENV=production`  | `true`                 | `false`               |
 | `NODE_ENV=development` | `false`                | `true`                |
 | `NODE_ENV=other`       | `false`                | `true`                |
 
-| Command              | `import.meta.env.MODE` |
+| 명령                 | `import.meta.env.MODE` |
 | -------------------- | ---------------------- |
 | `--mode production`  | `"production"`         |
 | `--mode development` | `"development"`        |
@@ -202,7 +202,7 @@ The different values of `NODE_ENV` and mode also reflect on its corresponding `i
 
 :::tip `NODE_ENV` in `.env` files
 
-`NODE_ENV=...` can be set in the command, and also in your `.env` file. If `NODE_ENV` is specified in a `.env.[mode]` file, the mode can be used to control its value. However, both `NODE_ENV` and modes remain as two different concepts.
+`NODE_ENV=...` 명령과 `.env` 파일로 설정할 수 있습니다. `NODE_ENV` `.env.[mode]` 파일로 지정되면 모드를 사용하여 해당 값을 제어 할 수 있습니다. 그러나 `NODE_ENV` 개와 모드는 모두 두 가지 다른 개념으로 남아 있습니다.
 
-The main benefit with `NODE_ENV=...` in the command is that it allows Vite to detect the value early. It also allows you to read `process.env.NODE_ENV` in your Vite config as Vite can only load the env files once the config is evaluated.
+명령에서 `NODE_ENV=...` 의 주요 이점은 Vite가 값을 조기에 감지 할 수 있다는 것입니다. 또한 vite가 구성을 평가하면 ENV 파일 만로드 할 수 있으므로 VITE 구성에서 `process.env.NODE_ENV` 읽을 수 있습니다.
 :::

@@ -1,132 +1,132 @@
-# Command Line Interface
+# コマンドラインインターフェイス
 
-## Dev server
+## 開発サーバー
 
 ### `vite`
 
-Start Vite dev server in the current directory. `vite dev` and `vite serve` are aliases for `vite`.
+現在のディレクトリでVite Devサーバーを起動します。 `vite dev`と`vite serve`は`vite`エイリアスです。
 
-#### Usage
+#### 使用法
 
 ```bash
 vite [root]
 ```
 
-#### Options
+#### オプション
 
-| Options                   |                                                                                                                                                                                      |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--host [host]`           | Specify hostname (`string`)                                                                                                                                                          |
-| `--port <port>`           | Specify port (`number`)                                                                                                                                                              |
-| `--open [path]`           | Open browser on startup (`boolean \| string`)                                                                                                                                        |
-| `--cors`                  | Enable CORS (`boolean`)                                                                                                                                                              |
-| `--strictPort`            | Exit if specified port is already in use (`boolean`)                                                                                                                                 |
-| `--force`                 | Force the optimizer to ignore the cache and re-bundle (`boolean`)                                                                                                                    |
-| `-c, --config <file>`     | Use specified config file (`string`)                                                                                                                                                 |
-| `--base <path>`           | Public base path (default: `/`) (`string`)                                                                                                                                           |
-| `-l, --logLevel <level>`  | info \| warn \| error \| silent (`string`)                                                                                                                                           |
-| `--clearScreen`           | Allow/disable clear screen when logging (`boolean`)                                                                                                                                  |
-| `--configLoader <loader>` | Use `bundle` to bundle the config with esbuild, or `runner` (experimental) to process it on the fly, or `native` (experimental) to load using the native runtime (default: `bundle`) |
-| `--profile`               | Start built-in Node.js inspector (check [Performance bottlenecks](/ja/guide/troubleshooting#performance-bottlenecks))                                                                |
-| `-d, --debug [feat]`      | Show debug logs (`string \| boolean`)                                                                                                                                                |
-| `-f, --filter <filter>`   | Filter debug logs (`string`)                                                                                                                                                         |
-| `-m, --mode <mode>`       | Set env mode (`string`)                                                                                                                                                              |
-| `-h, --help`              | Display available CLI options                                                                                                                                                        |
-| `-v, --version`           | Display version number                                                                                                                                                               |
+| オプション                |                                                                                                                                                                                  |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--host [host]`           | ホスト名を指定する（ `string` ）                                                                                                                                                 |
+| `--port <port>`           | ポートを指定する（ `number` ）                                                                                                                                                   |
+| `--open [path]`           | 起動時にブラウザを開く（ `boolean \| 文字列 `）                                                                                                                                  |
+| `--cors`                  | CORSを有効にする（ `boolean` ）                                                                                                                                                  |
+| `--strictPort`            | 指定されたポートが既に使用されている場合（ `boolean` ）                                                                                                                          |
+| `--force`                 | オプティマイザーにキャッシュを無視するように強制し、再バンル（ `boolean` ）                                                                                                      |
+| `-c, --config <file>`     | 指定された構成ファイルを使用（ `string` ）                                                                                                                                       |
+| `--base <path>`           | パブリックベースパス（デフォルト: `/` ）（ `string` ）                                                                                                                           |
+| `-l, --logLevel <level>`  | 情報 \| 警告\| エラー \| サイレント（ `string` ）                                                                                                                                |
+| `--clearScreen`           | ロギング時にクリア画面を許可/無効にする（ `boolean` ）                                                                                                                           |
+| `--configLoader <loader>` | `bundle`使用してesbuildで構成をバンドルするか、 `runner` （実験的）でその場で処理するか、 `native` （実験的）ネイティブランタイムを使用してロードします（デフォルト: `bundle` ） |
+| `--profile`               | 組み込みのnode.jsインスペクターを開始します（[パフォーマンスのボトルネック](/ja/guide/troubleshooting#performance-bottlenecks)をチェックしてください）                           |
+| `-d, --debug [feat]`      | デバッグログを表示（ `string \| boolean`）                                                                                                                                       |
+| `-f, --filter <filter>`   | フィルターデバッグログ（ `string` ）                                                                                                                                             |
+| `-m, --mode <mode>`       | envモード（ `string` ）を設定します                                                                                                                                              |
+| `-h, --help`              | 利用可能なCLIオプションを表示します                                                                                                                                              |
+| `-v, --version`           | バージョン番号を表示します                                                                                                                                                       |
 
-## Build
+## 建てる
 
 ### `vite build`
 
-Build for production.
+生産用に構築します。
 
-#### Usage
+#### 使用法
 
 ```bash
 vite build [root]
 ```
 
-#### Options
+#### オプション
 
-| Options                        |                                                                                                                        |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| `--target <target>`            | Transpile target (default: `"modules"`) (`string`)                                                                     |
-| `--outDir <dir>`               | Output directory (default: `dist`) (`string`)                                                                          |
-| `--assetsDir <dir>`            | Directory under outDir to place assets in (default: `"assets"`) (`string`)                                             |
-| `--assetsInlineLimit <number>` | Static asset base64 inline threshold in bytes (default: `4096`) (`number`)                                             |
-| `--ssr [entry]`                | Build specified entry for server-side rendering (`string`)                                                             |
-| `--sourcemap [output]`         | Output source maps for build (default: `false`) (`boolean \| "inline" \| "hidden"`)                                    |
-| `--minify [minifier]`          | Enable/disable minification, or specify minifier to use (default: `"esbuild"`) (`boolean \| "terser" \| "esbuild"`)    |
-| `--manifest [name]`            | Emit build manifest json (`boolean \| string`)                                                                         |
-| `--ssrManifest [name]`         | Emit ssr manifest json (`boolean \| string`)                                                                           |
-| `--emptyOutDir`                | Force empty outDir when it's outside of root (`boolean`)                                                               |
-| `-w, --watch`                  | Rebuilds when modules have changed on disk (`boolean`)                                                                 |
-| `-c, --config <file>`          | Use specified config file (`string`)                                                                                   |
-| `--base <path>`                | Public base path (default: `/`) (`string`)                                                                             |
-| `-l, --logLevel <level>`       | Info \| warn \| error \| silent (`string`)                                                                             |
-| `--clearScreen`                | Allow/disable clear screen when logging (`boolean`)                                                                    |
-| `--configLoader <loader>`      | Use `bundle` to bundle the config with esbuild or `runner` (experimental) to process it on the fly (default: `bundle`) |
-| `--profile`                    | Start built-in Node.js inspector (check [Performance bottlenecks](/ja/guide/troubleshooting#performance-bottlenecks))  |
-| `-d, --debug [feat]`           | Show debug logs (`string \| boolean`)                                                                                  |
-| `-f, --filter <filter>`        | Filter debug logs (`string`)                                                                                           |
-| `-m, --mode <mode>`            | Set env mode (`string`)                                                                                                |
-| `-h, --help`                   | Display available CLI options                                                                                          |
-| `--app`                        | Build all environments, same as `builder: {}` (`boolean`, experimental)                                                |
+| オプション                     |                                                                                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--target <target>`            | 透過ターゲット（デフォルト: `"modules"` ）（ `string` ）                                                                                               |
+| `--outDir <dir>`               | 出力ディレクトリ（デフォルト: `dist` ）（ `string` ）                                                                                                  |
+| `--assetsDir <dir>`            | （default: `"assets"` ）（ `string` ）に資産を配置するためのoutustの下のディレクトリ                                                                   |
+| `--assetsInlineLimit <number>` | 静的資産Base64バイトのインラインしきい値（デフォルト: `4096` ）（ `number` ）                                                                          |
+| `--ssr [entry]`                | サーバー側のレンダリング（ `string` ）の指定されたエントリをビルドする                                                                                 |
+| `--sourcemap [output]`         | ビルド用の出力ソースマップ（デフォルト: `false` ）（ `boolean \| "列をなして" \| 「隠された」 `）                                                      |
+| `--minify [minifier]`          | 削除/無効化の有効化/無効化するか、使用するミニフィーターを指定します（デフォルト: `"esbuild"` ）（ `boolean \| 「テルサー」\| 「esbuild」 `）          |
+| `--manifest [name]`            | エミットビルドマニフェストjson（ `boolean \| 文字列 `）                                                                                                |
+| `--ssrManifest [name]`         | ssrマニフェストjson（ `boolean \| 文字列 `）                                                                                                           |
+| `--emptyOutDir`                | ルートの外側にあるときに空の屋外を強制します（ `boolean` ）                                                                                            |
+| `-w, --watch`                  | モジュールがディスクで変更されたときに再構築（ `boolean` ）                                                                                            |
+| `-c, --config <file>`          | 指定された構成ファイルを使用（ `string` ）                                                                                                             |
+| `--base <path>`                | パブリックベースパス（デフォルト: `/` ）（ `string` ）                                                                                                 |
+| `-l, --logLevel <level>`       | 情報 \| 警告\| エラー \| サイレント（ `string` ）                                                                                                      |
+| `--clearScreen`                | ロギング時にクリア画面を許可/無効にする（ `boolean` ）                                                                                                 |
+| `--configLoader <loader>`      | `bundle`使用して、esbuildまたは`runner` （実験的）で構成をバンドルして、その場で処理します（デフォルト: `bundle` ）                                    |
+| `--profile`                    | 組み込みのnode.jsインスペクターを開始します（[パフォーマンスのボトルネック](/ja/guide/troubleshooting#performance-bottlenecks)をチェックしてください） |
+| `-d, --debug [feat]`           | デバッグログを表示（ `string \| boolean`）                                                                                                             |
+| `-f, --filter <filter>`        | フィルターデバッグログ（ `string` ）                                                                                                                   |
+| `-m, --mode <mode>`            | envモード（ `string` ）を設定します                                                                                                                    |
+| `-h, --help`                   | 利用可能なCLIオプションを表示します                                                                                                                    |
+| `--app`                        | `builder: {}` （ `boolean` 、実験的）と同じように、すべての環境を構築する                                                                              |
 
-## Others
+## その他
 
 ### `vite optimize`
 
-Pre-bundle dependencies.
+バッスル依存関係。
 
-**Deprecated**: the pre-bundle process runs automatically and does not need to be called.
+**非推奨**:バンドル前プロセスは自動的に実行され、呼び出される必要はありません。
 
-#### Usage
+#### 使用法
 
 ```bash
 vite optimize [root]
 ```
 
-#### Options
+#### オプション
 
-| Options                   |                                                                                                                        |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `--force`                 | Force the optimizer to ignore the cache and re-bundle (`boolean`)                                                      |
-| `-c, --config <file>`     | Use specified config file (`string`)                                                                                   |
-| `--base <path>`           | Public base path (default: `/`) (`string`)                                                                             |
-| `-l, --logLevel <level>`  | Info \| warn \| error \| silent (`string`)                                                                             |
-| `--clearScreen`           | Allow/disable clear screen when logging (`boolean`)                                                                    |
-| `--configLoader <loader>` | Use `bundle` to bundle the config with esbuild or `runner` (experimental) to process it on the fly (default: `bundle`) |
-| `-d, --debug [feat]`      | Show debug logs (`string \| boolean`)                                                                                  |
-| `-f, --filter <filter>`   | Filter debug logs (`string`)                                                                                           |
-| `-m, --mode <mode>`       | Set env mode (`string`)                                                                                                |
-| `-h, --help`              | Display available CLI options                                                                                          |
+| オプション                |                                                                                                                       |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `--force`                 | オプティマイザーにキャッシュを無視するように強制し、再バンル（ `boolean` ）                                           |
+| `-c, --config <file>`     | 指定された構成ファイルを使用（ `string` ）                                                                            |
+| `--base <path>`           | パブリックベースパス（デフォルト: `/` ）（ `string` ）                                                                |
+| `-l, --logLevel <level>`  | 情報 \| 警告\| エラー \| サイレント（ `string` ）                                                                     |
+| `--clearScreen`           | ロギング時にクリア画面を許可/無効にする（ `boolean` ）                                                                |
+| `--configLoader <loader>` | `bundle`を使用して、esbuildまたは`runner` （実験的）で構成をバンドルして、その場で処理します（デフォルト: `bundle` ） |
+| `-d, --debug [feat]`      | デバッグログを表示（ `string \| boolean`）                                                                            |
+| `-f, --filter <filter>`   | フィルターデバッグログ（ `string` ）                                                                                  |
+| `-m, --mode <mode>`       | envモード（ `string` ）を設定します                                                                                   |
+| `-h, --help`              | 利用可能なCLIオプションを表示します                                                                                   |
 
 ### `vite preview`
 
-Locally preview the production build. Do not use this as a production server as it's not designed for it.
+生産ビルドをローカルでプレビューします。これを生産サーバーとして使用しないでください。これは設計されていないためです。
 
-#### Usage
+#### 使用法
 
 ```bash
 vite preview [root]
 ```
 
-#### Options
+#### オプション
 
-| Options                   |                                                                                                                        |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `--host [host]`           | Specify hostname (`string`)                                                                                            |
-| `--port <port>`           | Specify port (`number`)                                                                                                |
-| `--strictPort`            | Exit if specified port is already in use (`boolean`)                                                                   |
-| `--open [path]`           | Open browser on startup (`boolean \| string`)                                                                          |
-| `--outDir <dir>`          | Output directory (default: `dist`)(`string`)                                                                           |
-| `-c, --config <file>`     | Use specified config file (`string`)                                                                                   |
-| `--base <path>`           | Public base path (default: `/`) (`string`)                                                                             |
-| `-l, --logLevel <level>`  | Info \| warn \| error \| silent (`string`)                                                                             |
-| `--clearScreen`           | Allow/disable clear screen when logging (`boolean`)                                                                    |
-| `--configLoader <loader>` | Use `bundle` to bundle the config with esbuild or `runner` (experimental) to process it on the fly (default: `bundle`) |
-| `-d, --debug [feat]`      | Show debug logs (`string \| boolean`)                                                                                  |
-| `-f, --filter <filter>`   | Filter debug logs (`string`)                                                                                           |
-| `-m, --mode <mode>`       | Set env mode (`string`)                                                                                                |
-| `-h, --help`              | Display available CLI options                                                                                          |
+| オプション                |                                                                                                                       |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `--host [host]`           | ホスト名を指定する（ `string` ）                                                                                      |
+| `--port <port>`           | ポートを指定する（ `number` ）                                                                                        |
+| `--strictPort`            | 指定されたポートが既に使用されている場合（ `boolean` ）                                                               |
+| `--open [path]`           | 起動時にブラウザを開く（ `boolean \| 文字列 `）                                                                       |
+| `--outDir <dir>`          | 出力ディレクトリ（デフォルト: `dist` ）（ `string` ）                                                                 |
+| `-c, --config <file>`     | 指定された構成ファイルを使用（ `string` ）                                                                            |
+| `--base <path>`           | パブリックベースパス（デフォルト: `/` ）（ `string` ）                                                                |
+| `-l, --logLevel <level>`  | 情報 \| 警告\| エラー \| サイレント（ `string` ）                                                                     |
+| `--clearScreen`           | ロギング時にクリア画面を許可/無効にする（ `boolean` ）                                                                |
+| `--configLoader <loader>` | `bundle`を使用して、esbuildまたは`runner` （実験的）で構成をバンドルして、その場で処理します（デフォルト: `bundle` ） |
+| `-d, --debug [feat]`      | デバッグログを表示（ `string \| boolean`）                                                                            |
+| `-f, --filter <filter>`   | フィルターデバッグログ（ `string` ）                                                                                  |
+| `-m, --mode <mode>`       | envモード（ `string` ）を設定します                                                                                   |
+| `-h, --help`              | 利用可能なCLIオプションを表示します                                                                                   |

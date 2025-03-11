@@ -1,45 +1,45 @@
 # Plugins
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or Compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+A Vite visa fornecer suporte fora da caixa para padrões comuns de desenvolvimento da Web. Antes de procurar um plug -in de rollup vite ou compatível, consulte o [guia de recursos](../guide/features.md) . Muitos dos casos em que um plug -in seria necessário em um projeto de rollup já está coberto de vite.
 :::
 
-Check out [Using Plugins](../guide/using-plugins) for information on how to use plugins.
+Confira [o uso de plugins](../guide/using-plugins) para obter informações sobre como usar plugins.
 
-## Official Plugins
+## Plugins Oficiais
 
 ### [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)
 
-- Provides Vue 3 Single File Components support.
+- Fornece Suporte De Componentes De Arquivo Único VUE 3.
 
 ### [@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx)
 
-- Provides Vue 3 JSX support (via [dedicated Babel transform](https://github.com/vuejs/jsx-next)).
+- Fornece suporte JSX VUE 3 (via [Transformação de Babel dedicada](https://github.com/vuejs/jsx-next) ).
 
 ### [@vitejs/plugin-vue2](https://github.com/vitejs/vite-plugin-vue2)
 
-- Provides Vue 2.7 Single File Components support.
+- Fornece Suporte De Componentes De Arquivo Único VUE 2.7.
 
 ### [@vitejs/plugin-vue2-jsx](https://github.com/vitejs/vite-plugin-vue2-jsx)
 
-- Provides Vue 2.7 JSX support (via [dedicated Babel transform](https://github.com/vuejs/jsx-vue2/)).
+- Fornece suporte JSX VUE 2.7 (via [transformada Babel dedicada](https://github.com/vuejs/jsx-vue2/) ).
 
 ### [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react)
 
-- Uses esbuild and Babel, achieving fast HMR with a small package footprint and the flexibility of being able to use the Babel transform pipeline. Without additional Babel plugins, only esbuild is used during builds.
+- Usa Esbuild e Babel, alcançando HMR rápido com uma pequena pegada de embalagem e a flexibilidade de poder usar o pipeline de transformação Babel. Sem plug -ins Babel adicionais, apenas o ESBuild é usado durante as construções.
 
 ### [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
 
-- Replaces Babel with SWC during development. During production builds, SWC+esbuild are used when using plugins, and esbuild only otherwise. For big projects that don't require non-standard React extensions, cold start and Hot Module Replacement (HMR) can be significantly faster.
+- Substitui Babel pelo SWC durante o desenvolvimento. Durante as compilações de produção, o SWC+ESBuild é usado ao usar plug -ins e apenas o ESBUILD. Para grandes projetos que não exigem extensões de reação não padrão, a Start Start Cold e a substituição de módulos quentes (HMR) podem ser significativamente mais rápidos.
 
 ### [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)
 
-- Provides legacy browsers support for the production build.
+- Fornece suporte de navegadores herdados para a construção da produção.
 
-## Community Plugins
+## Plugins Comunitários
 
-Check out [awesome-vite](https://github.com/vitejs/awesome-vite#plugins) - you can also submit a PR to list your plugins there.
+Confira o [Awesome -Vite](https://github.com/vitejs/awesome-vite#plugins) - você também pode enviar um PR para listar seus plugins lá.
 
-## Rollup Plugins
+## Plugins De Rollup
 
-[Vite plugins](../guide/api-plugin) are an extension of Rollup's plugin interface. Check out the [Rollup Plugin Compatibility section](../guide/api-plugin#rollup-plugin-compatibility) for more information.
+[Os plug -ins de vite](../guide/api-plugin) são uma extensão da interface do plug -in da Rollup. Confira a [seção de compatibilidade do plug -in Rollup](../guide/api-plugin#rollup-plugin-compatibility) para obter mais informações.

@@ -1,24 +1,24 @@
-# `this.environment` in Hooks
+# `this.environment` in Haken
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+Geben Sie uns Feedback bei [der Umwelt -API -Feedback -Diskussion](https://github.com/vitejs/vite/discussions/16358)
 :::
 
-Before Vite 6, only two environments were available: `client` and `ssr`. A single `options.ssr` plugin hook argument in `resolveId`, `load` and `transform` allowed plugin authors to differentiate between these two environments when processing modules in plugin hooks. In Vite 6, a Vite application can define any number of named environments as needed. We're introducing `this.environment` in the plugin context to interact with the environment of the current module in hooks.
+Vor Vite 6 waren nur zwei Umgebungen erhältlich: `client` und `ssr` . Ein einzelnes `options.ssr` -Plugin -Hook -Argument in `resolveId` , `load` und `transform` ermöglichte es Plugin -Autoren, diese beiden Umgebungen bei der Verarbeitung von Modulen in Plugin -Haken zu unterscheiden. In Vite 6 kann eine vite -Anwendung eine beliebige Anzahl genannter Umgebungen nach Bedarf definieren. Wir führen `this.environment` im Plugin -Kontext ein, um mit der Umgebung des aktuellen Moduls in Haken zu interagieren.
 
-Affect scope: `Vite Plugin Authors`
+Umfang beeinflussen: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`this.environment` was introduced in `v6.0`. The deprecation of `options.ssr` is planned for `v7.0`. At that point we'll start recommending migrating your plugins to use the new API. To identify your usage, set `future.removePluginHookSsrArgument` to `"warn"` in your vite config.
+`this.environment` wurde in `v6.0` eingeführt. Die Abwertung von `options.ssr` ist für `v7.0` geplant. Zu diesem Zeitpunkt empfehlen wir die Migration Ihrer Plugins, um die neue API zu verwenden. Um Ihre Verwendung zu identifizieren, setzen Sie `future.removePluginHookSsrArgument` bis `"warn"` in Ihrer Vite -Konfiguration fest.
 :::
 
 ## Motivation
 
-`this.environment` not only allow the plugin hook implementation to know the current environment name, it also gives access to the environment config options, module graph information, and transform pipeline (`environment.config`, `environment.moduleGraph`, `environment.transformRequest()`). Having the environment instance available in the context allows plugin authors to avoid the dependency of the whole dev server (typically cached at startup through the `configureServer` hook).
+`this.environment` Erlauben Sie nicht nur, dass die Plugin -Hook -Implementierung den aktuellen Umgebungsnamen auch ermöglicht, sondern auch Zugriff auf die Umgebungskonfigurationsoptionen, die Moduldiagramminformationen und die Transformationspipeline ( `environment.config` , `environment.moduleGraph` , `environment.transformRequest()` ). Durch die verfügbare Umgebungsinstanz im Kontext können Plugin -Autoren die Abhängigkeit des gesamten Entwicklerservers vermeiden (normalerweise beim Start über den `configureServer` -Haken zwischengespeichert).
 
-## Migration Guide
+## Migrationsleitfaden
 
-For the existing plugin to do a quick migration, replace the `options.ssr` argument with `this.environment.name !== 'client'` in the `resolveId`, `load` and `transform` hooks:
+Damit das vorhandene Plugin eine schnelle Migration durchführt, ersetzen Sie das Argument `options.ssr` durch `this.environment.name !== 'client'` in den `resolveId` , `load` und `transform` Haken:
 
 ```ts
 import { Plugin } from 'vite'
@@ -27,17 +27,17 @@ export function myPlugin(): Plugin {
   return {
     name: 'my-plugin',
     resolveId(id, importer, options) {
-      const isSSR = options.ssr // [!code --]
-      const isSSR = this.environment.name !== 'client' // [!code ++]
+      const isSSR = options.ssr // [! Code -]
+      const isSSR = this.environment.name !== 'client' // [! Code ++]
 
       if (isSSR) {
-        // SSR specific logic
+        // SSR -spezifische Logik
       } else {
-        // Client specific logic
+        // Clientspezifische Logik
       }
     },
   }
 }
 ```
 
-For a more robust long term implementation, the plugin hook should handle for [multiple environments](/de/guide/api-environment.html#accessing-the-current-environment-in-hooks) using fine-grained environment options instead of relying on the environment name.
+Für eine robustere langfristigere Implementierung sollte der Plugin-Hook für [mehrere Umgebungen](/de/guide/api-environment.html#accessing-the-current-environment-in-hooks) mit feinkörnigen Umgebungsoptionen verarbeiten, anstatt sich auf den Umgebungsnamen zu verlassen.

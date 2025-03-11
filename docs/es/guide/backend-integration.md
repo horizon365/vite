@@ -1,42 +1,42 @@
-# Backend Integration
+# Integración De Backend
 
 :::tip Note
-If you want to serve the HTML using a traditional backend (e.g. Rails, Laravel) but use Vite for serving assets, check for existing integrations listed in [Awesome Vite](https://github.com/vitejs/awesome-vite#integrations-with-backends).
+Si desea servir el HTML utilizando un backend tradicional (por ejemplo, Rails, Laravel) pero use VITE para servir activos, verifique las integraciones existentes en la lista de [Awesome Vite](https://github.com/vitejs/awesome-vite#integrations-with-backends) .
 
-If you need a custom integration, you can follow the steps in this guide to configure it manually
+Si necesita una integración personalizada, puede seguir los pasos de esta guía para configurarla manualmente
 :::
 
-1. In your Vite config, configure the entry and enable build manifest:
+1. En su configuración VITE, configure la entrada y habilita la compilación del manifiesto:
 
    ```js twoslash [vite.config.js]
    import { defineConfig } from 'vite'
-   // ---cut---
+   // ---cortar---
    export default defineConfig({
      server: {
        cors: {
-         // the origin you will be accessing via browser
+         // El origen al que accederá a través del navegador
          origin: 'http://my-backend.example.com',
        },
      },
      build: {
-       // generate .vite/manifest.json in outDir
+       // Generar .vite/manifest.json en Outdir
        manifest: true,
        rollupOptions: {
-         // overwrite default .html entry
+         // sobrescribir la entrada de .html por defecto.
          input: '/path/to/main.js',
        },
      },
    })
    ```
 
-   If you haven't disabled the [module preload polyfill](/es/config/build-options.md#build-polyfillmodulepreload), you also need to import the polyfill in your entry
+   Si no ha deshabilitado el [módulo de polyfill Polyfill](/es/config/build-options.md#build-polyfillmodulepreload) , también debe importar el polyfill en su entrada
 
    ```js
-   // add the beginning of your app entry
+   // Agregue el comienzo de la entrada de su aplicación
    import 'vite/modulepreload-polyfill'
    ```
 
-2. For development, inject the following in your server's HTML template (substitute `http://localhost:5173` with the local URL Vite is running at):
+2. Para el desarrollo, inyecte lo siguiente en la plantilla HTML de su servidor (sustituya `http://localhost:5173` con la url local que vite se ejecuta en):
 
    ```html
    <!-- if development -->
@@ -44,14 +44,14 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <script type="module" src="http://localhost:5173/main.js"></script>
    ```
 
-   In order to properly serve assets, you have two options:
+   Para servir adecuadamente los activos, tiene dos opciones:
 
-   - Make sure the server is configured to proxy static assets requests to the Vite server
-   - Set [`server.origin`](/es/config/server-options.md#server-origin) so that generated asset URLs will be resolved using the back-end server URL instead of a relative path
+   - Asegúrese de que el servidor esté configurado en solicitudes de activos estáticos proxy al servidor VITE
+   - Establecer [`server.origin`](/es/config/server-options.md#server-origin) para que las URL de activos generadas se resuelvan utilizando la URL del servidor de fondo en lugar de una ruta relativa
 
-   This is needed for assets such as images to load properly.
+   Esto es necesario para que los activos como las imágenes se cargan correctamente.
 
-   Note if you are using React with `@vitejs/plugin-react`, you'll also need to add this before the above scripts, since the plugin is not able to modify the HTML you are serving (substitute `http://localhost:5173` with the local URL Vite is running at):
+   Tenga en cuenta que si está utilizando React con `@vitejs/plugin-react` , también deberá agregar esto antes de los scripts anteriores, ya que el complemento no puede modificar el HTML que está sirviendo (sustituya `http://localhost:5173` con el VITE local que se ejecuta en):
 
    ```html
    <script type="module">
@@ -63,7 +63,7 @@ If you need a custom integration, you can follow the steps in this guide to conf
    </script>
    ```
 
-3. For production: after running `vite build`, a `.vite/manifest.json` file will be generated alongside other asset files. An example manifest file looks like this:
+3. Para la producción: después de ejecutar `vite build` , se generará un archivo `.vite/manifest.json` junto con otros archivos de activos. Un archivo manifiesto de ejemplo se ve así:
 
    ```json [.vite/manifest.json]
    {
@@ -101,17 +101,17 @@ If you need a custom integration, you can follow the steps in this guide to conf
    }
    ```
 
-   - The manifest has a `Record<name, chunk>` structure
-   - For entry or dynamic entry chunks, the key is the relative src path from project root.
-   - For non entry chunks, the key is the base name of the generated file prefixed with `_`.
-   - For the CSS file generated when [`build.cssCodeSplit`](/es/config/build-options.md#build-csscodesplit) is `false`, the key is `style.css`.
-   - Chunks will contain information on its static and dynamic imports (both are keys that map to the corresponding chunk in the manifest), and also its corresponding CSS and asset files (if any).
+   - El manifiesto tiene una estructura `Record<name, chunk>`
+   - Para fragmentos de entrada o entrada dinámica, la clave es la ruta SRC relativa desde la raíz del proyecto.
+   - Para fragmentos sin entrada, la clave es el nombre base del archivo generado con prefijo `_` .
+   - Para el archivo CSS generado cuando [`build.cssCodeSplit`](/es/config/build-options.md#build-csscodesplit) es `false` , la clave es `style.css` .
+   - Los fragmentos contendrán información sobre sus importaciones estáticas y dinámicas (ambas son claves que se asignan al fragmento correspondiente en el manifiesto), y también en sus CSS y archivos de activos correspondientes (si los hay).
 
-4. You can use this file to render links or preload directives with hashed filenames.
+4. Puede usar este archivo para representar enlaces o directivas de precarga con nombres de archivo hash.
 
-   Here is an example HTML template to render the proper links. The syntax here is for
-   explanation only, substitute with your server templating language. The `importedChunks`
-   function is for illustration and isn't provided by Vite.
+   Aquí hay un ejemplo de plantilla HTML para representar los enlaces adecuados. La sintaxis aquí es para
+   Solo explicación, sustituya con el lenguaje de plantilla de su servidor. El `importedChunks`
+   La función es para ilustración y no proporciona Vite.
 
    ```html
    <!-- if production -->
@@ -129,18 +129,18 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <link rel="modulepreload" href="/{{ chunk.file }}" />
    ```
 
-   Specifically, a backend generating HTML should include the following tags given a manifest
-   file and an entry point:
+   Específicamente, un HTML generador de backend debe incluir las siguientes etiquetas dado un manifiesto
+   archivo y un punto de entrada:
 
-   - A `<link rel="stylesheet">` tag for each file in the entry point chunk's `css` list
-   - Recursively follow all chunks in the entry point's `imports` list and include a
-     `<link rel="stylesheet">` tag for each CSS file of each imported chunk.
-   - A tag for the `file` key of the entry point chunk (`<script type="module">` for JavaScript,
-     or `<link rel="stylesheet">` for CSS)
-   - Optionally, `<link rel="modulepreload">` tag for the `file` of each imported JavaScript
-     chunk, again recursively following the imports starting from the entry point chunk.
+   - Una etiqueta `<link rel="stylesheet">` para cada archivo en la lista `css` del fragmento del punto de entrada
+   - Sigue recursivamente todos los fragmentos en la lista `imports` del punto de entrada e incluya un
+     `<link rel="stylesheet">` Etiqueta para cada archivo CSS de cada fragmento importado.
+   - Una etiqueta para la tecla `file` de la fragmentación del punto de entrada ( `<script type="module">` para JavaScript,
+     o `<link rel="stylesheet">` para CSS)
+   - Opcionalmente, `<link rel="modulepreload">` etiqueta para el `file` de cada JavaScript importado
+     fragmento, nuevamente después de las importaciones que comienzan desde el fragmento de punto de entrada.
 
-   Following the above example manifest, for the entry point `views/foo.js` the following tags should be included in production:
+   Siguiendo el ejemplo de ejemplo anterior, para el punto de entrada `views/foo.js` las siguientes etiquetas deben incluirse en la producción:
 
    ```html
    <link rel="stylesheet" href="assets/foo-5UjPuW-k.css" />
@@ -150,7 +150,7 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <link rel="modulepreload" href="assets/shared-B7PI925R.js" />
    ```
 
-   While the following should be included for the entry point `views/bar.js`:
+   Mientras que se debe incluir lo siguiente para el punto de entrada `views/bar.js` :
 
    ```html
    <link rel="stylesheet" href="assets/shared-ChJ_j-JJ.css" />
@@ -160,8 +160,8 @@ If you need a custom integration, you can follow the steps in this guide to conf
    ```
 
    ::: details Pseudo implementation of `importedChunks`
-   An example pseudo implementation of `importedChunks` in TypeScript (This will
-   need to be adapted for your programming language and templating language):
+   Un ejemplo de pseudo implementación de `importedChunks` en TypeScript (esto
+   Necesita ser adaptado para su lenguaje de programación y lenguaje de plantilla):
 
    ```ts
    import type { Manifest, ManifestChunk } from 'vite'

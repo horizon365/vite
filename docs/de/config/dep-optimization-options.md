@@ -1,29 +1,29 @@
-# Dep Optimization Options
+# DEP -Optimierungsoptionen
 
-- **Related:** [Dependency Pre-Bundling](/de/guide/dep-pre-bundling)
+- **Verwandte:** [Abhängigkeit Vorbündelung](/de/guide/dep-pre-bundling)
 
-Unless noted, the options in this section are only applied to the dependency optimizer, which is only used in dev.
+Sofern nicht angegeben, werden die Optionen in diesem Abschnitt nur auf den Abhängigkeitsoptimierer angewendet, der nur in Dev verwendet wird.
 
 ## optimizeDeps.entries
 
-- **Type:** `string | string[]`
+- **Typ:** `String | String [] `
 
-By default, Vite will crawl all your `.html` files to detect dependencies that need to be pre-bundled (ignoring `node_modules`, `build.outDir`, `__tests__` and `coverage`). If `build.rollupOptions.input` is specified, Vite will crawl those entry points instead.
+Standardmäßig kriecht Vite alle Ihre `.html` Dateien, um Abhängigkeiten zu erkennen, die vorbündelt werden müssen (ignoriert `node_modules` , `build.outDir` , `__tests__` und `coverage` ). Wenn `build.rollupOptions.input` angegeben ist, kriecht Vite stattdessen diese Einstiegspunkte.
 
-If neither of these fit your needs, you can specify custom entries using this option - the value should be a [`tinyglobby` pattern](https://github.com/SuperchupuDev/tinyglobby) or array of patterns that are relative from Vite project root. This will overwrite default entries inference. Only `node_modules` and `build.outDir` folders will be ignored by default when `optimizeDeps.entries` is explicitly defined. If other folders need to be ignored, you can use an ignore pattern as part of the entries list, marked with an initial `!`. If you don't want to ignore `node_modules` and `build.outDir`, you can specify using literal string paths (without `tinyglobby` patterns) instead.
+Wenn keiner dieser Anforderungen zu Ihren Anforderungen entspricht, können Sie benutzerdefinierte Einträge mit dieser Option angeben. Der Wert sollte ein [`tinyglobby` -Muster](https://github.com/SuperchupuDev/tinyglobby) oder ein Array von Mustern sein, die von Vite Project Root relativ sind. Dadurch wird die Standardeinträge inferenz überschreiben. Nur `node_modules` und `build.outDir` Ordner werden standardmäßig ignoriert, wenn `optimizeDeps.entries` explizit definiert ist. Wenn andere Ordner ignoriert werden müssen, können Sie ein Ignoriermuster als Teil der Einträge mit einer anfänglichen `!` verwenden. Wenn Sie `node_modules` und `build.outDir` nicht ignorieren möchten, können Sie stattdessen die wörtlichen Saitenpfade (ohne `tinyglobby` Muster) angeben.
 
 ## optimizeDeps.exclude
 
-- **Type:** `string[]`
+- **Typ:** `string[]`
 
-Dependencies to exclude from pre-bundling.
+Abhängigkeiten von der Vorbündung ausschließen.
 
 :::warning CommonJS
-CommonJS dependencies should not be excluded from optimization. If an ESM dependency is excluded from optimization, but has a nested CommonJS dependency, the CommonJS dependency should be added to `optimizeDeps.include`. Example:
+CommonJS -Abhängigkeiten sollten nicht von der Optimierung ausgeschlossen werden. Wenn eine ESM -Abhängigkeit von der Optimierung ausgeschlossen ist, jedoch eine verschachtelte CommonJS -Abhängigkeit aufweist, sollte die CommonJS -Abhängigkeit zu `optimizeDeps.include` hinzugefügt werden. Beispiel:
 
 ```js twoslash
 import { defineConfig } from 'vite'
-// ---cut---
+// ---schneiden---
 export default defineConfig({
   optimizeDeps: {
     include: ['esm-dep > cjs-dep'],
@@ -35,15 +35,15 @@ export default defineConfig({
 
 ## optimizeDeps.include
 
-- **Type:** `string[]`
+- **Typ:** `string[]`
 
-By default, linked packages not inside `node_modules` are not pre-bundled. Use this option to force a linked package to be pre-bundled.
+Standardmäßig sind verknüpfte Pakete nicht innerhalb von `node_modules` nicht vorbündelt. Verwenden Sie diese Option, um ein verknüpftes Paket zu erzwingen, um vorbündelt zu werden.
 
-**Experimental:** If you're using a library with many deep imports, you can also specify a trailing glob pattern to pre-bundle all deep imports at once. This will avoid constantly pre-bundling whenever a new deep import is used. [Give Feedback](https://github.com/vitejs/vite/discussions/15833). For example:
+**Experimental:** Wenn Sie eine Bibliothek mit vielen tiefen Importen verwenden, können Sie auch ein nachfolgendes GLOB-Muster angeben, um alle tiefen Importe gleichzeitig vorzubereiten. Dadurch wird es immer wieder vorbündeln, wenn ein neuer tiefer Import verwendet wird. [Feedback geben](https://github.com/vitejs/vite/discussions/15833) . Zum Beispiel:
 
 ```js twoslash
 import { defineConfig } from 'vite'
-// ---cut---
+// ---schneiden---
 export default defineConfig({
   optimizeDeps: {
     include: ['my-lib/components/**/*.vue'],
@@ -53,57 +53,57 @@ export default defineConfig({
 
 ## optimizeDeps.esbuildOptions
 
-- **Type:** [`Omit`](https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys)`<`[`EsbuildBuildOptions`](https://esbuild.github.io/api/#general-options)`,
-| 'bundle'
-| 'entryPoints'
-| 'external'
-| 'write'
-| 'watch'
-| 'outdir'
-| 'outfile'
-| 'outbase'
-| 'outExtension'
-| 'metafile'>`
+- **Typ:** [`Omit`](https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys) `<` [`EsbuildBuildOptions`](https://esbuild.github.io/api/#general-options) `,
+| 'bündeln'
+| "Einstiegspunkte"
+| "extern"
+| 'schreiben'
+| 'betrachten'
+| 'Outdir' '
+| "Outfile"
+| "Ausbruch"
+| "Outextension"
+| 'metafile'> `
 
-Options to pass to esbuild during the dep scanning and optimization.
+Optionen, die Sie während des DEP -Scans und -Optimierungen an ESBuild übergeben können.
 
-Certain options are omitted since changing them would not be compatible with Vite's dep optimization.
+Bestimmte Optionen werden weggelassen, da das Ändern nicht mit der DEP -Optimierung von Vite kompatibel wäre.
 
-- `external` is also omitted, use Vite's `optimizeDeps.exclude` option
-- `plugins` are merged with Vite's dep plugin
+- `external` wird ebenfalls weggelassen, verwenden Sie `optimizeDeps.exclude` Option von Vite 1
+- `plugins` werden mit dem DEP -Plugin von Vite zusammengeführt
 
 ## optimizeDeps.force
 
-- **Type:** `boolean`
+- **Typ:** `boolean`
 
-Set to `true` to force dependency pre-bundling, ignoring previously cached optimized dependencies.
+Auf `true` eingestellt, um die Abhängigkeit vor dem Bündeln zu erzwingen und zuvor zwischengespeicherte optimierte Abhängigkeiten zu ignorieren.
 
 ## optimizeDeps.holdUntilCrawlEnd
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/15834)
-- **Type:** `boolean`
-- **Default:** `true`
+- **Experimentell:** [Feedback geben](https://github.com/vitejs/vite/discussions/15834)
+- **Typ:** `boolean`
+- **Standard:** `true`
 
-When enabled, it will hold the first optimized deps results until all static imports are crawled on cold start. This avoids the need for full-page reloads when new dependencies are discovered and they trigger the generation of new common chunks. If all dependencies are found by the scanner plus the explicitly defined ones in `include`, it is better to disable this option to let the browser process more requests in parallel.
+Wenn es aktiviert ist, werden die ersten optimierten DEPS -Ergebnisse gehalten, bis alle statischen Importe auf Kaltstart gekrabbt werden. Dies vermeidet die Notwendigkeit von ganzseitigen Nachladen, wenn neue Abhängigkeiten entdeckt werden und die Erzeugung neuer gemeinsamer Stücke auslösen. Wenn alle Abhängigkeiten vom Scanner und den explizit definierten in `include` festgestellt werden, ist es besser, diese Option zu deaktivieren, damit der Browser mehr Anforderungen parallel bearbeiten kann.
 
 ## optimizeDeps.disabled
 
-- **Deprecated**
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13839)
-- **Type:** `boolean | 'build' | 'dev'`
-- **Default:** `'build'`
+- **Veraltet**
+- **Experimentell:** [Feedback geben](https://github.com/vitejs/vite/discussions/13839)
+- **Typ:** `boolean | 'bauen' | 'Dev'`
+- **Standard:** `'build'`
 
-This option is deprecated. As of Vite 5.1, pre-bundling of dependencies during build have been removed. Setting `optimizeDeps.disabled` to `true` or `'dev'` disables the optimizer, and configured to `false` or `'build'` leaves the optimizer during dev enabled.
+Diese Option ist veraltet. Ab VITE 5.1 wurde die Voraussetzung von Abhängigkeiten während des Bauwerks entfernt. Durch das Einstellen von `optimizeDeps.disabled` bis `true` oder `'dev'` wird der Optimierer deaktiviert und auf `false` oder `'build'` konfiguriert. Den Optimierer während der Dev aktiviert.
 
-To disable the optimizer completely, use `optimizeDeps.noDiscovery: true` to disallow automatic discovery of dependencies and leave `optimizeDeps.include` undefined or empty.
+Um den Optimierer vollständig zu deaktivieren, verwenden Sie `optimizeDeps.noDiscovery: true` , um die automatische Entdeckung von Abhängigkeiten zu verringern und `optimizeDeps.include` undefined oder leer zu lassen.
 
 :::warning
-Optimizing dependencies during build time was an **experimental** feature. Projects trying out this strategy also removed `@rollup/plugin-commonjs` using `build.commonjsOptions: { include: [] }`. If you did so, a warning will guide you to re-enable it to support CJS only packages while bundling.
+Die Optimierung der Abhängigkeiten während der Bauzeit war ein **experimentelles** Merkmal. Projekte, die diese Strategie ausprobieren, wurden auch mit `@rollup/plugin-commonjs` mit `build.commonjsOptions: { include: [] }` entfernt. Wenn Sie dies getan haben, werden Sie eine Warnung veranlasst, es erneut zu unterstützen, um CJS nur Pakete beim Bündeln zu unterstützen.
 :::
 
 ## optimizeDeps.needsInterop
 
 - **Experimental**
-- **Type:** `string[]`
+- **Typ:** `string[]`
 
-Forces ESM interop when importing these dependencies. Vite is able to properly detect when a dependency needs interop, so this option isn't generally needed. However, different combinations of dependencies could cause some of them to be prebundled differently. Adding these packages to `needsInterop` can speed up cold start by avoiding full-page reloads. You'll receive a warning if this is the case for one of your dependencies, suggesting to add the package name to this array in your config.
+Erzwingt die ESM -Interop, wenn Sie diese Abhängigkeiten importieren. VITE ist in der Lage, ordnungsgemäß zu erkennen, wann eine Abhängigkeit interop benötigt, sodass diese Option im Allgemeinen nicht benötigt wird. Unterschiedliche Abhängigkeiten können jedoch dazu führen, dass einige von ihnen unterschiedlich eingesperrt werden. Das Hinzufügen dieser Pakete zu `needsInterop` kann den kalten Start beschleunigen, indem sie ganzseitige Nachladen vermieden werden. Sie erhalten eine Warnung, wenn dies für eine Ihrer Abhängigkeiten der Fall ist, und schlägt vor, den Paketamen diesem Array in Ihrer Konfiguration hinzuzufügen.

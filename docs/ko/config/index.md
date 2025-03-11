@@ -1,45 +1,45 @@
 ---
-title: Configuring Vite
+title: Vite 구성
 ---
 
-# Configuring Vite
+# Vite 구성
 
-When running `vite` from the command line, Vite will automatically try to resolve a config file named `vite.config.js` inside [project root](/ko/guide/#index-html-and-project-root) (other JS and TS extensions are also supported).
+명령 줄에서 `vite` 실행할 때 Vite는 자동으로 [프로젝트 루트](/ko/guide/#index-html-and-project-root) 내부 `vite.config.js` 이라는 구성 파일을 해결하려고 시도합니다 (기타 JS 및 TS 확장 기능도 지원됩니다).
 
-The most basic config file looks like this:
+가장 기본적인 구성 파일은 다음과 같습니다.
 
 ```js [vite.config.js]
 export default {
-  // config options
+  // 구성 옵션
 }
 ```
 
-Note Vite supports using ES modules syntax in the config file even if the project is not using native Node ESM, e.g. `type: "module"` in `package.json`. In this case, the config file is auto pre-processed before load.
+참고 vite는 프로젝트가 기본 노드 ESM을 사용하지 않는 `type: "module"` 에도 `package.json` 파일에서 ES 모듈 구문을 사용하여 지원합니다. 이 경우 구성 파일은로드 전에 자동 사전 처리됩니다.
 
-You can also explicitly specify a config file to use with the `--config` CLI option (resolved relative to `cwd`):
+또한 `--config` CLI 옵션 ( `cwd` 에 따라 해결됨)과 함께 사용할 구성 파일을 명시 적으로 지정할 수도 있습니다.
 
 ```bash
 vite --config my-config.js
 ```
 
 ::: tip CONFIG LOADING
-By default, Vite uses `esbuild` to bundle the config into a temporary file and load it. This may cause issues when importing TypeScript files in a monorepo. If you encounter any issues with this approach, you can specify `--configLoader runner` to use the [module runner](/ko/guide/api-environment-runtimes.html#modulerunner) instead, which will not create a temporary config and will transform any files on the fly. Note that module runner doesn't support CJS in config files, but external CJS packages should work as usual.
+기본적으로 Vite는 `esbuild` 사용하여 구성을 임시 파일에 번들로 묶고로드합니다. 이로 인해 Monorepo에서 TypeScript 파일을 가져올 때 문제가 발생할 수 있습니다. 이 접근법과 관련된 문제가 발생하면 `--configLoader runner` 지정하여 [모듈 러너를](/ko/guide/api-environment-runtimes.html#modulerunner) 대신 사용하도록 지정할 수 있습니다. 이는 임시 구성을 생성하지 않고 즉시 파일을 변환합니다. 모듈 러너는 구성 파일에서 CJS를 지원하지 않지만 외부 CJS 패키지는 평소와 같이 작동해야합니다.
 
-Alternatively, if you're using an environment that supports TypeScript (e.g. `node --experimental-strip-types`), or if you're only writing plain JavaScript, you can specify `--configLoader native` to use the environment's native runtime to load the config file. Note that updates to modules imported by the config file are not detected and hence would not auto-restart the Vite server.
+또는 TypeScript (예 : `node --experimental-strip-types` )를 지원하는 환경을 사용하거나 일반 JavaScript 만 작성하는 경우 환경의 기본 런타임을 사용하여 구성 파일을로드하도록 `--configLoader native` 지정할 수 있습니다. 구성 파일로 가져온 모듈에 대한 업데이트는 감지되지 않으므로 Vite 서버를 자동으로 평가하지 않습니다.
 :::
 
-## Config Intellisense
+## Intellisense를 구성하십시오
 
-Since Vite ships with TypeScript typings, you can leverage your IDE's intellisense with jsdoc type hints:
+Vite는 TypeScript 타이핑이있는 선박이므로 JSDOC 유형 힌트로 IDE의 Intellisense를 활용할 수 있습니다.
 
 ```js
-/** @type {import('vite').UserConfig} */
+/** @Type {import ( 'vite'). UserConfig} */
 export default {
   // ...
 }
 ```
 
-Alternatively, you can use the `defineConfig` helper which should provide intellisense without the need for jsdoc annotations:
+또는 JSDOC 주석이 없어도 Intellisense를 제공 해야하는 `defineConfig` 도우미를 사용할 수 있습니다.
 
 ```js
 import { defineConfig } from 'vite'
@@ -49,7 +49,7 @@ export default defineConfig({
 })
 ```
 
-Vite also supports TypeScript config files. You can use `vite.config.ts` with the `defineConfig` helper function above, or with the `satisfies` operator:
+Vite는 또한 TypeScript 구성 파일을 지원합니다. 위의 `defineConfig` 도우미 함수와 함께 `vite.config.ts` 사용하거나 `satisfies` 연산자와 함께 사용할 수 있습니다.
 
 ```ts
 import type { UserConfig } from 'vite'
@@ -59,38 +59,38 @@ export default {
 } satisfies UserConfig
 ```
 
-## Conditional Config
+## 조건부 구성
 
-If the config needs to conditionally determine options based on the command (`serve` or `build`), the [mode](/ko/guide/env-and-mode#modes) being used, if it's an SSR build (`isSsrBuild`), or is previewing the build (`isPreview`), it can export a function instead:
+구성이 명령 ( `serve` 또는 `build` )에 따라 조건부로 옵션을 결정 해야하는 경우 사용중인 [모드가](/ko/guide/env-and-mode#modes) SSR 빌드 ( `isSsrBuild` )이거나 빌드 ( `isPreview` )를 미리 보는 경우 대신 함수를 내보낼 수 있습니다.
 
 ```js twoslash
 import { defineConfig } from 'vite'
-// ---cut---
+// ---자르다---
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
   if (command === 'serve') {
     return {
-      // dev specific config
+      // DEV 특정 구성
     }
   } else {
-    // command === 'build'
+    // 명령 === '빌드'
     return {
-      // build specific config
+      // 특정 구성을 빌드하십시오
     }
   }
 })
 ```
 
-It is important to note that in Vite's API the `command` value is `serve` during dev (in the cli [`vite`](/ko/guide/cli#vite), `vite dev`, and `vite serve` are aliases), and `build` when building for production ([`vite build`](/ko/guide/cli#vite-build)).
+Vite의 API에서 `command` 값은 개발 중 1 값이 `serve` 이고 (CLI [`vite`](/ko/guide/cli#vite) , `vite dev` 및 `vite serve` 에서는 별칭), 생산을위한 건물 ( [`vite build`](/ko/guide/cli#vite-build) )은 `build` .
 
-`isSsrBuild` and `isPreview` are additional optional flags to differentiate the kind of `build` and `serve` commands respectively. Some tools that load the Vite config may not support these flags and will pass `undefined` instead. Hence, it's recommended to use explicit comparison against `true` and `false`.
+`isSsrBuild` 과 `isPreview` 각각 `build` 및 `serve` 명령의 종류를 구별하기위한 추가 옵션 플래그입니다. VITE 구성을로드하는 일부 도구는 이러한 플래그를 지원하지 않을 수 있으며 대신 `undefined` 통과합니다. 따라서 `true` 와 `false` 에 대한 명시 적 비교를 사용하는 것이 좋습니다.
 
-## Async Config
+## 비동기 구성
 
-If the config needs to call async functions, it can export an async function instead. And this async function can also be passed through `defineConfig` for improved intellisense support:
+구성이 비동기 함수를 호출 해야하는 경우 대신 비동기 기능을 내보낼 수 있습니다. 그리고이 비동기 기능은 개선 된 Intellisense 지원을 위해 `defineConfig` 통과 할 수 있습니다.
 
 ```js twoslash
 import { defineConfig } from 'vite'
-// ---cut---
+// ---자르다---
 export default defineConfig(async ({ command, mode }) => {
   const data = await asyncFunction()
   return {
@@ -99,19 +99,19 @@ export default defineConfig(async ({ command, mode }) => {
 })
 ```
 
-## Using Environment Variables in Config
+## 구성에서 환경 변수 사용
 
-Environmental Variables can be obtained from `process.env` as usual.
+환경 변수는 평소와 같이 `process.env` 에서 얻을 수 있습니다.
 
-Note that Vite doesn't load `.env` files by default as the files to load can only be determined after evaluating the Vite config, for example, the `root` and `envDir` options affect the loading behaviour. However, you can use the exported `loadEnv` helper to load the specific `.env` file if needed.
+VITE는 기본적으로 `.env` 파일을로드하지 않습니다.로드 할 파일은 vite 구성을 평가 한 후에 만 결정할 수 있습니다 (예 : `root` 및 `envDir` 옵션은 로딩 동작에 영향을 미칩니다. 그러나 내보내는 `loadEnv` 도우미를 사용하여 필요한 경우 특정 `.env` 파일을로드 할 수 있습니다.
 
 ```js twoslash
 import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current working directory.
-  // Set the third parameter to '' to load all env regardless of the
-  // `VITE_` prefix.
+  // 현재 작업 디렉토리에서 `mode` 기준으로 ENV 파일을로드하십시오.
+  // 세 번째 매개 변수를 ''로 설정하여
+  // `VITE_` 접두사.
   const env = loadEnv(mode, process.cwd(), '')
   return {
     // vite config

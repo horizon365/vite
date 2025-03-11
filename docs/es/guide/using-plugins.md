@@ -1,10 +1,10 @@
-# Using Plugins
+# Usando Complementos
 
-Vite can be extended using plugins, which are based on Rollup's well-designed plugin interface with a few extra Vite-specific options. This means that Vite users can rely on the mature ecosystem of Rollup plugins, while also being able to extend the dev server and SSR functionality as needed.
+Vite se puede extender utilizando complementos, que se basan en la interfaz de complemento bien diseñada de Rollup con algunas opciones adicionales específicas de VITE. Esto significa que los usuarios de VITE pueden confiar en el ecosistema maduro de los complementos de rollo, al tiempo que pueden extender la funcionalidad del servidor Dev y SSR según sea necesario.
 
-## Adding a Plugin
+## Agregar un complemento
 
-To use a plugin, it needs to be added to the `devDependencies` of the project and included in the `plugins` array in the `vite.config.js` config file. For example, to provide support for legacy browsers, the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) can be used:
+Para usar un complemento, debe agregarse al `devDependencies` del proyecto e incluido en la matriz `plugins` en el archivo de configuración `vite.config.js` . Por ejemplo, para proporcionar soporte para los navegadores heredados, se puede usar el oficial [@vitejs/complemento-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) :
 
 ```
 $ npm add -D @vitejs/plugin-legacy
@@ -23,27 +23,27 @@ export default defineConfig({
 })
 ```
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins` también acepta presets, incluidos varios complementos como un solo elemento. Esto es útil para características complejas (como la integración Framework) que se implementan utilizando varios complementos. La matriz se aplanará internamente.
 
-Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
+Se ignorarán los complementos de Falsy, que se pueden usar para activar o desactivar fácilmente complementos.
 
-## Finding Plugins
+## Encontrar Complementos
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+VITE tiene como objetivo proporcionar soporte listos para los patrones de desarrollo web comunes. Antes de buscar un complemento de acumulación vite o compatible, consulte la [guía de características](../guide/features.md) . Muchos de los casos en que se necesitaría un complemento en un proyecto de rollups ya están cubiertos en VITE.
 :::
 
-Check out the [Plugins section](../plugins/) for information about official plugins. Community plugins are listed in [awesome-vite](https://github.com/vitejs/awesome-vite#plugins).
+Consulte la [sección de complementos](../plugins/) para obtener información sobre complementos oficiales. Los complementos comunitarios se enumeran en [Awesome-Vite](https://github.com/vitejs/awesome-vite#plugins) .
 
-You can also find plugins that follow the [recommended conventions](./api-plugin.md#conventions) using a [npm search for vite-plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) for Vite plugins or a [npm search for rollup-plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) for Rollup plugins.
+También puede encontrar complementos que sigan las [convenciones recomendadas](./api-plugin.md#conventions) utilizando una [búsqueda NPM de Vite-Plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) para complementos VITE o una [búsqueda de NPM para Plugin Rollup-Plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) para complementos.
 
-## Enforcing Plugin Ordering
+## Cumplimiento De Pedidos De Complementos
 
-For compatibility with some Rollup plugins, it may be needed to enforce the order of the plugin or only apply at build time. This should be an implementation detail for Vite plugins. You can enforce the position of a plugin with the `enforce` modifier:
+Para la compatibilidad con algunos complementos de rollo, puede ser necesario hacer cumplir el orden del complemento o solo aplicar en el momento de la compilación. Este debería ser un detalle de implementación para complementos VITE. Puede hacer cumplir la posición de un complemento con el modificador `enforce` :
 
-- `pre`: invoke plugin before Vite core plugins
-- default: invoke plugin after Vite core plugins
-- `post`: invoke plugin after Vite build plugins
+- `pre` : Invocar el complemento antes de los complementos de Vite Core
+- Valor predeterminado: Invoca el complemento después de los complementos de Vite Core
+- `post` : Invoca el complemento después de los complementos de compilación VITE
 
 ```js twoslash [vite.config.js]
 import image from '@rollup/plugin-image'
@@ -59,11 +59,11 @@ export default defineConfig({
 })
 ```
 
-Check out [Plugins API Guide](./api-plugin.md#plugin-ordering) for detailed information.
+Consulte [la Guía API de complementos](./api-plugin.md#plugin-ordering) para obtener información detallada.
 
-## Conditional Application
+## Aplicación Condicional
 
-By default, plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+Por defecto, los complementos se invocan tanto para servir como para construir. En los casos en que un complemento debe aplicarse condicionalmente solo durante el servicio o la construcción, use la propiedad `apply` para invocarlos solo durante `'build'` o `'serve'` :
 
 ```js twoslash [vite.config.js]
 import typescript2 from 'rollup-plugin-typescript2'
@@ -79,6 +79,6 @@ export default defineConfig({
 })
 ```
 
-## Building Plugins
+## Construcción De Complementos
 
-Check out the [Plugins API Guide](./api-plugin.md) for documentation about creating plugins.
+Consulte la [Guía API de complementos](./api-plugin.md) para la documentación sobre la creación de complementos.

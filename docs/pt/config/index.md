@@ -1,45 +1,45 @@
 ---
-title: Configuring Vite
+title: Configurando Vite
 ---
 
-# Configuring Vite
+# Configurando Vite
 
-When running `vite` from the command line, Vite will automatically try to resolve a config file named `vite.config.js` inside [project root](/pt/guide/#index-html-and-project-root) (other JS and TS extensions are also supported).
+Ao executar `vite` na linha de comando, o Vite tentará automaticamente resolver um arquivo de configuração chamado `vite.config.js` Inside [Project Root](/pt/guide/#index-html-and-project-root) (outras extensões JS e TS também são suportadas).
 
-The most basic config file looks like this:
+O arquivo de configuração mais básico se parece com o seguinte:
 
 ```js [vite.config.js]
 export default {
-  // config options
+  // opções de configuração
 }
 ```
 
-Note Vite supports using ES modules syntax in the config file even if the project is not using native Node ESM, e.g. `type: "module"` in `package.json`. In this case, the config file is auto pre-processed before load.
+Nota O VITE suporta o uso da sintaxe dos módulos ES no arquivo de configuração, mesmo que o projeto não esteja usando o NODE Native ESM, por exemplo, `type: "module"` em `package.json` . Nesse caso, o arquivo de configuração é pré-processado automático antes da carga.
 
-You can also explicitly specify a config file to use with the `--config` CLI option (resolved relative to `cwd`):
+Você também pode especificar explicitamente um arquivo de configuração para usar com a opção `--config` CLI (resolvida em relação a `cwd` ):
 
 ```bash
 vite --config my-config.js
 ```
 
 ::: tip CONFIG LOADING
-By default, Vite uses `esbuild` to bundle the config into a temporary file and load it. This may cause issues when importing TypeScript files in a monorepo. If you encounter any issues with this approach, you can specify `--configLoader runner` to use the [module runner](/pt/guide/api-environment-runtimes.html#modulerunner) instead, which will not create a temporary config and will transform any files on the fly. Note that module runner doesn't support CJS in config files, but external CJS packages should work as usual.
+Por padrão, o Vite usa `esbuild` para agrupar a configuração em um arquivo temporário e carregá -lo. Isso pode causar problemas ao importar arquivos de tipscript em um monorepo. Se você encontrar algum problema com essa abordagem, poderá especificar `--configLoader runner` para usar o [Runner do Módulo](/pt/guide/api-environment-runtimes.html#modulerunner) , que não criará uma configuração temporária e transformará quaisquer arquivos em tempo real. Observe que o Module Runner não suporta CJs nos arquivos de configuração, mas os pacotes CJS externos devem funcionar como de costume.
 
-Alternatively, if you're using an environment that supports TypeScript (e.g. `node --experimental-strip-types`), or if you're only writing plain JavaScript, you can specify `--configLoader native` to use the environment's native runtime to load the config file. Note that updates to modules imported by the config file are not detected and hence would not auto-restart the Vite server.
+Como alternativa, se você estiver usando um ambiente que suporta o TypeScript (por exemplo, `node --experimental-strip-types` ), ou se estiver escrevendo apenas JavaScript simples, poderá especificar `--configLoader native` para usar o tempo de execução nativo do ambiente para carregar o arquivo de configuração. Observe que as atualizações dos módulos importadas pelo arquivo de configuração não são detectadas e, portanto, não recomendariam automaticamente o servidor Vite.
 :::
 
 ## Config Intellisense
 
-Since Vite ships with TypeScript typings, you can leverage your IDE's intellisense with jsdoc type hints:
+Como o Vite é enviado com as tímidas do TypeScript, você pode aproveitar o Intellisense do seu IDE com dicas do tipo JSDoc:
 
 ```js
-/** @type {import('vite').UserConfig} */
+/** @Type {import ('vite'). UserConfig} */
 export default {
   // ...
 }
 ```
 
-Alternatively, you can use the `defineConfig` helper which should provide intellisense without the need for jsdoc annotations:
+Como alternativa, você pode usar o auxiliar `defineConfig` que deve fornecer IntelliSense sem a necessidade de anotações JSDOC:
 
 ```js
 import { defineConfig } from 'vite'
@@ -49,7 +49,7 @@ export default defineConfig({
 })
 ```
 
-Vite also supports TypeScript config files. You can use `vite.config.ts` with the `defineConfig` helper function above, or with the `satisfies` operator:
+O Vite também suporta arquivos de configuração do TypeScript. Você pode usar `vite.config.ts` com a função `defineConfig` ajudante acima ou com o operador `satisfies` :
 
 ```ts
 import type { UserConfig } from 'vite'
@@ -59,62 +59,62 @@ export default {
 } satisfies UserConfig
 ```
 
-## Conditional Config
+## Config Condicional
 
-If the config needs to conditionally determine options based on the command (`serve` or `build`), the [mode](/pt/guide/env-and-mode#modes) being used, if it's an SSR build (`isSsrBuild`), or is previewing the build (`isPreview`), it can export a function instead:
+Se a configuração precisar determinar condicionalmente as opções com base no comando ( `serve` ou `build` ), o [modo](/pt/guide/env-and-mode#modes) que está sendo usado, se for uma compilação SSR ( `isSsrBuild` ) ou estiver visualizando a construção ( `isPreview` ), poderá exportar uma função:
 
 ```js twoslash
 import { defineConfig } from 'vite'
-// ---cut---
+// ---corte---
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
   if (command === 'serve') {
     return {
-      // dev specific config
+      // CONFIG específico do dev
     }
   } else {
-    // command === 'build'
+    // comando === 'Build'
     return {
-      // build specific config
+      // construir configuração específica
     }
   }
 })
 ```
 
-It is important to note that in Vite's API the `command` value is `serve` during dev (in the cli [`vite`](/pt/guide/cli#vite), `vite dev`, and `vite serve` are aliases), and `build` when building for production ([`vite build`](/pt/guide/cli#vite-build)).
+É importante observar que na API de Vite o valor `command` é `serve` durante o Dev (na CLI [`vite`](/pt/guide/cli#vite) , `vite dev` e `vite serve` são aliases) e `build` ao construir para a produção ( [`vite build`](/pt/guide/cli#vite-build) ).
 
-`isSsrBuild` and `isPreview` are additional optional flags to differentiate the kind of `build` and `serve` commands respectively. Some tools that load the Vite config may not support these flags and will pass `undefined` instead. Hence, it's recommended to use explicit comparison against `true` and `false`.
+`isSsrBuild` e `isPreview` são sinalizadores opcionais adicionais para diferenciar o tipo de comandos `build` e `serve` , respectivamente. Algumas ferramentas que carregam a configuração Vite podem não suportar esses sinalizadores e passarão `undefined` . Portanto, é recomendável usar comparação explícita com `true` e `false` .
 
-## Async Config
+## Config Assíncrono
 
-If the config needs to call async functions, it can export an async function instead. And this async function can also be passed through `defineConfig` for improved intellisense support:
+Se a configuração precisar chamar funções assíncronas, ela poderá exportar uma função assíncrona. E essa função assíncrona também pode ser passada por `defineConfig` para melhorar o apoio do Intellisense:
 
 ```js twoslash
 import { defineConfig } from 'vite'
-// ---cut---
+// ---corte---
 export default defineConfig(async ({ command, mode }) => {
   const data = await asyncFunction()
   return {
-    // vite config
+    // Config vite
   }
 })
 ```
 
-## Using Environment Variables in Config
+## Usando Variáveis De Ambiente Na Configuração
 
-Environmental Variables can be obtained from `process.env` as usual.
+As variáveis ambientais podem ser obtidas de `process.env` como de costume.
 
-Note that Vite doesn't load `.env` files by default as the files to load can only be determined after evaluating the Vite config, for example, the `root` and `envDir` options affect the loading behaviour. However, you can use the exported `loadEnv` helper to load the specific `.env` file if needed.
+Observe que o Vite não carrega `.env` arquivos por padrão, pois os arquivos a serem carregados só podem ser determinados após a avaliação da configuração do Vite, por exemplo, as opções `root` e `envDir` afetam o comportamento de carregamento. No entanto, você pode usar o Helper exportado `loadEnv` para carregar o arquivo `.env` específico, se necessário.
 
 ```js twoslash
 import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current working directory.
-  // Set the third parameter to '' to load all env regardless of the
-  // `VITE_` prefix.
+  // Carregue o arquivo Env com base em `mode` no diretório de trabalho atual.
+  // Defina o terceiro parâmetro como '' para carregar tudo o que é
+  // `VITE_` prefixo.
   const env = loadEnv(mode, process.cwd(), '')
   return {
-    // vite config
+    // Config vite
     define: {
       __APP_ENV__: JSON.stringify(env.APP_ENV),
     },

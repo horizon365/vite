@@ -1,45 +1,45 @@
-# Plugins
+# プラグイン
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or Compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+Viteは、一般的なWeb開発パターンにすぐに使用できるサポートを提供することを目指しています。 Viteまたは互換性のあるロールアッププラグインを検索する前に、[機能ガイド](../guide/features.md)をご覧ください。ロールアッププロジェクトでプラグインが必要になるケースの多くは、すでにViteでカバーされています。
 :::
 
-Check out [Using Plugins](../guide/using-plugins) for information on how to use plugins.
+プラグインの使用方法については、[プラグインを使用して](../guide/using-plugins)チェックしてください。
 
-## Official Plugins
+## 公式プラグイン
 
 ### [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)
 
-- Provides Vue 3 Single File Components support.
+- VUE 3つの単一ファイルコンポーネントサポートを提供します。
 
 ### [@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx)
 
-- Provides Vue 3 JSX support (via [dedicated Babel transform](https://github.com/vuejs/jsx-next)).
+- VUE 3 JSXサポートを提供します（[専用のBabel Transform](https://github.com/vuejs/jsx-next)を介して）。
 
 ### [@vitejs/plugin-vue2](https://github.com/vitejs/vite-plugin-vue2)
 
-- Provides Vue 2.7 Single File Components support.
+- VUE 2.7の単一ファイルコンポーネントサポートを提供します。
 
 ### [@vitejs/plugin-vue2-jsx](https://github.com/vitejs/vite-plugin-vue2-jsx)
 
-- Provides Vue 2.7 JSX support (via [dedicated Babel transform](https://github.com/vuejs/jsx-vue2/)).
+- VUE 2.7 JSXサポートを提供します（[専用のBabel Transform](https://github.com/vuejs/jsx-vue2/)を介して）。
 
-### [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react)
+### [@Vitejs/Plugin-React](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react)
 
-- Uses esbuild and Babel, achieving fast HMR with a small package footprint and the flexibility of being able to use the Babel transform pipeline. Without additional Babel plugins, only esbuild is used during builds.
+- EsbuildとBabelを使用して、小さなパッケージフットプリントとBabel Transform Pipelineを使用できる柔軟性で高速HMRを達成します。追加のバベルプラグインがなければ、ビルド中にEsbuildのみが使用されます。
 
-### [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
+### [@vitejs/plugin-reacs-swc](https://github.com/vitejs/vite-plugin-react-swc)
 
-- Replaces Babel with SWC during development. During production builds, SWC+esbuild are used when using plugins, and esbuild only otherwise. For big projects that don't require non-standard React extensions, cold start and Hot Module Replacement (HMR) can be significantly faster.
+- 開発中にバベルをSWCに置き換えます。生産ビルド中、プラグインを使用するときはSWC+ESBUILDが使用され、それ以外の場合のみESBUILDが使用されます。非標準の反応拡張機能を必要としない大きなプロジェクトの場合、コールドスタートおよびホットモジュールの交換（HMR）は大幅に高速になる可能性があります。
 
-### [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)
+### [@Vitejs/Plugin-Legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)
 
-- Provides legacy browsers support for the production build.
+- 生産ビルドのレガシーブラウザのサポートを提供します。
 
-## Community Plugins
+## コミュニティプラグイン
 
-Check out [awesome-vite](https://github.com/vitejs/awesome-vite#plugins) - you can also submit a PR to list your plugins there.
+[Awesome -Vite](https://github.com/vitejs/awesome-vite#plugins)をチェックしてください - PRを提出して、そこにプラグインをリストすることもできます。
 
-## Rollup Plugins
+## ロールアッププラグイン
 
-[Vite plugins](../guide/api-plugin) are an extension of Rollup's plugin interface. Check out the [Rollup Plugin Compatibility section](../guide/api-plugin#rollup-plugin-compatibility) for more information.
+[Viteプラグインは](../guide/api-plugin)、Rollupのプラグインインターフェイスの拡張機能です。詳細については、[ロールアッププラグインの互換性セクション](../guide/api-plugin#rollup-plugin-compatibility)をご覧ください。

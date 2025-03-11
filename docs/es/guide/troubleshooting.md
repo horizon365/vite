@@ -1,200 +1,200 @@
-# Troubleshooting
+# Solución De Problemas
 
-See [Rollup's troubleshooting guide](https://rollupjs.org/troubleshooting/) for more information too.
+Consulte [la guía de solución de problemas de Rollup](https://rollupjs.org/troubleshooting/) para obtener más información también.
 
-If the suggestions here don't work, please try posting questions on [GitHub Discussions](https://github.com/vitejs/vite/discussions) or in the `#help` channel of [Vite Land Discord](https://chat.vite.dev).
+Si las sugerencias aquí no funcionan, intente publicar preguntas sobre [las discusiones de GitHub](https://github.com/vitejs/vite/discussions) o en el canal `#help` de [Vite Land Discord](https://chat.vite.dev) .
 
 ## CJS
 
-### Vite CJS Node API deprecated
+### VITE CJS Node API Deprecida
 
-The CJS build of Vite's Node API is deprecated and will be removed in Vite 6. See the [GitHub discussion](https://github.com/vitejs/vite/discussions/13928) for more context. You should update your files or frameworks to import the ESM build of Vite instead.
+La construcción de CJS de la API del nodo de Vite está en desuso y se eliminará en Vite 6. Vea la [discusión de GitHub](https://github.com/vitejs/vite/discussions/13928) para obtener más contexto. Debe actualizar sus archivos o marcos para importar la compilación ESM de VITE.
 
-In a basic Vite project, make sure:
+En un proyecto vite básico, asegúrese de:
 
-1. The `vite.config.js` file content is using the ESM syntax.
-2. The closest `package.json` file has `"type": "module"`, or use the `.mjs`/`.mts` extension, e.g. `vite.config.mjs` or `vite.config.mts`.
+1. El contenido del archivo `vite.config.js` está utilizando la sintaxis ESM.
+2. El archivo `package.json` más cercano tiene `"type": "module"` , o usa la extensión `.mjs` , por ejemplo `.mts` `vite.config.mjs` o `vite.config.mts` .
 
-For other projects, there are a few general approaches:
+Para otros proyectos, hay algunos enfoques generales:
 
-- **Configure ESM as default, opt-in to CJS if needed:** Add `"type": "module"` in the project `package.json`. All `*.js` files are now interpreted as ESM and need to use the ESM syntax. You can rename a file with the `.cjs` extension to keep using CJS instead.
-- **Keep CJS as default, opt-in to ESM if needed:** If the project `package.json` does not have `"type": "module"`, all `*.js` files are interpreted as CJS. You can rename a file with the `.mjs` extension to use ESM instead.
-- **Dynamically import Vite:** If you need to keep using CJS, you can dynamically import Vite using `import('vite')` instead. This requires your code to be written in an `async` context, but should still be manageable as Vite's API is mostly asynchronous.
+- **Configure ESM como predeterminado, opte a CJS si es necesario:** Agregue `"type": "module"` en el proyecto `package.json` . Los `*.js` archivos ahora se interpretan como ESM y necesitan usar la sintaxis ESM. Puede cambiar el nombre de un archivo con la extensión `.cjs` para seguir usando CJS.
+- **Mantenga CJS como predeterminado, opte a ESM si es necesario:** si el Proyecto `package.json` no tiene `"type": "module"` , los `*.js` archivos se interpretan como CJS. Puede cambiar el nombre de un archivo con la extensión `.mjs` para usar ESM en su lugar.
+- **Importar dinámicamente vite:** si necesita seguir usando CJS, puede importar dinámicamente VITE usando `import('vite')` . Esto requiere que su código se escriba en un contexto `async` , pero aún debe ser manejable ya que la API de Vite es en su mayoría asíncrona.
 
-If you're unsure where the warning is coming from, you can run your script with the `VITE_CJS_TRACE=true` flag to log the stack trace:
+Si no está seguro de dónde proviene la advertencia, puede ejecutar su script con el indicador `VITE_CJS_TRACE=true` para registrar el rastro de la pila:
 
 ```bash
 VITE_CJS_TRACE=true vite dev
 ```
 
-If you'd like to temporarily ignore the warning, you can run your script with the `VITE_CJS_IGNORE_WARNING=true` flag:
+Si desea ignorar temporalmente la advertencia, puede ejecutar su script con la bandera `VITE_CJS_IGNORE_WARNING=true` :
 
 ```bash
 VITE_CJS_IGNORE_WARNING=true vite dev
 ```
 
-Note that postcss config files do not support ESM + TypeScript (`.mts` or `.ts` in `"type": "module"`) yet. If you have postcss configs with `.ts` and added `"type": "module"` to package.json, you'll also need to rename the postcss config to use `.cts`.
+Tenga en cuenta que los archivos de configuración PostCSS no admiten ESM + TypeScript ( `.mts` o `.ts` en `"type": "module"` ) todavía. Si tiene configuraciones PostCSS con `.ts` y agregó `"type": "module"` a Package.json, también necesitará cambiar el nombre de la configuración PostCSS para usar `.cts` .
 
 ## CLI
 
 ### `Error: Cannot find module 'C:\foo\bar&baz\vite\bin\vite.js'`
 
-The path to your project folder may include `&`, which doesn't work with `npm` on Windows ([npm/cmd-shim#45](https://github.com/npm/cmd-shim/issues/45)).
+La ruta a la carpeta de su proyecto puede incluir `&` , que no funciona con `npm` en Windows ( [NPM/CMD-SHIM#45](https://github.com/npm/cmd-shim/issues/45) ).
 
-You will need to either:
+Tendrás que tampoco:
 
-- Switch to another package manager (e.g. `pnpm`, `yarn`)
-- Remove `&` from the path to your project
+- Cambie a otro administrador de paquetes (por ejemplo, `pnpm` , `yarn` )
+- Eliminar `&` de la ruta a su proyecto
 
-## Config
+## Configuración
 
-### This package is ESM only
+### Este paquete es solo ESM
 
-When importing a ESM only package by `require`, the following error happens.
+Al importar un paquete ESM solo por `require` , ocurre el siguiente error.
 
-> Failed to resolve "foo". This package is ESM only but it was tried to load by `require`.
+> No se pudo resolver "foo". Este paquete es solo ESM pero se intentó cargar por `require` .
 
-> Error [ERR_REQUIRE_ESM]: require() of ES Module /path/to/dependency.js from /path/to/vite.config.js not supported.
-> Instead change the require of index.js in /path/to/vite.config.js to a dynamic import() which is available in all CommonJS modules.
+> Error [err_require_esm]: require () de ES Module /path/to/Dependency.js from /path/to/vite.config.js no es compatible.
+> En su lugar, cambie el requerimiento de index.js in /path/to/vite.config.js a una importación dinámica () que está disponible en todos los módulos CommonJS.
 
-In Node.js <=22, ESM files cannot be loaded by [`require`](https://nodejs.org/docs/latest-v22.x/api/esm.html#require) by default.
+En Node.js <= 22, los archivos ESM no se pueden cargar por [`require`](https://nodejs.org/docs/latest-v22.x/api/esm.html#require) por defecto.
 
-While it may work using [`--experimental-require-module`](https://nodejs.org/docs/latest-v22.x/api/modules.html#loading-ecmascript-modules-using-require), or Node.js >22, or in other runtimes, we still recommend converting your config to ESM by either:
+Si bien puede funcionar usando [`--experimental-require-module`](https://nodejs.org/docs/latest-v22.x/api/modules.html#loading-ecmascript-modules-using-require) , o node.js> 22, o en otros tiempos de ejecución, aún recomendamos convertir su configuración en ESM por:
 
-- adding `"type": "module"` to the nearest `package.json`
-- renaming `vite.config.js`/`vite.config.ts` to `vite.config.mjs`/`vite.config.mts`
+- agregando `"type": "module"` al `package.json` más cercano
+- `vite.config.mts` `vite.config.js` `vite.config.mjs` `vite.config.ts`
 
 ### `failed to load config from '/path/to/config*/vite.config.js'`
 
-> failed to load config from '/path/to/config\*/vite.config.js'
-> error when starting dev server:
-> Error: Build failed with 1 error:
-> error: Must use "outdir" when there are multiple input files
+> No se pudo cargar configuración desde '/path/to/config\*/vite.config.js'
+> Error al iniciar el servidor Dev:
+> Error: la compilación falló con 1 error:
+> Error: debe usar "Outdir" cuando hay múltiples archivos de entrada
 
-The error above may occur if the path to your project folder contains `*`, which esbuild treats as a glob. You will need to rename your directory to remove the `*`.
+El error anterior puede ocurrir si la ruta a la carpeta de su proyecto contiene `*` , que ESBuild trata como un globo. Deberá cambiar el nombre de su directorio para eliminar el `*` .
 
-## Dev Server
+## Servidor De Desarrollo
 
-### Requests are stalled forever
+### Las solicitudes están estancadas para siempre
 
-If you are using Linux, file descriptor limits and inotify limits may be causing the issue. As Vite does not bundle most of the files, browsers may request many files which require many file descriptors, going over the limit.
+Si está utilizando Linux, los límites del descriptor de archivo y los límites inotify pueden estar causando el problema. Como Vite no agrupa la mayoría de los archivos, los navegadores pueden solicitar muchos archivos que requieren muchos descriptores de archivos, superando el límite.
 
-To solve this:
+Para resolver esto:
 
-- Increase file descriptor limit by `ulimit`
+- Aumentar el límite del descriptor del archivo por `ulimit`
 
   ```shell
-  # Check current limit
+  # Verifique el límite de corriente
   $ ulimit -Sn
-  # Change limit (temporary)
-  $ ulimit -Sn 10000 # You might need to change the hard limit too
-  # Restart your browser
+  # Límite de cambio (temporal)
+  $ ulimit -Sn 10000 # Es posible que también necesite cambiar el límite duro
+  # Reinicie su navegador
   ```
 
-- Increase the following inotify related limits by `sysctl`
+- Aumente los siguientes límites relacionados con inotify por `sysctl`
 
   ```shell
-  # Check current limits
+  # Verifique los límites de corriente
   $ sysctl fs.inotify
-  # Change limits (temporary)
+  # Cambiar límites (temporales)
   $ sudo sysctl fs.inotify.max_queued_events=16384
   $ sudo sysctl fs.inotify.max_user_instances=8192
   $ sudo sysctl fs.inotify.max_user_watches=524288
   ```
 
-If the above steps don't work, you can try adding `DefaultLimitNOFILE=65536` as an un-commented config to the following files:
+Si los pasos anteriores no funcionan, puede intentar agregar `DefaultLimitNOFILE=65536` como una configuración no commentada a los siguientes archivos:
 
 - /etc/systemd/system.conf
 - /etc/systemd/user.conf
 
-For Ubuntu Linux, you may need to add the line `* - nofile 65536` to the file `/etc/security/limits.conf` instead of updating systemd config files.
+Para Ubuntu Linux, es posible que deba agregar la línea `* - nofile 65536` al archivo `/etc/security/limits.conf` en lugar de actualizar los archivos de configuración Systemd.
 
-Note that these settings persist but a **restart is required**.
+Tenga en cuenta que estos configuraciones persisten pero **se requiere un reinicio** .
 
-Alternatively, if the server is running inside a VS Code devcontainer, the request may appear to be stalled. To fix this issue, see
-[Dev Containers / VS Code Port Forwarding](#dev-containers-vs-code-port-forwarding).
+Alternativamente, si el servidor se ejecuta dentro de un código VS DevContainer, la solicitud puede parecer estancada. Para solucionar este problema, ver
+[Contenedores de desarrollo / reenvío del puerto de código VS.](#dev-containers-vs-code-port-forwarding)
 
-### Network requests stop loading
+### Solicitudes de red deja de cargar
 
-When using a self-signed SSL certificate, Chrome ignores all caching directives and reloads the content. Vite relies on these caching directives.
+Al usar un certificado SSL autofirmado, Chrome ignora todas las directivas de almacenamiento en caché y recarga el contenido. Vite se basa en estas directivas de almacenamiento en caché.
 
-To resolve the problem use a trusted SSL cert.
+Para resolver el problema, use un certificado SSL de confianza.
 
-See: [Cache problems](https://helpx.adobe.com/mt/experience-manager/kb/cache-problems-on-chrome-with-SSL-certificate-errors.html), [Chrome issue](https://bugs.chromium.org/p/chromium/issues/detail?id=110649#c8)
+Ver: [Problemas de caché](https://helpx.adobe.com/mt/experience-manager/kb/cache-problems-on-chrome-with-SSL-certificate-errors.html) , [problema de Chrome](https://bugs.chromium.org/p/chromium/issues/detail?id=110649#c8)
 
-#### macOS
+#### macosa
 
-You can install a trusted cert via the CLI with this command:
+Puede instalar un certificado de confianza a través de la CLI con este comando:
 
 ```
 security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db your-cert.cer
 ```
 
-Or, by importing it into the Keychain Access app and updating the trust of your cert to "Always Trust."
+O, al importarlo a la aplicación de acceso a Keychain y actualizar la confianza de su certificado para "siempre confiar".
 
-### 431 Request Header Fields Too Large
+### 431 Solicitar Campos De Encabezado Demasiado Grandes
 
-When the server / WebSocket server receives a large HTTP header, the request will be dropped and the following warning will be shown.
+Cuando el servidor / servidor WebSocket recibe un gran encabezado HTTP, la solicitud se eliminará y se mostrará la siguiente advertencia.
 
-> Server responded with status code 431. See https://vite.dev/guide/troubleshooting.html#_431-request-header-fields-too-large.
+> El servidor respondió con el código de estado 431. Consulte [https://vite.dev/guide/troublashooting.html#\_431-request-header-fields-too-large](https://vite.dev/guide/troubleshooting.html#_431-request-header-fields-too-large) .
 
-This is because Node.js limits request header size to mitigate [CVE-2018-12121](https://www.cve.org/CVERecord?id=CVE-2018-12121).
+Esto se debe a que Node.js limita el tamaño del encabezado de solicitud para mitigar [CVE-2018-12121](https://www.cve.org/CVERecord?id=CVE-2018-12121) .
 
-To avoid this, try to reduce your request header size. For example, if the cookie is long, delete it. Or you can use [`--max-http-header-size`](https://nodejs.org/api/cli.html#--max-http-header-sizesize) to change max header size.
+Para evitar esto, intente reducir el tamaño del encabezado de su solicitud. Por ejemplo, si la cookie es larga, elimínela. O puede usar [`--max-http-header-size`](https://nodejs.org/api/cli.html#--max-http-header-sizesize) para cambiar el tamaño del encabezado máximo.
 
-### Dev Containers / VS Code Port Forwarding
+### Contenedores De Desarrollo / Reenvío De Puertos De Código vs Código
 
-If you are using a Dev Container or port forwarding feature in VS Code, you may need to set the [`server.host`](/es/config/server-options.md#server-host) option to `127.0.0.1` in the config to make it work.
+Si está utilizando un contenedor de desarrollo o una función de reenvío de puertos en el código VS, es posible que deba establecer la opción [`server.host`](/es/config/server-options.md#server-host) en `127.0.0.1` en la configuración para que funcione.
 
-This is because [the port forwarding feature in VS Code does not support IPv6](https://github.com/microsoft/vscode-remote-release/issues/7029).
+Esto se debe a que [la función de reenvío de puertos en el código VS no admite IPv6](https://github.com/microsoft/vscode-remote-release/issues/7029) .
 
-See [#16522](https://github.com/vitejs/vite/issues/16522) for more details.
+Ver [#16522](https://github.com/vitejs/vite/issues/16522) para más detalles.
 
 ## HMR
 
-### Vite detects a file change but the HMR is not working
+### Vite detecta un cambio de archivo pero el HMR no funciona
 
-You may be importing a file with a different case. For example, `src/foo.js` exists and `src/bar.js` contains:
+Puede estar importando un archivo con un caso diferente. Por ejemplo, `src/foo.js` existe y `src/bar.js` contiene:
 
 ```js
-import './Foo.js' // should be './foo.js'
+import './Foo.js' // debería ser './foo.js'
 ```
 
-Related issue: [#964](https://github.com/vitejs/vite/issues/964)
+Problema relacionado: [#964](https://github.com/vitejs/vite/issues/964)
 
-### Vite does not detect a file change
+### Vite no detecta un cambio de archivo
 
-If you are running Vite with WSL2, Vite cannot watch file changes in some conditions. See [`server.watch` option](/es/config/server-options.md#server-watch).
+Si está ejecutando VITE con WSL2, VITE no puede ver los cambios de archivo en algunas condiciones. Ver [`server.watch` opción](/es/config/server-options.md#server-watch) .
 
-### A full reload happens instead of HMR
+### Una recarga completa ocurre en lugar de HMR
 
-If HMR is not handled by Vite or a plugin, a full reload will happen as it's the only way to refresh the state.
+Si Vite o un complemento no maneja HMR, se producirá una recarga completa, ya que es la única forma de actualizar el estado.
 
-If HMR is handled but it is within a circular dependency, a full reload will also happen to recover the execution order. To solve this, try breaking the loop. You can run `vite --debug hmr` to log the circular dependency path if a file change triggered it.
+Si se maneja HMR pero está dentro de una dependencia circular, una recarga completa también recuperará la orden de ejecución. Para resolver esto, intente romper el bucle. Puede ejecutar `vite --debug hmr` para registrar la ruta de dependencia circular si un cambio de archivo lo activó.
 
-## Build
+## Construir
 
-### Built file does not work because of CORS error
+### El archivo construido no funciona debido al error de CORS
 
-If the HTML file output was opened with `file` protocol, the scripts won't run with the following error.
+Si la salida del archivo HTML se abrió con el protocolo `file` , los scripts no se ejecutarán con el siguiente error.
 
-> Access to script at 'file:///foo/bar.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, isolated-app, chrome-extension, chrome, https, chrome-untrusted.
+> El acceso al script en 'Archivo: ///foo/bar.js' From Origin 'NULL' ha sido bloqueado por CORS Policy: las solicitudes de origen cruzado solo son compatibles con esquemas de protocolo: http, datos, app aislado, extensión de cromo, cromo, https, cromado no controlado.
 
-> Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///foo/bar.js. (Reason: CORS request not http).
+> Solicitud de origen cruzado bloqueada: la misma política de origen no permite leer el recurso remoto en el archivo: ///foo/bar.js. (Razón: Solicitud CORS no HTTP).
 
-See [Reason: CORS request not HTTP - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp) for more information about why this happens.
+Ver [Razón: Solicitud de CORS no http - http | Mdn] ( [https://developer.mozilla.org/en-us/docs/web/http/cors/errors/corsRequestnothttp](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp) ) para obtener más información sobre por qué sucede esto.
 
-You will need to access the file with `http` protocol. The easiest way to achieve this is to run `npx vite preview`.
+Deberá acceder al archivo con el protocolo `http` . La forma más fácil de lograr esto es ejecutar `npx vite preview` .
 
-## Optimized Dependencies
+## Dependencias Optimizadas
 
-### Outdated pre-bundled deps when linking to a local package
+### Deps anticuados anticuados al vincular a un paquete local
 
-The hash key used to invalidate optimized dependencies depends on the package lock contents, the patches applied to dependencies, and the options in the Vite config file that affects the bundling of node modules. This means that Vite will detect when a dependency is overridden using a feature as [npm overrides](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides), and re-bundle your dependencies on the next server start. Vite won't invalidate the dependencies when you use a feature like [npm link](https://docs.npmjs.com/cli/v9/commands/npm-link). In case you link or unlink a dependency, you'll need to force re-optimization on the next server start by using `vite --force`. We recommend using overrides instead, which are supported now by every package manager (see also [pnpm overrides](https://pnpm.io/package_json#pnpmoverrides) and [yarn resolutions](https://yarnpkg.com/configuration/manifest/#resolutions)).
+La clave hash utilizada para invalidar las dependencias optimizadas depende del contenido del bloqueo del paquete, los parches aplicados a las dependencias y las opciones en el archivo de configuración VITE que afecta la agrupación de módulos de nodo. Esto significa que VITE detectará cuándo se anula una dependencia utilizando una característica como [anula NPM](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides) y volverá a fusionar sus dependencias en el siguiente servidor inicial. Vite no invalidará las dependencias cuando use una función como [el enlace NPM](https://docs.npmjs.com/cli/v9/commands/npm-link) . En caso de que vincule o desintegue una dependencia, deberá forzar la re-óptimización en el siguiente servidor iniciar usando `vite --force` . Recomendamos usar anulaciones en su lugar, que ahora son compatibles con cada administrador de paquetes (ver también [anulaciones de PNPM](https://pnpm.io/package_json#pnpmoverrides) y [resoluciones de hilo](https://yarnpkg.com/configuration/manifest/#resolutions) ).
 
-## Performance Bottlenecks
+## Cuellos De Botella De Rendimiento
 
-If you suffer any application performance bottlenecks resulting in slow load times, you can start the built-in Node.js inspector with your Vite dev server or when building your application to create the CPU profile:
+Si sufre cualquier cuello de botella de rendimiento de la aplicación que dan como resultado tiempos de carga lentos, puede iniciar el inspector de nodo.js incorporado con su servidor de desarrollo vite o al crear su aplicación para crear el perfil de la CPU:
 
 ::: code-group
 
@@ -209,48 +209,48 @@ vite build --profile
 :::
 
 ::: tip Vite Dev Server
-Once your application is opened in the browser, just await finish loading it and then go back to the terminal and press `p` key (will stop the Node.js inspector) then press `q` key to stop the dev server.
+Una vez que su aplicación se abre en el navegador, solo espere terminar de cargarla y luego regrese al terminal y presione la tecla `p` (detendrá el inspector Node.js) y luego presione `q` tecla para detener el servidor de desarrollo.
 :::
 
-Node.js inspector will generate `vite-profile-0.cpuprofile` in the root folder, go to https://www.speedscope.app/, and upload the CPU profile using the `BROWSE` button to inspect the result.
+El inspector node.js generará `vite-profile-0.cpuprofile` en la carpeta raíz, vaya a [https://www.speedscope.app/](https://www.speedscope.app/) , y cargue el perfil de la CPU usando el botón `BROWSE` para inspeccionar el resultado.
 
-You can install [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect), which lets you inspect the intermediate state of Vite plugins and can also help you to identify which plugins or middlewares are the bottleneck in your applications. The plugin can be used in both dev and build modes. Check the readme file for more details.
+Puede instalar [Vite-Plugin-Inspect](https://github.com/antfu/vite-plugin-inspect) , que le permite inspeccionar el estado intermedio de los complementos VITE y también puede ayudarlo a identificar qué complementos o artículos intermedios son el cuello de botella en sus aplicaciones. El complemento se puede usar en modos de desarrollo y compilación. Consulte el archivo ReadMe para obtener más detalles.
 
-## Others
+## Otros
 
-### Module externalized for browser compatibility
+### Módulo externalizado para la compatibilidad del navegador
 
-When you use a Node.js module in the browser, Vite will output the following warning.
+Cuando usa un módulo Node.js en el navegador, Vite generará la siguiente advertencia.
 
-> Module "fs" has been externalized for browser compatibility. Cannot access "fs.readFile" in client code.
+> El módulo "FS" ha sido externalizado para la compatibilidad del navegador. No se puede acceder a "Fsadfile" en el código del cliente.
 
-This is because Vite does not automatically polyfill Node.js modules.
+Esto se debe a que VITE no polló automáticamente los módulos Node.js.
 
-We recommend avoiding Node.js modules for browser code to reduce the bundle size, although you can add polyfills manually. If the module is imported from a third-party library (that's meant to be used in the browser), it's advised to report the issue to the respective library.
+Recomendamos evitar los módulos Node.js para el código del navegador para reducir el tamaño del haz, aunque puede agregar polyfills manualmente. Si el módulo se importa de una biblioteca de terceros (que está destinado a usarse en el navegador), se recomienda informar el problema a la biblioteca respectiva.
 
-### Syntax Error / Type Error happens
+### Error de sintaxis / error de tipo ocurre
 
-Vite cannot handle and does not support code that only runs on non-strict mode (sloppy mode). This is because Vite uses ESM and it is always [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) inside ESM.
+Vite no puede manejar y no admite código que solo se ejecuta en modo no riguroso (modo descuidado). Esto se debe a que Vite usa ESM y siempre es [un modo estricto](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) dentro de ESM.
 
-For example, you might see these errors.
+Por ejemplo, puede ver estos errores.
 
-> [ERROR] With statements cannot be used with the "esm" output format due to strict mode
+> [Error] con declaraciones no se puede usar con el formato de salida "ESM" debido al modo estricto
 
-> TypeError: Cannot create property 'foo' on boolean 'false'
+> TypeError: no se puede crear la propiedad 'foo' en boolean 'falso'
 
-If these codes are used inside dependencies, you could use [`patch-package`](https://github.com/ds300/patch-package) (or [`yarn patch`](https://yarnpkg.com/cli/patch) or [`pnpm patch`](https://pnpm.io/cli/patch)) for an escape hatch.
+Si estos códigos se usan dentro de las dependencias, puede usar [`patch-package`](https://github.com/ds300/patch-package) (o [`yarn patch`](https://yarnpkg.com/cli/patch) o [`pnpm patch`](https://pnpm.io/cli/patch) ) para una escotilla de escape.
 
-### Browser extensions
+### Extensiones del navegador
 
-Some browser extensions (like ad-blockers) may prevent the Vite client from sending requests to the Vite dev server. You may see a white screen without logged errors in this case. Try disabling extensions if you have this issue.
+Algunas extensiones del navegador (como los bloqueadores de anuncios) pueden evitar que el cliente VITE envíe solicitudes al servidor VITE DEV. Puede ver una pantalla blanca sin errores registrados en este caso. Intente deshabilitar las extensiones si tiene este problema.
 
-### Cross drive links on Windows
+### Enlaces de transmisión cruzada en Windows
 
-If there's a cross drive links in your project on Windows, Vite may not work.
+Si hay un enlace de transmisión cruzada en su proyecto en Windows, Vite puede no funcionar.
 
-An example of cross drive links are:
+Un ejemplo de enlaces de transmisión cruzada son:
 
-- a virtual drive linked to a folder by `subst` command
-- a symlink/junction to a different drive by `mklink` command (e.g. Yarn global cache)
+- Una unidad virtual vinculada a un comando de carpeta por `subst`
+- Un enlace simbólico/unión a un comando diferente por `mklink` (por ejemplo, hilo de caché global)
 
-Related issue: [#10802](https://github.com/vitejs/vite/issues/10802)
+Problema relacionado: [#10802](https://github.com/vitejs/vite/issues/10802)

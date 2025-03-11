@@ -1,25 +1,25 @@
-# Environment API for Plugins
+# API de entorno para complementos
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+El medio ambiente API es experimental. Mantendremos las API estables durante Vite 6 para dejar que el ecosistema experimente y construir sobre ella. Estamos planeando estabilizar estas nuevas API con posibles cambios de ruptura en Vite 7.
 
-Resources:
+Recursos:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+- [Discusión de comentarios](https://github.com/vitejs/vite/discussions/16358) Cuando estamos recopilando comentarios sobre las nuevas API.
+- [API ambiental PR](https://github.com/vitejs/vite/pull/16471) donde se implementó y revisó la nueva API.
 
-Please share your feedback with us.
+Comparta sus comentarios con nosotros.
 :::
 
-## Accessing the Current Environment in Hooks
+## Acceder al entorno actual en ganchos
 
-Given that there were only two Environments until Vite 6 (`client` and `ssr`), a `ssr` boolean was enough to identify the current environment in Vite APIs. Plugin Hooks received a `ssr` boolean in the last options parameter, and several APIs expected an optional last `ssr` parameter to properly associate modules to the correct environment (for example `server.moduleGraph.getModuleByUrl(url, { ssr })`).
+Dado que solo había dos entornos hasta Vite 6 ( `client` y `ssr` ), un `ssr` booleano fue suficiente para identificar el entorno actual en las API vite. Los ganchos de complementos recibieron un `ssr` booleano en el último parámetro de opciones, y varias API esperaban un `ssr` parámetro opcional para asociar correctamente los módulos al entorno correcto (por ejemplo `server.moduleGraph.getModuleByUrl(url, { ssr })` ).
 
-With the advent of configurable environments, we now have a uniform way to access their options and instance in plugins. Plugin hooks now expose `this.environment` in their context, and APIs that previously expected a `ssr` boolean are now scoped to the proper environment (for example `environment.moduleGraph.getModuleByUrl(url)`).
+Con el advenimiento de entornos configurables, ahora tenemos una forma uniforme de acceder a sus opciones e instancia en complementos. Los ganchos de complementos ahora exponen `this.environment` en su contexto, y las API que anteriormente esperaban un `ssr` boolean ahora están alcanzados al entorno adecuado (por ejemplo `environment.moduleGraph.getModuleByUrl(url)` ).
 
-The Vite server has a shared plugin pipeline, but when a module is processed it is always done in the context of a given environment. The `environment` instance is available in the plugin context.
+El servidor VITE tiene una tubería de complementos compartido, pero cuando se procesa un módulo, siempre se realiza en el contexto de un entorno determinado. La instancia `environment` está disponible en el contexto del complemento.
 
-A plugin could use the `environment` instance to change how a module is processed depending on the configuration for the environment (which can be accessed using `environment.config`).
+Un complemento podría usar la instancia `environment` para cambiar la forma en que se procesa un módulo dependiendo de la configuración del entorno (a la que se puede acceder usando `environment.config` ).
 
 ```ts
   transform(code, id) {
@@ -27,9 +27,9 @@ A plugin could use the `environment` instance to change how a module is processe
   }
 ```
 
-## Registering New Environments Using Hooks
+## Registrando Nuevos Entornos Utilizando Ganchos
 
-Plugins can add new environments in the `config` hook (for example to have a separate module graph for [RSC](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components)):
+Los complementos pueden agregar nuevos entornos en el gancho `config` (por ejemplo, para tener un gráfico de módulo separado para [RSC](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) ):
 
 ```ts
   config(config: UserConfig) {
@@ -37,12 +37,12 @@ Plugins can add new environments in the `config` hook (for example to have a sep
   }
 ```
 
-An empty object is enough to register the environment, default values from the root level environment config.
+Un objeto vacío es suficiente para registrar el entorno, valores predeterminados de la configuración de entorno de nivel raíz.
 
-## Configuring Environment Using Hooks
+## Configuración Del Entorno Utilizando Ganchos
 
-While the `config` hook is running, the complete list of environments isn't yet known and the environments can be affected by both the default values from the root level environment config or explicitly through the `config.environments` record.
-Plugins should set default values using the `config` hook. To configure each environment, they can use the new `configEnvironment` hook. This hook is called for each environment with its partially resolved config including resolution of final defaults.
+Mientras el gancho `config` se está ejecutando, la lista completa de entornos aún no se conoce y los entornos pueden verse afectados tanto por los valores predeterminados de la configuración de entorno de nivel raíz o explícitamente a través del registro `config.environments` .
+Los complementos deben establecer los valores predeterminados usando el gancho `config` . Para configurar cada entorno, pueden usar el nuevo gancho `configEnvironment` . Este gancho se requiere para cada entorno con su configuración parcialmente resuelta, incluida la resolución de los valores predeterminados finales.
 
 ```ts
   configEnvironment(name: string, options: EnvironmentOptions) {
@@ -50,12 +50,12 @@ Plugins should set default values using the `config` hook. To configure each env
       options.resolve.conditions = // ...
 ```
 
-## The `hotUpdate` Hook
+## El gancho `hotUpdate`
 
-- **Type:** `(this: { environment: DevEnvironment }, options: HotUpdateOptions) => Array<EnvironmentModuleNode> | void | Promise<Array<EnvironmentModuleNode> | void>`
-- **See also:** [HMR API](./api-hmr)
+- **Tipo:** `(this: {Environment: Devenvironment}, Opciones: HotupdateOptions) => Array<EnvironmentModuleNode> | vacío | Promesa <Array<EnvironmentModuleNode> | Vacío> `
+- **Ver también:** [API HMR](./api-hmr)
 
-The `hotUpdate` hook allows plugins to perform custom HMR update handling for a given environment. When a file changes, the HMR algorithm is run for each environment in series according to the order in `server.environments`, so the `hotUpdate` hook will be called multiple times. The hook receives a context object with the following signature:
+El Hook `hotUpdate` permite que los complementos realicen el manejo de actualizaciones de HMR personalizados para un entorno determinado. Cuando cambia un archivo, el algoritmo HMR se ejecuta para cada entorno en serie de acuerdo con el pedido en `server.environments` , por lo que el `hotUpdate` gancho se llamará varias veces. El gancho recibe un objeto de contexto con la siguiente firma:
 
 ```ts
 interface HotUpdateOptions {
@@ -68,24 +68,24 @@ interface HotUpdateOptions {
 }
 ```
 
-- `this.environment` is the module execution environment where a file update is currently being processed.
+- `this.environment` es el entorno de ejecución del módulo donde actualmente se está procesando una actualización de archivo.
 
-- `modules` is an array of modules in this environment that are affected by the changed file. It's an array because a single file may map to multiple served modules (e.g. Vue SFCs).
+- `modules` es una matriz de módulos en este entorno afectado por el archivo cambiado. Es una matriz porque un solo archivo puede mapear a múltiples módulos servidos (por ejemplo, Vue SFCS).
 
-- `read` is an async read function that returns the content of the file. This is provided because, on some systems, the file change callback may fire too fast before the editor finishes updating the file, and direct `fs.readFile` will return empty content. The read function passed in normalizes this behavior.
+- `read` es una función de lectura Async que devuelve el contenido del archivo. Esto se proporciona porque, en algunos sistemas, la devolución de llamada de cambio de archivo puede disparar demasiado rápido antes de que el editor termine de actualizar el archivo, y Direct `fs.readFile` devolverá contenido vacío. La función de lectura pasada en normaliza este comportamiento.
 
-The hook can choose to:
+El gancho puede elegir:
 
-- Filter and narrow down the affected module list so that the HMR is more accurate.
+- Filtre y reduzca la lista de módulos afectados para que el HMR sea más preciso.
 
-- Return an empty array and perform a full reload:
+- Devuelve una matriz vacía y realiza una recarga completa:
 
   ```js
   hotUpdate({ modules, timestamp }) {
     if (this.environment.name !== 'client')
       return
 
-    // Invalidate modules manually
+    // Invalidar módulos manualmente
     const invalidatedModules = new Set()
     for (const mod of modules) {
       this.environment.moduleGraph.invalidateModule(
@@ -100,7 +100,7 @@ The hook can choose to:
   }
   ```
 
-- Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+- Devuelva una matriz vacía y realice un manejo de HMR personalizado completo enviando eventos personalizados al cliente:
 
   ```js
   hotUpdate() {
@@ -116,44 +116,44 @@ The hook can choose to:
   }
   ```
 
-  Client code should register the corresponding handler using the [HMR API](./api-hmr) (this could be injected by the same plugin's `transform` hook):
+  El código del cliente debe registrar el controlador correspondiente utilizando la [API HMR](./api-hmr) (esto podría ser inyectado por el mismo gancho `transform` del complemento):
 
   ```js
   if (import.meta.hot) {
     import.meta.hot.on('special-update', (data) => {
-      // perform custom update
+      // Realizar actualizaciones personalizadas
     })
   }
   ```
 
-## Per-environment Plugins
+## Complementos Por Envío
 
-A plugin can define what are the environments it should apply to with the `applyToEnvironment` function.
+Un complemento puede definir cuáles son los entornos a los que debe aplicarse con la función `applyToEnvironment` .
 
 ```js
 const UnoCssPlugin = () => {
-  // shared global state
+  // Estado global compartido
   return {
     buildStart() {
-      // init per-environment state with WeakMap<Environment,Data>
-      // using this.environment
+      // Init por estado por el medio ambiente con mapas débiles <entorno, datos>
+      // Usando esto.
     },
     configureServer() {
-      // use global hooks normally
+      // Use ganchos globales normalmente
     },
     applyToEnvironment(environment) {
-      // return true if this plugin should be active in this environment,
-      // or return a new plugin to replace it.
-      // if the hook is not used, the plugin is active in all environments
+      // devolver verdadero si este complemento debe estar activo en este entorno,
+      // O devuelve un nuevo complemento para reemplazarlo.
+      // Si el gancho no se usa, el complemento está activo en todos los entornos
     },
     resolveId(id, importer) {
-      // only called for environments this plugin apply to
+      // Solo se pidió entornos a este complemento a los que se aplica
     },
   }
 }
 ```
 
-If a plugin isn't environment aware and has state that isn't keyed on the current environment, the `applyToEnvironment` hook allows to easily make it per-environment.
+Si un complemento no es consciente del entorno y tiene un estado que no está conectado al entorno actual, el gancho `applyToEnvironment` permite hacerlo fácilmente por envidia.
 
 ```js
 import { nonShareablePlugin } from 'non-shareable-plugin'
@@ -170,7 +170,7 @@ export default defineConfig({
 })
 ```
 
-Vite exports a `perEnvironmentPlugin` helper to simplify these cases where no other hooks are required:
+Vite exporta un ayudante `perEnvironmentPlugin` para simplificar estos casos en los que no se requieren otros ganchos:
 
 ```js
 import { nonShareablePlugin } from 'non-shareable-plugin'
@@ -184,39 +184,39 @@ export default defineConfig({
 })
 ```
 
-## Environment in Build Hooks
+## Medio Ambiente en Ganchos De Construcción
 
-In the same way as during dev, plugin hooks also receive the environment instance during build, replacing the `ssr` boolean.
-This also works for `renderChunk`, `generateBundle`, and other build only hooks.
+De la misma manera que durante el desarrollo, los ganchos de complementos también reciben la instancia del entorno durante la compilación, reemplazando el `ssr` booleano.
+Esto también funciona para `renderChunk` , `generateBundle` y otros ganchos de construcción.
 
-## Shared Plugins During Build
+## Complementos Compartidos Durante La Compilación
 
-Before Vite 6, the plugins pipelines worked in a different way during dev and build:
+Antes de Vite 6, las tuberías de los complementos funcionaron de manera diferente durante el desarrollo y la construcción:
 
-- **During dev:** plugins are shared
-- **During Build:** plugins are isolated for each environment (in different processes: `vite build` then `vite build --ssr`).
+- **Durante el desarrollo:** los complementos se comparten
+- **Durante la compilación:** los complementos están aislados para cada entorno (en diferentes procesos: `vite build` y luego `vite build --ssr` ).
 
-This forced frameworks to share state between the `client` build and the `ssr` build through manifest files written to the file system. In Vite 6, we are now building all environments in a single process so the way the plugins pipeline and inter-environment communication can be aligned with dev.
+Esto obligó a los marcos a compartir el estado entre la compilación `client` y la compilación `ssr` a través de archivos de manifiesto escritos en el sistema de archivos. En Vite 6, ahora estamos construyendo todos los entornos en un solo proceso, por lo que la forma en que la tubería de los complementos y la comunicación entre ambientes pueden alinearse con Dev.
 
-In a future major (Vite 7 or 8), we aim to have complete alignment:
+En una futura especialización (Vite 7 u 8), nuestro objetivo es tener una alineación completa:
 
-- **During both dev and build:** plugins are shared, with [per-environment filtering](#per-environment-plugins)
+- **Durante el desarrollo y la compilación:** los complementos se comparten, con [filtrado por envío](#per-environment-plugins)
 
-There will also be a single `ResolvedConfig` instance shared during build, allowing for caching at entire app build process level in the same way as we have been doing with `WeakMap<ResolvedConfig, CachedData>` during dev.
+También habrá una sola instancia `ResolvedConfig` compartida durante la compilación, lo que permite almacenar en caché en todo el nivel de proceso de compilación de la aplicación de la misma manera que lo hemos estado haciendo con `WeakMap<ResolvedConfig, CachedData>` durante el desarrollo.
 
-For Vite 6, we need to do a smaller step to keep backward compatibility. Ecosystem plugins are currently using `config.build` instead of `environment.config.build` to access configuration, so we need to create a new `ResolvedConfig` per-environment by default. A project can opt-in into sharing the full config and plugins pipeline setting `builder.sharedConfigBuild` to `true`.
+Para VITE 6, necesitamos hacer un paso más pequeño para mantener la compatibilidad hacia atrás. Los complementos del ecosistema están utilizando actualmente `config.build` en lugar de `environment.config.build` para acceder a la configuración, por lo que necesitamos crear un nuevo `ResolvedConfig` por envolvimiento de forma predeterminada. Un proyecto puede optar por compartir la configuración completa de la Configuración y los complementos Configuración de tuberías de `builder.sharedConfigBuild` a `true` .
 
-This option would only work of a small subset of projects at first, so plugin authors can opt-in for a particular plugin to be shared by setting the `sharedDuringBuild` flag to `true`. This allows for easily sharing state both for regular plugins:
+Esta opción solo funcionaría de un pequeño subconjunto de proyectos al principio, por lo que los autores de complementos pueden optar por un complemento en particular que se comparte configurando el indicador `sharedDuringBuild` en `true` . Esto permite compartir fácilmente el estado para complementos regulares:
 
 ```js
 function myPlugin() {
-  // Share state among all environments in dev and build
+  // Compartir el estado entre todos los entornos en desarrollo y construcción
   const sharedState = ...
   return {
     name: 'shared-plugin',
     transform(code, id) { ... },
 
-    // Opt-in into a single instance for all environments
+    // Optar en una sola instancia para todos los entornos
     sharedDuringBuild: true,
   }
 }

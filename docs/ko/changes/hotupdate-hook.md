@@ -1,20 +1,20 @@
-# HMR `hotUpdate` Plugin Hook
+# HMR `hotUpdate` 플러그인 후크
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+[환경 API 피드백 토론](https://github.com/vitejs/vite/discussions/16358) 에서 피드백을 제공하십시오
 :::
 
-We're planning to deprecate the `handleHotUpdate` plugin hook in favor of [`hotUpdate` hook](/ko/guide/api-environment#the-hotupdate-hook) to be [Environment API](/ko/guide/api-environment.md) aware, and handle additional watch events with `create` and `delete`.
+우리는 [환경 API](/ko/guide/api-environment.md) 인식을 위해 [`hotUpdate` 후크를](/ko/guide/api-environment#the-hotupdate-hook) 선호하여 `handleHotUpdate` 플러그인 후크를 더 이상 사용하지 않고 `create` 및 `delete` 으로 추가 시계 이벤트를 처리 할 계획입니다.
 
-Affected scope: `Vite Plugin Authors`
+영향을받는 범위 : `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`hotUpdate` was first introduced in `v6.0`. The deprecation of `handleHotUpdate` is planned for `v7.0`. We don't yet recommend moving away from `handleHotUpdate` yet. If you want to experiment and give us feedback, you can use the `future.removePluginHookHandleHotUpdate` to `"warn"` in your vite config.
+`hotUpdate` `v6.0` 에서 처음 소개되었습니다. `handleHotUpdate` 의 감가 상각은 `v7.0` 대해 계획됩니다. 우리는 아직 `handleHotUpdate` 에서 멀리 이사하는 것이 좋습니다. 실험하고 피드백을 제공하려면 VITE 구성에서 `future.removePluginHookHandleHotUpdate` ~ `"warn"` 사용할 수 있습니다.
 :::
 
-## Motivation
+## 동기 부여
 
-The [`handleHotUpdate` hook](/ko/guide/api-plugin.md#handlehotupdate) allows to perform custom HMR update handling. A list of modules to be updated is passed in the `HmrContext`
+[`handleHotUpdate` 후크를](/ko/guide/api-plugin.md#handlehotupdate) 사용하면 사용자 정의 HMR 업데이트 처리를 수행 할 수 있습니다. 업데이트 할 모듈 목록은 `HmrContext` 에 전달됩니다.
 
 ```ts
 interface HmrContext {
@@ -26,9 +26,9 @@ interface HmrContext {
 }
 ```
 
-This hook is called once for all environments, and the passed modules have mixed information from the Client and SSR environments only. Once frameworks move to custom environments, a new hook that is called for each of them is needed.
+이 후크는 모든 환경에서 한 번 호출되며 전달 된 모듈에는 클라이언트 및 SSR 환경에서만 혼합 된 정보가 있습니다. 프레임 워크가 사용자 정의 환경으로 이동하면 각각의 새로운 후크가 필요합니다.
 
-The new `hotUpdate` hook works in the same way as `handleHotUpdate` but it is called for each environment and receives a new `HotUpdateOptions` instance:
+새로운 `hotUpdate` 후크는 `handleHotUpdate` 과 같은 방식으로 작동하지만 각 환경마다 호출되며 새로운 `HotUpdateOptions` 인스턴스를받습니다.
 
 ```ts
 interface HotUpdateOptions {
@@ -41,31 +41,31 @@ interface HotUpdateOptions {
 }
 ```
 
-The current dev environment can be accessed like in other Plugin hooks with `this.environment`. The `modules` list will now be module nodes from the current environment only. Each environment update can define different update strategies.
+현재 DEV 환경은 `this.environment` 있는 다른 플러그인 후크에서와 같이 액세스 할 수 있습니다. `modules` 목록은 이제 현재 환경의 모듈 노드입니다. 각 환경 업데이트는 다른 업데이트 전략을 정의 할 수 있습니다.
 
-This hook is also now called for additional watch events and not only for `'update'`. Use `type` to differentiate between them.
+이 후크는 이제 추가 시계 이벤트를 위해 요구됩니다 `'update'` `type` 사용하여 차별화하십시오.
 
-## Migration Guide
+## 마이그레이션 가이드
 
-Filter and narrow down the affected module list so that the HMR is more accurate.
+HMR이 더 정확하도록 영향을받는 모듈 목록을 필터링하고 좁 힙니다.
 
 ```js
 handleHotUpdate({ modules }) {
   return modules.filter(condition)
 }
 
-// Migrate to:
+// 마이그레이션 :
 
 hotUpdate({ modules }) {
   return modules.filter(condition)
 }
 ```
 
-Return an empty array and perform a full reload:
+빈 배열을 반환하고 전체 재 장전을 수행하십시오.
 
 ```js
 handleHotUpdate({ server, modules, timestamp }) {
-  // Invalidate modules manually
+  // 수동으로 무효화 모듈
   const invalidatedModules = new Set()
   for (const mod of modules) {
     server.moduleGraph.invalidateModule(
@@ -79,10 +79,10 @@ handleHotUpdate({ server, modules, timestamp }) {
   return []
 }
 
-// Migrate to:
+// 마이그레이션 :
 
 hotUpdate({ modules, timestamp }) {
-  // Invalidate modules manually
+  // 수동으로 무효화 모듈
   const invalidatedModules = new Set()
   for (const mod of modules) {
     this.environment.moduleGraph.invalidateModule(
@@ -97,7 +97,7 @@ hotUpdate({ modules, timestamp }) {
 }
 ```
 
-Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+빈 배열을 반환하고 클라이언트에 사용자 정의 이벤트를 보내서 완전한 사용자 정의 HMR 처리를 수행하십시오.
 
 ```js
 handleHotUpdate({ server }) {
@@ -109,7 +109,7 @@ handleHotUpdate({ server }) {
   return []
 }
 
-// Migrate to...
+// 마이그레이션 ...
 
 hotUpdate() {
   this.environment.hot.send({

@@ -1,41 +1,41 @@
-# Preview Options
+# プレビューオプション
 
-Unless noted, the options in this section are only applied to preview.
+記載されていない限り、このセクションのオプションはプレビューにのみ適用されます。
 
 ## preview.host
 
-- **Type:** `string | boolean`
-- **Default:** [`server.host`](./server-options#server-host)
+- **タイプ:** `文字列 | boolean`
+- **デフォルト:** [`server.host`](./server-options#server-host)
 
-Specify which IP addresses the server should listen on.
-Set this to `0.0.0.0` or `true` to listen on all addresses, including LAN and public addresses.
+サーバーをリッスンするIPアドレスを指定します。
+これを`0.0.0.0`または`true`に設定して、LANやパブリックアドレスを含むすべてのアドレスで聞く。
 
-This can be set via the CLI using `--host 0.0.0.0` or `--host`.
+これは、 `--host 0.0.0.0`または`--host`を使用してCLIを介して設定できます。
 
 ::: tip NOTE
 
-There are cases when other servers might respond instead of Vite.
-See [`server.host`](./server-options#server-host) for more details.
+他のサーバーがViteの代わりに応答する場合がある場合があります。
+詳細については、 [`server.host`](./server-options#server-host)参照してください。
 
 :::
 
 ## preview.allowedHosts
 
-- **Type:** `string | true`
-- **Default:** [`server.allowedHosts`](./server-options#server-allowedhosts)
+- **タイプ:** `文字列 | true`
+- **デフォルト:** [`server.allowedHosts`](./server-options#server-allowedhosts)
 
-The hostnames that Vite is allowed to respond to.
+Viteが応答することが許可されているホスト名。
 
-See [`server.allowedHosts`](./server-options#server-allowedhosts) for more details.
+詳細については、 [`server.allowedHosts`](./server-options#server-allowedhosts)参照してください。
 
 ## preview.port
 
-- **Type:** `number`
-- **Default:** `4173`
+- **タイプ:** `number`
+- **デフォルト:** `4173`
 
-Specify server port. Note if the port is already being used, Vite will automatically try the next available port so this may not be the actual port the server ends up listening on.
+サーバーポートを指定します。ポートが既に使用されている場合、Viteは次の使用可能なポートを自動的に試してみるので、これがサーバーがリッスンする実際のポートではない可能性があります。
 
-**Example:**
+**例:**
 
 ```js
 export default defineConfig({
@@ -50,49 +50,49 @@ export default defineConfig({
 
 ## preview.strictPort
 
-- **Type:** `boolean`
-- **Default:** [`server.strictPort`](./server-options#server-strictport)
+- **タイプ:** `boolean`
+- **デフォルト:** [`server.strictPort`](./server-options#server-strictport)
 
-Set to `true` to exit if port is already in use, instead of automatically trying the next available port.
+次の利用可能なポートを自動的に試す代わりに、ポートが既に使用されている場合は、 `true`に設定します。
 
 ## preview.https
 
-- **Type:** `https.ServerOptions`
-- **Default:** [`server.https`](./server-options#server-https)
+- **タイプ:** `https.ServerOptions`
+- **デフォルト:** [`server.https`](./server-options#server-https)
 
-Enable TLS + HTTP/2. Note this downgrades to TLS only when the [`server.proxy` option](./server-options#server-proxy) is also used.
+TLS + HTTP/2を有効にします。注意は、 [`server.proxy`オプション](./server-options#server-proxy)も使用されている場合にのみTLSにダウングレードします。
 
-The value can also be an [options object](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) passed to `https.createServer()`.
+値は、 `https.createServer()`に渡される[オプションオブジェクト](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener)でもあります。
 
 ## preview.open
 
-- **Type:** `boolean | string`
-- **Default:** [`server.open`](./server-options#server-open)
+- **タイプ:** `Boolean | string`
+- **デフォルト:** [`server.open`](./server-options#server-open)
 
-Automatically open the app in the browser on server start. When the value is a string, it will be used as the URL's pathname. If you want to open the server in a specific browser you like, you can set the env `process.env.BROWSER` (e.g. `firefox`). You can also set `process.env.BROWSER_ARGS` to pass additional arguments (e.g. `--incognito`).
+サーバー開始のブラウザでアプリを自動的に開きます。値が文字列の場合、URLのパス名として使用されます。好きな特定のブラウザでサーバーを開きたい場合は、env `process.env.BROWSER` （例えば`firefox` ）を設定できます。 `process.env.BROWSER_ARGS`設定して追加の引数を渡すこともできます（例: `--incognito` ）。
 
-`BROWSER` and `BROWSER_ARGS` are also special environment variables you can set in the `.env` file to configure it. See [the `open` package](https://github.com/sindresorhus/open#app) for more details.
+`BROWSER`と`BROWSER_ARGS` 、 `.env`ファイルに設定して設定できる特別な環境変数でもあります。詳細については、 [`open`パッケージ](https://github.com/sindresorhus/open#app)を参照してください。
 
 ## preview.proxy
 
-- **Type:** `Record<string, string | ProxyOptions>`
-- **Default:** [`server.proxy`](./server-options#server-proxy)
+- **タイプ:** `レコード<文字列、文字列 | プロキシオプティオン> `
+- **デフォルト:** [`server.proxy`](./server-options#server-proxy)
 
-Configure custom proxy rules for the preview server. Expects an object of `{ key: options }` pairs. If the key starts with `^`, it will be interpreted as a `RegExp`. The `configure` option can be used to access the proxy instance.
+プレビューサーバーのカスタムプロキシルールを構成します。 `{ key: options }`ペアのオブジェクトが期待されます。キーが`^`で始まる場合、それは`RegExp`として解釈されます。 `configure`オプションを使用して、プロキシインスタンスにアクセスできます。
 
-Uses [`http-proxy`](https://github.com/http-party/node-http-proxy). Full options [here](https://github.com/http-party/node-http-proxy#options).
+[`http-proxy`](https://github.com/http-party/node-http-proxy)を使用します。[ここに](https://github.com/http-party/node-http-proxy#options)完全なオプションがあります。
 
 ## preview.cors
 
-- **Type:** `boolean | CorsOptions`
-- **Default:** [`server.cors`](./server-options#server-cors)
+- **タイプ:** `Boolean | corsoptions`
+- **デフォルト:** [`server.cors`](./server-options#server-cors)
 
-Configure CORS for the preview server.
+プレビューサーバーにCORを構成します。
 
-See [`server.cors`](./server-options#server-cors) for more details.
+詳細については、 [`server.cors`](./server-options#server-cors)参照してください。
 
 ## preview.headers
 
-- **Type:** `OutgoingHttpHeaders`
+- **タイプ:** `OutgoingHttpHeaders`
 
-Specify server response headers.
+サーバー応答ヘッダーを指定します。

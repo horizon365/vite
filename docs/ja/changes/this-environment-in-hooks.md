@@ -1,24 +1,24 @@
-# `this.environment` in Hooks
+# フックで`this.environment`
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+[環境APIフィードバックディスカッション](https://github.com/vitejs/vite/discussions/16358)でフィードバックを提供してください
 :::
 
-Before Vite 6, only two environments were available: `client` and `ssr`. A single `options.ssr` plugin hook argument in `resolveId`, `load` and `transform` allowed plugin authors to differentiate between these two environments when processing modules in plugin hooks. In Vite 6, a Vite application can define any number of named environments as needed. We're introducing `this.environment` in the plugin context to interact with the environment of the current module in hooks.
+Vite 6の前に、2つの環境のみが利用可能でした: `client`と`ssr` 。 `resolveId` 、および`transform`単一の`options.ssr`プラグインフック引数により、プラグインの著者は`load`プラグインフックのモジュールを処理するときに、これら2つの環境を区別することができました。 Vite 6では、Viteアプリケーションは、必要に応じて、任意の数の指定環境を定義できます。プラグインコンテキストに`this.environment`導入して、フック内の現在のモジュールの環境と対話します。
 
-Affect scope: `Vite Plugin Authors`
+影響範囲: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`this.environment` was introduced in `v6.0`. The deprecation of `options.ssr` is planned for `v7.0`. At that point we'll start recommending migrating your plugins to use the new API. To identify your usage, set `future.removePluginHookSsrArgument` to `"warn"` in your vite config.
+`this.environment` `v6.0`に導入されました。 `options.ssr`の非推奨は`v7.0`で計画されています。その時点で、新しいAPIを使用するようにプラグインを移行することを推奨し始めます。使用法を識別するには、Vite Configで`future.removePluginHookSsrArgument` `"warn"`設定します。
 :::
 
-## Motivation
+## モチベーション
 
-`this.environment` not only allow the plugin hook implementation to know the current environment name, it also gives access to the environment config options, module graph information, and transform pipeline (`environment.config`, `environment.moduleGraph`, `environment.transformRequest()`). Having the environment instance available in the context allows plugin authors to avoid the dependency of the whole dev server (typically cached at startup through the `configureServer` hook).
+`this.environment`プラグインフックの実装が現在の環境名を知るだけでなく、環境設定オプション、モジュールグラフ情報、パイプ`environment.transformRequest()` `environment.moduleGraph`変換（ `environment.config` ）へのアクセスも提供します。コンテキストで環境インスタンスを使用できるようにすることで、プラグインの著者は開発者全体の依存関係を回避できます（通常、 `configureServer`フックを介して起動時にキャッシュされます）。
 
-## Migration Guide
+## 移行ガイド
 
-For the existing plugin to do a quick migration, replace the `options.ssr` argument with `this.environment.name !== 'client'` in the `resolveId`, `load` and `transform` hooks:
+既存のプラグインが迅速な移行を行うには、 `options.ssr`引数を`resolveId` 、および`transform`フックの`this.environment.name !== 'client'`に置き換えます`load`
 
 ```ts
 import { Plugin } from 'vite'
@@ -27,17 +27,17 @@ export function myPlugin(): Plugin {
   return {
     name: 'my-plugin',
     resolveId(id, importer, options) {
-      const isSSR = options.ssr // [!code --]
-      const isSSR = this.environment.name !== 'client' // [!code ++]
+      const isSSR = options.ssr // [！code-]
+      const isSSR = this.environment.name !== 'client' // [！code ++]
 
       if (isSSR) {
-        // SSR specific logic
+        // SSR固有のロジック
       } else {
-        // Client specific logic
+        // クライアント固有のロジック
       }
     },
   }
 }
 ```
 
-For a more robust long term implementation, the plugin hook should handle for [multiple environments](/ja/guide/api-environment.html#accessing-the-current-environment-in-hooks) using fine-grained environment options instead of relying on the environment name.
+より堅牢な長期的な実装のために、プラグインフックは、環境名に依存する代わりに、きめ細かい環境オプションを使用して[複数の環境](/ja/guide/api-environment.html#accessing-the-current-environment-in-hooks)に対処する必要があります。

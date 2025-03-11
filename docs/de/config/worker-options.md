@@ -1,23 +1,23 @@
-# Worker Options
+# Arbeiteroptionen
 
-Unless noted, the options in this section are applied to all dev, build, and preview.
+Sofern nicht angegeben, werden die Optionen in diesem Abschnitt auf alle Entwickler, Erstellen und Vorschau angewendet.
 
 ## worker.format
 
-- **Type:** `'es' | 'iife'`
-- **Default:** `'iife'`
+- **Typ:** `'es' ' | 'iife''`
+- **Standard:** `'iife'`
 
-Output format for worker bundle.
+Ausgangsformat für Worker -Bundle.
 
 ## worker.plugins
 
-- **Type:** [`() => (Plugin | Plugin[])[]`](./shared-options#plugins)
+- **Typ:** [`() => (Plugin | Plugin []) [] `] (./ Shared-Options#Plugins)
 
-Vite plugins that apply to the worker bundles. Note that [config.plugins](./shared-options#plugins) only applies to workers in dev, it should be configured here instead for build.
-The function should return new plugin instances as they are used in parallel rollup worker builds. As such, modifying `config.worker` options in the `config` hook will be ignored.
+VITE -Plugins, die für die Arbeiterbündel gelten. Beachten Sie, dass [Config.Plugins](./shared-options#plugins) nur für Mitarbeiter in Dev gilt, sondern hier statt für Build konfiguriert werden.
+Die Funktion sollte neue Plugin -Instanzen zurückgeben, da sie in parallelen Rollup -Worker -Builds verwendet werden. Daher wird das Ändern von `config.worker` Optionen im `config` -Haken ignoriert.
 
 ## worker.rollupOptions
 
-- **Type:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
+- **Typ:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
 
-Rollup options to build worker bundle.
+Rollup -Optionen zum Erstellen von Worker -Bundle.

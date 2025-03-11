@@ -1,200 +1,200 @@
-# Troubleshooting
+# トラブルシューティング
 
-See [Rollup's troubleshooting guide](https://rollupjs.org/troubleshooting/) for more information too.
+詳細については、 [Rollupのトラブルシューティングガイド](https://rollupjs.org/troubleshooting/)も参照してください。
 
-If the suggestions here don't work, please try posting questions on [GitHub Discussions](https://github.com/vitejs/vite/discussions) or in the `#help` channel of [Vite Land Discord](https://chat.vite.dev).
+ここでの提案が機能しない場合は、 [GitHubのディスカッション](https://github.com/vitejs/vite/discussions)や[Vite Landの不一致](https://chat.vite.dev)の`#help`チャンネルに質問を投稿してみてください。
 
 ## CJS
 
-### Vite CJS Node API deprecated
+### Vite CJSノードAPIが非推奨
 
-The CJS build of Vite's Node API is deprecated and will be removed in Vite 6. See the [GitHub discussion](https://github.com/vitejs/vite/discussions/13928) for more context. You should update your files or frameworks to import the ESM build of Vite instead.
+ViteのノードAPIのCJSビルドは廃止されており、Vite 6で削除されます。詳細については、 [GitHubディスカッション](https://github.com/vitejs/vite/discussions/13928)を参照してください。代わりに、ファイルまたはフレームワークを更新して、ViteのESMビルドをインポートする必要があります。
 
-In a basic Vite project, make sure:
+基本的なViteプロジェクトでは、確認してください。
 
-1. The `vite.config.js` file content is using the ESM syntax.
-2. The closest `package.json` file has `"type": "module"`, or use the `.mjs`/`.mts` extension, e.g. `vite.config.mjs` or `vite.config.mts`.
+1. `vite.config.js`ファイルコンテンツはESM構文を使用しています。
+2. 最も近い`package.json`ファイルには`"type": "module"`あります。または、 `.mjs` / `.mts`拡張機能（ `vite.config.mjs`または`vite.config.mts`を使用します。
 
-For other projects, there are a few general approaches:
+他のプロジェクトには、いくつかの一般的なアプローチがあります。
 
-- **Configure ESM as default, opt-in to CJS if needed:** Add `"type": "module"` in the project `package.json`. All `*.js` files are now interpreted as ESM and need to use the ESM syntax. You can rename a file with the `.cjs` extension to keep using CJS instead.
-- **Keep CJS as default, opt-in to ESM if needed:** If the project `package.json` does not have `"type": "module"`, all `*.js` files are interpreted as CJS. You can rename a file with the `.mjs` extension to use ESM instead.
-- **Dynamically import Vite:** If you need to keep using CJS, you can dynamically import Vite using `import('vite')` instead. This requires your code to be written in an `async` context, but should still be manageable as Vite's API is mostly asynchronous.
+- **ESMをデフォルトとして構成し、必要に応じてCJSにオプトインします。**プロジェクト`package.json`に`"type": "module"`を追加します。 `*.js`のファイルはすべてESMとして解釈され、ESM構文を使用する必要があります。代わりにCJSを使用し続けるために、 `.cjs`拡張機能でファイルの名前を変更できます。
+- **CJSをデフォルトとして保持し、必要に応じてESMにオプトインします。**プロジェクト`package.json`に`"type": "module"`ない場合、 `*.js`ファイルはすべてCJSとして解釈されます。代わりにESMを使用する`.mjs`拡張機能でファイルの名前を変更できます。
+- **動的にViteをインポートする:** CJを使用し続ける必要がある場合は、代わりに`import('vite')`使用して動的にViteをインポートできます。これには、コードを`async`コンテキストで記述する必要がありますが、ViteのAPIはほとんど非同期であるため、管理可能である必要があります。
 
-If you're unsure where the warning is coming from, you can run your script with the `VITE_CJS_TRACE=true` flag to log the stack trace:
+警告がどこから来ているのかわからない場合は、 `VITE_CJS_TRACE=true`フラグでスクリプトを実行して、スタックトレースをログに記録できます。
 
 ```bash
 VITE_CJS_TRACE=true vite dev
 ```
 
-If you'd like to temporarily ignore the warning, you can run your script with the `VITE_CJS_IGNORE_WARNING=true` flag:
+警告を一時的に無視したい場合は、 `VITE_CJS_IGNORE_WARNING=true`フラグでスクリプトを実行できます。
 
 ```bash
 VITE_CJS_IGNORE_WARNING=true vite dev
 ```
 
-Note that postcss config files do not support ESM + TypeScript (`.mts` or `.ts` in `"type": "module"`) yet. If you have postcss configs with `.ts` and added `"type": "module"` to package.json, you'll also need to rename the postcss config to use `.cts`.
+PostCSS構成ファイルは、ESM + TypeScript（ `.mts`または`.ts` in `"type": "module"` ）をまだサポートしていないことに注意してください。 Package.jsonに`.ts`と`"type": "module"`追加し、4を追加したPostCSS構成がある場合は、PostCSS構成を`.cts`使用するように変更する必要があります。
 
-## CLI
+## cli
 
 ### `Error: Cannot find module 'C:\foo\bar&baz\vite\bin\vite.js'`
 
-The path to your project folder may include `&`, which doesn't work with `npm` on Windows ([npm/cmd-shim#45](https://github.com/npm/cmd-shim/issues/45)).
+プロジェクトフォルダーへのパスには`&`が含まれている場合があります。これは、Windows（ [npm/cmd-shim＃45](https://github.com/npm/cmd-shim/issues/45) ）で`npm`で動作しません。
 
-You will need to either:
+どちらも必要です:
 
-- Switch to another package manager (e.g. `pnpm`, `yarn`)
-- Remove `&` from the path to your project
+- 別`yarn`パッケージマネージャーに切り替えます（例: `pnpm` ）
+- プロジェクトへのパスから`&`を削除します
 
-## Config
+## config
 
-### This package is ESM only
+### このパッケージはESMのみです
 
-When importing a ESM only package by `require`, the following error happens.
+ESMのみパッケージを`require`でインポートすると、次のエラーが発生します。
 
-> Failed to resolve "foo". This package is ESM only but it was tried to load by `require`.
+> 「foo」の解決に失敗しました。このパッケージはESMのみですが、 `require`でロードしようとしました。
 
-> Error [ERR_REQUIRE_ESM]: require() of ES Module /path/to/dependency.js from /path/to/vite.config.js not supported.
-> Instead change the require of index.js in /path/to/vite.config.js to a dynamic import() which is available in all CommonJS modules.
+> error [err_require_esm]:sequire（）of es（）of es（）of ess module/to/dependency.js from /to/to/vite.config.jsはサポートされていません。
+> 代わりに、index.js in/path/to/vite.config.jsの要件をすべてのCommonJSモジュールで使用できる動的なインポート（）に変更します。
 
-In Node.js <=22, ESM files cannot be loaded by [`require`](https://nodejs.org/docs/latest-v22.x/api/esm.html#require) by default.
+node.js <= 22では、ESMファイルをデフォルトで[`require`](https://nodejs.org/docs/latest-v22.x/api/esm.html#require)でロードすることはできません。
 
-While it may work using [`--experimental-require-module`](https://nodejs.org/docs/latest-v22.x/api/modules.html#loading-ecmascript-modules-using-require), or Node.js >22, or in other runtimes, we still recommend converting your config to ESM by either:
+[`--experimental-require-module`](https://nodejs.org/docs/latest-v22.x/api/modules.html#loading-ecmascript-modules-using-require) 、またはnode.js> 22、または他のランタイムでは動作する場合がありますが、どちらでも構成をESMに変換することをお勧めします。
 
-- adding `"type": "module"` to the nearest `package.json`
-- renaming `vite.config.js`/`vite.config.ts` to `vite.config.mjs`/`vite.config.mts`
+- 最も近い`package.json`に`"type": "module"`追加します
+- `vite.config.js`から`vite.config.mjs` `vite.config.mts` `vite.config.ts`変更
 
 ### `failed to load config from '/path/to/config*/vite.config.js'`
 
-> failed to load config from '/path/to/config\*/vite.config.js'
-> error when starting dev server:
-> Error: Build failed with 1 error:
-> error: Must use "outdir" when there are multiple input files
+> '/path/to/config\*/vite.config.jsから構成をロードできませんでした
+> DEVサーバーを起動するときのエラー:
+> エラー:1つのエラーでビルドが失敗しました:
+> エラー:複数の入力ファイルがある場合は、「oututdir」を使用する必要があります
 
-The error above may occur if the path to your project folder contains `*`, which esbuild treats as a glob. You will need to rename your directory to remove the `*`.
+プロジェクトフォルダーへのパスに`*`が含まれている場合、上記のエラーが発生する可能性があります。 `*`削除するには、ディレクトリの名前を変更する必要があります。
 
-## Dev Server
+## 開発サーバー
 
-### Requests are stalled forever
+### リクエストは永遠に失速します
 
-If you are using Linux, file descriptor limits and inotify limits may be causing the issue. As Vite does not bundle most of the files, browsers may request many files which require many file descriptors, going over the limit.
+Linuxを使用している場合、ファイル記述子の制限と制限を開始している可能性があります。 Viteはほとんどのファイルをバンドルしないため、ブラウザは多くのファイル記述子を必要とする多くのファイルを要求し、制限を超えています。
 
-To solve this:
+これを解決するには:
 
-- Increase file descriptor limit by `ulimit`
+- ファイル記述子の制限を`ulimit`増加させます
 
   ```shell
-  # Check current limit
+  # 現在の制限を確認してください
   $ ulimit -Sn
-  # Change limit (temporary)
-  $ ulimit -Sn 10000 # You might need to change the hard limit too
-  # Restart your browser
+  # 変更制限（一時的）
+  $ ulimit -Sn 10000 # ハード制限も変更する必要があるかもしれません
+  # ブラウザを再起動します
   ```
 
-- Increase the following inotify related limits by `sysctl`
+- 次のInotify関連制限を`sysctl`に増やします
 
   ```shell
-  # Check current limits
+  # 現在の制限を確認してください
   $ sysctl fs.inotify
-  # Change limits (temporary)
+  # 変更制限（一時的）
   $ sudo sysctl fs.inotify.max_queued_events=16384
   $ sudo sysctl fs.inotify.max_user_instances=8192
   $ sudo sysctl fs.inotify.max_user_watches=524288
   ```
 
-If the above steps don't work, you can try adding `DefaultLimitNOFILE=65536` as an un-commented config to the following files:
+上記の手順が機能しない場合は、次のファイルに`DefaultLimitNOFILE=65536`構成されていない構成として追加してみてください。
 
 - /etc/systemd/system.conf
 - /etc/systemd/user.conf
 
-For Ubuntu Linux, you may need to add the line `* - nofile 65536` to the file `/etc/security/limits.conf` instead of updating systemd config files.
+Ubuntu Linuxの場合、SystemD構成ファイルを更新する代わりに、行`* - nofile 65536`ファイル`/etc/security/limits.conf`に追加する必要がある場合があります。
 
-Note that these settings persist but a **restart is required**.
+これらの設定は持続しますが、**再起動が必要であること**に注意してください。
 
-Alternatively, if the server is running inside a VS Code devcontainer, the request may appear to be stalled. To fix this issue, see
-[Dev Containers / VS Code Port Forwarding](#dev-containers-vs-code-port-forwarding).
+または、サーバーがVSコードDevContainer内で実行されている場合、リクエストが停止しているように見える場合があります。この問題を修正するには、参照してください
+[開発コンテナ /対コードポート転送](#dev-containers-vs-code-port-forwarding)。
 
-### Network requests stop loading
+### ネットワークリクエストは読み込みを停止します
 
-When using a self-signed SSL certificate, Chrome ignores all caching directives and reloads the content. Vite relies on these caching directives.
+自己署名のSSL証明書を使用する場合、Chromeはすべてのキャッシュ指令を無視し、コンテンツをリロードします。 Viteはこれらのキャッシュ指令に依存しています。
 
-To resolve the problem use a trusted SSL cert.
+問題を解決するには、信頼できるSSL証明書を使用してください。
 
-See: [Cache problems](https://helpx.adobe.com/mt/experience-manager/kb/cache-problems-on-chrome-with-SSL-certificate-errors.html), [Chrome issue](https://bugs.chromium.org/p/chromium/issues/detail?id=110649#c8)
+参照:[キャッシュの問題](https://helpx.adobe.com/mt/experience-manager/kb/cache-problems-on-chrome-with-SSL-certificate-errors.html)、 [Chromeの問題](https://bugs.chromium.org/p/chromium/issues/detail?id=110649#c8)
 
-#### macOS
+#### macos
 
-You can install a trusted cert via the CLI with this command:
+このコマンドを使用して、CLI経由で信頼できる証明書をインストールできます。
 
 ```
 security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db your-cert.cer
 ```
 
-Or, by importing it into the Keychain Access app and updating the trust of your cert to "Always Trust."
+または、それをキーチェーンアクセスアプリにインポートし、証明書の信頼を「常に信頼」に更新することにより。
 
-### 431 Request Header Fields Too Large
+### 431ヘッダーフィールドが大きすぎます
 
-When the server / WebSocket server receives a large HTTP header, the request will be dropped and the following warning will be shown.
+サーバー / Websocketサーバーが大きなHTTPヘッダーを受信すると、リクエストが削除され、次の警告が表示されます。
 
-> Server responded with status code 431. See https://vite.dev/guide/troubleshooting.html#_431-request-header-fields-too-large.
+> サーバーはステータスコード431で応答しました。https [://vite.dev/guide/troubleshooting.html#\_431-request-header-fields-too-large](https://vite.dev/guide/troubleshooting.html#_431-request-header-fields-too-large)を参照してください。
 
-This is because Node.js limits request header size to mitigate [CVE-2018-12121](https://www.cve.org/CVERecord?id=CVE-2018-12121).
+これは、node.jsが[CVE-2018-12121](https://www.cve.org/CVERecord?id=CVE-2018-12121)を緩和するためにリクエストヘッダーサイズを制限するためです。
 
-To avoid this, try to reduce your request header size. For example, if the cookie is long, delete it. Or you can use [`--max-http-header-size`](https://nodejs.org/api/cli.html#--max-http-header-sizesize) to change max header size.
+これを回避するには、リクエストヘッダーサイズを削減してみてください。たとえば、Cookieが長い場合は、削除します。または、 [`--max-http-header-size`](https://nodejs.org/api/cli.html#--max-http-header-sizesize)使用して最大ヘッダーサイズを変更できます。
 
-### Dev Containers / VS Code Port Forwarding
+### 開発コンテナ /対コードポート転送
 
-If you are using a Dev Container or port forwarding feature in VS Code, you may need to set the [`server.host`](/ja/config/server-options.md#server-host) option to `127.0.0.1` in the config to make it work.
+VSコードで開発コンテナまたはポート転送機能を使用している場合は、機能を機能させるために構成の`127.0.0.1`に[`server.host`](/ja/config/server-options.md#server-host)オプションを設定する必要があります。
 
-This is because [the port forwarding feature in VS Code does not support IPv6](https://github.com/microsoft/vscode-remote-release/issues/7029).
+これは[、VSコードのポート転送機能がIPv6をサポートしていない](https://github.com/microsoft/vscode-remote-release/issues/7029)ためです。
 
-See [#16522](https://github.com/vitejs/vite/issues/16522) for more details.
+詳細については、 [＃16522](https://github.com/vitejs/vite/issues/16522)を参照してください。
 
 ## HMR
 
-### Vite detects a file change but the HMR is not working
+### Viteはファイルの変更を検出しますが、HMRは機能していません
 
-You may be importing a file with a different case. For example, `src/foo.js` exists and `src/bar.js` contains:
+別のケースでファイルをインポートしている可能性があります。たとえば、 `src/foo.js`が存在し、 `src/bar.js`には次のものが含まれます。
 
 ```js
-import './Foo.js' // should be './foo.js'
+import './Foo.js' // './foo.js'
 ```
 
-Related issue: [#964](https://github.com/vitejs/vite/issues/964)
+関連問題: [＃964](https://github.com/vitejs/vite/issues/964)
 
-### Vite does not detect a file change
+### Viteはファイルの変更を検出しません
 
-If you are running Vite with WSL2, Vite cannot watch file changes in some conditions. See [`server.watch` option](/ja/config/server-options.md#server-watch).
+WSL2でViteを実行している場合、Viteは一部の条件でファイルの変更を視聴できません。 [`server.watch`オプション](/ja/config/server-options.md#server-watch)を参照してください。
 
-### A full reload happens instead of HMR
+### HMRの代わりに完全なリロードが発生します
 
-If HMR is not handled by Vite or a plugin, a full reload will happen as it's the only way to refresh the state.
+HMRがViteまたはプラグインによって処理されない場合、状態を更新する唯一の方法であるため、完全なリロードが発生します。
 
-If HMR is handled but it is within a circular dependency, a full reload will also happen to recover the execution order. To solve this, try breaking the loop. You can run `vite --debug hmr` to log the circular dependency path if a file change triggered it.
+HMRが処理されているが、それが円形の依存関係の範囲内である場合、完全なリロードも実行命令を回復するために偶然になります。これを解決するには、ループを壊してみてください。 `vite --debug hmr`実行して、ファイルが変更された場合に円形の依存関係パスをログに記録できます。
 
-## Build
+## 建てる
 
-### Built file does not work because of CORS error
+### CORSエラーのため、構築されたファイルは機能しません
 
-If the HTML file output was opened with `file` protocol, the scripts won't run with the following error.
+HTMLファイル出力が`file`プロトコルで開かれた場合、スクリプトは次のエラーで実行されません。
 
-> Access to script at 'file:///foo/bar.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, isolated-app, chrome-extension, chrome, https, chrome-untrusted.
+> 「file:///foo/bar.js」からスクリプトへのアクセスは、corsポリシーによってブロックされています。クロスオリジンリクエストは、プロトコルスキームでのみサポートされています。
 
-> Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///foo/bar.js. (Reason: CORS request not http).
+> クロスオリジン要求がブロックされました:同じオリジンポリシーは、ファイルのリモートリソースを読み取ることを許可しません:///foo/bar.js。 （理由:CORSリクエストはHTTPではありません）。
 
-See [Reason: CORS request not HTTP - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp) for more information about why this happens.
+[理由:CORS要求はHTTP -HTTPではなくリクエストを参照してください | mdn]（ [https://developer.mozilla.org/en-us/docs/web/http/cors/errors/corsrequestnothttp](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp) ）これが起こる理由の詳細については。
 
-You will need to access the file with `http` protocol. The easiest way to achieve this is to run `npx vite preview`.
+`http`プロトコルでファイルにアクセスする必要があります。これを達成する最も簡単な方法は、 `npx vite preview`実行することです。
 
-## Optimized Dependencies
+## 最適化された依存関係
 
-### Outdated pre-bundled deps when linking to a local package
+### ローカルパッケージにリンクするとき、時代遅れの事前にバンドルされたDEP
 
-The hash key used to invalidate optimized dependencies depends on the package lock contents, the patches applied to dependencies, and the options in the Vite config file that affects the bundling of node modules. This means that Vite will detect when a dependency is overridden using a feature as [npm overrides](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides), and re-bundle your dependencies on the next server start. Vite won't invalidate the dependencies when you use a feature like [npm link](https://docs.npmjs.com/cli/v9/commands/npm-link). In case you link or unlink a dependency, you'll need to force re-optimization on the next server start by using `vite --force`. We recommend using overrides instead, which are supported now by every package manager (see also [pnpm overrides](https://pnpm.io/package_json#pnpmoverrides) and [yarn resolutions](https://yarnpkg.com/configuration/manifest/#resolutions)).
+最適化された依存関係を無効にするために使用されるハッシュキーは、パッケージロックの内容、依存関係に適用されるパッチ、およびノードモジュールのバンドルに影響するVite構成ファイルのオプションに依存します。これは[、NPMのオーバーライド](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides)として機能を使用して依存関係がオーバーライドされたときにViteが検出され、次のサーバーの開始で依存関係を再バンディングすることを意味します。 [NPMリンク](https://docs.npmjs.com/cli/v9/commands/npm-link)などの機能を使用すると、Viteは依存関係を無効にしません。依存関係をリンクまたはリンクする場合は、 `vite --force`使用することにより、次のサーバーの開始を強制的に最適化する必要があります。代わりに、すべてのパッケージマネージャーによってサポートされているOverridesを使用することをお勧めします（ [PNPM Overrides](https://pnpm.io/package_json#pnpmoverrides)と[Yarn解像度](https://yarnpkg.com/configuration/manifest/#resolutions)も参照してください）。
 
-## Performance Bottlenecks
+## パフォーマンスボトルネック
 
-If you suffer any application performance bottlenecks resulting in slow load times, you can start the built-in Node.js inspector with your Vite dev server or when building your application to create the CPU profile:
+アプリケーションパフォーマンスのボトルネックに耐えて負荷時間が遅い場合は、vite devサーバーを使用して組み込みのnode.jsインスペクターを起動するか、アプリケーションを構築してCPUプロファイルを作成する場合があります。
 
 ::: code-group
 
@@ -209,48 +209,48 @@ vite build --profile
 :::
 
 ::: tip Vite Dev Server
-Once your application is opened in the browser, just await finish loading it and then go back to the terminal and press `p` key (will stop the Node.js inspector) then press `q` key to stop the dev server.
+ブラウザでアプリケーションが開かれたら、それを終了してからターミナルに戻り、 `p`キー（node.jsインスペクターを停止します）に戻り、 `q`キーを押して開発サーバーを停止します。
 :::
 
-Node.js inspector will generate `vite-profile-0.cpuprofile` in the root folder, go to https://www.speedscope.app/, and upload the CPU profile using the `BROWSE` button to inspect the result.
+node.jsインスペクターは、ルートフォルダーで`vite-profile-0.cpuprofile`を生成し、 [https://www.speedscope.app/](https://www.speedscope.app/)に移動し、 `BROWSE`ボタンを使用してCPUプロファイルをアップロードして結果を検査します。
 
-You can install [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect), which lets you inspect the intermediate state of Vite plugins and can also help you to identify which plugins or middlewares are the bottleneck in your applications. The plugin can be used in both dev and build modes. Check the readme file for more details.
+[Vite-Plugin-Inspect](https://github.com/antfu/vite-plugin-inspect)をインストールすることができます。これにより、Viteプラグインの中間状態を検査することができ、アプリケーションのボトルネックであるプラグインまたはミドルウェアを特定することもできます。プラグインは、開発モードとビルドモードの両方で使用できます。詳細については、readmeファイルを確認してください。
 
-## Others
+## その他
 
-### Module externalized for browser compatibility
+### ブラウザの互換性のために外部化されたモジュール
 
-When you use a Node.js module in the browser, Vite will output the following warning.
+ブラウザでnode.jsモジュールを使用すると、Viteは次の警告を出力します。
 
-> Module "fs" has been externalized for browser compatibility. Cannot access "fs.readFile" in client code.
+> モジュール「FS」は、ブラウザの互換性のために外部化されています。クライアントコードで「fs.readfile」にアクセスできません。
 
-This is because Vite does not automatically polyfill Node.js modules.
+これは、viteが自動的にポリフィルnode.jsモジュールではないためです。
 
-We recommend avoiding Node.js modules for browser code to reduce the bundle size, although you can add polyfills manually. If the module is imported from a third-party library (that's meant to be used in the browser), it's advised to report the issue to the respective library.
+バンドルサイズを縮小するために、ブラウザコードのnode.jsモジュールを回避することをお勧めしますが、ポリフィルを手動で追加できます。モジュールがサードパーティライブラリからインポートされている場合（ブラウザで使用することを目的としています）、問題をそれぞれのライブラリに報告することをお勧めします。
 
-### Syntax Error / Type Error happens
+### 構文エラー /タイプエラーが発生します
 
-Vite cannot handle and does not support code that only runs on non-strict mode (sloppy mode). This is because Vite uses ESM and it is always [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) inside ESM.
+Viteは処理できず、非ストリクトモードでのみ実行されるコード（Sloppy Mode）をサポートしません。これは、ViteがESMを使用しており、ESM内の常に[厳密なモード](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)であるためです。
 
-For example, you might see these errors.
+たとえば、これらのエラーが表示される場合があります。
 
-> [ERROR] With statements cannot be used with the "esm" output format due to strict mode
+> [エラー] Strictモードのために「ESM」出力形式でステートメントを使用することはできません
 
-> TypeError: Cannot create property 'foo' on boolean 'false'
+> TypeRror:ブールの「false」でプロパティ「foo」を作成できません
 
-If these codes are used inside dependencies, you could use [`patch-package`](https://github.com/ds300/patch-package) (or [`yarn patch`](https://yarnpkg.com/cli/patch) or [`pnpm patch`](https://pnpm.io/cli/patch)) for an escape hatch.
+これらのコードが依存関係内で使用されている場合、エスケープハッチに[`patch-package`](https://github.com/ds300/patch-package) （または[`yarn patch`](https://yarnpkg.com/cli/patch)または[`pnpm patch`](https://pnpm.io/cli/patch) ）を使用できます。
 
-### Browser extensions
+### ブラウザ拡張機能
 
-Some browser extensions (like ad-blockers) may prevent the Vite client from sending requests to the Vite dev server. You may see a white screen without logged errors in this case. Try disabling extensions if you have this issue.
+一部のブラウザ拡張機能（広告ブロッカーなど）は、ViteクライアントがVite Devサーバーにリクエストを送信できない場合があります。この場合、ログが記録されていない白い画面が表示される場合があります。この問題がある場合は、拡張機能を無効にしてみてください。
 
-### Cross drive links on Windows
+### Windowsのクロスドライブリンク
 
-If there's a cross drive links in your project on Windows, Vite may not work.
+Windowsのプロジェクトにクロスドライブリンクがある場合、Viteが機能しない場合があります。
 
-An example of cross drive links are:
+クロスドライブリンクの例は次のとおりです。
 
-- a virtual drive linked to a folder by `subst` command
-- a symlink/junction to a different drive by `mklink` command (e.g. Yarn global cache)
+- `subst`コマンドでフォルダにリンクされた仮想ドライブ
+- `mklink`コマンドによる別のドライブへのシンブリンク/ジャンクション（例:YARNグローバルキャッシュ）
 
-Related issue: [#10802](https://github.com/vitejs/vite/issues/10802)
+関連問題: [＃10802](https://github.com/vitejs/vite/issues/10802)

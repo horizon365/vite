@@ -1,10 +1,10 @@
-# Deploying a Static Site
+# 정적 사이트를 배포합니다
 
-The following guides are based on some shared assumptions:
+다음 안내서는 일부 공유 가정을 기반으로합니다.
 
-- You are using the default build output location (`dist`). This location [can be changed using `build.outDir`](/ko/config/build-options.md#build-outdir), and you can extrapolate instructions from these guides in that case.
-- You are using npm. You can use equivalent commands to run the scripts if you are using Yarn or other package managers.
-- Vite is installed as a local dev dependency in your project, and you have setup the following npm scripts:
+- 기본 빌드 출력 위치 ( `dist` )를 사용하고 있습니다. 이 위치는 [`build.outDir` 사용하여 변경할 수](/ko/config/build-options.md#build-outdir) 있으며이 경우이 가이드의 지침을 외삽 할 수 있습니다.
+- NPM을 사용하고 있습니다. 원사 나 다른 패키지 관리자를 사용하는 경우 동등한 명령을 사용하여 스크립트를 실행할 수 있습니다.
+- Vite는 프로젝트에서 로컬 개발자 종속성으로 설치되며 다음 NPM 스크립트를 설정합니다.
 
 ```json [package.json]
 {
@@ -15,33 +15,33 @@ The following guides are based on some shared assumptions:
 }
 ```
 
-It is important to note that `vite preview` is intended for previewing the build locally and not meant as a production server.
+`vite preview` 제작 서버가 아닌 건물을 로컬로 미리보기위한 것이라는 점에 유의해야합니다.
 
 ::: tip NOTE
-These guides provide instructions for performing a static deployment of your Vite site. Vite also supports Server Side Rendering. SSR refers to front-end frameworks that support running the same application in Node.js, pre-rendering it to HTML, and finally hydrating it on the client. Check out the [SSR Guide](./ssr) to learn about this feature. On the other hand, if you are looking for integration with traditional server-side frameworks, check out the [Backend Integration guide](./backend-integration) instead.
+이 가이드는 Vite 사이트의 정적 배포를 수행하기위한 지침을 제공합니다. Vite는 또한 서버 측 렌더링을 지원합니다. SSR은 Node.js에서 동일한 응용 프로그램을 실행하는 지원을 지원하고 HTML에 사전 렌더링하고 마지막으로 클라이언트에서 수분을 공급하는 프론트 엔드 프레임 워크를 나타냅니다. 이 기능에 대해 알아 보려면 [SSR 안내서를](./ssr) 확인하십시오. 반면, 기존 서버 측 프레임 워크와 통합을 찾고 있다면 대신 [백엔드 통합 안내서를](./backend-integration) 확인하십시오.
 :::
 
-## Building the App
+## 앱 구축
 
-You may run `npm run build` command to build the app.
+앱을 빌드하기 위해 `npm run build` 명령을 실행할 수 있습니다.
 
 ```bash
 $ npm run build
 ```
 
-By default, the build output will be placed at `dist`. You may deploy this `dist` folder to any of your preferred platforms.
+기본적으로 빌드 출력은 `dist` 으로 배치됩니다. 이 `dist` 폴더를 선호하는 플랫폼에 배포 할 수 있습니다.
 
-### Testing the App Locally
+### 로컬로 앱을 테스트합니다
 
-Once you've built the app, you may test it locally by running `npm run preview` command.
+앱을 구축하면 `npm run preview` 명령을 실행하여 로컬로 테스트 할 수 있습니다.
 
 ```bash
 $ npm run preview
 ```
 
-The `vite preview` command will boot up a local static web server that serves the files from `dist` at `http://localhost:4173`. It's an easy way to check if the production build looks OK in your local environment.
+`vite preview` 명령은 `dist` 에서 `http://localhost:4173` 에서 파일을 제공하는 로컬 정적 웹 서버를 부팅합니다. 지역 환경에서 생산 빌드가 잘 보이는지 쉽게 확인하는 방법입니다.
 
-You may configure the port of the server by passing the `--port` flag as an argument.
+`--port` 플래그를 인수로 전달하여 서버 포트를 구성 할 수 있습니다.
 
 ```json [package.json]
 {
@@ -51,43 +51,43 @@ You may configure the port of the server by passing the `--port` flag as an argu
 }
 ```
 
-Now the `preview` command will launch the server at `http://localhost:8080`.
+이제 `preview` 명령이 `http://localhost:8080` 에서 서버를 시작합니다.
 
-## GitHub Pages
+## Github 페이지
 
-1. Set the correct `base` in `vite.config.js`.
+1. 올바른 `base` `vite.config.js` 로 설정하십시오.
 
-   If you are deploying to `https://<USERNAME>.github.io/`, or to a custom domain through GitHub Pages (eg. `www.example.com`), set `base` to `'/'`. Alternatively, you can remove `base` from the configuration, as it defaults to `'/'`.
+   GitHub 페이지 (예 : `www.example.com` )를 통해 `https://<USERNAME>.github.io/` 에 배포하거나 사용자 정의 도메인에 `base` ~ `'/'` 설정하십시오. 또는 기본값이 `'/'` 로 구성되므로 구성에서 `base` 제거 할 수 있습니다.
 
-   If you are deploying to `https://<USERNAME>.github.io/<REPO>/` (eg. your repository is at `https://github.com/<USERNAME>/<REPO>`), then set `base` to `'/<REPO>/'`.
+   `https://<USERNAME>.github.io/<REPO>/` 에 배치하는 경우 (예 : 저장소가 `https://github.com/<USERNAME>/<REPO>` 에있는 경우) `base` ~ `'/<REPO>/'` 설정하십시오.
 
-2. Go to your GitHub Pages configuration in the repository settings page and choose the source of deployment as "GitHub Actions", this will lead you to create a workflow that builds and deploys your project, a sample workflow that installs dependencies and builds using npm is provided:
+2. 저장소 설정 페이지에서 GitHub 페이지 구성으로 이동하여 배포 소스를 "GitHub 작업"으로 선택하면 프로젝트를 빌드하고 배포하는 워크 플로우를 만들고 NPM을 사용하여 부양품을 설치하고 빌드하는 샘플 워크 플로우를 만들게됩니다.
 
    ```yml
-   # Simple workflow for deploying static content to GitHub Pages
+   # GitHub 페이지에 정적 컨텐츠를 배포하기위한 간단한 워크 플로
    name: Deploy static content to Pages
 
    on:
-     # Runs on pushes targeting the default branch
+     # 기본 분기를 타겟팅하는 푸시에서 실행됩니다
      push:
        branches: ['main']
 
-     # Allows you to run this workflow manually from the Actions tab
+     # 액션 탭 에서이 워크 플로를 수동으로 실행할 수 있습니다.
      workflow_dispatch:
 
-   # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+   # github 페이지에 배포 할 수 있도록 github_token 권한을 설정합니다.
    permissions:
      contents: read
      pages: write
      id-token: write
 
-   # Allow one concurrent deployment
+   # 동시 배포를 하나씩 허용하십시오
    concurrency:
      group: 'pages'
      cancel-in-progress: true
 
    jobs:
-     # Single deploy job since we're just deploying
+     # 우리가 배포하고 있기 때문에 단일 배포 작업입니다
      deploy:
        environment:
          name: github-pages
@@ -110,22 +110,22 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
          - name: Upload artifact
            uses: actions/upload-pages-artifact@v3
            with:
-             # Upload dist folder
+             # DIST 폴더를 업로드하십시오
              path: './dist'
          - name: Deploy to GitHub Pages
            id: deployment
            uses: actions/deploy-pages@v4
    ```
 
-## GitLab Pages and GitLab CI
+## gitlab 페이지 및 gitlab ci
 
-1. Set the correct `base` in `vite.config.js`.
+1. 올바른 `base` `vite.config.js` 로 설정하십시오.
 
-   If you are deploying to `https://<USERNAME or GROUP>.gitlab.io/`, you can omit `base` as it defaults to `'/'`.
+   `https://<USERNAME or GROUP>.gitlab.io/` 으로 배포하는 경우 기본값이 `'/'` 로 `base` 생략 할 수 있습니다.
 
-   If you are deploying to `https://<USERNAME or GROUP>.gitlab.io/<REPO>/`, for example your repository is at `https://gitlab.com/<USERNAME>/<REPO>`, then set `base` to `'/<REPO>/'`.
+   예를 들어 `https://<USERNAME or GROUP>.gitlab.io/<REPO>/` 에 배치하는 경우, 예를 들어 저장소는 `https://gitlab.com/<USERNAME>/<REPO>` 이면 `base` ~ `'/<REPO>/'` 설정하십시오.
 
-2. Create a file called `.gitlab-ci.yml` in the root of your project with the content below. This will build and deploy your site whenever you make changes to your content:
+2. 아래 콘텐츠로 프로젝트의 루트에서 `.gitlab-ci.yml` 이라는 파일을 만듭니다. 콘텐츠를 변경할 때마다 사이트를 구축하고 배포합니다.
 
    ```yaml [.gitlab-ci.yml]
    image: node:16.5.0
@@ -151,47 +151,47 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
 
 ## Netlify
 
-### Netlify CLI
+### CLI를 Netlify
 
-1. Install the [Netlify CLI](https://cli.netlify.com/).
-2. Create a new site using `ntl init`.
-3. Deploy using `ntl deploy`.
+1. [NetLify CLI를](https://cli.netlify.com/) 설치하십시오.
+2. `ntl init` 사용하여 새 사이트를 만듭니다.
+3. `ntl deploy` 사용하여 배포합니다.
 
 ```bash
-# Install the Netlify CLI
+# NetLify CLI를 설치하십시오
 $ npm install -g netlify-cli
 
-# Create a new site in Netlify
+# NetLify에서 새 사이트를 만듭니다
 $ ntl init
 
-# Deploy to a unique preview URL
+# 고유 미리보기 URL에 배포하십시오
 $ ntl deploy
 ```
 
-The Netlify CLI will share with you a preview URL to inspect. When you are ready to go into production, use the `prod` flag:
+NetLify CLI는 검사 할 미리보기 URL을 공유합니다. 생산에 들어갈 준비가되면 `prod` 플래그를 사용하십시오.
 
 ```bash
-# Deploy the site into production
+# 사이트를 생산에 배치하십시오
 $ ntl deploy --prod
 ```
 
-### Netlify with Git
+### git과 함께 넷리티
 
-1. Push your code to a git repository (GitHub, GitLab, BitBucket, Azure DevOps).
-2. [Import the project](https://app.netlify.com/start) to Netlify.
-3. Choose the branch, output directory, and set up environment variables if applicable.
-4. Click on **Deploy**.
-5. Your Vite app is deployed!
+1. 코드를 git 리포지토리 (Github, Gitlab, Bitbucket, Azure devops)로 푸시하십시오.
+2. NetLify로 [프로젝트를 가져 오십시오](https://app.netlify.com/start) .
+3. 해당되는 경우 분기를 선택하고 출력 디렉토리를 선택하고 환경 변수를 설정하십시오.
+4. **배포를** 클릭하십시오.
+5. Vite 앱이 배포되었습니다!
 
-After your project has been imported and deployed, all subsequent pushes to branches other than the production branch along with pull requests will generate [Preview Deployments](https://docs.netlify.com/site-deploys/deploy-previews/), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://docs.netlify.com/site-deploys/overview/#definitions).
+프로젝트가 가져오고 배포 된 후에는 PUTR 요청과 함께 생산 지점 이외의 지점으로의 모든 후속 푸시가 [미리보기 배포를](https://docs.netlify.com/site-deploys/deploy-previews/) 생성하며 생산 지점 (일반적으로 "기본")에 대한 모든 변경 사항은 [생산 배포를](https://docs.netlify.com/site-deploys/overview/#definitions) 초래합니다.
 
 ## Vercel
 
-### Vercel CLI
+### Vercel Cli
 
-1. Install the [Vercel CLI](https://vercel.com/cli) and run `vercel` to deploy.
-2. Vercel will detect that you are using Vite and will enable the correct settings for your deployment.
-3. Your application is deployed! (e.g. [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
+1. [Vercel CLI를](https://vercel.com/cli) 설치하고 `vercel` 실행하여 배포하십시오.
+2. Vercel은 Vite를 사용하고 있음을 감지하고 배포에 대한 올바른 설정을 활성화합니다.
+3. 귀하의 응용 프로그램이 배포되었습니다! (예 : [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/) )
 
 ```bash
 $ npm i -g vercel
@@ -201,61 +201,61 @@ Vercel CLI
 - To deploy, `cd vite` and run `vercel`.
 ```
 
-### Vercel for Git
+### git에 대한 vercel
 
-1. Push your code to your git repository (GitHub, GitLab, Bitbucket).
-2. [Import your Vite project](https://vercel.com/new) into Vercel.
-3. Vercel will detect that you are using Vite and will enable the correct settings for your deployment.
-4. Your application is deployed! (e.g. [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
+1. 코드를 git 저장소 (Github, Gitlab, Bitbucket)로 푸시하십시오.
+2. [Vite 프로젝트를 Vercel로 가져 오십시오](https://vercel.com/new) .
+3. Vercel은 Vite를 사용하고 있음을 감지하고 배포에 대한 올바른 설정을 활성화합니다.
+4. 귀하의 응용 프로그램이 배포되었습니다! (예 : [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/) )
 
-After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://vercel.com/docs/concepts/deployments/environments#preview), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://vercel.com/docs/concepts/deployments/environments#production).
+프로젝트가 가져오고 배포 된 후에는 지점으로의 모든 후속 푸시가 [미리보기 배포를](https://vercel.com/docs/concepts/deployments/environments#preview) 생성하며 생산 지점 (일반적으로 "메인")에 대한 모든 변경으로 인해 [생산 배포가](https://vercel.com/docs/concepts/deployments/environments#production) 발생합니다.
 
-Learn more about Vercel’s [Git Integration](https://vercel.com/docs/concepts/git).
+Vercel의 [GIT 통합](https://vercel.com/docs/concepts/git) 에 대해 자세히 알아보십시오.
 
-## Cloudflare Pages
+## CloudFlare 페이지
 
-### Cloudflare Pages via Wrangler
+### Wrangler를 통한 CloudFlare 페이지
 
-1. Install [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/get-started/).
-2. Authenticate Wrangler with your Cloudflare account using `wrangler login`.
-3. Run your build command.
-4. Deploy using `npx wrangler pages deploy dist`.
+1. [Wrangler CLI를](https://developers.cloudflare.com/workers/wrangler/get-started/) 설치하십시오.
+2. `wrangler login` 사용하여 CloudFlare 계정으로 Wrangler를 인증하십시오.
+3. 빌드 명령을 실행하십시오.
+4. `npx wrangler pages deploy dist` 사용하여 배포합니다.
 
 ```bash
-# Install Wrangler CLI
+# Wrangler CLI를 설치하십시오
 $ npm install -g wrangler
 
-# Login to Cloudflare account from CLI
+# CLI에서 CloudFlare 계정에 로그인하십시오
 $ wrangler login
 
-# Run your build command
+# 빌드 명령을 실행하십시오
 $ npm run build
 
-# Create new deployment
+# 새 배포를 만듭니다
 $ npx wrangler pages deploy dist
 ```
 
-After your assets are uploaded, Wrangler will give you a preview URL to inspect your site. When you log into the Cloudflare Pages dashboard, you will see your new project.
+자산이 업로드 된 후 Wrangler는 귀하에게 사이트를 검사하기위한 미리보기 URL을 제공합니다. CloudFlare 페이지 대시 보드에 로그인하면 새 프로젝트가 표시됩니다.
 
-### Cloudflare Pages with Git
+### Git이있는 CloudFlare 페이지
 
-1. Push your code to your git repository (GitHub, GitLab).
-2. Log in to the Cloudflare dashboard and select your account in **Account Home** > **Pages**.
-3. Select **Create a new Project** and the **Connect Git** option.
-4. Select the git project you want to deploy and click **Begin setup**
-5. Select the corresponding framework preset in the build setting depending on the Vite framework you have selected.
-6. Then save and deploy!
-7. Your application is deployed! (e.g `https://<PROJECTNAME>.pages.dev/`)
+1. 코드를 git 저장소 (Github, Gitlab)로 푸시하십시오.
+2. CloudFlare 대시 보드에 로그인하고 **계정 홈** > **페이지** 에서 계정을 선택하십시오.
+3. **새 프로젝트** 및 **Connect GIT** 옵션 만들기를 선택하십시오.
+4. 배포하려는 GIT 프로젝트를 선택하고 **설정 시작을** 클릭하십시오.
+5. 선택한 vite 프레임 워크에 따라 빌드 설정에서 해당 프레임 워크 사전 설정을 선택하십시오.
+6. 그런 다음 저장하고 배포하십시오!
+7. 귀하의 응용 프로그램이 배포되었습니다! (예 : `https://<PROJECTNAME>.pages.dev/` )
 
-After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://developers.cloudflare.com/pages/platform/preview-deployments/) unless specified not to in your [branch build controls](https://developers.cloudflare.com/pages/platform/branch-build-controls/). All changes to the Production Branch (commonly “main”) will result in a Production Deployment.
+프로젝트를 가져오고 배포 한 후에는 [분기 빌드 컨트롤](https://developers.cloudflare.com/pages/platform/branch-build-controls/) 에 지정되지 않는 한 모든 후속 푸시는 분기에 [미리보기 배포를](https://developers.cloudflare.com/pages/platform/preview-deployments/) 생성합니다. 생산 지점 (일반적으로 "주")에 대한 모든 변경으로 인해 생산 배포가 발생합니다.
 
-You can also add custom domains and handle custom build settings on Pages. Learn more about [Cloudflare Pages Git Integration](https://developers.cloudflare.com/pages/get-started/#manage-your-site).
+사용자 정의 도메인을 추가하고 페이지에서 사용자 정의 빌드 설정을 처리 할 수도 있습니다. [CloudFlare Pages git 통합](https://developers.cloudflare.com/pages/get-started/#manage-your-site) 에 대해 자세히 알아보십시오.
 
 ## Google Firebase
 
-1. Make sure you have [firebase-tools](https://www.npmjs.com/package/firebase-tools) installed.
+1. [Firebase-Tools가](https://www.npmjs.com/package/firebase-tools) 설치되어 있는지 확인하십시오.
 
-2. Create `firebase.json` and `.firebaserc` at the root of your project with the following content:
+2. 다음 내용으로 프로젝트의 루트에서 `firebase.json` 과 `.firebaserc` 만듭니다.
 
    ```json [firebase.json]
    {
@@ -280,54 +280,54 @@ You can also add custom domains and handle custom build settings on Pages. Learn
    }
    ```
 
-3. After running `npm run build`, deploy using the command `firebase deploy`.
+3. `npm run build` 실행 한 후 명령 `firebase deploy` 사용하여 배포하십시오.
 
-## Surge
+## 급등하다
 
-1. First install [surge](https://www.npmjs.com/package/surge), if you haven’t already.
+1. 먼저 [서지를](https://www.npmjs.com/package/surge) 설치하십시오.
 
-2. Run `npm run build`.
+2. 실행 `npm run build` .
 
-3. Deploy to surge by typing `surge dist`.
+3. `surge dist` 입력하여 서지로 배포하십시오.
 
-You can also deploy to a [custom domain](http://surge.sh/help/adding-a-custom-domain) by adding `surge dist yourdomain.com`.
+`surge dist yourdomain.com` 추가하여 [사용자 정의 도메인](http://surge.sh/help/adding-a-custom-domain) 에 배포 할 수도 있습니다.
 
-## Azure Static Web Apps
+## Azure 정적 웹 앱
 
-You can quickly deploy your Vite app with Microsoft Azure [Static Web Apps](https://aka.ms/staticwebapps) service. You need:
+Microsoft Azure [정적 웹 앱](https://aka.ms/staticwebapps) 서비스로 Vite 앱을 신속하게 배포 할 수 있습니다. 필요 :
 
-- An Azure account and a subscription key. You can create a [free Azure account here](https://azure.microsoft.com/free).
-- Your app code pushed to [GitHub](https://github.com).
-- The [SWA Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) in [Visual Studio Code](https://code.visualstudio.com).
+- Azure 계정 및 구독 키. [여기에서 무료 Azure 계정을](https://azure.microsoft.com/free) 만들 수 있습니다.
+- 앱 코드가 [Github](https://github.com) 로 밀려났습니다.
+- [Visual Studio 코드](https://code.visualstudio.com) 의 [SWA 확장](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) .
 
-Install the extension in VS Code and navigate to your app root. Open the Static Web Apps extension, sign in to Azure, and click the '+' sign to create a new Static Web App. You will be prompted to designate which subscription key to use.
+VS 코드에 확장자를 설치하고 앱 루트로 이동하십시오. 정적 웹 앱 확장을 열고 Azure에 로그인 한 다음 '+'부호를 클릭하여 새로운 정적 웹 앱을 만듭니다. 사용할 가입 키를 지정하라는 메시지가 표시됩니다.
 
-Follow the wizard started by the extension to give your app a name, choose a framework preset, and designate the app root (usually `/`) and built file location `/dist`. The wizard will run and will create a GitHub action in your repo in a `.github` folder.
+연장에서 시작한 마법사를 따라 앱의 이름을 부여하고 프레임 워크 사전 설정을 선택한 다음 앱 루트 (일반적으로 `/` )를 지정하고 파일 위치를 구축하십시오 `/dist` . 마법사가 실행되며 `.github` 폴더에서 저장소에서 GitHub 액션을 만듭니다.
 
-The action will work to deploy your app (watch its progress in your repo's Actions tab) and, when successfully completed, you can view your app in the address provided in the extension's progress window by clicking the 'Browse Website' button that appears when the GitHub action has run.
+이 작업은 앱을 배포하기 위해 작동하며 (Repo의 액션 탭에서 진행 상황을 시청) 성공적으로 완료되면 GitHub 동작이 실행될 때 나타나는 '브라우즈 웹 사이트 브라우즈 웹 사이트'버튼을 클릭하여 Extension의 진행 창에 제공된 주소에서 앱을 볼 수 있습니다.
 
-## Render
+## 세우다
 
-You can deploy your Vite app as a Static Site on [Render](https://render.com/).
+Vite 앱을 [Render](https://render.com/) 의 정적 사이트로 배포 할 수 있습니다.
 
-1. Create a [Render account](https://dashboard.render.com/register).
+1. [렌더 계정을](https://dashboard.render.com/register) 만듭니다.
 
-2. In the [Dashboard](https://dashboard.render.com/), click the **New** button and select **Static Site**.
+2. [대시 보드](https://dashboard.render.com/) 에서 **새** 버튼을 클릭하고 **정적 사이트를** 선택하십시오.
 
-3. Connect your GitHub/GitLab account or use a public repository.
+3. github/gitlab 계정을 연결하거나 공개 저장소를 사용하십시오.
 
-4. Specify a project name and branch.
+4. 프로젝트 이름과 지점을 지정하십시오.
 
-   - **Build Command**: `npm install && npm run build`
-   - **Publish Directory**: `dist`
+   - **빌드 명령** : `npm install && npm run build`
+   - **게시 디렉토리** : `dist`
 
-5. Click **Create Static Site**.
+5. **정적 사이트 작성을** 클릭합니다.
 
-   Your app should be deployed at `https://<PROJECTNAME>.onrender.com/`.
+   앱은 `https://<PROJECTNAME>.onrender.com/` 에 배치해야합니다.
 
-By default, any new commit pushed to the specified branch will automatically trigger a new deployment. [Auto-Deploy](https://render.com/docs/deploys#toggling-auto-deploy-for-a-service) can be configured in the project settings.
+기본적으로 지정된 지점으로 밀려난 새로운 커밋은 자동으로 새 배포를 트리거합니다. 프로젝트 설정에서 [자동 배포를](https://render.com/docs/deploys#toggling-auto-deploy-for-a-service) 구성 할 수 있습니다.
 
-You can also add a [custom domain](https://render.com/docs/custom-domains) to your project.
+프로젝트에 [사용자 정의 도메인을](https://render.com/docs/custom-domains) 추가 할 수도 있습니다.
 
 <!--
   NOTE: The sections below are reserved for more deployment platforms not listed above.
@@ -343,14 +343,14 @@ You can also add a [custom domain](https://render.com/docs/custom-domains) to yo
   If a section is removed, we will ping the original PR authors before doing so.
 -->
 
-## Flightcontrol
+## 비행 제어
 
-Deploy your static site using [Flightcontrol](https://www.flightcontrol.dev/?ref=docs-vite) by following these [instructions](https://www.flightcontrol.dev/docs/reference/examples/vite?ref=docs-vite).
+이 [지침](https://www.flightcontrol.dev/docs/reference/examples/vite?ref=docs-vite) 에 따라 [FlightControl을](https://www.flightcontrol.dev/?ref=docs-vite) 사용하여 정적 사이트를 배포하십시오.
 
-## Kinsta Static Site Hosting
+## Kinsta 정적 사이트 호스팅
 
-Deploy your static site using [Kinsta](https://kinsta.com/static-site-hosting/) by following these [instructions](https://kinsta.com/docs/react-vite-example/).
+이 [지침](https://kinsta.com/docs/react-vite-example/) 에 따라 [Kinsta를](https://kinsta.com/static-site-hosting/) 사용하여 정적 사이트를 배포하십시오.
 
-## xmit Static Site Hosting
+## XMIT 정적 사이트 호스팅
 
-Deploy your static site using [xmit](https://xmit.co) by following this [guide](https://xmit.dev/posts/vite-quickstart/).
+이 [안내서](https://xmit.dev/posts/vite-quickstart/) 에 따라 [XMIT을](https://xmit.co) 사용하여 정적 사이트를 배포하십시오.

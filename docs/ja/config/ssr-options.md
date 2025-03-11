@@ -1,62 +1,62 @@
-# SSR Options
+# SSRオプション
 
-Unless noted, the options in this section are applied to both dev and build.
+記載されていない限り、このセクションのオプションは開発とビルドの両方に適用されます。
 
 ## ssr.external
 
-- **Type:** `string[] | true`
-- **Related:** [SSR Externals](/ja/guide/ssr#ssr-externals)
+- **タイプ:** `string [] | true`
+- **関連:** [SSR外部](/ja/guide/ssr#ssr-externals)
 
-Externalize the given dependencies and their transitive dependencies for SSR. By default, all dependencies are externalized except for linked dependencies (for HMR). If you prefer to externalize the linked dependency, you can pass its name to this option.
+SSRの指定された依存関係とその推移的依存関係を外部化します。デフォルトでは、すべての依存関係は、リンクされた依存関係（HMRの場合）を除いて外部化されます。リンクされた依存関係を外部化する場合は、この名前をこのオプションに渡すことができます。
 
-If `true`, all dependencies including linked dependencies are externalized.
+`true`の場合、リンク依存関係を含むすべての依存関係が外部化されます。
 
-Note that the explicitly listed dependencies (using `string[]` type) will always take priority if they're also listed in `ssr.noExternal` (using any type).
+明示的にリストされている依存関係（ `string[]`タイプを使用）は、 `ssr.noExternal`にリストされている場合（任意のタイプを使用）、常に優先されることに注意してください。
 
 ## ssr.noExternal
 
-- **Type:** `string | RegExp | (string | RegExp)[] | true`
-- **Related:** [SSR Externals](/ja/guide/ssr#ssr-externals)
+- **タイプ:** `文字列 | regexp | （弦 | regexp）[] | true`
+- **関連:** [SSR外部](/ja/guide/ssr#ssr-externals)
 
-Prevent listed dependencies from being externalized for SSR, which they will get bundled in build. By default, only linked dependencies are not externalized (for HMR). If you prefer to externalize the linked dependency, you can pass its name to the `ssr.external` option.
+リストされている依存関係がSSRの外部化されないようにし、ビルドにバンドルされます。デフォルトでは、リンクされた依存関係のみが外部化されません（HMRの場合）。リンクされた依存関係を外部化する場合は、その名前を`ssr.external`オプションに渡すことができます。
 
-If `true`, no dependencies are externalized. However, dependencies explicitly listed in `ssr.external` (using `string[]` type) can take priority and still be externalized. If `ssr.target: 'node'` is set, Node.js built-ins will also be externalized by default.
+`true`の場合、依存関係は外部化されません。ただし、 `ssr.external`に明示的にリストされている依存関係（ `string[]`タイプを使用）を優先して外部化することができます。 `ssr.target: 'node'`設定されている場合、node.jsビルドインもデフォルトで外部化されます。
 
-Note that if both `ssr.noExternal: true` and `ssr.external: true` are configured, `ssr.noExternal` takes priority and no dependencies are externalized.
+`ssr.noExternal: true`と`ssr.external: true`両方が構成されている場合、 `ssr.noExternal`優先され、依存関係が外部化されないことに注意してください。
 
 ## ssr.target
 
-- **Type:** `'node' | 'webworker'`
-- **Default:** `node`
+- **タイプ:** `'ノード' | 「Webworker」
+- **デフォルト:** `node`
 
-Build target for the SSR server.
+SSRサーバーのターゲットを構築します。
 
 ## ssr.resolve.conditions
 
-- **Type:** `string[]`
-- **Default:** `['module', 'node', 'development|production']` (`defaultServerConditions`) (`['module', 'browser', 'development|production']` (`defaultClientConditions`) for `ssr.target === 'webworker'`)
-- **Related:** [Resolve Conditions](./shared-options.md#resolve-conditions)
+- **タイプ:** `string[]`
+- **デフォルト:** `['Module'、 'node'、 '開発|生産 '] ` (`DefaultServerConditions`) (`[' Module '、' Browser '、'開発|生産 ']` (`DefaultClientConditions`) for ` SSR.TARGET ===' WebWorker '）
+- **関連:**[条件を解決します](./shared-options.md#resolve-conditions)
 
-These conditions are used in the plugin pipeline, and only affect non-externalized dependencies during the SSR build. Use `ssr.resolve.externalConditions` to affect externalized imports.
+これらの条件はプラグインパイプラインで使用され、SSRビルド中の非外部化された依存関係にのみ影響します。 `ssr.resolve.externalConditions`使用して、外部化されたインポートに影響します。
 
 ## ssr.resolve.externalConditions
 
-- **Type:** `string[]`
-- **Default:** `['node']`
+- **タイプ:** `string[]`
+- **デフォルト:** `['node']`
 
-Conditions that are used during ssr import (including `ssrLoadModule`) of externalized direct dependencies (external dependencies imported by Vite).
+外部化された直接依存関係（Viteによってインポートされた外部依存関係）のSSRインポート（ `ssrLoadModule`を含む）中に使用される条件。
 
 :::tip
 
-When using this option, make sure to run Node with [`--conditions` flag](https://nodejs.org/docs/latest/api/cli.html#-c-condition---conditionscondition) with the same values in both dev and build to get a consistent behavior.
+このオプションを使用する場合は、DEVとビルドの両方で同じ値の[`--conditions`フラグ](https://nodejs.org/docs/latest/api/cli.html#-c-condition---conditionscondition)でノードを実行して、一貫した動作を取得してください。
 
-For example, when setting `['node', 'custom']`, you should run `NODE_OPTIONS='--conditions custom' vite` in dev and `NODE_OPTIONS="--conditions custom" node ./dist/server.js` after build.
+たとえば、 `['node', 'custom']`設定するときは、ビルド後にDEVで`NODE_OPTIONS='--conditions custom' vite` `NODE_OPTIONS="--conditions custom" node ./dist/server.js`実行する必要があります。
 
 :::
 
 ### ssr.resolve.mainFields
 
-- **Type:** `string[]`
-- **Default:** `['module', 'jsnext:main', 'jsnext']`
+- **タイプ:** `string[]`
+- **デフォルト:** `['module', 'jsnext:main', 'jsnext']`
 
-List of fields in `package.json` to try when resolving a package's entry point. Note this takes lower precedence than conditional exports resolved from the `exports` field: if an entry point is successfully resolved from `exports`, the main field will be ignored. This setting only affect non-externalized dependencies.
+パッケージのエントリポイントを解決するときに試してみる`package.json`のフィールドのリスト。注これは、 `exports`フィールドから解決された条件付きエクスポートよりも優先されます。2 `exports`エントリポイントが正常に解決された場合、メインフィールドは無視されます。この設定は、外部化されていない依存関係にのみ影響します。

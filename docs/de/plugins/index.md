@@ -1,45 +1,45 @@
 # Plugins
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or Compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+VITE zielt darauf ab, außergewöhnliche Unterstützung für gemeinsame Webentwicklungsmuster zu unterstützen. Bevor Sie nach einem vite- oder kompatiblen Rollup -Plugin suchen, lesen Sie die [Features -Handbuch](../guide/features.md) . Viele der Fälle, in denen ein Plugin in einem Rollup -Projekt benötigt wird, sind bereits in vite behandelt.
 :::
 
-Check out [Using Plugins](../guide/using-plugins) for information on how to use plugins.
+Überprüfen Sie [die Plugins](../guide/using-plugins) , um Informationen zur Verwendung von Plugins zu erhalten.
 
-## Official Plugins
+## Offizielle Plugins
 
 ### [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)
 
-- Provides Vue 3 Single File Components support.
+- Bietet Vue 3 -Einzeldateikomponenten Unterstützung.
 
 ### [@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx)
 
-- Provides Vue 3 JSX support (via [dedicated Babel transform](https://github.com/vuejs/jsx-next)).
+- Bietet Vue 3 JSX -Unterstützung (über [dedizierte Babel -Transformation](https://github.com/vuejs/jsx-next) ).
 
 ### [@vitejs/plugin-vue2](https://github.com/vitejs/vite-plugin-vue2)
 
-- Provides Vue 2.7 Single File Components support.
+- Bietet VUE 2.7 Einzeldateikomponenten Unterstützung.
 
 ### [@vitejs/plugin-vue2-jsx](https://github.com/vitejs/vite-plugin-vue2-jsx)
 
-- Provides Vue 2.7 JSX support (via [dedicated Babel transform](https://github.com/vuejs/jsx-vue2/)).
+- Bietet VUE 2.7 JSX -Unterstützung (über [dedizierte Babel -Transformation](https://github.com/vuejs/jsx-vue2/) ).
 
-### [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react)
+### [@vitejs/Plugin-React](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react)
 
-- Uses esbuild and Babel, achieving fast HMR with a small package footprint and the flexibility of being able to use the Babel transform pipeline. Without additional Babel plugins, only esbuild is used during builds.
+- Verwendet Esbuild und Babel und erreicht schnelle HMR mit einem kleinen Paket -Fußabdruck und der Flexibilität, die Babel -Transformationspipeline zu verwenden. Ohne zusätzliche Babel -Plugins wird nur ESBuild während der Builds verwendet.
 
-### [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
+### [@vitejs/Plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
 
-- Replaces Babel with SWC during development. During production builds, SWC+esbuild are used when using plugins, and esbuild only otherwise. For big projects that don't require non-standard React extensions, cold start and Hot Module Replacement (HMR) can be significantly faster.
+- Ersetzt Babel durch SWC während der Entwicklung. Während der Produktionsergebnisse werden SWC+ESBUILD bei Verwendung von Plugins und ESBuild nur anders verwendet. Für große Projekte, bei denen keine nicht standardmäßigen Reaktionen erforderlich sind, können Kaltstart und HOT-Modulersatz (HMR) erheblich schneller sein.
 
-### [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)
+### [@vitejs/Plugin-Legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)
 
-- Provides legacy browsers support for the production build.
+- Bietet Legacy Browsers Support für den Produktionsbau.
 
-## Community Plugins
+## Community -Plugins
 
-Check out [awesome-vite](https://github.com/vitejs/awesome-vite#plugins) - you can also submit a PR to list your plugins there.
+Schauen Sie sich [Awesome -Vite](https://github.com/vitejs/awesome-vite#plugins) an - Sie können auch eine PR einreichen, um Ihre Plugins dort aufzulisten.
 
-## Rollup Plugins
+## Rollup -Plugins
 
-[Vite plugins](../guide/api-plugin) are an extension of Rollup's plugin interface. Check out the [Rollup Plugin Compatibility section](../guide/api-plugin#rollup-plugin-compatibility) for more information.
+[VITE -Plugins](../guide/api-plugin) sind eine Erweiterung der Plugin -Schnittstelle von Rollup. Weitere Informationen finden Sie [im Abschnitt "Rollup -Plugin -Kompatibilität"](../guide/api-plugin#rollup-plugin-compatibility) .

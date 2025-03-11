@@ -1,24 +1,24 @@
-# `this.environment` in Hooks
+# `this.environment` en ganchos
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+Danos comentarios en [la discusión de comentarios de la API ambiental](https://github.com/vitejs/vite/discussions/16358)
 :::
 
-Before Vite 6, only two environments were available: `client` and `ssr`. A single `options.ssr` plugin hook argument in `resolveId`, `load` and `transform` allowed plugin authors to differentiate between these two environments when processing modules in plugin hooks. In Vite 6, a Vite application can define any number of named environments as needed. We're introducing `this.environment` in the plugin context to interact with the environment of the current module in hooks.
+Antes de Vite 6, solo estaban disponibles dos entornos: `client` y `ssr` . Un solo argumento de gancho de complemento `options.ssr` en `resolveId` , `load` y `transform` permitieron a los autores de complementos diferenciar entre estos dos entornos al procesar módulos en ganchos de complementos. En Vite 6, una aplicación VITE puede definir cualquier número de entornos con nombre según sea necesario. Estamos presentando `this.environment` en el contexto del complemento para interactuar con el entorno del módulo actual en ganchos.
 
-Affect scope: `Vite Plugin Authors`
+Afectar el alcance: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`this.environment` was introduced in `v6.0`. The deprecation of `options.ssr` is planned for `v7.0`. At that point we'll start recommending migrating your plugins to use the new API. To identify your usage, set `future.removePluginHookSsrArgument` to `"warn"` in your vite config.
+`this.environment` se introdujo en `v6.0` . La deprecación de `options.ssr` está prevista para `v7.0` . En ese punto, comenzaremos a recomendar migrar sus complementos para usar la nueva API. Para identificar su uso, establezca `future.removePluginHookSsrArgument` a `"warn"` en su configuración VITE.
 :::
 
-## Motivation
+## Motivación
 
-`this.environment` not only allow the plugin hook implementation to know the current environment name, it also gives access to the environment config options, module graph information, and transform pipeline (`environment.config`, `environment.moduleGraph`, `environment.transformRequest()`). Having the environment instance available in the context allows plugin authors to avoid the dependency of the whole dev server (typically cached at startup through the `configureServer` hook).
+`this.environment` no solo permite que la implementación del gancho del complemento conozca el nombre actual del entorno, sino que también brinda acceso a las opciones de configuración del entorno, la información del gráfico del módulo y la tubería de transformación ( `environment.config` , `environment.moduleGraph` , `environment.transformRequest()` ). Tener la instancia del entorno disponible en el contexto permite a los autores de complementos evitar la dependencia de todo el servidor de desarrollo (generalmente almacenado en caché al inicio a través del gancho `configureServer` ).
 
-## Migration Guide
+## Guía De Migración
 
-For the existing plugin to do a quick migration, replace the `options.ssr` argument with `this.environment.name !== 'client'` in the `resolveId`, `load` and `transform` hooks:
+Para que el complemento existente haga una migración rápida, reemplace el argumento `options.ssr` con `this.environment.name !== 'client'` en los `resolveId` , `load` y `transform` ganchos:
 
 ```ts
 import { Plugin } from 'vite'
@@ -27,17 +27,17 @@ export function myPlugin(): Plugin {
   return {
     name: 'my-plugin',
     resolveId(id, importer, options) {
-      const isSSR = options.ssr // [!code --]
-      const isSSR = this.environment.name !== 'client' // [!code ++]
+      const isSSR = options.ssr // [! Código -]
+      const isSSR = this.environment.name !== 'client' // [! Código ++]
 
       if (isSSR) {
-        // SSR specific logic
+        // Lógica específica de SSR
       } else {
-        // Client specific logic
+        // Lógica específica del cliente
       }
     },
   }
 }
 ```
 
-For a more robust long term implementation, the plugin hook should handle for [multiple environments](/es/guide/api-environment.html#accessing-the-current-environment-in-hooks) using fine-grained environment options instead of relying on the environment name.
+Para una implementación a largo plazo más robusta, el gancho de complemento debe manejar para [múltiples entornos](/es/guide/api-environment.html#accessing-the-current-environment-in-hooks) que utilizan opciones de entorno de grano fino en lugar de confiar en el nombre del entorno.

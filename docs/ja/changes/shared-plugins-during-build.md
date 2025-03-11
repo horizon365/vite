@@ -1,24 +1,24 @@
-# Shared Plugins during Build
+# ビルド中の共有プラグイン
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+[環境APIフィードバックディスカッション](https://github.com/vitejs/vite/discussions/16358)でフィードバックを提供してください
 :::
 
-See [Shared plugins during build](/ja/guide/api-environment.md#shared-plugins-during-build).
+[ビルド中の共有プラグイン](/ja/guide/api-environment.md#shared-plugins-during-build)を参照してください。
 
-Affect scope: `Vite Plugin Authors`
+影響範囲: `Vite Plugin Authors`
 
 ::: warning Future Default Change
-`builder.sharedConfigBuild` was first introduce in `v6.0`. You can set it true to check how your plugins work with a shared config. We're looking for feedback about changing the default in a future major once the plugin ecosystem is ready.
+`builder.sharedConfigBuild`は最初に`v6.0`で導入されました。プラグインが共有構成でどのように動作するかを確認するために、それを設定できます。プラグインエコシステムの準備ができたら、将来の専攻でデフォルトを変更することに関するフィードバックを探しています。
 :::
 
-## Motivation
+## モチベーション
 
-Align dev and build plugin pipelines.
+DEVとビルドプラグインパイプラインを調整します。
 
-## Migration Guide
+## 移行ガイド
 
-To be able to share plugins across environments, plugin state must be keyed by the current environment. A plugin of the following form will count the number of transformed modules across all environments.
+環境間でプラグインを共有できるようにするには、プラグイン状態を現在の環境でキー化する必要があります。次のフォームのプラグインは、すべての環境で変換されたモジュールの数をカウントします。
 
 ```js
 function CountTransformedModulesPlugin() {
@@ -38,7 +38,7 @@ function CountTransformedModulesPlugin() {
 }
 ```
 
-If we instead want to count the number of transformed modules for each environment, we need to keep a map:
+代わりに、各環境の変換されたモジュールの数を数えたい場合は、マップを保持する必要があります。
 
 ```js
 function PerEnvironmentCountTransformedModulesPlugin() {
@@ -59,7 +59,7 @@ function PerEnvironmentCountTransformedModulesPlugin() {
 }
 ```
 
-To simplify this pattern, Vite exports a `perEnvironmentState` helper:
+このパターンを簡素化するために、Viteは`perEnvironmentState`ヘルパーをエクスポートします。
 
 ```js
 function PerEnvironmentCountTransformedModulesPlugin() {

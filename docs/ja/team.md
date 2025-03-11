@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Meet the Team
-description: The development of Vite is guided by an international team.
+title: チームに会います
+description: Viteの開発は、国際チームによって導かれています。
 ---
 
 <script setup>

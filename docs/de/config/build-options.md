@@ -1,39 +1,39 @@
-# Build Options
+# Optionen Erstellen
 
-Unless noted, the options in this section are only applied to build.
+Sofern nicht angegeben, werden die Optionen in diesem Abschnitt nur zum Erstellen angewendet.
 
 ## build.target
 
-- **Type:** `string | string[]`
-- **Default:** `'modules'`
-- **Related:** [Browser Compatibility](/de/guide/build#browser-compatibility)
+- **Typ:** `String | String [] `
+- **Standard:** `'modules'`
+- **Verwandte:** [Browserkompatibilität](/de/guide/build#browser-compatibility)
 
-Browser compatibility target for the final bundle. The default value is a Vite special value, `'modules'`, which targets browsers with [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), and [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) support. Vite will replace `'modules'` to `['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']`
+Browserkompatibilitätsziel für das endgültige Bundle. Der Standardwert ist ein Vite -Sonderwert `'modules'` , der auf Browser mit [nativen ES -Modulen](https://caniuse.com/es6-module) , [nativem Dynamikimport](https://caniuse.com/es6-module-dynamic-import) und [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) -Unterstützung abzielt. Vite ersetzt `'modules'` bis `['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']`
 
-Another special value is `'esnext'` - which assumes native dynamic imports support and will only perform minimal transpiling.
+Ein weiterer besonderer Wert ist `'esnext'` , der native dynamische Importe unterstützt und nur minimale Transporation durchführt.
 
-The transform is performed with esbuild and the value should be a valid [esbuild target option](https://esbuild.github.io/api/#target). Custom targets can either be an ES version (e.g. `es2015`), a browser with version (e.g. `chrome58`), or an array of multiple target strings.
+Die Transformation wird mit ESBuild durchgeführt und der Wert sollte eine gültige [ESBuild -Zieloption](https://esbuild.github.io/api/#target) sein. Benutzerdefinierte Ziele können entweder eine ES -Version (z. B. `es2015` ), ein Browser mit Version (z. B. `chrome58` ) oder ein Array mehrerer Zielzeichenfolgen sein.
 
-Note the build will fail if the code contains features that cannot be safely transpiled by esbuild. See [esbuild docs](https://esbuild.github.io/content-types/#javascript) for more details.
+Beachten Sie, dass der Build fehlschlägt, wenn der Code Funktionen enthält, die von ESBuild nicht sicher verschoben werden können. Weitere Informationen finden Sie unter [Esbuild -Dokumenten](https://esbuild.github.io/content-types/#javascript) .
 
 ## build.modulePreload
 
-- **Type:** `boolean | { polyfill?: boolean, resolveDependencies?: ResolveModulePreloadDependenciesFn }`
-- **Default:** `{ polyfill: true }`
+- **Typ:** `boolean | {Polyfill ?: boolean, entschlossene Angaben ?: ResolvemodulePreloadDependenciesfn} `
+- **Standard:** `{ polyfill: true }`
 
-By default, a [module preload polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill) is automatically injected. The polyfill is auto injected into the proxy module of each `index.html` entry. If the build is configured to use a non-HTML custom entry via `build.rollupOptions.input`, then it is necessary to manually import the polyfill in your custom entry:
+Standardmäßig wird automatisch ein [Modul -Vorspannungs -Polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill) injiziert. Die Polyfill wird automatisch in das Proxy -Modul jedes `index.html` -Eintrags injiziert. Wenn der Build so konfiguriert ist, dass ein Nicht-HTML-benutzerdefinierter Eintrag über `build.rollupOptions.input` verwendet wird, muss die Polyfill in Ihrem benutzerdefinierten Eintrag manuell importiert werden:
 
 ```js
 import 'vite/modulepreload-polyfill'
 ```
 
-Note: the polyfill does **not** apply to [Library Mode](/de/guide/build#library-mode). If you need to support browsers without native dynamic import, you should probably avoid using it in your library.
+Hinweis: Die Polyfill gilt **nicht** für [den Bibliotheksmodus](/de/guide/build#library-mode) . Wenn Sie Browser ohne nativen dynamischen Import unterstützen müssen, sollten Sie es wahrscheinlich vermeiden, es in Ihrer Bibliothek zu verwenden.
 
-The polyfill can be disabled using `{ polyfill: false }`.
+Die Polyfill kann mit `{ polyfill: false }` deaktiviert werden.
 
-The list of chunks to preload for each dynamic import is computed by Vite. By default, an absolute path including the `base` will be used when loading these dependencies. If the `base` is relative (`''` or `'./'`), `import.meta.url` is used at runtime to avoid absolute paths that depend on the final deployed base.
+Die Liste der Stücke, die für jeden dynamischen Import vorgeladen werden sollen, wird von VITE berechnet. Standardmäßig wird ein absoluter Pfad einschließlich der `base` verwendet, wenn diese Abhängigkeiten geladen werden. Wenn die `base` relativ ist ( `''` oder `'./'` ), wird `import.meta.url` zur Laufzeit verwendet, um absolute Pfade zu vermeiden, die von der endgültigen bebasigen abhängen.
 
-There is experimental support for fine grained control over the dependencies list and their paths using the `resolveDependencies` function. [Give Feedback](https://github.com/vitejs/vite/discussions/13841). It expects a function of type `ResolveModulePreloadDependenciesFn`:
+Es gibt experimentelle Unterstützung für die feinkörnige Kontrolle über die Abhängigkeitsliste und deren Pfade unter Verwendung der `resolveDependencies` -Funktion. [Feedback geben](https://github.com/vitejs/vite/discussions/13841) . Es erwartet eine Funktion von Typ `ResolveModulePreloadDependenciesFn` :
 
 ```ts
 type ResolveModulePreloadDependenciesFn = (
@@ -46,130 +46,130 @@ type ResolveModulePreloadDependenciesFn = (
 ) => string[]
 ```
 
-The `resolveDependencies` function will be called for each dynamic import with a list of the chunks it depends on, and it will also be called for each chunk imported in entry HTML files. A new dependencies array can be returned with these filtered or more dependencies injected, and their paths modified. The `deps` paths are relative to the `build.outDir`. The return value should be a relative path to the `build.outDir`.
+Die `resolveDependencies` -Funktion wird für jeden dynamischen Import mit einer Liste der Stücke aufgerufen, von der sie abhängt, und sie wird auch für jeden in HTML -Dateien importierten Stück aufgerufen. Ein neues Abhängigkeits -Array kann mit diesen gefilterten oder mehr Abhängigkeiten zurückgegeben werden, die injiziert wurden, und ihre Pfade modifiziert. Die `deps` Pfade sind relativ zum `build.outDir` . Der Rückgabewert sollte ein relativer Weg zum `build.outDir` sein.
 
 ```js twoslash
-/** @type {import('vite').UserConfig} */
+/** @type {import ('vite'). userconfig} */
 const config = {
-  // prettier-ignore
+  // hübscher
   build: {
-// ---cut-before---
-modulePreload: {
-  resolveDependencies: (filename, deps, { hostId, hostType }) => {
-    return deps.filter(condition)
-  },
-},
-// ---cut-after---
+    // --- geschnitten ---
+    modulePreload: {
+      resolveDependencies: (filename, deps, { hostId, hostType }) => {
+        return deps.filter(condition)
+      },
+    },
+    // --- Cut-After ---
   },
 }
 ```
 
-The resolved dependency paths can be further modified using [`experimental.renderBuiltUrl`](../guide/build.md#advanced-base-options).
+Die aufgelösten Abhängigkeitspfade können mit [`experimental.renderBuiltUrl`](../guide/build.md#advanced-base-options) weiter geändert werden.
 
 ## build.polyfillModulePreload
 
-- **Type:** `boolean`
-- **Default:** `true`
-- **Deprecated** use `build.modulePreload.polyfill` instead
+- **Typ:** `boolean`
+- **Standard:** `true`
+- **Veraltete** Verwendung stattdessen `build.modulePreload.polyfill`
 
-Whether to automatically inject a [module preload polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill).
+Ob automatisch ein [Modul -Vorspannungspolyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill) injizieren soll.
 
 ## build.outDir
 
-- **Type:** `string`
-- **Default:** `dist`
+- **Typ:** `string`
+- **Standard:** `dist`
 
-Specify the output directory (relative to [project root](/de/guide/#index-html-and-project-root)).
+Geben Sie das Ausgabeverzeichnis an (relativ zur [Projektrohne](/de/guide/#index-html-and-project-root) ).
 
 ## build.assetsDir
 
-- **Type:** `string`
-- **Default:** `assets`
+- **Typ:** `string`
+- **Standard:** `assets`
 
-Specify the directory to nest generated assets under (relative to `build.outDir`. This is not used in [Library Mode](/de/guide/build#library-mode)).
+Geben Sie das Verzeichnis für nistgenerierte Vermögenswerte unter (relativ zu `build.outDir` an. Dies wird im [Bibliotheksmodus](/de/guide/build#library-mode) nicht verwendet).
 
 ## build.assetsInlineLimit
 
-- **Type:** `number` | `((filePath: string, content: Buffer) => boolean | undefined)`
-- **Default:** `4096` (4 KiB)
+- **Typ:** `number` | `((Filepath: String, Inhalt: Puffer) => boolean | undefiniert) `
+- **Standard:** `4096` (4 kib)
 
-Imported or referenced assets that are smaller than this threshold will be inlined as base64 URLs to avoid extra http requests. Set to `0` to disable inlining altogether.
+Importierte oder referenzierte Vermögenswerte, die kleiner als dieser Schwellenwert sind, werden als Basis64 -URLs eingeführt, um zusätzliche HTTP -Anforderungen zu vermeiden. Setzen Sie auf `0` um das Inline -Inlining insgesamt zu deaktivieren.
 
-If a callback is passed, a boolean can be returned to opt-in or opt-out. If nothing is returned the default logic applies.
+Wenn ein Rückruf weitergegeben wird, kann ein Boolescher zum Opt-in oder zum Opt-out zurückgegeben werden. Wenn nichts zurückgegeben wird, gilt die Standardlogik.
 
-Git LFS placeholders are automatically excluded from inlining because they do not contain the content of the file they represent.
+GIT -LFS -Platzhalter werden automatisch von der Inline -Inline ausgeschlossen, da sie nicht den Inhalt der von ihnen dargelegten Datei enthalten.
 
 ::: tip Note
-If you specify `build.lib`, `build.assetsInlineLimit` will be ignored and assets will always be inlined, regardless of file size or being a Git LFS placeholder.
+Wenn Sie `build.lib` angeben, wird `build.assetsInlineLimit` ignoriert und Vermögenswerte werden immer eingebaut, unabhängig von der Dateigröße oder einem Git -LFS -Platzhalter.
 :::
 
 ## build.cssCodeSplit
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **Typ:** `boolean`
+- **Standard:** `true`
 
-Enable/disable CSS code splitting. When enabled, CSS imported in async JS chunks will be preserved as chunks and fetched together when the chunk is fetched.
+Aktivieren/deaktivieren Sie die CSS -Code -Aufteilung. Wenn CSS in asynchronen JS -Stücken importiert werden, werden CSS als Stücke erhalten und zusammengerufen, wenn der Stück abgerufen wird.
 
-If disabled, all CSS in the entire project will be extracted into a single CSS file.
+Wenn sie deaktiviert sind, werden alle CSS im gesamten Projekt in eine einzelne CSS -Datei extrahiert.
 
 ::: tip Note
-If you specify `build.lib`, `build.cssCodeSplit` will be `false` as default.
+Wenn Sie `build.lib` angeben, ist `build.cssCodeSplit` standardmäßig `false` .
 :::
 
 ## build.cssTarget
 
-- **Type:** `string | string[]`
-- **Default:** the same as [`build.target`](#build-target)
+- **Typ:** `String | String [] `
+- **Standard:** Das gleiche wie [`build.target`](#build-target)
 
-This option allows users to set a different browser target for CSS minification from the one used for JavaScript transpilation.
+Mit dieser Option können Benutzer ein anderes Browserziel für die CSS -Minifikation als für JavaScript -Transpilation einstellen.
 
-It should only be used when you are targeting a non-mainstream browser.
-One example is Android WeChat WebView, which supports most modern JavaScript features but not the [`#RGBA` hexadecimal color notation in CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb_colors).
-In this case, you need to set `build.cssTarget` to `chrome61` to prevent vite from transform `rgba()` colors into `#RGBA` hexadecimal notations.
+Es sollte nur verwendet werden, wenn Sie auf einen Nicht-Mainstream-Browser abzielen.
+Ein Beispiel ist Android Wechat WebView, das die meisten modernen JavaScript -Funktionen unterstützt, jedoch nicht die [`#RGBA` hexadezimale Farbnotation in CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb_colors) .
+In diesem Fall müssen Sie `build.cssTarget` auf `chrome61` einstellen, um zu verhindern, dass Vite `rgba()` Farben in `#RGBA` hexadezimale Notationen verwandelt.
 
 ## build.cssMinify
 
-- **Type:** `boolean | 'esbuild' | 'lightningcss'`
-- **Default:** the same as [`build.minify`](#build-minify) for client, `'esbuild'` for SSR
+- **Typ:** `boolean | "Esbuild" | 'lightningcss''`
+- **Standardeinstellung:** Das gleiche wie [`build.minify`](#build-minify) für Client, `'esbuild'` für SSR
 
-This option allows users to override CSS minification specifically instead of defaulting to `build.minify`, so you can configure minification for JS and CSS separately. Vite uses `esbuild` by default to minify CSS. Set the option to `'lightningcss'` to use [Lightning CSS](https://lightningcss.dev/minification.html) instead. If selected, it can be configured using [`css.lightningcss`](./shared-options.md#css-lightningcss).
+Mit dieser Option können Benutzer die CSS -Minifikation speziell anstatt auf `build.minify` überschreiben, sodass Sie die Minifikation für JS und CSS separat konfigurieren können. VITE verwendet `esbuild` standardmäßig, um CSS zu minifizieren. Stellen Sie die Option 2 auf `'lightningcss'` , um stattdessen [Lightning CSS](https://lightningcss.dev/minification.html) zu verwenden. Wenn es ausgewählt ist, kann es mit [`css.lightningcss`](./shared-options.md#css-lightningcss) konfiguriert werden.
 
 ## build.sourcemap
 
-- **Type:** `boolean | 'inline' | 'hidden'`
-- **Default:** `false`
+- **Typ:** `boolean | 'im Einklang' | 'versteckt
+- **Standard:** `false`
 
-Generate production source maps. If `true`, a separate sourcemap file will be created. If `'inline'`, the sourcemap will be appended to the resulting output file as a data URI. `'hidden'` works like `true` except that the corresponding sourcemap comments in the bundled files are suppressed.
+Erzeugen Sie Produktionsquellenkarten. Wenn `true` , wird eine separate Sourcemap -Datei erstellt. Wenn `'inline'` , wird das Sourcemap als Daten -URI an die resultierende Ausgabedatei angehängt. `'hidden'` funktioniert wie `true` , außer dass die entsprechenden Sourcemap -Kommentare in den gebündelten Dateien unterdrückt werden.
 
 ## build.rollupOptions
 
-- **Type:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
+- **Typ:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
 
-Directly customize the underlying Rollup bundle. This is the same as options that can be exported from a Rollup config file and will be merged with Vite's internal Rollup options. See [Rollup options docs](https://rollupjs.org/configuration-options/) for more details.
+Passen Sie das zugrunde liegende Rollup -Bundle direkt an. Dies entspricht Optionen, die aus einer Rollup -Konfigurationsdatei exportiert werden können und mit den internen Rollup -Optionen von Vite zusammengeführt werden. Weitere Informationen finden Sie [unter Rollup -Optionen](https://rollupjs.org/configuration-options/) .
 
 ## build.commonjsOptions
 
-- **Type:** [`RollupCommonJSOptions`](https://github.com/rollup/plugins/tree/master/packages/commonjs#options)
+- **Typ:** [`RollupCommonJSOptions`](https://github.com/rollup/plugins/tree/master/packages/commonjs#options)
 
-Options to pass on to [@rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs).
+Optionen für [@Rollup/Plugin-Commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs) .
 
 ## build.dynamicImportVarsOptions
 
-- **Type:** [`RollupDynamicImportVarsOptions`](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#options)
-- **Related:** [Dynamic Import](/de/guide/features#dynamic-import)
+- **Typ:** [`RollupDynamicImportVarsOptions`](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#options)
+- **Verwandte:** [Dynamischer Import](/de/guide/features#dynamic-import)
 
-Options to pass on to [@rollup/plugin-dynamic-import-vars](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars).
+Optionen für [@Rollup/Plugin-Dynamic-Import-Vars](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars) weitergeben.
 
 ## build.lib
 
-- **Type:** `{ entry: string | string[] | { [entryAlias: string]: string }, name?: string, formats?: ('es' | 'cjs' | 'umd' | 'iife')[], fileName?: string | ((format: ModuleFormat, entryName: string) => string), cssFileName?: string }`
-- **Related:** [Library Mode](/de/guide/build#library-mode)
+- **Typ:** `{Eintrag: String | String [] | {[Entryalias: String]: String}, Name ?: String, Formate ?: ('es' ' | "CJS" | 'umd' | 'iife') [], Dateiname ?: String | ((Format: ModuleFormat, Eintragsname: String) => String), CSSFileName ?: String} `
+- **Verwandte:** [Bibliotheksmodus](/de/guide/build#library-mode)
 
-Build as a library. `entry` is required since the library cannot use HTML as entry. `name` is the exposed global variable and is required when `formats` includes `'umd'` or `'iife'`. Default `formats` are `['es', 'umd']`, or `['es', 'cjs']`, if multiple entries are used.
+Als Bibliothek bauen. `entry` ist erforderlich, da die Bibliothek HTML als Eintrag nicht verwenden kann. `name` ist die freiliegende globale Variable und ist erforderlich, wenn `formats` `'umd'` oder `'iife'` enthalten. Standard `formats` sind `['es', 'umd']` oder `['es', 'cjs']` , wenn mehrere Einträge verwendet werden.
 
-`fileName` is the name of the package file output, which defaults to the `"name"` in `package.json`. It can also be defined as a function taking the `format` and `entryName` as arguments, and returning the file name.
+`fileName` ist der Name der Paketdateiausgabe, die standardmäßig `"name"` in `package.json` ist. Es kann auch als eine Funktion definiert werden, die die `format` und `entryName` als Argumente nimmt und den Dateinamen zurückgibt.
 
-If your package imports CSS, `cssFileName` can be used to specify the name of the CSS file output. It defaults to the same value as `fileName` if it's set a string, otherwise it also falls back to the `"name"` in `package.json`.
+Wenn Ihr Paket CSS importiert, kann `cssFileName` verwendet werden, um den Namen der CSS -Dateiausgabe anzugeben. Es ist standardmäßig auf den gleichen Wert wie `fileName` , wenn es eine Zeichenfolge festgelegt hat, ansonsten fällt es auch auf `"name"` in `package.json` zurück.
 
 ```js twoslash [vite.config.js]
 import { defineConfig } from 'vite'
@@ -187,56 +187,56 @@ export default defineConfig({
 
 ## build.manifest
 
-- **Type:** `boolean | string`
-- **Default:** `false`
-- **Related:** [Backend Integration](/de/guide/backend-integration)
+- **Typ:** `boolean | String`
+- **Standard:** `false`
+- **Verwandte:** [Backend -Integration](/de/guide/backend-integration)
 
-Whether to generate a manifest file that contains a mapping of non-hashed asset filenames to their hashed versions, which can then be used by a server framework to render the correct asset links.
+Unabhängig davon, ob eine Manifestdatei generiert werden soll, die eine Zuordnung von nichthaschierten Asset-Dateinamen auf ihre Hashed-Versionen enthält, die dann von einem Server-Framework verwendet werden kann, um die richtigen Asset-Links zu rendern.
 
-When the value is a string, it will be used as the manifest file path relative to `build.outDir`. When set to `true`, the path would be `.vite/manifest.json`.
+Wenn der Wert eine Zeichenfolge ist, wird er als Manifest -Dateipfad relativ zu `build.outDir` verwendet. Wenn der Pfad auf `true` gesetzt ist, wäre `.vite/manifest.json` .
 
 ## build.ssrManifest
 
-- **Type:** `boolean | string`
-- **Default:** `false`
-- **Related:** [Server-Side Rendering](/de/guide/ssr)
+- **Typ:** `boolean | String`
+- **Standard:** `false`
+- **Verwandte:** [serverseitiges Rendering](/de/guide/ssr)
 
-Whether to generate a SSR manifest file for determining style links and asset preload directives in production.
+Ob Sie eine SSR -Manifestdatei für die Bestimmung von Stilverbindungen und Vorladungsrichtlinien in der Produktion generieren.
 
-When the value is a string, it will be used as the manifest file path relative to `build.outDir`. When set to `true`, the path would be `.vite/ssr-manifest.json`.
+Wenn der Wert eine Zeichenfolge ist, wird er als Manifest -Dateipfad relativ zu `build.outDir` verwendet. Wenn der Pfad auf `true` gesetzt ist, wäre `.vite/ssr-manifest.json` .
 
 ## build.ssr
 
-- **Type:** `boolean | string`
-- **Default:** `false`
-- **Related:** [Server-Side Rendering](/de/guide/ssr)
+- **Typ:** `boolean | String`
+- **Standard:** `false`
+- **Verwandte:** [serverseitiges Rendering](/de/guide/ssr)
 
-Produce SSR-oriented build. The value can be a string to directly specify the SSR entry, or `true`, which requires specifying the SSR entry via `rollupOptions.input`.
+Produktion SSR-orientiertes Build. Der Wert kann eine Zeichenfolge sein, die den SSR -Eintrag oder `true` direkt angeben kann, für die die SSR -Eingabe über `rollupOptions.input` angegeben werden muss.
 
 ## build.emitAssets
 
-- **Type:** `boolean`
-- **Default:** `false`
+- **Typ:** `boolean`
+- **Standard:** `false`
 
-During non-client builds, static assets aren't emitted as it is assumed they would be emitted as part of the client build. This option allows frameworks to force emitting them in other environments build. It is responsibility of the framework to merge the assets with a post build step.
+Bei nicht klientischen Builds werden statische Vermögenswerte nicht abgebildet, da angenommen wird, dass sie als Teil des Kundenbuilds emittiert werden. Mit dieser Option können Frameworks sie erzwingen, sie in anderen Umgebungen zu erstellen. Es liegt in der Verantwortung des Rahmens, das Vermögen mit einem Post -Build -Schritt zu verschmelzen.
 
 ## build.ssrEmitAssets
 
-- **Type:** `boolean`
-- **Default:** `false`
+- **Typ:** `boolean`
+- **Standard:** `false`
 
-During the SSR build, static assets aren't emitted as it is assumed they would be emitted as part of the client build. This option allows frameworks to force emitting them in both the client and SSR build. It is responsibility of the framework to merge the assets with a post build step. This option will be replaced by `build.emitAssets` once Environment API is stable.
+Während des SSR -Builds werden statische Vermögenswerte nicht abgebildet, da angenommen wird, dass sie als Teil des Kundenbuilds emittiert werden. Mit dieser Option können Frameworks sie sowohl im Client- als auch im SSR -Build erzwingen. Es liegt in der Verantwortung des Rahmens, das Vermögen mit einem Post -Build -Schritt zu verschmelzen. Diese Option wird durch `build.emitAssets` ersetzt, sobald die Umgebungs -API stabil ist.
 
 ## build.minify
 
-- **Type:** `boolean | 'terser' | 'esbuild'`
-- **Default:** `'esbuild'` for client build, `false` for SSR build
+- **Typ:** `boolean | 'Terser' | 'Esbuild'`
+- **Standardeinstellung:** `'esbuild'` für Client Build, `false` für SSR Build
 
-Set to `false` to disable minification, or specify the minifier to use. The default is [esbuild](https://github.com/evanw/esbuild) which is 20 ~ 40x faster than terser and only 1 ~ 2% worse compression. [Benchmarks](https://github.com/privatenumber/minification-benchmarks)
+Legen Sie auf `false` ein, um die Minifikation zu deaktivieren, oder geben Sie den zu verwendenden Minifikator an. Der Standard ist [esbuild](https://github.com/evanw/esbuild) , das 20 ~ 40x schneller als Terser und nur 1 ~ 2% schlechtere Komprimierung ist. [Benchmarks](https://github.com/privatenumber/minification-benchmarks)
 
-Note the `build.minify` option does not minify whitespaces when using the `'es'` format in lib mode, as it removes pure annotations and breaks tree-shaking.
+Beachten Sie, dass die `build.minify` Option Whitespaces nicht minimiert, wenn das `'es'` Format im Lib-Modus verwendet wird, da es reine Anmerkungen beseitigt und das Baumschütteln durchbricht.
 
-Terser must be installed when it is set to `'terser'`.
+Terser muss installiert werden, wenn es auf `'terser'` eingestellt ist.
 
 ```sh
 npm add -D terser
@@ -244,57 +244,57 @@ npm add -D terser
 
 ## build.terserOptions
 
-- **Type:** `TerserOptions`
+- **Typ:** `TerserOptions`
 
-Additional [minify options](https://terser.org/docs/api-reference#minify-options) to pass on to Terser.
+Zusätzliche [Minifik -Optionen](https://terser.org/docs/api-reference#minify-options) für Terser.
 
-In addition, you can also pass a `maxWorkers: number` option to specify the max number of workers to spawn. Defaults to the number of CPUs minus 1.
+Darüber hinaus können Sie auch eine `maxWorkers: number` -Option übergeben, um die maximale Anzahl von Arbeitnehmern zu laichen. Standardeinstellung zur Anzahl der CPUs minus 1.
 
 ## build.write
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **Typ:** `boolean`
+- **Standard:** `true`
 
-Set to `false` to disable writing the bundle to disk. This is mostly used in [programmatic `build()` calls](/de/guide/api-javascript#build) where further post processing of the bundle is needed before writing to disk.
+Setzen Sie auf `false` um das Schreiben des Bündels auf die Festplatte zu deaktivieren. Dies wird hauptsächlich in [programmatischen `build()` -Aufrufen](/de/guide/api-javascript#build) verwendet, bei denen vor dem Schreiben auf die Festplatte weitere Nachbearbeitung des Bündels benötigt wird.
 
 ## build.emptyOutDir
 
-- **Type:** `boolean`
-- **Default:** `true` if `outDir` is inside `root`
+- **Typ:** `boolean`
+- **Standard:** `true` Wenn `outDir` in `root` ist
 
-By default, Vite will empty the `outDir` on build if it is inside project root. It will emit a warning if `outDir` is outside of root to avoid accidentally removing important files. You can explicitly set this option to suppress the warning. This is also available via command line as `--emptyOutDir`.
+Standardmäßig leeren VITE die `outDir` beim Build, wenn er sich innerhalb von Projektroot befindet. Es wird eine Warnung ausgehen, wenn `outDir` außerhalb des Roots ist, um nicht versehentlich wichtige Dateien zu entfernen. Sie können diese Option ausdrücklich festlegen, um die Warnung zu unterdrücken. Dies ist auch über die Befehlszeile als `--emptyOutDir` erhältlich.
 
 ## build.copyPublicDir
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **Typ:** `boolean`
+- **Standard:** `true`
 
-By default, Vite will copy files from the `publicDir` into the `outDir` on build. Set to `false` to disable this.
+Standardmäßig kopiert VITE Dateien aus der `publicDir` in die `outDir` im Build. Setzen Sie auf `false` um dies zu deaktivieren.
 
 ## build.reportCompressedSize
 
-- **Type:** `boolean`
-- **Default:** `true`
+- **Typ:** `boolean`
+- **Standard:** `true`
 
-Enable/disable gzip-compressed size reporting. Compressing large output files can be slow, so disabling this may increase build performance for large projects.
+Aktivieren/Deaktivieren von GZIP-komprimierten Größenberichten. Das Komprimieren großer Ausgabedateien kann langsam sein. Daher kann dies die Erstellungsleistung für große Projekte erhöhen.
 
 ## build.chunkSizeWarningLimit
 
-- **Type:** `number`
-- **Default:** `500`
+- **Typ:** `number`
+- **Standard:** `500`
 
-Limit for chunk size warnings (in kB). It is compared against the uncompressed chunk size as the [JavaScript size itself is related to the execution time](https://v8.dev/blog/cost-of-javascript-2019).
+Grenze für die Warnungen der Stückegröße (in KB). Es wird mit der unkomprimierten Chunk -Größe verglichen, da die [JavaScript -Größe selbst mit der Ausführungszeit zusammenhängt](https://v8.dev/blog/cost-of-javascript-2019) .
 
 ## build.watch
 
-- **Type:** [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch)`| null`
-- **Default:** `null`
+- **Typ:** [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch) `| null`
+- **Standard:** `null`
 
-Set to `{}` to enable rollup watcher. This is mostly used in cases that involve build-only plugins or integrations processes.
+Setzen Sie auf `{}` um den Rollup -Beobachter zu aktivieren. Dies wird hauptsächlich in Fällen verwendet, in denen nur Build-Plugins oder Integrationsprozesse gebildet werden.
 
 ::: warning Using Vite on Windows Subsystem for Linux (WSL) 2
 
-There are cases that file system watching does not work with WSL2.
-See [`server.watch`](./server-options.md#server-watch) for more details.
+Es gibt Fälle, in denen das Dateisystembeobachten nicht mit WSL2 funktioniert.
+Weitere Informationen finden Sie unter [`server.watch`](./server-options.md#server-watch) .
 
 :::

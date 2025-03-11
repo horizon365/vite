@@ -1,27 +1,27 @@
-# Breaking Changes
+# Veränderungen Brechen
 
-List of breaking changes in Vite including API deprecations, removals, and changes. Most of the changes below can be opt-in using the [`future` option](/de/config/shared-options.html#future) in your Vite config.
+Liste der brechen Änderungen in der VITE, einschließlich API -Abschreibungen, Entfernungen und Änderungen. Die meisten folgenden Änderungen können mit der [Option `future`](/de/config/shared-options.html#future) in Ihrer VITE-Konfiguration angewendet werden.
 
-## Planned
+## Geplant
 
-These changes are planned for the next major version of Vite. The deprecation or usage warnings will guide you where possible, and we're reaching out to framework, plugin authors, and users to apply these changes.
+Diese Änderungen sind für die nächste große Version von Vite geplant. Die Abschalt- oder Nutzungswarnungen führen Sie nach Möglichkeit an, und wir wenden uns an Framework, Plugin -Autoren und Benutzer, um diese Änderungen anzuwenden.
 
-- _No planned changes yet_
+- _Noch keine geplanten Änderungen_
 
-## Considering
+## Angesichts
 
-These changes are being considered and are often experimental APIs that intend to improve upon current usage patterns. As not all changes are listed here, please check out the [Experimental Label in Vite GitHub Discussions](https://github.com/vitejs/vite/discussions/categories/feedback?discussions_q=label%3Aexperimental+category%3AFeedback) for the full list.
+Diese Veränderungen werden berücksichtigt und sind häufig experimentelle APIs, die die aktuellen Nutzungsmuster verbessern möchten. Da hier nicht alle Änderungen aufgeführt sind, lesen Sie bitte das [experimentelle Etikett in Vite Github -Diskussionen,](https://github.com/vitejs/vite/discussions/categories/feedback?discussions_q=label%3Aexperimental+category%3AFeedback) um die vollständige Liste zu erhalten.
 
-We don't recommend switching to these APIs yet. They are included in Vite to help us gather feedback. Please check these proposals and let us know how they work in your use case in each's linked GitHub Discussions.
+Wir empfehlen noch nicht, auf diese APIs zu wechseln. Sie sind in Vite enthalten, um uns zu helfen, Feedback zu sammeln. Bitte überprüfen Sie diese Vorschläge und teilen Sie uns mit, wie sie in Ihrem Anwendungsfall in den verknüpften Github -Diskussionen funktionieren.
 
-- [`this.environment` in Hooks](/de/changes/this-environment-in-hooks)
-- [HMR `hotUpdate` Plugin Hook](/de/changes/hotupdate-hook)
-- [Move to per-environment APIs](/de/changes/per-environment-apis)
-- [SSR using `ModuleRunner` API](/de/changes/ssr-using-modulerunner)
-- [Shared plugins during build](/de/changes/shared-plugins-during-build)
+- [`this.environment` in Haken](/de/changes/this-environment-in-hooks)
+- [HMR `hotUpdate` Plugin -Haken](/de/changes/hotupdate-hook)
+- [Wechseln Sie zu APIs pro Umwelt](/de/changes/per-environment-apis)
+- [SSR mit `ModuleRunner` API](/de/changes/ssr-using-modulerunner)
+- [Gemeinsame Plugins während des Builds](/de/changes/shared-plugins-during-build)
 
-## Past
+## Vergangenheit
 
-The changes below has been done or reverted. They are no longer relevant in the current major version.
+Die folgenden Änderungen wurden vorgenommen oder zurückverkehrt. Sie sind in der aktuellen Hauptversion nicht mehr relevant.
 
-- _No past changes yet_
+- _Noch keine Veränderungen in der Vergangenheit_
