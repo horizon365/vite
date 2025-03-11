@@ -1,10 +1,10 @@
-# Using Plugins
+# Использование Плагинов
 
-Vite can be extended using plugins, which are based on Rollup's well-designed plugin interface with a few extra Vite-specific options. This means that Vite users can rely on the mature ecosystem of Rollup plugins, while also being able to extend the dev server and SSR functionality as needed.
+VITE может быть расширен с помощью плагинов, которые основаны на хорошо разработанном интерфейсе плагина Rollup с несколькими дополнительными параметрами, специфичными для VITE. Это означает, что пользователи VITE могут полагаться на зрелую экосистему плагинов ROLLUP, а также возможность расширить функциональность DEV и функциональность SSR по мере необходимости.
 
-## Adding a Plugin
+## Добавление плагина
 
-To use a plugin, it needs to be added to the `devDependencies` of the project and included in the `plugins` array in the `vite.config.js` config file. For example, to provide support for legacy browsers, the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) can be used:
+Чтобы использовать плагин, его необходимо добавить в `devDependencies` проекта и включить в массив `plugins` в файле `vite.config.js` конфигурации. Например, чтобы обеспечить поддержку унаследованных браузеров, можно использовать официальный [@vitejs/плагин-легачность](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) :
 
 ```
 $ npm add -D @vitejs/plugin-legacy
@@ -23,27 +23,27 @@ export default defineConfig({
 })
 ```
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins` также принимает пресеты, включая несколько плагинов в качестве одного элемента. Это полезно для сложных функций (например, интеграция Framework), которые реализованы с использованием нескольких плагинов. Массив будет сплющен внутри.
 
-Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
+Фалисовые плагины будут игнорироваться, которые можно использовать для легкости активации или деактивации плагинов.
 
-## Finding Plugins
+## Поиск Плагинов
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+VITE стремится обеспечить необычную поддержку для общих моделей веб-разработки. Перед поиском плагина VITE или совместимого подключения, ознакомьтесь с [руководством по функциям](../guide/features.md) . Многие случаи, когда плагин понадобится в проекте ROLLUP, уже рассматриваются в VITE.
 :::
 
-Check out the [Plugins section](../plugins/) for information about official plugins. Community plugins are listed in [awesome-vite](https://github.com/vitejs/awesome-vite#plugins).
+Проверьте [раздел плагинов](../plugins/) для получения информации о официальных плагинах. Общественные плагины перечислены в [Awesome-Vite](https://github.com/vitejs/awesome-vite#plugins) .
 
-You can also find plugins that follow the [recommended conventions](./api-plugin.md#conventions) using a [npm search for vite-plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) for Vite plugins or a [npm search for rollup-plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) for Rollup plugins.
+Вы также можете найти плагины, которые следуют [рекомендуемым конвенциям,](./api-plugin.md#conventions) используя [NPM Search для Vite-Plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) для плагинов Vite или [NPM Search для Pllup-Plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) для плагинов Rollup.
 
-## Enforcing Plugin Ordering
+## Обеспечение Заказа Плагина
 
-For compatibility with some Rollup plugins, it may be needed to enforce the order of the plugin or only apply at build time. This should be an implementation detail for Vite plugins. You can enforce the position of a plugin with the `enforce` modifier:
+Для совместимости с некоторыми плагинами ROLLUP может потребоваться применение порядка плагина или применения только во время сборки. Это должно быть детализацией реализации для плагинов VITE. Вы можете обеспечить положение плагина с модификатором `enforce` :
 
-- `pre`: invoke plugin before Vite core plugins
-- default: invoke plugin after Vite core plugins
-- `post`: invoke plugin after Vite build plugins
+- `pre` : плагин вызове перед плагинами Vite Core
+- По умолчанию: плагин вызове после плагинов Vite Core
+- `post` : плагин вызове после плагинов Vite Build
 
 ```js twoslash [vite.config.js]
 import image from '@rollup/plugin-image'
@@ -59,11 +59,11 @@ export default defineConfig({
 })
 ```
 
-Check out [Plugins API Guide](./api-plugin.md#plugin-ordering) for detailed information.
+Проверьте [руководство API плагинов](./api-plugin.md#plugin-ordering) для подробной информации.
 
-## Conditional Application
+## Условное Применение
 
-By default, plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+По умолчанию плагины вызываются как для подачи, так и для сборки. В тех случаях, когда плагин должен применяться только во время подачи или строительства, используйте свойство `apply` , чтобы вызвать их только в течение `'build'` или `'serve'` :
 
 ```js twoslash [vite.config.js]
 import typescript2 from 'rollup-plugin-typescript2'
@@ -79,6 +79,6 @@ export default defineConfig({
 })
 ```
 
-## Building Plugins
+## Строительные Плагины
 
-Check out the [Plugins API Guide](./api-plugin.md) for documentation about creating plugins.
+Проверьте [руководство API плагинов](./api-plugin.md) для документации о создании плагинов.

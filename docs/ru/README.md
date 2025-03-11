@@ -1,3 +1,3 @@
-# Hello World
+# Привет, Мир
 
-This is a demo file for markdown translation.
+Это демонстрационный файл для перевода маркировки.

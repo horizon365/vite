@@ -1,20 +1,20 @@
-# HMR `hotUpdate` Plugin Hook
+# HMR `hotUpdate` плагин крюк
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+Дайте нам отзыв в [Обсуждении от обратной связи API Environment](https://github.com/vitejs/vite/discussions/16358)
 :::
 
-We're planning to deprecate the `handleHotUpdate` plugin hook in favor of [`hotUpdate` hook](/ru/guide/api-environment#the-hotupdate-hook) to be [Environment API](/ru/guide/api-environment.md) aware, and handle additional watch events with `create` and `delete`.
+Мы планируем осуществить крюк с плагином `handleHotUpdate` в пользу [`hotUpdate` крючка](/en/guide/api-environment#the-hotupdate-hook) , чтобы стать [API Environment API](/en/guide/api-environment.md) , и обрабатывать дополнительные часы с `create` и `delete` .
 
-Affected scope: `Vite Plugin Authors`
+Затронутая область действия: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`hotUpdate` was first introduced in `v6.0`. The deprecation of `handleHotUpdate` is planned for `v7.0`. We don't yet recommend moving away from `handleHotUpdate` yet. If you want to experiment and give us feedback, you can use the `future.removePluginHookHandleHotUpdate` to `"warn"` in your vite config.
+`hotUpdate` был впервые введен в `v6.0` . Унимок `handleHotUpdate` запланирована на `v7.0` . Мы еще не рекомендуем уходить из `handleHotUpdate` . Если вы `"warn"` `future.removePluginHookHandleHotUpdate` конфигурации Vite.
 :::
 
-## Motivation
+## Мотивация
 
-The [`handleHotUpdate` hook](/ru/guide/api-plugin.md#handlehotupdate) allows to perform custom HMR update handling. A list of modules to be updated is passed in the `HmrContext`
+[Крюк `handleHotUpdate`](/en/guide/api-plugin.md#handlehotupdate) позволяет выполнять пользовательскую обработку обновлений HMR. Список модулей, которые должны быть обновлены, передается в `HmrContext`
 
 ```ts
 interface HmrContext {
@@ -26,9 +26,9 @@ interface HmrContext {
 }
 ```
 
-This hook is called once for all environments, and the passed modules have mixed information from the Client and SSR environments only. Once frameworks move to custom environments, a new hook that is called for each of them is needed.
+Этот крюк вызывается один раз для всех сред, а пропущенные модули имеют смешанную информацию только из среды клиента и SSR. Как только фреймворки перемещаются в пользовательские среды, необходим новый крючок, который требуется для каждого из них.
 
-The new `hotUpdate` hook works in the same way as `handleHotUpdate` but it is called for each environment and receives a new `HotUpdateOptions` instance:
+Новый крюк `hotUpdate` работает так же, как `handleHotUpdate` , но он требуется для каждой среды и получает новый экземпляр `HotUpdateOptions` :
 
 ```ts
 interface HotUpdateOptions {
@@ -41,31 +41,31 @@ interface HotUpdateOptions {
 }
 ```
 
-The current dev environment can be accessed like in other Plugin hooks with `this.environment`. The `modules` list will now be module nodes from the current environment only. Each environment update can define different update strategies.
+Текущая среда Dev может быть доступна, как в других крючках плагина с `this.environment` . Список `modules` теперь будет узлами модуля только из текущей среды. Каждое обновление среды может определять различные стратегии обновления.
 
-This hook is also now called for additional watch events and not only for `'update'`. Use `type` to differentiate between them.
+Этот крючок также теперь требуется для дополнительных наблюдений за наблюдением и не только для `'update'` . Используйте `type` чтобы различить их.
 
-## Migration Guide
+## Миграционный Гид
 
-Filter and narrow down the affected module list so that the HMR is more accurate.
+Отфильтруйте и сузите список пораженных модулей, чтобы HMR был более точным.
 
 ```js
 handleHotUpdate({ modules }) {
   return modules.filter(condition)
 }
 
-// Migrate to:
+// Мигрировать:
 
 hotUpdate({ modules }) {
   return modules.filter(condition)
 }
 ```
 
-Return an empty array and perform a full reload:
+Верните пустой массив и выполните полную перезагрузку:
 
 ```js
 handleHotUpdate({ server, modules, timestamp }) {
-  // Invalidate modules manually
+  // Недейть модулей вручную
   const invalidatedModules = new Set()
   for (const mod of modules) {
     server.moduleGraph.invalidateModule(
@@ -79,10 +79,10 @@ handleHotUpdate({ server, modules, timestamp }) {
   return []
 }
 
-// Migrate to:
+// Мигрировать:
 
 hotUpdate({ modules, timestamp }) {
-  // Invalidate modules manually
+  // Недейть модулей вручную
   const invalidatedModules = new Set()
   for (const mod of modules) {
     this.environment.moduleGraph.invalidateModule(
@@ -97,7 +97,7 @@ hotUpdate({ modules, timestamp }) {
 }
 ```
 
-Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+Верните пустой массив и выполните полную пользовательскую обработку HMR, отправив пользовательские события клиенту:
 
 ```js
 handleHotUpdate({ server }) {
@@ -109,7 +109,7 @@ handleHotUpdate({ server }) {
   return []
 }
 
-// Migrate to...
+// Мигрировать в ...
 
 hotUpdate() {
   this.environment.hot.send({

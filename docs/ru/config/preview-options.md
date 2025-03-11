@@ -1,41 +1,41 @@
-# Preview Options
+# Параметры Предварительного Просмотра
 
-Unless noted, the options in this section are only applied to preview.
+Если не указано, параметры в этом разделе применяются только к предварительному просмотру.
 
 ## preview.host
 
-- **Type:** `string | boolean`
-- **Default:** [`server.host`](./server-options#server-host)
+- **Тип:** `string | логический
+- **По умолчанию:** [`server.host`](./server-options#server-host)
 
-Specify which IP addresses the server should listen on.
-Set this to `0.0.0.0` or `true` to listen on all addresses, including LAN and public addresses.
+Укажите, какие IP -адреса должен слушать сервер.
+Установите это на `0.0.0.0` или `true` , чтобы прослушать все адреса, включая LAN и публичные адреса.
 
-This can be set via the CLI using `--host 0.0.0.0` or `--host`.
+Это может быть установлено через CLI, используя `--host 0.0.0.0` или `--host` .
 
 ::: tip NOTE
 
-There are cases when other servers might respond instead of Vite.
-See [`server.host`](./server-options#server-host) for more details.
+Есть случаи, когда другие серверы могут ответить вместо VITE.
+Смотрите [`server.host`](./server-options#server-host) для более подробной информации.
 
 :::
 
 ## preview.allowedHosts
 
-- **Type:** `string | true`
-- **Default:** [`server.allowedHosts`](./server-options#server-allowedhosts)
+- **Тип:** `string | правда
+- **По умолчанию:** [`server.allowedHosts`](./server-options#server-allowedhosts)
 
-The hostnames that Vite is allowed to respond to.
+Имена хоста, на которые можно ответить.
 
-See [`server.allowedHosts`](./server-options#server-allowedhosts) for more details.
+Смотрите [`server.allowedHosts`](./server-options#server-allowedhosts) для более подробной информации.
 
 ## preview.port
 
-- **Type:** `number`
-- **Default:** `4173`
+- **Тип:** `number`
+- **По умолчанию:** `4173`
 
-Specify server port. Note if the port is already being used, Vite will automatically try the next available port so this may not be the actual port the server ends up listening on.
+Укажите порт сервера. Примечание Если порт уже используется, Vite автоматически пробует следующий доступный порт, так что это может быть не фактический порт, который сервер заканчивает.
 
-**Example:**
+**Пример:**
 
 ```js
 export default defineConfig({
@@ -50,49 +50,49 @@ export default defineConfig({
 
 ## preview.strictPort
 
-- **Type:** `boolean`
-- **Default:** [`server.strictPort`](./server-options#server-strictport)
+- **Тип:** `boolean`
+- **По умолчанию:** [`server.strictPort`](./server-options#server-strictport)
 
-Set to `true` to exit if port is already in use, instead of automatically trying the next available port.
+Установите на `true` для выхода, если порт уже используется, вместо того, чтобы автоматически пробовать следующий доступный порт.
 
 ## preview.https
 
-- **Type:** `https.ServerOptions`
-- **Default:** [`server.https`](./server-options#server-https)
+- **Тип:** `https.ServerOptions`
+- **По умолчанию:** [`server.https`](./server-options#server-https)
 
-Enable TLS + HTTP/2. Note this downgrades to TLS only when the [`server.proxy` option](./server-options#server-proxy) is also used.
+Включить TLS + http/2. Обратите внимание на это понижение до TLS только при использовании [опции `server.proxy`](./server-options#server-proxy) .
 
-The value can also be an [options object](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) passed to `https.createServer()`.
+Значение также может быть [объектом параметров,](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) передаваемых `https.createServer()` .
 
 ## preview.open
 
-- **Type:** `boolean | string`
-- **Default:** [`server.open`](./server-options#server-open)
+- **Тип:** `Boolean | String`.
+- **По умолчанию:** [`server.open`](./server-options#server-open)
 
-Automatically open the app in the browser on server start. When the value is a string, it will be used as the URL's pathname. If you want to open the server in a specific browser you like, you can set the env `process.env.BROWSER` (e.g. `firefox`). You can also set `process.env.BROWSER_ARGS` to pass additional arguments (e.g. `--incognito`).
+Автоматически откройте приложение в браузере при запуске сервера. Когда значение является строкой, оно будет использоваться в качестве пути пути URL. Если вы хотите открыть сервер в конкретном браузере, который вам нравится, вы можете установить Env `process.env.BROWSER` (например, `firefox` ). Вы также можете установить `process.env.BROWSER_ARGS` для передачи дополнительных аргументов (например, `--incognito` ).
 
-`BROWSER` and `BROWSER_ARGS` are also special environment variables you can set in the `.env` file to configure it. See [the `open` package](https://github.com/sindresorhus/open#app) for more details.
+`BROWSER` и `BROWSER_ARGS` также являются специальными переменными среды, которые вы можете установить в `.env` файле для его настройки. Смотрите [`open` пакета](https://github.com/sindresorhus/open#app) для более подробной информации.
 
 ## preview.proxy
 
-- **Type:** `Record<string, string | ProxyOptions>`
-- **Default:** [`server.proxy`](./server-options#server-proxy)
+- **Тип:** `record <строка, строка | Проксиопции> `
+- **По умолчанию:** [`server.proxy`](./server-options#server-proxy)
 
-Configure custom proxy rules for the preview server. Expects an object of `{ key: options }` pairs. If the key starts with `^`, it will be interpreted as a `RegExp`. The `configure` option can be used to access the proxy instance.
+Настройте пользовательские правила прокси для сервера предварительного просмотра. Ожидает объект из `{ key: options }` пар. Если ключ начинается с `^` , он будет интерпретироваться как `RegExp` . Вариант `configure` можно использовать для доступа к экземпляру прокси.
 
-Uses [`http-proxy`](https://github.com/http-party/node-http-proxy). Full options [here](https://github.com/http-party/node-http-proxy#options).
+Использует [`http-proxy`](https://github.com/http-party/node-http-proxy) . Полные варианты [здесь](https://github.com/http-party/node-http-proxy#options) .
 
 ## preview.cors
 
-- **Type:** `boolean | CorsOptions`
-- **Default:** [`server.cors`](./server-options#server-cors)
+- **Тип:** `Boolean | Корсопции
+- **По умолчанию:** [`server.cors`](./server-options#server-cors)
 
-Configure CORS for the preview server.
+Настройте COR для сервера предварительного просмотра.
 
-See [`server.cors`](./server-options#server-cors) for more details.
+Смотрите [`server.cors`](./server-options#server-cors) для более подробной информации.
 
 ## preview.headers
 
-- **Type:** `OutgoingHttpHeaders`
+- **Тип:** `OutgoingHttpHeaders`
 
-Specify server response headers.
+Укажите заголовки ответов на сервер.

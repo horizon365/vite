@@ -1,25 +1,25 @@
-# Environment API for Plugins
+# API среды для плагинов
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+API окружающей среды экспериментально. Во время Vite 6 мы сохраним конюшню APIS, чтобы позволить экосистеме экспериментировать и построить на ней. Мы планируем стабилизировать эти новые API с потенциальными нарушающими изменениями в Vite 7.
 
-Resources:
+Ресурсы:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+- [Обсуждение обратной связи,](https://github.com/vitejs/vite/discussions/16358) где мы собираем отзывы о новых API.
+- [Environment API PR](https://github.com/vitejs/vite/pull/16471) , где новый API был реализован и рассмотрен.
 
-Please share your feedback with us.
+Пожалуйста, поделитесь с нами своими отзывами.
 :::
 
-## Accessing the Current Environment in Hooks
+## Доступ к текущей среде в крючках
 
-Given that there were only two Environments until Vite 6 (`client` and `ssr`), a `ssr` boolean was enough to identify the current environment in Vite APIs. Plugin Hooks received a `ssr` boolean in the last options parameter, and several APIs expected an optional last `ssr` parameter to properly associate modules to the correct environment (for example `server.moduleGraph.getModuleByUrl(url, { ssr })`).
+Учитывая, что было только две среды до VITE 6 ( `client` и `ssr` ), было достаточно `ssr` -логического, чтобы определить текущую среду в API VITE. Крюки плагинов получили `ssr` логического параметра в последнем параметре параметров, и несколько API ожидали дополнительного `ssr` параметра для правильного ассоциирования модулей с правильной средой (например, `server.moduleGraph.getModuleByUrl(url, { ssr })` ).
 
-With the advent of configurable environments, we now have a uniform way to access their options and instance in plugins. Plugin hooks now expose `this.environment` in their context, and APIs that previously expected a `ssr` boolean are now scoped to the proper environment (for example `environment.moduleGraph.getModuleByUrl(url)`).
+С появлением настраиваемых сред, у нас теперь есть единый способ получить доступ к их параметрам и экземпляру в плагинах. Крюки плагинов теперь обнажают `this.environment` в своем контексте, и API, которые ранее ожидали `ssr` логического бака, теперь оказались в соответствующей среде (например, `environment.moduleGraph.getModuleByUrl(url)` ).
 
-The Vite server has a shared plugin pipeline, but when a module is processed it is always done in the context of a given environment. The `environment` instance is available in the plugin context.
+Сервер VITE имеет общий трубопровод плагинов, но когда модуль обрабатывается, он всегда выполняется в контексте данной среды. Экземпляр `environment` доступен в контексте плагина.
 
-A plugin could use the `environment` instance to change how a module is processed depending on the configuration for the environment (which can be accessed using `environment.config`).
+Плагин может использовать экземпляр `environment` для изменения того, как обрабатывается модуль в зависимости от конфигурации для среды (к которому можно получить доступ с помощью `environment.config` ).
 
 ```ts
   transform(code, id) {
@@ -27,9 +27,9 @@ A plugin could use the `environment` instance to change how a module is processe
   }
 ```
 
-## Registering New Environments Using Hooks
+## Регистрация Новых Средств С Использованием Крючков
 
-Plugins can add new environments in the `config` hook (for example to have a separate module graph for [RSC](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components)):
+Плагины могут добавлять новые среды в крючке `config` (например, для отдельного графа модуля для [RSC](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) ):
 
 ```ts
   config(config: UserConfig) {
@@ -37,12 +37,12 @@ Plugins can add new environments in the `config` hook (for example to have a sep
   }
 ```
 
-An empty object is enough to register the environment, default values from the root level environment config.
+Пустого объекта достаточно, чтобы зарегистрировать среду, значения по умолчанию из конфигурации среды корневого уровня.
 
-## Configuring Environment Using Hooks
+## Настройка Среды С Использованием Крючков
 
-While the `config` hook is running, the complete list of environments isn't yet known and the environments can be affected by both the default values from the root level environment config or explicitly through the `config.environments` record.
-Plugins should set default values using the `config` hook. To configure each environment, they can use the new `configEnvironment` hook. This hook is called for each environment with its partially resolved config including resolution of final defaults.
+В то время как `config` Hook работает, полный список среде еще не известен, и на среды могут влиять как значения по умолчанию из конфигурации среды корневого уровня, либо явно через `config.environments` запись.
+Плагины должны устанавливать значения по умолчанию, используя `config` крючков. Чтобы настроить каждую среду, они могут использовать новый крючок `configEnvironment` . Этот крючок требуется для каждой среды с его частично разрешенной конфигурацией, включая разрешение окончательных дефолтов.
 
 ```ts
   configEnvironment(name: string, options: EnvironmentOptions) {
@@ -50,12 +50,12 @@ Plugins should set default values using the `config` hook. To configure each env
       options.resolve.conditions = // ...
 ```
 
-## The `hotUpdate` Hook
+## `hotUpdate` крючок
 
-- **Type:** `(this: { environment: DevEnvironment }, options: HotUpdateOptions) => Array<EnvironmentModuleNode> | void | Promise<Array<EnvironmentModuleNode> | void>`
-- **See also:** [HMR API](./api-hmr)
+- **Тип:** `(это: {Environment: Devenvironment}, параметры: hotupdateoptions) => массив<EnvironmentModuleNode> | пустота | Обещание <Массив<EnvironmentModuleNode> | void> `
+- **Смотрите также:** [HMR API](./api-hmr)
 
-The `hotUpdate` hook allows plugins to perform custom HMR update handling for a given environment. When a file changes, the HMR algorithm is run for each environment in series according to the order in `server.environments`, so the `hotUpdate` hook will be called multiple times. The hook receives a context object with the following signature:
+Крюк `hotUpdate` позволяет плагинам выполнять пользовательскую обработку обновлений HMR для данной среды. Когда файл меняется, алгоритм HMR запускается для каждой среды последовательно в соответствии с порядком в `server.environments` , поэтому `hotUpdate` крючок будет называется несколько раз. Крюк получает объект контекста со следующей подписью:
 
 ```ts
 interface HotUpdateOptions {
@@ -68,24 +68,24 @@ interface HotUpdateOptions {
 }
 ```
 
-- `this.environment` is the module execution environment where a file update is currently being processed.
+- `this.environment` - среда выполнения модуля, в которой в настоящее время обрабатывается обновление файла.
 
-- `modules` is an array of modules in this environment that are affected by the changed file. It's an array because a single file may map to multiple served modules (e.g. Vue SFCs).
+- `modules` - это массив модулей в этой среде, которые влияют на измененный файл. Это массив, потому что один файл может отображать несколько обслуживаемых модулей (например, VUE SFCS).
 
-- `read` is an async read function that returns the content of the file. This is provided because, on some systems, the file change callback may fire too fast before the editor finishes updating the file, and direct `fs.readFile` will return empty content. The read function passed in normalizes this behavior.
+- `read` - это асинхронная функция чтения, которая возвращает содержимое файла. Это предусмотрено, потому что в некоторых системах обратный вызов изменения файла может слишком быстро стрелять, прежде чем редактор завершит обновление файла, а Direct `fs.readFile` вернет пустой контент. Функция чтения передается в нормализации этого поведения.
 
-The hook can choose to:
+Крюк может выбрать:
 
-- Filter and narrow down the affected module list so that the HMR is more accurate.
+- Отфильтруйте и сузите список пораженных модулей, чтобы HMR был более точным.
 
-- Return an empty array and perform a full reload:
+- Верните пустой массив и выполните полную перезагрузку:
 
   ```js
   hotUpdate({ modules, timestamp }) {
     if (this.environment.name !== 'client')
       return
 
-    // Invalidate modules manually
+    // Недейть модулей вручную
     const invalidatedModules = new Set()
     for (const mod of modules) {
       this.environment.moduleGraph.invalidateModule(
@@ -100,7 +100,7 @@ The hook can choose to:
   }
   ```
 
-- Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+- Верните пустой массив и выполните полную пользовательскую обработку HMR, отправив пользовательские события клиенту:
 
   ```js
   hotUpdate() {
@@ -116,44 +116,44 @@ The hook can choose to:
   }
   ```
 
-  Client code should register the corresponding handler using the [HMR API](./api-hmr) (this could be injected by the same plugin's `transform` hook):
+  Клиентский код должен зарегистрировать соответствующий обработчик, используя [API HMR](./api-hmr) (это может быть введено с помощью `transform` крюка 0 плагина):
 
   ```js
   if (import.meta.hot) {
     import.meta.hot.on('special-update', (data) => {
-      // perform custom update
+      // Выполните пользовательское обновление
     })
   }
   ```
 
-## Per-environment Plugins
+## Плагины Для Каждого Оборудования
 
-A plugin can define what are the environments it should apply to with the `applyToEnvironment` function.
+Плагин может определить, к каким средам он должен применить с функцией `applyToEnvironment` .
 
 ```js
 const UnoCssPlugin = () => {
-  // shared global state
+  // Общее глобальное государство
   return {
     buildStart() {
-      // init per-environment state with WeakMap<Environment,Data>
-      // using this.environment
+      // Инициация по окружающей среде со слабой картой <среда, данные>
+      // Используя это. Окружающая среда
     },
     configureServer() {
-      // use global hooks normally
+      // Обычно используйте глобальные крючки
     },
     applyToEnvironment(environment) {
-      // return true if this plugin should be active in this environment,
-      // or return a new plugin to replace it.
-      // if the hook is not used, the plugin is active in all environments
+      // вернуть True, если этот плагин должен быть активным в этой среде,
+      // или вернуть новый плагин, чтобы заменить его.
+      // Если крюк не используется, плагин активен во всех средах
     },
     resolveId(id, importer) {
-      // only called for environments this plugin apply to
+      // применимы только к средам.
     },
   }
 }
 ```
 
-If a plugin isn't environment aware and has state that isn't keyed on the current environment, the `applyToEnvironment` hook allows to easily make it per-environment.
+Если плагин не осведомлен об окружающей среде и имеет состояние, которое не является ключом к текущей среде, крюк `applyToEnvironment` позволяет легко сделать его на среду.
 
 ```js
 import { nonShareablePlugin } from 'non-shareable-plugin'
@@ -170,7 +170,7 @@ export default defineConfig({
 })
 ```
 
-Vite exports a `perEnvironmentPlugin` helper to simplify these cases where no other hooks are required:
+Выберите экспорт помощника `perEnvironmentPlugin` , чтобы упростить эти случаи, когда другие крючки не требуются:
 
 ```js
 import { nonShareablePlugin } from 'non-shareable-plugin'
@@ -184,39 +184,39 @@ export default defineConfig({
 })
 ```
 
-## Environment in Build Hooks
+## Окружающая Среда В Строительных Крючках
 
-In the same way as during dev, plugin hooks also receive the environment instance during build, replacing the `ssr` boolean.
-This also works for `renderChunk`, `generateBundle`, and other build only hooks.
+Так же, как и во время DEV, крючки плагинов также получают экземпляр среды во время сборки, заменив `ssr` ванного.
+Это также работает для `renderChunk` , `generateBundle` и других крючков.
 
-## Shared Plugins During Build
+## Общие Плагины Во Время Сборки
 
-Before Vite 6, the plugins pipelines worked in a different way during dev and build:
+Перед Vite 6 трубопроводы плагинов работали по -другому во время Dev и Build:
 
-- **During dev:** plugins are shared
-- **During Build:** plugins are isolated for each environment (in different processes: `vite build` then `vite build --ssr`).
+- **Во время разработчика:** плагины обмениваются
+- **Во время сборки:** плагины изолированы для каждой среды (в разных процессах: `vite build` , затем `vite build --ssr` ).
 
-This forced frameworks to share state between the `client` build and the `ssr` build through manifest files written to the file system. In Vite 6, we are now building all environments in a single process so the way the plugins pipeline and inter-environment communication can be aligned with dev.
+Это вынуждено обмениваться состоянием между сборкой `client` и `ssr` сборкой с помощью манифестных файлов, записанных в файловую систему. В Vite 6 мы сейчас строим все среды в одном процессе, чтобы способность плагинов и взаимосвязь между окружающей средой может быть выровнен с DEV.
 
-In a future major (Vite 7 or 8), we aim to have complete alignment:
+В будущем (Vite 7 или 8) мы стремимся иметь полное выравнивание:
 
-- **During both dev and build:** plugins are shared, with [per-environment filtering](#per-environment-plugins)
+- **Во время Dev и Build:** плагины обмениваются, с [фильтрацией на раскрытие средств](#per-environment-plugins)
 
-There will also be a single `ResolvedConfig` instance shared during build, allowing for caching at entire app build process level in the same way as we have been doing with `WeakMap<ResolvedConfig, CachedData>` during dev.
+Во время сборки также будет один экземпляр `ResolvedConfig` , позволяющий кэшировать на всем уровне процесса сборки приложения так же, как и с `WeakMap<ResolvedConfig, CachedData>` во время разработки.
 
-For Vite 6, we need to do a smaller step to keep backward compatibility. Ecosystem plugins are currently using `config.build` instead of `environment.config.build` to access configuration, so we need to create a new `ResolvedConfig` per-environment by default. A project can opt-in into sharing the full config and plugins pipeline setting `builder.sharedConfigBuild` to `true`.
+Для Vite 6 нам нужно сделать меньший шаг, чтобы сохранить обратную совместимость. Плагины экосистем в настоящее время используют `config.build` вместо `environment.config.build` для доступа к конфигурации, поэтому нам необходимо по умолчанию новое `ResolvedConfig` для окружающей среды. Проект может принять участие в обмене полной настройкой конфигурации и плагинов `builder.sharedConfigBuild` `true`
 
-This option would only work of a small subset of projects at first, so plugin authors can opt-in for a particular plugin to be shared by setting the `sharedDuringBuild` flag to `true`. This allows for easily sharing state both for regular plugins:
+Сначала эта опция будет работать только небольшой подмножеством проектов, поэтому авторы плагинов могут использовать конкретный плагин, который будет использоваться, установив флаг `sharedDuringBuild` на `true` . Это позволяет легко обмениваться состоянием оба для обычных плагинов:
 
 ```js
 function myPlugin() {
-  // Share state among all environments in dev and build
+  // Поделиться состоянием среди всех среда в разработке и строить
   const sharedState = ...
   return {
     name: 'shared-plugin',
     transform(code, id) { ... },
 
-    // Opt-in into a single instance for all environments
+    // Забрать в один экземпляр для всех средств
     sharedDuringBuild: true,
   }
 }

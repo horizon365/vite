@@ -1,27 +1,27 @@
-# Breaking Changes
+# Нарушение Изменений
 
-List of breaking changes in Vite including API deprecations, removals, and changes. Most of the changes below can be opt-in using the [`future` option](/ru/config/shared-options.html#future) in your Vite config.
+Список нарушающих изменений, включая аспекты API, удаления и изменения. Большинство приведенных ниже изменений могут быть приняты в систему, используя [опцию `future`](/en/config/shared-options.html#future) в вашей конфигурации Vite.
 
-## Planned
+## Запланировано
 
-These changes are planned for the next major version of Vite. The deprecation or usage warnings will guide you where possible, and we're reaching out to framework, plugin authors, and users to apply these changes.
+Эти изменения запланированы для следующей крупной версии VITE. Университетские или предупреждения об использовании будут направлены вам, где это возможно, и мы обращаемся к фреймворкам, авторам плагинов и пользователям, чтобы применить эти изменения.
 
-- _No planned changes yet_
+- _Пока нет запланированных изменений_
 
-## Considering
+## Учитывая
 
-These changes are being considered and are often experimental APIs that intend to improve upon current usage patterns. As not all changes are listed here, please check out the [Experimental Label in Vite GitHub Discussions](https://github.com/vitejs/vite/discussions/categories/feedback?discussions_q=label%3Aexperimental+category%3AFeedback) for the full list.
+Эти изменения рассматриваются и часто являются экспериментальными API, которые намереваются улучшить текущие модели использования. Поскольку здесь не все изменения перечислены, пожалуйста, ознакомьтесь [с экспериментальной меткой в дискуссиях Vite Github](https://github.com/vitejs/vite/discussions/categories/feedback?discussions_q=label%3Aexperimental+category%3AFeedback) для полного списка.
 
-We don't recommend switching to these APIs yet. They are included in Vite to help us gather feedback. Please check these proposals and let us know how they work in your use case in each's linked GitHub Discussions.
+Мы еще не рекомендуем переходить на эти API. Они включены в VITE, чтобы помочь нам собрать отзывы. Пожалуйста, проверьте эти предложения и дайте нам знать, как они работают в вашем варианте использования в каждой связанной дискуссии GitHub.
 
-- [`this.environment` in Hooks](/ru/changes/this-environment-in-hooks)
-- [HMR `hotUpdate` Plugin Hook](/ru/changes/hotupdate-hook)
-- [Move to per-environment APIs](/ru/changes/per-environment-apis)
-- [SSR using `ModuleRunner` API](/ru/changes/ssr-using-modulerunner)
-- [Shared plugins during build](/ru/changes/shared-plugins-during-build)
+- [`this.environment` в крючках](/en/changes/this-environment-in-hooks)
+- [HMR `hotUpdate` плагин крюк](/en/changes/hotupdate-hook)
+- [Перейти к API-интерфейсам для каждого окружающей среды](/en/changes/per-environment-apis)
+- [SSR с использованием `ModuleRunner` API](/en/changes/ssr-using-modulerunner)
+- [Общие плагины во время сборки](/en/changes/shared-plugins-during-build)
 
-## Past
+## Прошлое
 
-The changes below has been done or reverted. They are no longer relevant in the current major version.
+Изменения ниже были сделаны или вернулись. Они больше не актуальны в текущей основной версии.
 
-- _No past changes yet_
+- _Пока нет прошлых изменений_

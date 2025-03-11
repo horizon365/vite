@@ -1,50 +1,50 @@
-# Getting Started
+# Начиная
 
 <audio id="vite-audio">
   <source src="/vite.mp3" type="audio/mpeg">
 </audio>
 
-## Overview
+## Обзор
 
 Vite (French word for "quick", pronounced `/vit/`<button style="border:none;padding:3px;border-radius:4px;vertical-align:bottom" id="play-vite-audio" onclick="document.getElementById('vite-audio').play();"><svg style="height:2em;width:2em"><use href="/voice.svg#voice" /></svg></button>, like "veet") is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two major parts:
 
-- A dev server that provides [rich feature enhancements](./features) over [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), for example extremely fast [Hot Module Replacement (HMR)](./features#hot-module-replacement).
+- DEV -сервер, который обеспечивает [богатые улучшения функций](./features) по сравнению с [нативными модулями ES](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) , например, чрезвычайно быстрой [заменой горячих модулей (HMR)](./features#hot-module-replacement) .
 
-- A build command that bundles your code with [Rollup](https://rollupjs.org), pre-configured to output highly optimized static assets for production.
+- Команда сборки, которая объединяет ваш код с помощью [подключения](https://rollupjs.org) , предварительно сконфигурированной для вывода высоко оптимизированных статических активов для производства.
 
-Vite is opinionated and comes with sensible defaults out of the box. Read about what's possible in the [Features Guide](./features). Support for frameworks or integration with other tools is possible through [Plugins](./using-plugins). The [Config Section](../config/) explains how to adapt Vite to your project if needed.
+Vite является самоуверенными и поставляется с разумными значениями по умолчанию из коробки. Прочитайте о том, что возможно в [руководстве по функциям](./features) . Поддержка фреймворков или интеграции с другими инструментами возможна через [плагины](./using-plugins) . [Раздел конфигурации](../config/) объясняет, как адаптировать Veite к вашему проекту, если это необходимо.
 
-Vite is also highly extensible via its [Plugin API](./api-plugin) and [JavaScript API](./api-javascript) with full typing support.
+VITE также очень расширяется с помощью [API плагина](./api-plugin) и [API JavaScript](./api-javascript) с полной поддержкой печати.
 
-You can learn more about the rationale behind the project in the [Why Vite](./why) section.
+Вы можете узнать больше о обосновании проекта в разделе [«Почему VITE»](./why) .
 
-## Browser Support
+## Поддержка Браузера
 
-During development, Vite sets [`esnext` as the transform target](https://esbuild.github.io/api/#target), because we assume a modern browser is used and it supports all of the latest JavaScript and CSS features. This prevents syntax lowering, letting Vite serve modules as close as possible to the original source code.
+Во время разработки VITE набирает [`esnext` в качестве цели преобразования](https://esbuild.github.io/api/#target) , потому что мы предполагаем, что используется современный браузер, и он поддерживает все последние функции JavaScript и CSS. Это предотвращает снижение синтаксиса, позволяя Vite служить модулям как можно ближе к исходному исходному коду.
 
-For the production build, by default Vite targets browsers that support modern JavaScript, such as [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta), [nullish coalescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing), and [BigInt](https://caniuse.com/bigint). Legacy browsers can be supported via the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy). See the [Building for Production](./build) section for more details.
+Для производственной сборки, по умолчанию, Vite Targets Browsers, которые поддерживают современный JavaScript, такие как [Native ES -модули](https://caniuse.com/es6-module) , [Native ESM Dynamic Import](https://caniuse.com/es6-module-dynamic-import) , [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) , [Nullish Coalescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing) и [Bigint](https://caniuse.com/bigint) . Унаследованные браузеры можно поддерживать через официальный [@vitejs/плагин-лежачность](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) . Смотрите раздел [«Здание для производства»](./build) для получения более подробной информации.
 
-## Trying Vite Online
+## Попробуйте Vite Online
 
-You can try Vite online on [StackBlitz](https://vite.new/). It runs the Vite-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine. You can navigate to `vite.new/{template}` to select which framework to use.
+Вы можете попробовать Vite Online на [Stackblitz](https://vite.new/) . Он запускает настройку сборки на основе VITE непосредственно в браузере, поэтому она почти идентична локальной настройке, но не требует установки на вашем компьютере. Вы можете перейти к `vite.new/{template}` , чтобы выбрать, какую структуру использовать.
 
-The supported template presets are:
+Поддерживаемые предустановки шаблона:
 
-|             JavaScript              |                TypeScript                 |
-| :---------------------------------: | :---------------------------------------: |
-| [vanilla](https://vite.new/vanilla) | [vanilla-ts](https://vite.new/vanilla-ts) |
-|     [vue](https://vite.new/vue)     |     [vue-ts](https://vite.new/vue-ts)     |
-|   [react](https://vite.new/react)   |   [react-ts](https://vite.new/react-ts)   |
-|  [preact](https://vite.new/preact)  |  [preact-ts](https://vite.new/preact-ts)  |
-|     [lit](https://vite.new/lit)     |     [lit-ts](https://vite.new/lit-ts)     |
-|  [svelte](https://vite.new/svelte)  |  [svelte-ts](https://vite.new/svelte-ts)  |
-|   [solid](https://vite.new/solid)   |   [solid-ts](https://vite.new/solid-ts)   |
-|    [qwik](https://vite.new/qwik)    |    [qwik-ts](https://vite.new/qwik-ts)    |
+|                 JavaScript                 |                  Машинопись                   |
+| :----------------------------------------: | :-------------------------------------------: |
+|     [ваниль](https://vite.new/vanilla)     |     [ваниль](https://vite.new/vanilla-ts)     |
+|        [Vue](https://vite.new/vue)         |       [Vue-ts](https://vite.new/vue-ts)       |
+|   [реагировать](https://vite.new/react)    |     [React-ts](https://vite.new/react-ts)     |
+| [предварительный](https://vite.new/preact) |    [Preact-ts](https://vite.new/preact-ts)    |
+|       [горит](https://vite.new/lit)        |       [горит](https://vite.new/lit-ts)        |
+|    [стройный](https://vite.new/svelte)     |       [стр](https://vite.new/svelte-ts)       |
+|     [твердый](https://vite.new/solid)      | [твердые значения](https://vite.new/solid-ts) |
+|       [Qwik](https://vite.new/qwik)        |      [qwik-ts](https://vite.new/qwik-ts)      |
 
-## Scaffolding Your First Vite Project
+## Сборка Вашего Первого Проекта Vite
 
 ::: tip Compatibility Note
-Vite requires [Node.js](https://nodejs.org/ru/) version 18+ or 20+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.
+Vite требует [node.js](https://nodejs.org/en/) версии 18+ или 20+. Тем не менее, некоторые шаблоны требуют более высокой версии Node.js для работы, пожалуйста, обновите, если ваш менеджер пакетов предупреждает об этом.
 :::
 
 ::: code-group
@@ -67,14 +67,14 @@ $ bun create vite
 
 :::
 
-Then follow the prompts!
+Затем следуйте подсказкам!
 
-You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold a Vite + Vue project, run:
+Вы также можете напрямую указать имя проекта и шаблон, который вы хотите использовать с помощью дополнительных параметров командной строки. Например, чтобы понять проект Vite + Vue, запустите:
 
 ::: code-group
 
 ```bash [npm]
-# npm 7+, extra double-dash is needed:
+# NPM 7+, требуется дополнительный двойной промежуток:
 $ npm create vite@latest my-vue-app -- --template vue
 ```
 
@@ -92,29 +92,29 @@ $ bun create vite my-vue-app --template vue
 
 :::
 
-See [create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) for more details on each supported template: `vanilla`, `vanilla-ts`, `vue`, `vue-ts`, `react`, `react-ts`, `react-swc`, `react-swc-ts`, `preact`, `preact-ts`, `lit`, `lit-ts`, `svelte`, `svelte-ts`, `solid`, `solid-ts`, `qwik`, `qwik-ts`.
+См. [Create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) для более подробной информации о каждом поддерживаемом шаблоне: `vanilla` , `vanilla-ts` , `vue` , `vue-ts` , `react` , `react-ts` , `react-swc` , `react-swc-ts` , `preact` , `preact-ts` , `lit` , `lit-ts` , `svelte` , `svelte-ts` , `solid` , `solid-ts` , `qwik` , `qwik-ts`
 
-You can use `.` for the project name to scaffold in the current directory.
+Вы можете использовать `.` для названия проекта для каркасов в текущем каталоге.
 
-## Community Templates
+## Шаблоны Сообщества
 
-create-vite is a tool to quickly start a project from a basic template for popular frameworks. Check out Awesome Vite for [community maintained templates](https://github.com/vitejs/awesome-vite#templates) that include other tools or target different frameworks.
+Create-Vite-это инструмент для быстрого запуска проекта из базового шаблона для популярных рамок. Проверьте Awesome Vite для [поддержанных шаблонов сообщества](https://github.com/vitejs/awesome-vite#templates) , которые включают другие инструменты или нацелены на различные рамки.
 
-For a template at `https://github.com/user/project`, you can try it out online using `https://github.stackblitz.com/user/project` (adding `.stackblitz` after `github` to the URL of the project).
+Для шаблона на `https://github.com/user/project` вы можете попробовать его в Интернете, используя `https://github.stackblitz.com/user/project` (добавление `.stackblitz` после `github` к URL -адресу проекта).
 
-You can also use a tool like [degit](https://github.com/Rich-Harris/degit) to scaffold your project with one of the templates. Assuming the project is on GitHub and uses `main` as the default branch, you can create a local copy using:
+Вы также можете использовать инструмент, подобный [Degit](https://github.com/Rich-Harris/degit) , чтобы использовать свой проект одним из шаблонов. Предполагая, что проект находится на GitHub и использует `main` в качестве филиала по умолчанию, вы можете создать локальную копию, используя:
 
 ```bash
-npx degit user/project#main my-project
+npx degit user/project#Главный мой проект
 cd my-project
 
 npm install
 npm run dev
 ```
 
-## Manual Installation
+## Ручная Установка
 
-In your project, you can install the `vite` CLI using:
+В вашем проекте вы можете установить `vite` CLI, используя:
 
 ::: code-group
 
@@ -136,13 +136,13 @@ $ bun add -D vite
 
 :::
 
-And create an `index.html` file like this:
+И создайте `index.html` файла, как это:
 
 ```html
 <p>Hello Vite!</p>
 ```
 
-Then run the appropriate CLI command in your terminal:
+Затем запустите соответствующую команду CLI в вашем терминале:
 
 ::: code-group
 
@@ -164,26 +164,26 @@ $ bunx vite
 
 :::
 
-The `index.html` will be served on `http://localhost:5173`.
+`index.html` будет подано на `http://localhost:5173` .
 
-## `index.html` and Project Root
+## `index.html` и проект root
 
-One thing you may have noticed is that in a Vite project, `index.html` is front-and-central instead of being tucked away inside `public`. This is intentional: during development Vite is a server, and `index.html` is the entry point to your application.
+Одна вещь, которую вы, возможно, заметили, это то, что в проекте Vite `index.html` спереди и центрально, вместо того, чтобы быть спрятанным внутри `public` . Это преднамеренное: во время разработки Vite - это сервер, а `index.html` - точка входа в ваше приложение.
 
-Vite treats `index.html` as source code and part of the module graph. It resolves `<script type="module" src="...">` that references your JavaScript source code. Even inline `<script type="module">` and CSS referenced via `<link href>` also enjoy Vite-specific features. In addition, URLs inside `index.html` are automatically rebased so there's no need for special `%PUBLIC_URL%` placeholders.
+Vite обрабатывает `index.html` как исходный код и часть графика модуля. Он разрешает `<script type="module" src="...">` , который ссылается на ваш исходный код JavaScript. Даже inline `<script type="module">` и CSS, упомянутые через `<link href>` также наслаждаются специфическими функциями. Кроме того, URL -адреса внутри `index.html` автоматически перерываются, поэтому нет необходимости в специальных `%PUBLIC_URL%` заполнителях.
 
-Similar to static http servers, Vite has the concept of a "root directory" which your files are served from. You will see it referenced as `<root>` throughout the rest of the docs. Absolute URLs in your source code will be resolved using the project root as base, so you can write code as if you are working with a normal static file server (except way more powerful!). Vite is also capable of handling dependencies that resolve to out-of-root file system locations, which makes it usable even in a monorepo-based setup.
+Подобно статическим http -серверам, Vite имеет концепцию «корневого каталога», из которой обслуживаются ваши файлы. Вы увидите, что это ссылается как `<root>` по всей остальной части документов. Абсолютные URL -адреса в вашем исходном коде будут разрешены с использованием корневого проекта в качестве базы, поэтому вы можете писать код, как если бы вы работали с обычным статическим файловым сервером (за исключением гораздо более мощного!). VITE также способен обрабатывать зависимости, которые разрешаются в отдельных местах файловых систем, что делает его пригодным для использования даже в настройке на основе MonorePo.
 
-Vite also supports [multi-page apps](./build#multi-page-app) with multiple `.html` entry points.
+VITE также поддерживает [многостраничные приложения](./build#multi-page-app) с несколькими точками входа `.html` .
 
-#### Specifying Alternative Root
+#### Указание Альтернативного Корня
 
-Running `vite` starts the dev server using the current working directory as root. You can specify an alternative root with `vite serve some/sub/dir`.
-Note that Vite will also resolve [its config file (i.e. `vite.config.js`)](/ru/config/#configuring-vite) inside the project root, so you'll need to move it if the root is changed.
+Запуск `vite` запускает сервер Dev, используя текущий рабочий каталог в качестве root. Вы можете указать альтернативный корень с `vite serve some/sub/dir` .
+Обратите внимание, что VITE также разрешит [свой файл конфигурации (т.е. `vite.config.js` )](/en/config/#configuring-vite) внутри корня проекта, поэтому вам нужно переместить его, если корень будет изменен.
 
-## Command Line Interface
+## Интерфейс Командной Строки
 
-In a project where Vite is installed, you can use the `vite` binary in your npm scripts, or run it directly with `npx vite`. Here are the default npm scripts in a scaffolded Vite project:
+В проекте, в котором установлен VITE, вы можете использовать `vite` файл в своих сценариях NPM или запустить его напрямую с `npx vite` . Вот сценарии NPM по умолчанию в проекте Scaffolded Vite:
 
 <!-- prettier-ignore -->
 ```json [package.json]
@@ -196,13 +196,13 @@ In a project where Vite is installed, you can use the `vite` binary in your npm 
 }
 ```
 
-You can specify additional CLI options like `--port` or `--open`. For a full list of CLI options, run `npx vite --help` in your project.
+Вы можете указать дополнительные параметры CLI, такие как `--port` или `--open` . Чтобы получить полный список вариантов CLI, запустите `npx vite --help` в вашем проекте.
 
-Learn more about the [Command Line Interface](./cli.md)
+Узнайте больше о [интерфейсе командной строки](./cli.md)
 
-## Using Unreleased Commits
+## Используя Неизданные Коммиты
 
-If you can't wait for a new release to test the latest features, you can install a specific commit of Vite with https://pkg.pr.new:
+Если вы не можете дождаться нового релиза, чтобы проверить последние функции, вы можете установить конкретный коммит Vite с https://pkg.pr.new:
 
 ::: code-group
 
@@ -224,9 +224,9 @@ $ bun add -D https://pkg.pr.new/vite@SHA
 
 :::
 
-Replace `SHA` with any of [Vite's commit SHAs](https://github.com/vitejs/vite/commits/main/). Note that only commits within the last month will work, as older commit releases are purged.
+Замените `SHA` на любой из [коммита Seite Shas](https://github.com/vitejs/vite/commits/main/) . Обратите внимание, что только в течение последнего месяца будут работать, так как старые выпуски коммита будут очищены.
 
-Alternatively, you can also clone the [vite repo](https://github.com/vitejs/vite) to your local machine and then build and link it yourself ([pnpm](https://pnpm.io/) is required):
+В качестве альтернативы, вы также можете клонировать [репозицию](https://github.com/vitejs/vite) на локальную машину, а затем построить и связать его сами (требуется [PNPM](https://pnpm.io/) ):
 
 ```bash
 git clone https://github.com/vitejs/vite.git
@@ -234,15 +234,15 @@ cd vite
 pnpm install
 cd packages/vite
 pnpm run build
-pnpm link --global # use your preferred package manager for this step
+pnpm link --global # Используйте предпочтительный менеджер пакетов для этого шага
 ```
 
-Then go to your Vite based project and run `pnpm link --global vite` (or the package manager that you used to link `vite` globally). Now restart the development server to ride on the bleeding edge!
+Затем перейдите в свой проект на основе Vite и запустите `pnpm link --global vite` (или менеджер пакетов, который вы использовали для ссылки `vite` по всему миру). Теперь перезапустите сервер разработки, чтобы ездить на краю кровотечения!
 
 ::: tip Dependencies using Vite
-To replace the Vite version used by dependencies transitively, you should use [npm overrides](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#overrides) or [pnpm overrides](https://pnpm.io/package_json#pnpmoverrides).
+Чтобы заменить версию VITE, используемую зависимостями, необходимо использовать [переопределения NPM](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#overrides) или [переопределения PNPM](https://pnpm.io/package_json#pnpmoverrides) .
 :::
 
-## Community
+## Сообщество
 
-If you have questions or need help, reach out to the community at [Discord](https://chat.vite.dev) and [GitHub Discussions](https://github.com/vitejs/vite/discussions).
+Если у вас есть вопросы или нужна помощь, обратитесь к сообществу в [дискордических](https://chat.vite.dev) и [GitHub](https://github.com/vitejs/vite/discussions) .

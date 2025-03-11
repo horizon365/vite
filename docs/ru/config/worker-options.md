@@ -1,23 +1,23 @@
-# Worker Options
+# Рабочие Варианты
 
-Unless noted, the options in this section are applied to all dev, build, and preview.
+Если не указано, параметры в этом разделе применяются ко всем разработчикам, сборке и предварительному просмотру.
 
 ## worker.format
 
-- **Type:** `'es' | 'iife'`
-- **Default:** `'iife'`
+- **Тип:** '' es ' | 'iife »
+- **По умолчанию:** `'iife'`
 
-Output format for worker bundle.
+Выходной формат для рабочих пакет.
 
 ## worker.plugins
 
-- **Type:** [`() => (Plugin | Plugin[])[]`](./shared-options#plugins)
+- **Тип:** [`() => (плагин | Плагин []) [] `] (./ Shared-Options#Плагины)
 
-Vite plugins that apply to the worker bundles. Note that [config.plugins](./shared-options#plugins) only applies to workers in dev, it should be configured here instead for build.
-The function should return new plugin instances as they are used in parallel rollup worker builds. As such, modifying `config.worker` options in the `config` hook will be ignored.
+Плагины Vite, которые применяются к пакетам работника. Обратите внимание, что [config.plugins](./shared-options#plugins) применяется только к работникам в DEV, вместо этого его следует настроить для сборки.
+Функция должна возвращать новые экземпляры плагина, так как они используются в сборке параллельных работников. Таким образом, изменение `config.worker` параметров в `config` крючке будет проигнорирована.
 
 ## worker.rollupOptions
 
-- **Type:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
+- **Тип:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
 
-Rollup options to build worker bundle.
+Параметры обмолки для создания пакета работников.

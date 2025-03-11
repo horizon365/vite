@@ -1,5 +1,5 @@
 ---
-title: Vite
+title: Просие
 titleTemplate: Next Generation Frontend Tooling
 pageClass: landing dark
 

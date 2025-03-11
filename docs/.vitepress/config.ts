@@ -598,6 +598,73 @@ export default defineConfig({
         ],
       },
     },
+    ru: {
+      label: 'русский язык',
+      link: '/ru',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/ru/guide/', activeMatch: '/ru/guide/' },
+          { text: 'Config', link: '/ru/config/', activeMatch: '/ru/config/' },
+          {
+            text: 'Plugins',
+            link: '/ru/plugins/',
+            activeMatch: '/ru/plugins/',
+          },
+          {
+            text: 'Resources',
+            items: [
+              { text: 'Team', link: '/ru/team' },
+              { text: 'Blog', link: '/ru/blog' },
+              { text: 'Releases', link: '/ru/releases' },
+              {
+                items: [
+                  {
+                    text: 'Bluesky',
+                    link: 'https://bsky.app/profile/vite.dev',
+                  },
+                  {
+                    text: 'Mastodon',
+                    link: 'https://elk.zone/m.webtoo.ls/@vite',
+                  },
+                  {
+                    text: 'X',
+                    link: 'https://x.com/vite_js',
+                  },
+                  {
+                    text: 'Discord Chat',
+                    link: 'https://chat.vite.dev',
+                  },
+                  {
+                    text: 'Awesome Vite',
+                    link: 'https://github.com/vitejs/awesome-vite',
+                  },
+                  {
+                    text: 'ViteConf',
+                    link: 'https://viteconf.org',
+                  },
+                  {
+                    text: 'DEV Community',
+                    link: 'https://dev.to/t/vite',
+                  },
+                  {
+                    text: 'Changelog',
+                    link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+                  },
+                  {
+                    text: 'Contributing',
+                    link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'Version',
+            items: versionLinks,
+          },
+        ],
+      },
+    },
   },
 
   themeConfig: {

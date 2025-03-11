@@ -1,24 +1,24 @@
-# `this.environment` in Hooks
+# `this.environment` в крючках
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+Дайте нам отзыв в [Обсуждении от обратной связи API Environment](https://github.com/vitejs/vite/discussions/16358)
 :::
 
-Before Vite 6, only two environments were available: `client` and `ssr`. A single `options.ssr` plugin hook argument in `resolveId`, `load` and `transform` allowed plugin authors to differentiate between these two environments when processing modules in plugin hooks. In Vite 6, a Vite application can define any number of named environments as needed. We're introducing `this.environment` in the plugin context to interact with the environment of the current module in hooks.
+Перед Vite 6 были доступны только две среды: `client` и `ssr` . `options.ssr` аргумент крючков с плагином в `resolveId` , `load` и `transform` позволил авторам плагина дифференцировать эти две среды при обработке модулей в крючках плагина. В Vite 6 приложение Vite может определить любое количество именованных среда по мере необходимости. Мы представляем `this.environment` в контексте плагина, чтобы взаимодействовать с средой текущего модуля в крючках.
 
-Affect scope: `Vite Plugin Authors`
+Влияние сфера действия: `Vite Plugin Authors`
 
 ::: warning Future Deprecation
-`this.environment` was introduced in `v6.0`. The deprecation of `options.ssr` is planned for `v7.0`. At that point we'll start recommending migrating your plugins to use the new API. To identify your usage, set `future.removePluginHookSsrArgument` to `"warn"` in your vite config.
+`this.environment` был введен в `v6.0` . Унимок `options.ssr` запланирована на `v7.0` . В этот момент мы начнем рекомендовать мигрирование ваших плагинов, чтобы использовать новый API. Чтобы идентифицировать ваше использование, установите `future.removePluginHookSsrArgument` до `"warn"` в конфигурации.
 :::
 
-## Motivation
+## Мотивация
 
-`this.environment` not only allow the plugin hook implementation to know the current environment name, it also gives access to the environment config options, module graph information, and transform pipeline (`environment.config`, `environment.moduleGraph`, `environment.transformRequest()`). Having the environment instance available in the context allows plugin authors to avoid the dependency of the whole dev server (typically cached at startup through the `configureServer` hook).
+`this.environment` не только позволяет реализации плагина крючка знать текущее имя среды, но и дает доступ к параметрам конфигурации среды, информации о графе модуля и преобразовании трубопровода ( `environment.config` , `environment.moduleGraph` , `environment.transformRequest()` ). Наличие экземпляра среды в контексте позволяет авторам плагинов избегать зависимости всего сервера Dev (обычно кэшируется при запуске через `configureServer` крючка).
 
-## Migration Guide
+## Миграционный Гид
 
-For the existing plugin to do a quick migration, replace the `options.ssr` argument with `this.environment.name !== 'client'` in the `resolveId`, `load` and `transform` hooks:
+Чтобы существующий плагин выполнял быструю миграцию, замените аргумент `options.ssr` на `this.environment.name !== 'client'` в `resolveId` , `load` и `transform` крючках:
 
 ```ts
 import { Plugin } from 'vite'
@@ -27,17 +27,17 @@ export function myPlugin(): Plugin {
   return {
     name: 'my-plugin',
     resolveId(id, importer, options) {
-      const isSSR = options.ssr // [!code --]
-      const isSSR = this.environment.name !== 'client' // [!code ++]
+      const isSSR = options.ssr // [! Код -]
+      const isSSR = this.environment.name !== 'client' // [! Code ++]
 
       if (isSSR) {
-        // SSR specific logic
+        // SSR -специфическая логика
       } else {
-        // Client specific logic
+        // Конкретная логика клиента
       }
     },
   }
 }
 ```
 
-For a more robust long term implementation, the plugin hook should handle for [multiple environments](/ru/guide/api-environment.html#accessing-the-current-environment-in-hooks) using fine-grained environment options instead of relying on the environment name.
+Для более надежной долгосрочной реализации плагин крюк должен обрабатывать для [нескольких сред,](/en/guide/api-environment.html#accessing-the-current-environment-in-hooks) используя мелкозернистые опции среды, а не полагаться на имя среды.
