@@ -913,6 +913,10 @@ export default defineConfig({
       level: [2, 3],
     },
   },
+  sitemap: {
+    hostname: 'https://vite.js.cn',
+  },
+  lastUpdated: true,
   transformPageData(pageData) {
     const canonicalUrl = `${ogUrl}/${pageData.relativePath}`
       .replace(/\/index\.md$/, '/')
