@@ -1,21 +1,15 @@
-# SSR using `ModuleRunner` API
+#
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+请在 [环境API反馈讨论](https://github.com/vitejs/vite/discussions/16358) 中给我们反馈
 :::
 
-`server.ssrLoadModule` has been replaced by importing from a [Module Runner](/en/guide/api-environment#modulerunner).
-
-Affect scope: `Vite Plugin Authors`
+影响范围:`Vite 插件作者`
 
 ::: warning Future Deprecation
-`ModuleRunner` was first introduce in `v6.0`. The deprecation of `server.ssrLoadModule` is planned for a future major. To identify your usage, set `future.removeSsrLoadModule` to `"warn"` in your vite config.
+`ModuleRunner` 首次在 `v6.0` 中引入。`server.ssrLoadModule` 的弃用计划在未来的主版本中进行。要识别您的使用情况，请在 Vite 配置中将 `future.removeSsrLoadModule` 设置为 `"warn"`。
 :::
 
-## Motivation
+## 动机
 
-The `server.ssrLoadModule(url)` only allows importing modules in the `ssr` environment and can only execute the modules in the same process as the Vite dev server. For apps with custom environments, each is associated with a `ModuleRunner` that may be running in a separate thread or process. To import modules, we now have `moduleRunner.import(url)`.
-
-## Migration Guide
-
-Check out the [Environment API for Frameworks Guide](../guide/api-environment-frameworks.md).
+## 迁移指南

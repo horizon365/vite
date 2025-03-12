@@ -1,10 +1,10 @@
-# Deploying a Static Site
+# 部署静态网站
 
-The following guides are based on some shared assumptions:
+以下指南基于一些共同的假设:
 
-- You are using the default build output location (`dist`). This location [can be changed using `build.outDir`](/en/config/build-options.md#build-outdir), and you can extrapolate instructions from these guides in that case.
-- You are using npm. You can use equivalent commands to run the scripts if you are using Yarn or other package managers.
-- Vite is installed as a local dev dependency in your project, and you have setup the following npm scripts:
+- 您正在使用默认的构建输出位置（ `dist` ）。[可以使用`build.outDir`更改](/en/config/build-options.md#build-outdir)此位置，在这种情况下，您可以从这些指南中推断说明。
+- 您正在使用NPM。如果使用纱线或其他软件包管理器，则可以使用等效命令来运行脚本。
+- VITE是您项目中的本地DEV依赖性安装的，并且您已经设置了以下NPM脚本:
 
 ```json [package.json]
 {
@@ -15,33 +15,33 @@ The following guides are based on some shared assumptions:
 }
 ```
 
-It is important to note that `vite preview` is intended for previewing the build locally and not meant as a production server.
+重要的是要注意， `vite preview`旨在在本地预览构建，而不是作为生产服务器。
 
 ::: tip NOTE
-These guides provide instructions for performing a static deployment of your Vite site. Vite also supports Server Side Rendering. SSR refers to front-end frameworks that support running the same application in Node.js, pre-rendering it to HTML, and finally hydrating it on the client. Check out the [SSR Guide](./ssr) to learn about this feature. On the other hand, if you are looking for integration with traditional server-side frameworks, check out the [Backend Integration guide](./backend-integration) instead.
+这些指南提供了执行Vite网站静态部署的说明。 Vite还支持服务器端渲染。 SSR是指支持在node.js中运行相同应用程序的前端框架，将其预先呈现给HTML，最后在客户端上进行补充。查看[SSR指南](./ssr)以了解此功能。另一方面，如果您正在寻找与传统的服务器端框架集成，请访问“[后端集成指南”](/1) 。
 :::
 
-## Building the App
+## 构建应用程序
 
-You may run `npm run build` command to build the app.
+您可以运行`npm run build`命令来构建应用程序。
 
 ```bash
 $ npm run build
 ```
 
-By default, the build output will be placed at `dist`. You may deploy this `dist` folder to any of your preferred platforms.
+默认情况下，构建输出将放置在`dist` 。您可以将此`dist`文件夹部署到任何首选平台。
 
-### Testing the App Locally
+### 在本地测试应用程序
 
-Once you've built the app, you may test it locally by running `npm run preview` command.
+构建应用程序后，您可以通过运行`npm run preview`命令在本地测试它。
 
 ```bash
 $ npm run preview
 ```
 
-The `vite preview` command will boot up a local static web server that serves the files from `dist` at `http://localhost:4173`. It's an easy way to check if the production build looks OK in your local environment.
+`vite preview`命令将启动一个本地静态Web服务器，该静态Web服务器可为`dist` at `http://localhost:4173`文件提供服务。这是检查生产构建在本地环境中是否还不错的简单方法。
 
-You may configure the port of the server by passing the `--port` flag as an argument.
+您可以通过传递`--port`标志作为参数来配置服务器的端口。
 
 ```json [package.json]
 {
@@ -51,43 +51,43 @@ You may configure the port of the server by passing the `--port` flag as an argu
 }
 ```
 
-Now the `preview` command will launch the server at `http://localhost:8080`.
+现在， `preview`命令将以`http://localhost:8080`速度启动服务器。
 
-## GitHub Pages
+## github页面
 
-1. Set the correct `base` in `vite.config.js`.
+1. 将正确的`base`设置为`vite.config.js` 。
 
-   If you are deploying to `https://<USERNAME>.github.io/`, or to a custom domain through GitHub Pages (eg. `www.example.com`), set `base` to `'/'`. Alternatively, you can remove `base` from the configuration, as it defaults to `'/'`.
+   如果您部署到`https://<USERNAME>.github.io/`或通过GitHub页面（例如`www.example.com` ）到自定义域，则设置为`base`至`'/'` 。另外，您可以从配置中删除`base` ，因为默认为`'/'` 。
 
-   If you are deploying to `https://<USERNAME>.github.io/<REPO>/` (eg. your repository is at `https://github.com/<USERNAME>/<REPO>`), then set `base` to `'/<REPO>/'`.
+   如果您部署到`https://<USERNAME>.github.io/<REPO>/` （例如，您的存储库为`https://github.com/<USERNAME>/<REPO>` ），则设置`base`至`'/<REPO>/'` 。
 
-2. Go to your GitHub Pages configuration in the repository settings page and choose the source of deployment as "GitHub Actions", this will lead you to create a workflow that builds and deploys your project, a sample workflow that installs dependencies and builds using npm is provided:
+2. 转到“存储库设置”页面中的github页面配置，然后选择部署来源作为“ github action”，这将导致您创建一个工作流，该工作流程构建和部署项目，提供依赖关系的示例工作流，该工作流使用NPM安装依赖关系和构建:提供:提供:
 
    ```yml
-   # Simple workflow for deploying static content to GitHub Pages
+   # 简单的工作流程用于部署静态内容到github页面
    name: Deploy static content to Pages
 
    on:
-     # Runs on pushes targeting the default branch
+     # 运行针对默认分支的按下
      push:
        branches: ['main']
 
-     # Allows you to run this workflow manually from the Actions tab
+     # 允许您从“操作”选项卡手动运行此工作流程
      workflow_dispatch:
 
-   # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+   # 设置github_token权限以允许部署到github页面
    permissions:
      contents: read
      pages: write
      id-token: write
 
-   # Allow one concurrent deployment
+   # 允许并发部署
    concurrency:
      group: 'pages'
      cancel-in-progress: true
 
    jobs:
-     # Single deploy job since we're just deploying
+     # 单部部署工作，因为我们只是部署
      deploy:
        environment:
          name: github-pages
@@ -110,22 +110,22 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
          - name: Upload artifact
            uses: actions/upload-pages-artifact@v3
            with:
-             # Upload dist folder
+             # 上传Dist文件夹
              path: './dist'
          - name: Deploy to GitHub Pages
            id: deployment
            uses: actions/deploy-pages@v4
    ```
 
-## GitLab Pages and GitLab CI
+## gitlab页面和gitlab ci
 
-1. Set the correct `base` in `vite.config.js`.
+1. 将正确的`base`设置为`vite.config.js` 。
 
-   If you are deploying to `https://<USERNAME or GROUP>.gitlab.io/`, you can omit `base` as it defaults to `'/'`.
+   如果您部署到`https://<USERNAME id="!">.gitlab.io/` ，则可以省略`base`因为默认值为`'/'` 。
 
-   If you are deploying to `https://<USERNAME or GROUP>.gitlab.io/<REPO>/`, for example your repository is at `https://gitlab.com/<USERNAME>/<REPO>`, then set `base` to `'/<REPO>/'`.
+   如果您部署到`https://<USERNAME id="!">.gitlab.io/<REPO>/` ，例如您的存储库在`https://gitlab.com/<USERNAME>/<REPO>`处，则设置`base`至`'/<REPO>/'` 。
 
-2. Create a file called `.gitlab-ci.yml` in the root of your project with the content below. This will build and deploy your site whenever you make changes to your content:
+2. 在项目的根部使用以下内容创建一个名为`.gitlab-ci.yml`的文件。每当您更改内容时，这将构建和部署您的网站:
 
    ```yaml [.gitlab-ci.yml]
    image: node:16.5.0
@@ -153,45 +153,45 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
 
 ### Netlify CLI
 
-1. Install the [Netlify CLI](https://cli.netlify.com/).
-2. Create a new site using `ntl init`.
-3. Deploy using `ntl deploy`.
+1. 安装[NetLify CLI](/0) 。
+2. 使用`ntl init`创建一个新站点。
+3. 使用`ntl deploy`部署。
 
 ```bash
-# Install the Netlify CLI
+# 安装NetLify CLI
 $ npm install -g netlify-cli
 
-# Create a new site in Netlify
+# 在Netlify中创建一个新网站
 $ ntl init
 
-# Deploy to a unique preview URL
+# 部署到唯一的预览URL
 $ ntl deploy
 ```
 
-The Netlify CLI will share with you a preview URL to inspect. When you are ready to go into production, use the `prod` flag:
+Netlify CLI将与您共享一个预览URL。当您准备进入生产时，请使用`prod`标志:
 
 ```bash
-# Deploy the site into production
+# 将网站部署到生产中
 $ ntl deploy --prod
 ```
 
-### Netlify with Git
+### 用git netlify
 
-1. Push your code to a git repository (GitHub, GitLab, BitBucket, Azure DevOps).
-2. [Import the project](https://app.netlify.com/start) to Netlify.
-3. Choose the branch, output directory, and set up environment variables if applicable.
-4. Click on **Deploy**.
-5. Your Vite app is deployed!
+1. 将代码推到GIT存储库（GitHub，Gitlab，Bitbucket，Azure DevOps）。
+2. [导入项目](/0)以净化。
+3. 如果适用，请选择分支，输出目录并设置环境变量。
+4. 单击**部署**。
+5. 您的Vite应用程序已部署！
 
-After your project has been imported and deployed, all subsequent pushes to branches other than the production branch along with pull requests will generate [Preview Deployments](https://docs.netlify.com/site-deploys/deploy-previews/), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://docs.netlify.com/site-deploys/overview/#definitions).
+在您的项目被进口和部署后，随后的所有推送到生产分支以外的分支机构以及拉力请求都将生成[预览部署](/0)，并且对生产分支（通常是“ Main”）进行的所有更改都将导致[生产部署](/1)。
 
-## Vercel
+## 动词
 
-### Vercel CLI
+### Vercel Cli
 
-1. Install the [Vercel CLI](https://vercel.com/cli) and run `vercel` to deploy.
-2. Vercel will detect that you are using Vite and will enable the correct settings for your deployment.
-3. Your application is deployed! (e.g. [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
+1. 安装[Vercel CLI](/0)并运行`vercel`以部署。
+2. Vercel将检测到您正在使用Vite，并可以为您的部署提供正确的设置。
+3. 您的应用程序已部署！ （例如[vite-vue-template.vercel.app](/0) ）
 
 ```bash
 $ npm i -g vercel
@@ -203,59 +203,59 @@ Vercel CLI
 
 ### Vercel for Git
 
-1. Push your code to your git repository (GitHub, GitLab, Bitbucket).
-2. [Import your Vite project](https://vercel.com/new) into Vercel.
-3. Vercel will detect that you are using Vite and will enable the correct settings for your deployment.
-4. Your application is deployed! (e.g. [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
+1. 将代码推到GIT存储库（GitHub，GitLab，Bitbucket）。
+2. [将您的Vite项目](/0)导入Vercel。
+3. Vercel将检测到您正在使用Vite，并可以为您的部署提供正确的设置。
+4. 您的应用程序已部署！ （例如[vite-vue-template.vercel.app](/0) ）
 
-After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://vercel.com/docs/concepts/deployments/environments#preview), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://vercel.com/docs/concepts/deployments/environments#production).
+在您的项目进口和部署后，所有随后的推送将生成[预览部署](/0)，并且对生产分支的所有更改（通常是“主要”）将导致[生产部署](/1)。
 
-Learn more about Vercel’s [Git Integration](https://vercel.com/docs/concepts/git).
+了解有关Vercel的[GIT集成的](/0)更多信息。
 
-## Cloudflare Pages
+## Cloudflare页面
 
-### Cloudflare Pages via Wrangler
+### Cloudflare页面通过牧马人
 
-1. Install [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/get-started/).
-2. Authenticate Wrangler with your Cloudflare account using `wrangler login`.
-3. Run your build command.
-4. Deploy using `npx wrangler pages deploy dist`.
+1. 安装[牧马人CLI](/0) 。
+2. 使用`wrangler login` CloudFlare帐户身份验证Wrangler。
+3. 运行您的构建命令。
+4. 使用`npx wrangler pages deploy dist`部署。
 
 ```bash
-# Install Wrangler CLI
+# 安装牧马人CLI
 $ npm install -g wrangler
 
-# Login to Cloudflare account from CLI
+# 从CLI登录到CloudFlare帐户
 $ wrangler login
 
-# Run your build command
+# 运行您的构建命令
 $ npm run build
 
-# Create new deployment
+# 创建新的部署
 $ npx wrangler pages deploy dist
 ```
 
-After your assets are uploaded, Wrangler will give you a preview URL to inspect your site. When you log into the Cloudflare Pages dashboard, you will see your new project.
+上传资产后，Wrangler将为您提供一个预览URL来检查您的网站。当您登录CloudFlare页面仪表板时，您将看到您的新项目。
 
-### Cloudflare Pages with Git
+### 带有git的Cloudflare页面
 
-1. Push your code to your git repository (GitHub, GitLab).
-2. Log in to the Cloudflare dashboard and select your account in **Account Home** > **Pages**.
-3. Select **Create a new Project** and the **Connect Git** option.
-4. Select the git project you want to deploy and click **Begin setup**
-5. Select the corresponding framework preset in the build setting depending on the Vite framework you have selected.
-6. Then save and deploy!
-7. Your application is deployed! (e.g `https://<PROJECTNAME>.pages.dev/`)
+1. 将您的代码推到GIT存储库（GitHub，GitLab）。
+2. 登录到Cloudflare仪表板，然后在**帐户主页**>**页面**中选择您的帐户。
+3. 选择**创建一个新项目**和**连接GIT**选项。
+4. 选择要部署的GIT项目，然后单击**“开始设置”**
+5. 根据您选择的VITE框架，在构建设置中选择相应的框架预设。
+6. 然后保存和部署！
+7. 您的应用程序已部署！ （例如`https://<PROJECTNAME>.pages.dev/` ）
 
-After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://developers.cloudflare.com/pages/platform/preview-deployments/) unless specified not to in your [branch build controls](https://developers.cloudflare.com/pages/platform/branch-build-controls/). All changes to the Production Branch (commonly “main”) will result in a Production Deployment.
+在您的项目被进口和部署后，除非在[分支机构构建控件](/1)中指定未指定，否则所有后续推送到分支机构都将生成[预览部署](/0)。生产分支的所有更改（通常是“主要”）将导致生产部署。
 
-You can also add custom domains and handle custom build settings on Pages. Learn more about [Cloudflare Pages Git Integration](https://developers.cloudflare.com/pages/get-started/#manage-your-site).
+您还可以添加自定义域并在页面上处理自定义构建设置。了解有关[CloudFlare页面git集成的](/0)更多信息。
 
 ## Google Firebase
 
-1. Make sure you have [firebase-tools](https://www.npmjs.com/package/firebase-tools) installed.
+1. 确保安装了[firebase-tools](/0) 。
 
-2. Create `firebase.json` and `.firebaserc` at the root of your project with the following content:
+2. 用以下内容在项目的根部创建`firebase.json`和`.firebaserc` :
 
    ```json [firebase.json]
    {
@@ -280,54 +280,54 @@ You can also add custom domains and handle custom build settings on Pages. Learn
    }
    ```
 
-3. After running `npm run build`, deploy using the command `firebase deploy`.
+3. 运行`npm run build`后，使用命令`firebase deploy`部署。
 
-## Surge
+## 涌
 
-1. First install [surge](https://www.npmjs.com/package/surge), if you haven’t already.
+1. 如果您还没有，请首先安装[浪潮](/0)。
 
-2. Run `npm run build`.
+2. 运行`npm run build` 。
 
-3. Deploy to surge by typing `surge dist`.
+3. 通过键入`surge dist`部署到激增。
 
-You can also deploy to a [custom domain](http://surge.sh/help/adding-a-custom-domain) by adding `surge dist yourdomain.com`.
+您也可以通过添加`surge dist yourdomain.com`部署到[自定义域](/0)。
 
-## Azure Static Web Apps
+## Azure静态Web应用程序
 
-You can quickly deploy your Vite app with Microsoft Azure [Static Web Apps](https://aka.ms/staticwebapps) service. You need:
+您可以使用Microsoft Azure[静态Web应用](/0)程序快速部署Vite应用程序。您需要:
 
-- An Azure account and a subscription key. You can create a [free Azure account here](https://azure.microsoft.com/free).
-- Your app code pushed to [GitHub](https://github.com).
-- The [SWA Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) in [Visual Studio Code](https://code.visualstudio.com).
+- 一个Azure帐户和订阅密钥。您可以[在此处创建一个免费的Azure帐户](/0)。
+- 您的应用程序代码被推到[GitHub](/0) 。
+- [Visual Studio代码](/1)中的[SWA扩展](/0)。
 
-Install the extension in VS Code and navigate to your app root. Open the Static Web Apps extension, sign in to Azure, and click the '+' sign to create a new Static Web App. You will be prompted to designate which subscription key to use.
+将扩展名安装在VS代码中，并导航到您的应用程序根。打开静态Web应用程序扩展名，登录Azure，然后单击“+”符号以创建一个新的静态Web应用程序。将提示您指定使用哪种订阅密钥。
 
-Follow the wizard started by the extension to give your app a name, choose a framework preset, and designate the app root (usually `/`) and built file location `/dist`. The wizard will run and will create a GitHub action in your repo in a `.github` folder.
+按照扩展名开头的向导，为您的应用程序命名，选择一个框架预设，并指定应用程序根（通常为`/` ）和构建的文件位置`/dist` 。向导将运行，并将在`.github`文件夹中的存储库中创建一个github动作。
 
-The action will work to deploy your app (watch its progress in your repo's Actions tab) and, when successfully completed, you can view your app in the address provided in the extension's progress window by clicking the 'Browse Website' button that appears when the GitHub action has run.
+该操作将有效地部署您的应用程序（在您的Repo的操作选项卡中观看其进度），并且在成功完成时，您可以通过单击GitHub操作运行时出现的“浏览网站”按钮中的“浏览网站”按钮中的“浏览网站”按钮查看应用程序。
 
-## Render
+## 使成为
 
-You can deploy your Vite app as a Static Site on [Render](https://render.com/).
+您可以将Vite应用程序部署为[渲染](/0)上的静态站点。
 
-1. Create a [Render account](https://dashboard.render.com/register).
+1. 创建一个[渲染帐户](/0)。
 
-2. In the [Dashboard](https://dashboard.render.com/), click the **New** button and select **Static Site**.
+2. 在[仪表板](/0)中，单击**新**按钮，然后选择**静态站点**。
 
-3. Connect your GitHub/GitLab account or use a public repository.
+3. 连接您的github/gitlab帐户或使用公共存储库。
 
-4. Specify a project name and branch.
+4. 指定项目名称和分支。
 
-   - **Build Command**: `npm install && npm run build`
-   - **Publish Directory**: `dist`
+   - **构建命令**: `npm install && npm run build`
+   - **发布目录**: `dist`
 
-5. Click **Create Static Site**.
+5. 单击**创建静态站点**。
 
-   Your app should be deployed at `https://<PROJECTNAME>.onrender.com/`.
+   您的应用程序应在`https://<PROJECTNAME>.onrender.com/`处部署。
 
-By default, any new commit pushed to the specified branch will automatically trigger a new deployment. [Auto-Deploy](https://render.com/docs/deploys#toggling-auto-deploy-for-a-service) can be configured in the project settings.
+默认情况下，将任何新提交推向指定的分支机构都会自动触发新的部署。可以在项目设置中配置[自动数据](/0)。
 
-You can also add a [custom domain](https://render.com/docs/custom-domains) to your project.
+您还可以在项目中添加[自定义域](/0)。
 
 <!--
   NOTE: The sections below are reserved for more deployment platforms not listed above.
@@ -343,14 +343,14 @@ You can also add a [custom domain](https://render.com/docs/custom-domains) to yo
   If a section is removed, we will ping the original PR authors before doing so.
 -->
 
-## Flightcontrol
+## FlightControl
 
-Deploy your static site using [Flightcontrol](https://www.flightcontrol.dev/?ref=docs-vite) by following these [instructions](https://www.flightcontrol.dev/docs/reference/examples/vite?ref=docs-vite).
+通过遵循这些[说明](/1)，使用[FlightControl](/0)部署静态站点。
 
-## Kinsta Static Site Hosting
+## Kinsta静态网站托管
 
-Deploy your static site using [Kinsta](https://kinsta.com/static-site-hosting/) by following these [instructions](https://kinsta.com/docs/react-vite-example/).
+通过遵循这些[说明](/1)，使用[kinsta](/0)部署静态站点。
 
-## xmit Static Site Hosting
+## XMIT静态站点托管
 
-Deploy your static site using [xmit](https://xmit.co) by following this [guide](https://xmit.dev/posts/vite-quickstart/).
+通过遵循本[指南](/1)，使用[XMIT](/0)部署静态站点。

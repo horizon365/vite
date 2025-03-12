@@ -1,46 +1,46 @@
-# Plugin API
+# 插件API
 
-Vite plugins extends Rollup's well-designed plugin interface with a few extra Vite-specific options. As a result, you can write a Vite plugin once and have it work for both dev and build.
+Vite插件通过一些额外的Vite特定选项扩展了Rollup精心设计的插件接口。结果，您可以编写一次Vite插件，并可以为开发和构建使用它。
 
-**It is recommended to go through [Rollup's plugin documentation](https://rollupjs.org/plugin-development/) first before reading the sections below.**
+**建议在阅读以下各节之前先浏览[Rollup的插件文档](https://rollupjs.org/plugin-development/)。**
 
-## Authoring a Plugin
+## 创作插件
 
-Vite strives to offer established patterns out of the box, so before creating a new plugin make sure that you check the [Features guide](https://vite.dev/guide/features) to see if your need is covered. Also review available community plugins, both in the form of a [compatible Rollup plugin](https://github.com/rollup/awesome) and [Vite Specific plugins](https://github.com/vitejs/awesome-vite#plugins)
+Vite努力提供固定的图案开箱即用，因此在创建新插件之前，请确保您检查[功能指南](https://vite.dev/guide/features)以查看是否涵盖了您的需求。还以[兼容的汇总插件](https://github.com/rollup/awesome)和[特定的特定插件](https://github.com/vitejs/awesome-vite#plugins)的形式查看可用的社区插件
 
-When creating a plugin, you can inline it in your `vite.config.js`. There is no need to create a new package for it. Once you see that a plugin was useful in your projects, consider sharing it to help others [in the ecosystem](https://chat.vite.dev).
+创建插件时，您可以将其内联`vite.config.js` 。无需为其创建一个新软件包。一旦看到插件对您的项目很有用，请考虑共享该插件以帮助[生态系统中的](https://chat.vite.dev)其他人。
 
 ::: tip
-When learning, debugging, or authoring plugins, we suggest including [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect) in your project. It allows you to inspect the intermediate state of Vite plugins. After installing, you can visit `localhost:5173/__inspect/` to inspect the modules and transformation stack of your project. Check out install instructions in the [vite-plugin-inspect docs](https://github.com/antfu/vite-plugin-inspect).
-![vite-plugin-inspect](/images/vite-plugin-inspect.png)
+在学习，调试或创作插件时，我们建议您在您的项目中包括[Vite-Plugin-himexs](https://github.com/antfu/vite-plugin-inspect) 。它允许您检查Vite插件的中间状态。安装后，您可以访问`localhost:5173/__inspect/`检查项目的模块和转换堆栈。在[Vite-Plugin-Provect文档](https://github.com/antfu/vite-plugin-inspect)中查看安装说明。
+![VITE-PLUGIN-PRESSING](/images/vite-plugin-inspect.png)
 :::
 
-## Conventions
+## 会议
 
-If the plugin doesn't use Vite specific hooks and can be implemented as a [Compatible Rollup Plugin](#rollup-plugin-compatibility), then it is recommended to use the [Rollup Plugin naming conventions](https://rollupjs.org/plugin-development/#conventions).
+如果该插件不使用特定的钩子，可以作为[兼容的汇总插件](#rollup-plugin-compatibility)实现，则建议使用[“汇总插件”命名约定](https://rollupjs.org/plugin-development/#conventions)。
 
-- Rollup Plugins should have a clear name with `rollup-plugin-` prefix.
-- Include `rollup-plugin` and `vite-plugin` keywords in package.json.
+- Rollup插件应具有`rollup-plugin-`前缀的清晰名称。
+- 在package.json中包括`rollup-plugin`和`vite-plugin`关键字。
 
-This exposes the plugin to be also used in pure Rollup or WMR based projects
+这将使插件也用于纯汇总或基于WMR的项目
 
-For Vite only plugins
+仅Vite插件
 
-- Vite Plugins should have a clear name with `vite-plugin-` prefix.
-- Include `vite-plugin` keyword in package.json.
-- Include a section in the plugin docs detailing why it is a Vite only plugin (for example, it uses Vite specific plugin hooks).
+- Vite插件应具有`vite-plugin-`前缀的清晰名称。
+- 在package.json中包含`vite-plugin`关键字。
+- 在插件文档中包含一个部分，详细说明为什么它是仅Vite插件(例如，它使用Vite特定的插件钩)。
 
-If your plugin is only going to work for a particular framework, its name should be included as part of the prefix
+如果您的插件仅适用于特定框架，则应将其名称作为前缀的一部分包含
 
-- `vite-plugin-vue-` prefix for Vue Plugins
-- `vite-plugin-react-` prefix for React Plugins
-- `vite-plugin-svelte-` prefix for Svelte Plugins
+- `vite-plugin-vue-` VUE插件的前缀
+- `vite-plugin-react-` REECT插件的前缀
+- `vite-plugin-svelte-` Svelte插件的前缀
 
-See also [Virtual Modules Convention](#virtual-modules-convention).
+另请参见[虚拟模块约定](#virtual-modules-convention)。
 
-## Plugins config
+## 插件配置
 
-Users will add plugins to the project `devDependencies` and configure them using the `plugins` array option.
+用户将在项目`devDependencies`中添加插件，并使用`plugins`数组选项对其进行配置。
 
 ```js [vite.config.js]
 import vitePlugin from 'vite-plugin-feature'
@@ -53,10 +53,10 @@ export default defineConfig({
 
 Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins`还接受包括几个插件作为单个元素的预设。这对于使用多个插件实现的复杂功能（例如框架集成）很有用。阵列将在内部扁平。
 
 ```js
-// framework-plugin
+// 框架 - 拼图
 import frameworkRefresh from 'vite-plugin-framework-refresh'
 import frameworkDevtools from 'vite-plugin-framework-devtools'
 
@@ -74,13 +74,13 @@ export default defineConfig({
 })
 ```
 
-## Simple Examples
+## 简单的例子
 
 :::tip
-It is common convention to author a Vite/Rollup plugin as a factory function that returns the actual plugin object. The function can accept options which allows users to customize the behavior of the plugin.
+为返回实际插件对象的出厂功能，撰写Vite/lollup插件是常见的惯例。该功能可以接受该选项，该选项允许用户自定义插件的行为。
 :::
 
-### Transforming Custom File Types
+### 转换自定义文件类型
 
 ```js
 const fileRegex = /\.(my-file-ext)$/
@@ -93,7 +93,7 @@ export default function myPlugin() {
       if (fileRegex.test(id)) {
         return {
           code: compileFileToJS(src),
-          map: null, // provide source map if available
+          map: null, // 如果可用，请提供源图
         }
       }
     },
@@ -101,13 +101,13 @@ export default function myPlugin() {
 }
 ```
 
-### Importing a Virtual File
+### 导入虚拟文件
 
-See the example in the [next section](#virtual-modules-convention).
+请参阅[下一节](#virtual-modules-convention)中的示例。
 
-## Virtual Modules Convention
+## 虚拟模块约定
 
-Virtual modules are a useful scheme that allows you to pass build time information to the source files using normal ESM import syntax.
+虚拟模块是一个有用的方案，它允许您使用普通的ESM导入语法将构建时间信息传递给源文件。
 
 ```js
 export default function myPlugin() {
@@ -115,7 +115,7 @@ export default function myPlugin() {
   const resolvedVirtualModuleId = '\0' + virtualModuleId
 
   return {
-    name: 'my-plugin', // required, will show up in warnings and errors
+    name: 'my-plugin', // 需要，会出现在警告和错误中
     resolveId(id) {
       if (id === virtualModuleId) {
         return resolvedVirtualModuleId
@@ -130,7 +130,7 @@ export default function myPlugin() {
 }
 ```
 
-Which allows importing the module in JavaScript:
+这允许在JavaScript中导入模块:
 
 ```js
 import { msg } from 'virtual:my-module'
@@ -138,53 +138,53 @@ import { msg } from 'virtual:my-module'
 console.log(msg)
 ```
 
-Virtual modules in Vite (and Rollup) are prefixed with `virtual:` for the user-facing path by convention. If possible the plugin name should be used as a namespace to avoid collisions with other plugins in the ecosystem. For example, a `vite-plugin-posts` could ask users to import a `virtual:posts` or `virtual:posts/helpers` virtual modules to get build time information. Internally, plugins that use virtual modules should prefix the module ID with `\0` while resolving the id, a convention from the rollup ecosystem. This prevents other plugins from trying to process the id (like node resolution), and core features like sourcemaps can use this info to differentiate between virtual modules and regular files. `\0` is not a permitted char in import URLs so we have to replace them during import analysis. A `\0{id}` virtual id ends up encoded as `/@id/__x00__{id}` during dev in the browser. The id will be decoded back before entering the plugins pipeline, so this is not seen by plugins hooks code.
+通过约定将Vite（和lollup）中的虚拟模块以0的前缀为`virtual:` 。如果可能的话，应将插件名称用作名称空间，以避免与生态系统中其他插件发生碰撞。例如， `vite-plugin-posts`可以要求用户导入`virtual:posts`或`virtual:posts/helpers`虚拟模块以获取构建时间信息。在内部，使用虚拟模块的插件应在解析ID时将模块ID（即汇总生态系统的约定）前缀为`\0` 。这样可以防止其他插件尝试处理ID（例如节点分辨率），而诸如Sourcemaps之类的核心功能可以使用此信息来区分虚拟模块和常规文件。 `\0`不是导入URL中允许的字符，因此我们必须在进口分析期间替换它们。一个`\0{id}`虚拟ID最终在浏览器中的DEV期间编码为`/@id/__x00__{id}` 。 ID将在输入插件管道之前将其解码，因此插件挂钩代码不会看到这一点。
 
-Note that modules directly derived from a real file, as in the case of a script module in a Single File Component (like a .vue or .svelte SFC) don't need to follow this convention. SFCs generally generate a set of submodules when processed but the code in these can be mapped back to the filesystem. Using `\0` for these submodules would prevent sourcemaps from working correctly.
+请注意，直接从真实文件派生的模块，例如单个文件组件中的脚本模块(例如.vue或.svelte sfc)无需遵循此公约。经过处理时，SFC通常会生成一组子模型，但可以将其映射到文件系统中。使用`\0`用于这些子模型将阻止Sourcemaps正确工作。
 
-## Universal Hooks
+## 通用钩
 
-During dev, the Vite dev server creates a plugin container that invokes [Rollup Build Hooks](https://rollupjs.org/plugin-development/#build-hooks) the same way Rollup does it.
+在开发过程中，Vite Dev服务器创建了一个插件容器，该插件容器以相同的方式调用[汇总构建挂钩](https://rollupjs.org/plugin-development/#build-hooks)。
 
-The following hooks are called once on server start:
+在服务器启动时，以下挂钩被调用一次:
 
-- [`options`](https://rollupjs.org/plugin-development/#options)
-- [`buildStart`](https://rollupjs.org/plugin-development/#buildstart)
+- [`options`](/0)
+- [`buildStart`](/0)
 
-The following hooks are called on each incoming module request:
+每个传入模块请求都调用以下钩子:
 
-- [`resolveId`](https://rollupjs.org/plugin-development/#resolveid)
-- [`load`](https://rollupjs.org/plugin-development/#load)
-- [`transform`](https://rollupjs.org/plugin-development/#transform)
+- [`resolveId`](/0)
+- [`load`](/0)
+- [`transform`](/0)
 
-These hooks also have an extended `options` parameter with additional Vite-specific properties. You can read more in the [SSR documentation](/en/guide/ssr#ssr-specific-plugin-logic).
+这些钩子还具有扩展的`options`参数，具有其他Vite特异性属性。您可以在[SSR文档](/en/guide/ssr#ssr-specific-plugin-logic)中阅读更多内容。
 
-Some `resolveId` calls' `importer` value may be an absolute path for a generic `index.html` at root as it's not always possible to derive the actual importer due to Vite's unbundled dev server pattern. For imports handled within Vite's resolve pipeline, the importer can be tracked during the import analysis phase, providing the correct `importer` value.
+大约`resolveId`调用' `importer`值可能是root上通用`index.html`的绝对路径，因为由于Vite的未捆绑开发服务器模式，并非总是可以得出实际进口商。对于在Vite的Resolve Pipeline中处理的导入，可以在进口分析阶段跟踪进口商，提供正确的`importer`值。
 
-The following hooks are called when the server is closed:
+当服务器关闭时，请调用以下钩子:
 
-- [`buildEnd`](https://rollupjs.org/plugin-development/#buildend)
-- [`closeBundle`](https://rollupjs.org/plugin-development/#closebundle)
+- [`buildEnd`](/0)
+- [`closeBundle`](/0)
 
-Note that the [`moduleParsed`](https://rollupjs.org/plugin-development/#moduleparsed) hook is **not** called during dev, because Vite avoids full AST parses for better performance.
+请注意，在开发过程中**未**调用[`moduleParsed`](https://rollupjs.org/plugin-development/#moduleparsed)挂钩，因为Vite避免了完整的AST解析以获得更好的性能。
 
-[Output Generation Hooks](https://rollupjs.org/plugin-development/#output-generation-hooks) (except `closeBundle`) are **not** called during dev. You can think of Vite's dev server as only calling `rollup.rollup()` without calling `bundle.generate()`.
+在开发过程中**未**调用[输出生成钩](https://rollupjs.org/plugin-development/#output-generation-hooks)(除`closeBundle` )。您可以将Vite的Dev服务器视为仅调用`rollup.rollup()`情况下，而无需致电`bundle.generate()` 。
 
-## Vite Specific Hooks
+## 特定的钩子
 
-Vite plugins can also provide hooks that serve Vite-specific purposes. These hooks are ignored by Rollup.
+Vite插件还可以提供可用于特定于Vite特定目的的钩子。这些钩子被汇总忽略了。
 
 ### `config`
 
-- **Type:** `(config: UserConfig, env: { mode: string, command: string }) => UserConfig | null | void`
-- **Kind:** `async`, `sequential`
+- **类型:** `(config:userconfig，env:{mode:string，命令:string})=> userconfig | 无效的 | 无效
+- `sequential` **:** `async`
 
-  Modify Vite config before it's resolved. The hook receives the raw user config (CLI options merged with config file) and the current config env which exposes the `mode` and `command` being used. It can return a partial config object that will be deeply merged into existing config, or directly mutate the config (if the default merging cannot achieve the desired result).
+  修改Vite配置在解决之前。挂钩接收RAW用户配置(与配置文件合并的CLI选项)和当前的配置ENV，该ENV揭示了所使用的`mode`和`command` 。它可以返回将深入合并到现有配置中的部分配置对象，也可以直接突变配置(如果默认合并无法实现所需的结果)。
 
-  **Example:**
+  **例子:**
 
   ```js
-  // return partial config (recommended)
+  // 返回部分配置(建议)
   const partialConfigPlugin = () => ({
     name: 'return-partial',
     config: () => ({
@@ -196,7 +196,7 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
     }),
   })
 
-  // mutate the config directly (use only when merging doesn't work)
+  // 直接突变配置(仅在合并不起作用时使用)
   const mutateConfigPlugin = () => ({
     name: 'mutate-config',
     config(config, { command }) {
@@ -208,17 +208,17 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
   ```
 
   ::: warning Note
-  User plugins are resolved before running this hook so injecting other plugins inside the `config` hook will have no effect.
+  在运行此挂钩之前，请先解决用户插件，因此将其他插件注入`config`钩中的其他插件将无效。
   :::
 
 ### `configResolved`
 
-- **Type:** `(config: ResolvedConfig) => void | Promise<void>`
-- **Kind:** `async`, `parallel`
+- **类型:** `(config:resolvedConfig)=> void | 承诺<void>`
+- `parallel` **:** `async`
 
-  Called after the Vite config is resolved. Use this hook to read and store the final resolved config. It is also useful when the plugin needs to do something different based on the command being run.
+  在解决VITE配置后调用。使用此挂钩读取和存储最终解决的配置。当插件需要根据正在运行的命令进行不同的操作时，它也很有用。
 
-  **Example:**
+  **例子:**
 
   ```js
   const examplePlugin = () => {
@@ -228,65 +228,65 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
       name: 'read-config',
 
       configResolved(resolvedConfig) {
-        // store the resolved config
+        // 存储已解决的配置
         config = resolvedConfig
       },
 
-      // use stored config in other hooks
+      // 在其他挂钩中使用存储的配置
       transform(code, id) {
         if (config.command === 'serve') {
-          // dev: plugin invoked by dev server
+          // 开发人员:Dev Server调用的插件
         } else {
-          // build: plugin invoked by Rollup
+          // 构建:插件由lollup调用
         }
       },
     }
   }
   ```
 
-  Note that the `command` value is `serve` in dev (in the cli `vite`, `vite dev`, and `vite serve` are aliases).
+  请注意，0中`command`值是DEV中的`serve` (在CLI `vite`和`vite serve`中是别倚) `vite dev`
 
 ### `configureServer`
 
-- **Type:** `(server: ViteDevServer) => (() => void) | void | Promise<(() => void) | void>`
-- **Kind:** `async`, `sequential`
-- **See also:** [ViteDevServer](./api-javascript#vitedevserver)
+- **类型:** `（服务器:vitedevserver）=>（（（）=> void） | 空白 | 承诺<(()=> void) | void>`
+- `sequential` **:** `async`
+- **另请参阅:** [Vitedevserver](./api-javascript#vitedevserver)
 
-  Hook for configuring the dev server. The most common use case is adding custom middlewares to the internal [connect](https://github.com/senchalabs/connect) app:
+  用于配置开发服务器的挂钩。最常见的用例是将自定义中间件添加到内部[连接](https://github.com/senchalabs/connect)应用程序:
 
   ```js
   const myPlugin = () => ({
     name: 'configure-server',
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        // custom handle request...
+        // 自定义处理请求...
       })
     },
   })
   ```
 
-  **Injecting Post Middleware**
+  **注射帖子中间件**
 
-  The `configureServer` hook is called before internal middlewares are installed, so the custom middlewares will run before internal middlewares by default. If you want to inject a middleware **after** internal middlewares, you can return a function from `configureServer`, which will be called after internal middlewares are installed:
+  在安装内部中间Wares之前，请调用`configureServer`挂钩，因此默认情况下，自定义中间件将在内部中间Wares之前运行。如果要在内部中间件**后**注入中间软件，则可以从`configureServer`返回一个功能，该功能将在安装内部中间Wares之后被调用:
 
   ```js
   const myPlugin = () => ({
     name: 'configure-server',
     configureServer(server) {
-      // return a post hook that is called after internal middlewares are
-      // installed
+      // 在内部中间货物后返回一个被调用的挂钩
+      // 安装
       return () => {
         server.middlewares.use((req, res, next) => {
-          // custom handle request...
+          // 自定义处理请求...
         })
       }
     },
   })
   ```
 
-  **Storing Server Access**
+  **存储服务器访问**
 
-  In some cases, other plugin hooks may need access to the dev server instance (e.g. accessing the web socket server, the file system watcher, or the module graph). This hook can also be used to store the server instance for access in other hooks:
+  在某些情况下，其他插件挂钩可能需要访问Dev Server实例(例如，访问Web套接字服务器，文件系统观察器或模块图)。此钩子还可以用来存储服务器实例以访问其他挂钩:
 
   ```js
   const myPlugin = () => {
@@ -298,32 +298,32 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
       },
       transform(code, id) {
         if (server) {
-          // use server...
+          // 使用服务器...
         }
       },
     }
   }
   ```
 
-  Note `configureServer` is not called when running the production build so your other hooks need to guard against its absence.
+  在运行生产构建时，未调用注意力`configureServer` ，因此您的其他钩子需要防止其缺席。
 
 ### `configurePreviewServer`
 
-- **Type:** `(server: PreviewServer) => (() => void) | void | Promise<(() => void) | void>`
-- **Kind:** `async`, `sequential`
-- **See also:** [PreviewServer](./api-javascript#previewserver)
+- **类型:** `(服务器:PreviewServer)=>(()=> void) | 空白 | 承诺<(()=> void) | void>`
+- `sequential` **:** `async`
+- **另请参阅:** [PreviewServer](./api-javascript#previewserver)
 
-  Same as [`configureServer`](/en/guide/api-plugin.html#configureserver) but for the preview server. Similarly to `configureServer`, the `configurePreviewServer` hook is called before other middlewares are installed. If you want to inject a middleware **after** other middlewares, you can return a function from `configurePreviewServer`, which will be called after internal middlewares are installed:
+  与[`configureServer`](/en/guide/api-plugin.html#configureserver)相同，但对于预览服务器。与`configureServer`类似，在安装其他中间件之前，将调用`configurePreviewServer`钩子。如果您想在其他中间件**后**注入中间件，则可以从`configurePreviewServer`中返回一个函数，该功能将在安装内部中间Wares之后被调用:
 
   ```js
   const myPlugin = () => ({
     name: 'configure-preview-server',
     configurePreviewServer(server) {
-      // return a post hook that is called after other middlewares are
-      // installed
+      // 返回另一个中间件之后被称为的帖子
+      // 安装
       return () => {
         server.middlewares.use((req, res, next) => {
-          // custom handle request...
+          // 自定义处理请求...
         })
       }
     },
@@ -332,20 +332,20 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
 
 ### `transformIndexHtml`
 
-- **Type:** `IndexHtmlTransformHook | { order?: 'pre' | 'post', handler: IndexHtmlTransformHook }`
-- **Kind:** `async`, `sequential`
+- **类型:** `indexhtmltransformhook | {订单？:'pre' | 'post'，处理程序:indexhtmltransformhook}'
+- `sequential` **:** `async`
 
-  Dedicated hook for transforming HTML entry point files such as `index.html`. The hook receives the current HTML string and a transform context. The context exposes the [`ViteDevServer`](./api-javascript#vitedevserver) instance during dev, and exposes the Rollup output bundle during build.
+  用于转换HTML入口点文件（例如`index.html`的专用挂钩。挂钩接收当前的HTML字符串和转换上下文。上下文在开发过程中公开了[`ViteDevServer`](./api-javascript#vitedevserver)实例，并在构建过程中暴露了汇总输出捆绑包。
 
-  The hook can be async and can return one of the following:
+  钩子可以是异步的，可以返回以下一个:
 
-  - Transformed HTML string
-  - An array of tag descriptor objects (`{ tag, attrs, children }`) to inject to the existing HTML. Each tag can also specify where it should be injected to (default is prepending to `<head>`)
-  - An object containing both as `{ html, tags }`
+  - 转换的HTML字符串
+  - 标记描述符对象( `{ tag, attrs, children }` )的数组将其注入现有HTML。每个标签还可以指定应注入何处(默认为`<head>` )
+  - 包含两个为`{ html, tags }`对象
 
-  By default `order` is `undefined`, with this hook applied after the HTML has been transformed. In order to inject a script that should go through the Vite plugins pipeline, `order: 'pre'` will apply the hook before processing the HTML. `order: 'post'` applies the hook after all hooks with `order` undefined are applied.
+  默认情况下， `order`为`undefined` ，在HTML转换后使用此钩子。为了注入应该通过Vite插件管道的脚本， `order: 'pre'`将在处理HTML之前应用钩子。在应用`order`未定义的所有钩子后， `order: 'post'`施加钩子。
 
-  **Basic Example:**
+  **基本示例:**
 
   ```js
   const htmlPlugin = () => {
@@ -361,7 +361,7 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
   }
   ```
 
-  **Full Hook Signature:**
+  **完整的挂钩签名:**
 
   ```ts
   type IndexHtmlTransformHook = (
@@ -391,22 +391,22 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
     attrs?: Record<string, string | boolean>
     children?: string | HtmlTagDescriptor[]
     /**
-     * default: 'head-prepend'
+     * 默认值:“头部prepend'
      */
     injectTo?: 'head' | 'body' | 'head-prepend' | 'body-prepend'
   }
   ```
 
   ::: warning Note
-  This hook won't be called if you are using a framework that has custom handling of entry files (for example [SvelteKit](https://github.com/sveltejs/kit/discussions/8269#discussioncomment-4509145)).
+  如果您使用的是具有定制输入文件(例如[Sveltekit](https://github.com/sveltejs/kit/discussions/8269#discussioncomment-4509145) )的框架，则不会调用此挂钩。
   :::
 
 ### `handleHotUpdate`
 
-- **Type:** `(ctx: HmrContext) => Array<ModuleNode> | void | Promise<Array<ModuleNode> | void>`
-- **See also:** [HMR API](./api-hmr)
+- **类型:** `(ctx:hmrcontext)=> array<ModuleNode> | 空白 | 承诺<数组<ModuleNode> | void>`
+- **另请参阅:** [HMR API](./api-hmr)
 
-  Perform custom HMR update handling. The hook receives a context object with the following signature:
+  执行自定义HMR更新处理。钩子接收一个具有以下签名的上下文对象:
 
   ```ts
   interface HmrContext {
@@ -418,19 +418,19 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
   }
   ```
 
-  - `modules` is an array of modules that are affected by the changed file. It's an array because a single file may map to multiple served modules (e.g. Vue SFCs).
+  - `modules`是由更改文件影响的模块数组。这是一个数组，因为一个文件可以映射到多个服务模块(例如VUE SFC)。
 
-  - `read` is an async read function that returns the content of the file. This is provided because on some systems, the file change callback may fire too fast before the editor finishes updating the file and direct `fs.readFile` will return empty content. The read function passed in normalizes this behavior.
+  - `read`是返回文件内容的异步读取函数。之所以提供此信息，是因为在某些系统上，文件更改回调可能会在编辑器完成更新文件之前触发太快，而直接`fs.readFile`将返回空内容。读取功能通过以归一化的行为。
 
-  The hook can choose to:
+  钩子可以选择:
 
-  - Filter and narrow down the affected module list so that the HMR is more accurate.
+  - 过滤并缩小受影响的模块列表，以使 HMR 更准确。
 
-  - Return an empty array and perform a full reload:
+  - 返回一个空数组并执行完整重新加载:
 
     ```js
     handleHotUpdate({ server, modules, timestamp }) {
-      // Invalidate modules manually
+      // 手动使模块失效
       const invalidatedModules = new Set()
       for (const mod of modules) {
         server.moduleGraph.invalidateModule(
@@ -445,7 +445,7 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
     }
     ```
 
-  - Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+  - 返回一个空数组，并通过向客户端发送自定义事件执行完整的自定义 HMR 处理:
 
     ```js
     handleHotUpdate({ server }) {
@@ -458,64 +458,64 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
     }
     ```
 
-    Client code should register corresponding handler using the [HMR API](./api-hmr) (this could be injected by the same plugin's `transform` hook):
+    客户端代码应使用[HMR API](./api-hmr)注册对应处理程序(这可以由同一插件的`transform`挂钩注入):
 
     ```js
     if (import.meta.hot) {
       import.meta.hot.on('special-update', (data) => {
-        // perform custom update
+        // 执行自定义更新
       })
     }
     ```
 
-## Plugin Ordering
+## 插件
 
-A Vite plugin can additionally specify an `enforce` property (similar to webpack loaders) to adjust its application order. The value of `enforce` can be either `"pre"` or `"post"`. The resolved plugins will be in the following order:
+Vite插件还可以指定`enforce`属性(类似于WebPack加载程序)来调整其应用程序订单。 `enforce`的值可以是`"pre"`或`"post"` 。已解决的插件将按以下顺序:
 
-- Alias
-- User plugins with `enforce: 'pre'`
-- Vite core plugins
-- User plugins without enforce value
-- Vite build plugins
-- User plugins with `enforce: 'post'`
-- Vite post build plugins (minify, manifest, reporting)
+- 别名
+- 用户插件与`enforce: 'pre'`
+- Vite Core插件
+- 没有强制性值的用户插件
+- Vite构建插件
+- 用户插件与`enforce: 'post'`
+- Vite Post Build插件(缩小，清单，报告)
 
-Note that this is separate from hooks ordering, those are still separately subject to their `order` attribute [as usual for Rollup hooks](https://rollupjs.org/plugin-development/#build-hooks).
+请注意，这与挂钩排序是分开的，这些[钩子仍然像往常](https://rollupjs.org/plugin-development/#build-hooks)一样符合其`order`属性。
 
 ## Conditional Application
 
-By default plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+默认情况下，为服务和构建提供了调用插件。如果仅在服务或构建过程中需要有条件应用插件，则使用`apply`属性在`'build'`或`'serve'`期间仅调用它们:
 
 ```js
 function myPlugin() {
   return {
     name: 'build-only',
-    apply: 'build', // or 'serve'
+    apply: 'build', // 或“服务”
   }
 }
 ```
 
-A function can also be used for more precise control:
+功能也可以用于更精确的控制:
 
 ```js
 apply(config, { command }) {
-  // apply only on build but not for SSR
+  // 仅应用于构建，但不适用于SSR
   return command === 'build' && !config.build.ssr
 }
 ```
 
-## Rollup Plugin Compatibility
+## 滚动插件兼容性
 
-A fair number of Rollup plugins will work directly as a Vite plugin (e.g. `@rollup/plugin-alias` or `@rollup/plugin-json`), but not all of them, since some plugin hooks do not make sense in an unbundled dev server context.
+相当数量的Rollup插件可以直接作为Vite插件使用(例如 `@rollup/plugin-alias` 或 `@rollup/plugin-json`)，但并非所有插件都适用，因为某些插件钩子在未捆绑的开发服务器上下文中没有意义。
 
-In general, as long as a Rollup plugin fits the following criteria then it should just work as a Vite plugin:
+通常，只要Rollup插件符合以下标准，它就应该可以直接作为Vite插件使用:
 
-- It doesn't use the [`moduleParsed`](https://rollupjs.org/plugin-development/#moduleparsed) hook.
-- It doesn't have strong coupling between bundle-phase hooks and output-phase hooks.
+- 它不使用 [`moduleParsed`](https://rollupjs.org/plugin-development/#moduleparsed) 钩子。
+- 它在打包阶段钩子和输出阶段钩子之间没有强耦合。
 
-If a Rollup plugin only makes sense for the build phase, then it can be specified under `build.rollupOptions.plugins` instead. It will work the same as a Vite plugin with `enforce: 'post'` and `apply: 'build'`.
+如果一个Rollup插件仅在构建阶段有意义，则可以在 `build.rollupOptions.plugins` 下指定。它的工作方式与带有 `enforce: 'post'` 和 `apply: 'build'` 的Vite插件相同。
 
-You can also augment an existing Rollup plugin with Vite-only properties:
+您还可以为现有的Rollup插件添加仅Vite特有的属性:
 
 ```js [vite.config.js]
 import example from 'rollup-plugin-example'
@@ -532,11 +532,11 @@ export default defineConfig({
 })
 ```
 
-## Path Normalization
+## 路径规范化
 
-Vite normalizes paths while resolving ids to use POSIX separators ( / ) while preserving the volume in Windows. On the other hand, Rollup keeps resolved paths untouched by default, so resolved ids have win32 separators ( \\ ) in Windows. However, Rollup plugins use a [`normalizePath` utility function](https://github.com/rollup/plugins/tree/master/packages/pluginutils#normalizepath) from `@rollup/pluginutils` internally, which converts separators to POSIX before performing comparisons. This means that when these plugins are used in Vite, the `include` and `exclude` config pattern and other similar paths against resolved ids comparisons work correctly.
+Vite在解析ID时会将路径规范化为使用POSIX分隔符(/)，同时保留Windows中的卷。而Rollup默认情况下会保持已解析路径不变，因此在Windows中已解析的ID会使用Win32分隔符(\)。然而，Rollup插件内部使用了 `@rollup/pluginutils` 中的 [`normalizePath` 实用函数](https://github.com/rollup/plugins/tree/master/packages/pluginutils#normalizepath)，该函数在进行比较之前会将分隔符转换为POSIX。这意味着，当这些插件用于Vite时，`include` 和 `exclude` 配置模式以及其他类似的路径比较都能正确工作。
 
-So, for Vite plugins, when comparing paths against resolved ids it is important to first normalize the paths to use POSIX separators. An equivalent `normalizePath` utility function is exported from the `vite` module.
+因此，对于Vite插件，在将路径与已解析的ID进行比较时，首先将路径规范化为使用POSIX分隔符非常重要。`vite` 模块中导出了一个等效的 `normalizePath` 实用函数。
 
 ```js
 import { normalizePath } from 'vite'
@@ -545,17 +545,17 @@ normalizePath('foo\\bar') // 'foo/bar'
 normalizePath('foo/bar') // 'foo/bar'
 ```
 
-## Filtering, include/exclude pattern
+## 过滤、包含/排除模式
 
-Vite exposes [`@rollup/pluginutils`'s `createFilter`](https://github.com/rollup/plugins/tree/master/packages/pluginutils#createfilter) function to encourage Vite specific plugins and integrations to use the standard include/exclude filtering pattern, which is also used in Vite core itself.
+Vite暴露了 [`@rollup/pluginutils` 的 `createFilter`](https://github.com/rollup/plugins/tree/master/packages/pluginutils#createfilter) 函数，以鼓励特定于Vite的插件和集成使用标准的包含/排除过滤模式，这在Vite核心中也使用。
 
-## Client-server Communication
+## 客户端-服务器通信
 
-Since Vite 2.9, we provide some utilities for plugins to help handle the communication with clients.
+自Vite 2.9以来，我们为插件提供了一些实用程序，以帮助处理与客户端的通信。
 
-### Server to Client
+### 服务器到客户端
 
-On the plugin side, we could use `server.ws.send` to broadcast events to the client:
+在插件方面，我们可以使用 `server.ws.send` 向客户端广播事件:
 
 ```js [vite.config.js]
 export default defineConfig({
@@ -573,34 +573,34 @@ export default defineConfig({
 ```
 
 ::: tip NOTE
-We recommend **always prefixing** your event names to avoid collisions with other plugins.
+我们建议 **始终为您的事件名称添加前缀** 以避免与其他插件发生冲突。
 :::
 
-On the client side, use [`hot.on`](/en/guide/api-hmr.html#hot-on-event-cb) to listen to the events:
+在客户端，使用 [`hot.on`](/en/guide/api-hmr.html#hot-on-event-cb) 监听事件:
 
 ```ts twoslash
 import 'vite/client'
-// ---cut---
-// client side
+//  - -切 - -
+// 客户端
 if (import.meta.hot) {
   import.meta.hot.on('my:greetings', (data) => {
-    console.log(data.msg) // hello
+    console.log(data.msg) // 你好
   })
 }
 ```
 
-### Client to Server
+### 客户端到服务器
 
-To send events from the client to the server, we can use [`hot.send`](/en/guide/api-hmr.html#hot-send-event-payload):
+要从客户端向服务器发送事件，我们可以使用 [`hot.send`](/en/guide/api-hmr.html#hot-send-event-payload):
 
 ```ts
-// client side
+// 客户端
 if (import.meta.hot) {
   import.meta.hot.send('my:from-client', { msg: 'Hey!' })
 }
 ```
 
-Then use `server.ws.on` and listen to the events on the server side:
+然后使用 `server.ws.on` 并在服务器端监听事件:
 
 ```js [vite.config.js]
 export default defineConfig({
@@ -609,8 +609,8 @@ export default defineConfig({
       // ...
       configureServer(server) {
         server.ws.on('my:from-client', (data, client) => {
-          console.log('Message from client:', data.msg) // Hey!
-          // reply only to the client (if needed)
+          console.log('Message from client:', data.msg) // 嘿！
+          // 仅回复客户端(如需)
           client.send('my:ack', { msg: 'Hi! I got your message!' })
         })
       },
@@ -619,12 +619,12 @@ export default defineConfig({
 })
 ```
 
-### TypeScript for Custom Events
+### 自定义事件的TypeScript类型
 
-Internally, vite infers the type of a payload from the `CustomEventMap` interface, it is possible to type custom events by extending the interface:
+在内部，Vite从 `CustomEventMap` 接口中推断有效负载的类型，可以通过扩展该接口来为自定义事件添加类型:
 
 :::tip Note
-Make sure to include the `.d.ts` extension when specifying TypeScript declaration files. Otherwise, Typescript may not know which file the module is trying to extend.
+确保在指定TypeScript声明文件时包含 `.d.ts` 扩展名。否则，TypeScript可能不知道模块正在尝试扩展哪个文件。
 :::
 
 ```ts [events.d.ts]
@@ -633,12 +633,12 @@ import 'vite/types/customEvent.d.ts'
 declare module 'vite/types/customEvent.d.ts' {
   interface CustomEventMap {
     'custom:foo': { msg: string }
-    // 'event-key': payload
+    // 'event-key': 有效载荷
   }
 }
 ```
 
-This interface extension is utilized by `InferCustomEventPayload<T>` to infer the payload type for event `T`. For more information on how this interface is utilized, refer to the [HMR API Documentation](./api-hmr#hmr-api).
+该接口扩展由 `InferCustomEventPayload<T>` 用于推断事件 `T` 的有效负载类型。有关此接口如何使用的更多信息，请参阅 [HMR API文档](./api-hmr#hmr-api)。
 
 ```ts twoslash
 import 'vite/client'
@@ -648,12 +648,12 @@ declare module 'vite/types/customEvent.d.ts' {
     'custom:foo': { msg: string }
   }
 }
-// ---cut---
+//  - -切 - -
 type CustomFooPayload = InferCustomEventPayload<'custom:foo'>
 import.meta.hot?.on('custom:foo', (payload) => {
-  // The type of payload will be { msg: string }
+  // 有效载荷的类型为 { msg: string }
 })
 import.meta.hot?.on('unknown:event', (payload) => {
-  // The type of payload will be any
+  // 有效载荷的类型为任意类型
 })
 ```

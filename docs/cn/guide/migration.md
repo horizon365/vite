@@ -1,69 +1,69 @@
-# Migration from v5
+# 从V5迁移
 
-## Environment API
+## 环境API
 
-As part of the new experimental [Environment API](/en/guide/api-environment.md), a big internal refactoring was needed. Vite 6 strives to avoid breaking changes to ensure most projects can quickly upgrade to the new major. We'll wait until a big portion of the ecosystem has moved to stabilize and start recommending the use of the new APIs. There may be some edge cases but these should only affect low level usage by frameworks and tools. We have worked with maintainers in the ecosystem to mitigate these differences before the release. Please [open an issue](https://github.com/vitejs/vite/issues/new?assignees=&labels=pending+triage&projects=&template=bug_report.yml) if you spot a regression.
+作为新的实验[环境API的](/en/guide/api-environment.md)一部分，需要进行大型内部重构。 Vite 6努力避免打破变化，以确保大多数项目可以快速升级到新专业。我们将等到生态系统的很大一部分已移动以稳定并开始建议使用新API。可能有一些边缘情况，但这些情况只能通过框架和工具影响低级使用。我们已经与生态系统中的维护人员合作，以减轻发布之前的差异。如果您发现回归，请[打开问题](https://github.com/vitejs/vite/issues/new?assignees=&labels=pending+triage&projects=&template=bug_report.yml)。
 
-Some internal APIs have been removed due to changes in Vite's implementation. If you were relying on one of them, please create a [feature request](https://github.com/vitejs/vite/issues/new?assignees=&labels=enhancement%3A+pending+triage&projects=&template=feature_request.yml).
+由于Vite实施的变化，已删除了一些内部API。如果您依靠其中一个，请创建一个[功能请求](https://github.com/vitejs/vite/issues/new?assignees=&labels=enhancement%3A+pending+triage&projects=&template=feature_request.yml)。
 
-## Vite Runtime API
+## Vite运行时API
 
-The experimental Vite Runtime API evolved into the Module Runner API, released in Vite 6 as part of the new experimental [Environment API](/en/guide/api-environment). Given that the feature was experimental the removal of the previous API introduced in Vite 5.1 isn't a breaking change, but users will need to update their use to the Module Runner equivalent as part of migrating to Vite 6.
+实验性Vite运行时API演变为模块Runner API，作为新实验[环境API](/en/guide/api-environment)的一部分，以Vite 6发布。鉴于该功能是实验性的，因此删除了Vite 5.1中引入的先前API并不是打破的变化，但是用户需要将其使用到模块跑步者等效的用途，这是迁移到Vite 6的一部分。
 
-## General Changes
+## 一般变化
 
-### Default value for `resolve.conditions`
+### `resolve.conditions`的默认值
 
-This change does not affect users that did not configure [`resolve.conditions`](/en/config/shared-options#resolve-conditions) / [`ssr.resolve.conditions`](/en/config/ssr-options#ssr-resolve-conditions) / [`ssr.resolve.externalConditions`](/en/config/ssr-options#ssr-resolve-externalconditions).
+此更改不会影响未配置[`resolve.conditions`](/en/config/shared-options#resolve-conditions) / [`ssr.resolve.conditions`](/1) [`ssr.resolve.externalConditions`](/2)用户。
 
-In Vite 5, the default value for `resolve.conditions` was `[]` and some conditions were added internally. The default value for `ssr.resolve.conditions` was the value of `resolve.conditions`.
+在Vite 5中， `resolve.conditions`的默认值为`[]` ，内部添加了一些条件。 `ssr.resolve.conditions`的默认值是`resolve.conditions`的值。
 
-From Vite 6, some of the conditions are no longer added internally and need to be included in the config values.
-The conditions that are no longer added internally for
+从VITE 6中，某些条件不再内部添加，需要包含在配置值中。
+内部不再添加的条件
 
-- `resolve.conditions` are `['module', 'browser', 'development|production']`
-- `ssr.resolve.conditions` are `['module', 'node', 'development|production']`
+- `resolve.conditions`是`['模块'，'浏览器'，'开发|生产']``
+- `ssr.resolve.conditions`是`['模块'，'node'，'开发|生产']``
 
-The default values for those options are updated to the corresponding values and `ssr.resolve.conditions` no longer uses `resolve.conditions` as the default value. Note that `development|production` is a special variable that is replaced with `production` or `development` depending on the value of `process.env.NODE_ENV`. These default values are exported from `vite` as `defaultClientConditions` and `defaultServerConditions`.
+这些选项的默认值已更新为相应的值，而`ssr.resolve.conditions`不再使用`resolve.conditions`作为默认值。请注意，开发|生产`is a special variable that is replaced with`生产`or`开发`depending on the value of` process.env.node_env `. These default values are exported from ` vite `as` DefaultClientConditions `and` defaultServerConditions`。
 
-If you specified a custom value for `resolve.conditions` or `ssr.resolve.conditions`, you need to update it to include the new conditions.
-For example, if you previously specified `['custom']` for `resolve.conditions`, you need to specify `['custom', ...defaultClientConditions]` instead.
+如果指定了`resolve.conditions`或`ssr.resolve.conditions`自定义值，则需要对其进行更新以包括新条件。
+例如，如果先前指定为`resolve.conditions` `['custom']` ，则需要指定`['custom', ...defaultClientConditions]` 。
 
-### JSON stringify
+### json stringify
 
-In Vite 5, when [`json.stringify: true`](/en/config/shared-options#json-stringify) is set, [`json.namedExports`](/en/config/shared-options#json-namedexports) was disabled.
+在Vite 5中，设置[`json.stringify: true`](/en/config/shared-options#json-stringify)时，禁用[`json.namedExports`](/1) 。
 
-From Vite 6, even when `json.stringify: true` is set, `json.namedExports` is not disabled and the value is respected. If you wish to achieve the previous behavior, you can set `json.namedExports: false`.
+从VITE 6中，即使设置了`json.stringify: true` ，也没有禁用`json.namedExports` ，并尊重该值。如果您想实现先前的行为，则可以设置`json.namedExports: false` 。
 
-Vite 6 also introduces a new default value for `json.stringify` which is `'auto'`, which will only stringify large JSON files. To disable this behavior, set `json.stringify: false`.
+Vite 6还引入了一个新的默认值`json.stringify` ，即`'auto'` ，它将仅串制大型JSON文件。要禁用此行为，请集`json.stringify: false` 。
 
-### Extended support of asset references in HTML elements
+### HTML元素中资产参考的扩展支持
 
-In Vite 5, only a few supported HTML elements were able to reference assets that will be processed and bundled by Vite, such as `<link href>`, `<img src>`, etc.
+在Vite 5中，只有几个支持的HTML元素能够参考将通过Vite处理和捆绑的资产，例如`<link id="!">` `<img id="#">` 。
 
-Vite 6 extends the support to even more HTML elements. The full list can be found at the [HTML features](/en/guide/features.html#html) docs.
+Vite 6将支持扩展到更多的HTML元素。完整列表可以在[HTML功能](/en/guide/features.html#html)文档中找到。
 
-To opt-out of HTML processing on certain elements, you can add the `vite-ignore` attribute on the element.
+要在某些元素上选择退出HTML处理，您可以在元素上添加`vite-ignore`属性。
 
-### postcss-load-config
+### Postcss-Load-Config
 
-[`postcss-load-config`](https://npmjs.com/package/postcss-load-config) has been updated to v6 from v4. [`tsx`](https://www.npmjs.com/package/tsx) or [`jiti`](https://www.npmjs.com/package/jiti) is now required to load TypeScript postcss config files instead of [`ts-node`](https://www.npmjs.com/package/ts-node). Also [`yaml`](https://www.npmjs.com/package/yaml) is now required to load YAML postcss config files.
+[`postcss-load-config`](/0)已从V4更新为V6。现在需要[`tsx`](/1)或[`jiti`](/2)加载Typescript Postcss配置文件而不是[`ts-node`](/3) 。现在也需要[`yaml`](/4)加载YAML Postcss配置文件。
 
-### Sass now uses modern API by default
+### SASS现在默认使用现代API
 
-In Vite 5, the legacy API was used by default for Sass. Vite 5.4 added support for the modern API.
+在Vite 5中，默认情况下使用了遗留API作为SASS。 Vite 5.4增加了对现代API的支持。
 
-From Vite 6, the modern API is used by default for Sass. If you wish to still use the legacy API, you can set [`css.preprocessorOptions.sass.api: 'legacy'` / `css.preprocessorOptions.scss.api: 'legacy'`](/en/config/shared-options#css-preprocessoroptions). But note that the legacy API support will be removed in Vite 7.
+从Vite 6中，默认情况下将现代API用于SASS。如果您仍然希望使用旧式API，则可以设置[`css.preprocessorOptions.scss.api: 'legacy'` `css.preprocessorOptions.sass.api: 'legacy'`](/en/config/shared-options#css-preprocessoroptions)但是请注意，将在VITE 7中删除遗产API支持。
 
-To migrate to the modern API, see [the Sass documentation](https://sass-lang.com/documentation/breaking-changes/legacy-js-api/).
+要迁移到现代API，请参阅[SASS文档](/0)。
 
-### Customize CSS output file name in library mode
+### 在库模式下自定义CSS输出文件名
 
-In Vite 5, the CSS output file name in library mode was always `style.css` and cannot be easily changed through the Vite config.
+在VITE 5中，库模式下的CSS输出文件名称始终为`style.css` ，并且无法通过Vite Config轻松更改。
 
-From Vite 6, the default file name now uses `"name"` in `package.json` similar to the JS output files. If [`build.lib.fileName`](/en/config/build-options.md#build-lib) is set with a string, the value will also be used for the CSS output file name. To explicitly set a different CSS file name, you can use the new [`build.lib.cssFileName`](/en/config/build-options.md#build-lib) to configure it.
+从Vite 6中，默认文件名称现在使用`package.json`中的`"name"`类似于JS输出文件。如果用字符串设置[`build.lib.fileName`](/en/config/build-options.md#build-lib) ，则该值也将用于CSS输出文件名。要明确设置不同的CSS文件名，您可以使用新的[`build.lib.cssFileName`](/en/config/build-options.md#build-lib)来配置它。
 
-To migrate, if you had relied on the `style.css` file name, you should update references to it to the new name based on your package name. For example:
+要迁移，如果您依赖`style.css`文件名，则应根据包装名称将其更新到新名称。例如:
 
 ```json [package.json]
 {
@@ -75,37 +75,37 @@ To migrate, if you had relied on the `style.css` file name, you should update re
 }
 ```
 
-If you prefer to stick with `style.css` like in Vite 5, you can set `build.lib.cssFileName: 'style'` instead.
+如果您喜欢像Vite 5一样坚持使用`style.css` ，则可以设置`build.lib.cssFileName: 'style'` 。
 
-## Advanced
+## 先进的
 
-There are other breaking changes which only affect few users.
+还有其他破裂的变化，只会影响少数用户。
 
-- [[#17922] fix(css)!: remove default import in ssr dev](https://github.com/vitejs/vite/pull/17922)
-  - Support for default import of CSS files was [deprecated in Vite 4](https://v4.vite.dev/guide/migration.html#importing-css-as-a-string) and removed in Vite 5, but it was still unintentionally supported in SSR dev mode. This support is now removed.
-- [[#15637] fix!: default `build.cssMinify` to `'esbuild'` for SSR](https://github.com/vitejs/vite/pull/15637)
-  - [`build.cssMinify`](/en/config/build-options#build-cssminify) is now enabled by default even for SSR builds.
-- [[#18070] feat!: proxy bypass with WebSocket](https://github.com/vitejs/vite/pull/18070)
-  - `server.proxy[path].bypass` is now called for WebSocket upgrade requests and in that case, the `res` parameter will be `undefined`.
-- [[#18209] refactor!: bump minimal terser version to 5.16.0](https://github.com/vitejs/vite/pull/18209)
-  - Minimal supported terser version for [`build.minify: 'terser'`](/en/config/build-options#build-minify) was bumped to 5.16.0 from 5.4.0.
-- [[#18231] chore(deps): update dependency @rollup/plugin-commonjs to v28](https://github.com/vitejs/vite/pull/18231)
-  - [`commonjsOptions.strictRequires`](https://github.com/rollup/plugins/blob/master/packages/commonjs/README.md#strictrequires) is now `true` by default (was `'auto'` before).
-    - This may lead to larger bundle sizes but will result in more deterministic builds.
-    - If you are specifying a CommonJS file as an entry point, you may need additional steps. Read [the commonjs plugin documentation](https://github.com/rollup/plugins/blob/master/packages/commonjs/README.md#using-commonjs-files-as-entry-points) for more details.
-- [[#18243] chore(deps)!: migrate `fast-glob` to `tinyglobby`](https://github.com/vitejs/vite/pull/18243)
-  - Range braces (`{01..03}` ⇒ `['01', '02', '03']`) and incremental braces (`{2..8..2}` ⇒ `['2', '4', '6', '8']`) are no longer supported in globs.
-- [[#18395] feat(resolve)!: allow removing conditions](https://github.com/vitejs/vite/pull/18395)
-  - This PR not only introduces a breaking change mentioned above as "Default value for `resolve.conditions`", but also makes `resolve.mainFields` to not be used for no-externalized dependencies in SSR. If you were using `resolve.mainFields` and want to apply that to no-externalized dependencies in SSR, you can use [`ssr.resolve.mainFields`](/en/config/ssr-options#ssr-resolve-mainfields).
-- [[#18493] refactor!: remove fs.cachedChecks option](https://github.com/vitejs/vite/pull/18493)
-  - This opt-in optimization was removed due to edge cases when writing a file in a cached folder and immediately importing it.
-- ~~[[#18697] fix(deps)!: update dependency dotenv-expand to v12](https://github.com/vitejs/vite/pull/18697)~~
-  - ~~Variables used in interpolation should be declared before the interpolation now. For more details, see [the `dotenv-expand` changelog](https://github.com/motdotla/dotenv-expand/blob/v12.0.1/CHANGELOG.md#1200-2024-11-16).~~ This breaking change was reverted in v6.1.0.
-- [[#16471] feat: v6 - Environment API](https://github.com/vitejs/vite/pull/16471)
+- [[＃17922] fix（CSS）！:删除SSR DEV中的默认导入](/0)
+  - 支持CSS文件的默认导入的支持[在VITE 4中被弃用](/0)并在Vite 5中删除，但在SSR Dev模式下仍然是无意间支持的。现在删除了此支持。
+- [[＃15637] fix！:SSR的默认值`build.cssMinify`到`'esbuild'`](/0)
+  - 现在，即使对于SSR构建，默认情况下还启用了[`build.cssMinify`](/en/config/build-options#build-cssminify) 。
+- [[＃18070]壮举！:代理旁路与WebSocket](/0)
+  - 现在，呼叫`server.proxy[path].bypass`的Websocket升级请求，在这种情况下， `res`参数为`undefined` 。
+- [[＃18209]重构！:凸起最小的Terser版本为5.16.0](/0)
+  - 从5.4.0降至5.16.0的最小支持的Terser版本[`build.minify: 'terser'`](/en/config/build-options#build-minify)
+- [[＃18231]繁琐（deps）:更新依赖关系 @lollup/plugin-commonjs to V28](/0)
+  - [`commonjsOptions.strictRequires`](/0)现在默认为`true` （以前为`'auto'` ）。
+    - 这可能会导致更大的捆绑尺寸，但会导致更确定性的构建。
+    - 如果将CONCORJS文件指定为入口点，则可能需要其他步骤。阅读[CommonJS插件文档](/0)以获取更多详细信息。
+- [[＃18243]繁琐（deps）！:迁移`fast-glob`至`tinyglobby`](/0)
+  - `['01', '02', '03']`括号（ `{01..03}` ）和`['2', '4', '6', '8']`牙套（ `{2..8..2}` ）不再在地球仪中支持。
+- [[＃18395]壮举（解决）！:允许删除条件](/0)
+  - 该公关不仅引入了上述破裂变化为“ `resolve.conditions`的默认值”，而且还使`resolve.mainFields`不用于SSR中的无外部化依赖关系。如果您使用`resolve.mainFields`并希望将其应用于SSR中的无外部依赖项，则可以使用[`ssr.resolve.mainFields`](/0) 。
+- [[＃18493]重构！:删除fs.cachedchecks选项](/0)
+  - 当在缓存文件夹中编写文件并立即导入文件时，该选择加入优化被删除。
+- ~~[[＃18697] fix（deps）！:更新依赖关系dotenv-expand to v12](/0)~~
+  - ~~插值中使用的变量应在插值之前声明。有关更多详细信息，请参见[`dotenv-expand` ChangElog](/0) 。~~这种破裂的变化在v6.1.0中恢复了。
+- [[＃16471]壮举:V6-环境API](/0)
 
-  - Updates to an SSR-only module no longer triggers a full page reload in the client. To return to the previous behaviour, a custom Vite plugin can be used:
+  - 更新到仅SSR的模块不再触发客户端中的完整页面。要返回以前的行为，可以使用自定义的Vite插件:
     <details>
-    <summary>Click to expand example</summary>
+    <summary>点击扩展示例</summary>
 
     ```ts twoslash
     import type { Plugin, EnvironmentModuleNode } from 'vite'
@@ -149,6 +149,6 @@ There are other breaking changes which only affect few users.
 
     </details>
 
-## Migration from v4
+## 从V4迁移
 
-Check the [Migration from v4 Guide](https://v5.vite.dev/guide/migration.html) in the Vite v5 docs first to see the needed changes to port your app to Vite 5, and then proceed with the changes on this page.
+首先检查VITE V5文档中[V4指南的迁移，](/0)以查看将应用程序移植到Vite 5的所需更改，然后继续此页面上的更改。

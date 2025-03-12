@@ -1,20 +1,20 @@
-# HMR `hotUpdate` Plugin Hook
+# HMR `hotUpdate` 插件钩
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+请在 [环境API反馈讨论](https://github.com/vitejs/vite/discussions/16358) 中给我们反馈
 :::
 
-We're planning to deprecate the `handleHotUpdate` plugin hook in favor of [`hotUpdate` hook](/en/guide/api-environment#the-hotupdate-hook) to be [Environment API](/en/guide/api-environment.md) aware, and handle additional watch events with `create` and `delete`.
+我们计划弃用 `handleHotUpdate` 插件钩，转而使用对 [环境API](/en/guide/api-environment.md) 有感知的 [`hotUpdate` 钩子](/en/guide/api-environment#the-hotupdate-hook)，并使用 `create` 和 `delete` 处理额外的监视事件。
 
-Affected scope: `Vite Plugin Authors`
+受影响的范围: `Vite 插件作者`
 
 ::: warning Future Deprecation
-`hotUpdate` was first introduced in `v6.0`. The deprecation of `handleHotUpdate` is planned for `v7.0`. We don't yet recommend moving away from `handleHotUpdate` yet. If you want to experiment and give us feedback, you can use the `future.removePluginHookHandleHotUpdate` to `"warn"` in your vite config.
+`hotUpdate` 最初在 `v6.0` 中引入。`handleHotUpdate` 的弃用计划在 `v7.0`。我们目前还不建议从 `handleHotUpdate` 迁移。如果您想尝试并给我们反馈，可以在 Vite 配置中将 `future.removePluginHookHandleHotUpdate` 设置为 `"warn"`。
 :::
 
-## Motivation
+## 动机
 
-The [`handleHotUpdate` hook](/en/guide/api-plugin.md#handlehotupdate) allows to perform custom HMR update handling. A list of modules to be updated is passed in the `HmrContext`
+[`handleHotUpdate` 钩子](/en/guide/api-plugin.md#handlehotupdate) 允许执行自定义的 HMR 更新处理。要更新的模块列表在 `HmrContext` 中传递
 
 ```ts
 interface HmrContext {
@@ -26,9 +26,9 @@ interface HmrContext {
 }
 ```
 
-This hook is called once for all environments, and the passed modules have mixed information from the Client and SSR environments only. Once frameworks move to custom environments, a new hook that is called for each of them is needed.
+此钩子一次为所有环境调用，传递的模块仅包含客户端和 SSR 环境的混合信息。一旦框架迁移到自定义环境，就需要一个新的钩子，该钩子为每个环境调用。
 
-The new `hotUpdate` hook works in the same way as `handleHotUpdate` but it is called for each environment and receives a new `HotUpdateOptions` instance:
+新的 `hotUpdate` 钩子以与 `handleHotUpdate` 相同的方式工作，但它是为每个环境调用的，并接收一个新的 `HotUpdateOptions` 实例:
 
 ```ts
 interface HotUpdateOptions {
@@ -41,31 +41,31 @@ interface HotUpdateOptions {
 }
 ```
 
-The current dev environment can be accessed like in other Plugin hooks with `this.environment`. The `modules` list will now be module nodes from the current environment only. Each environment update can define different update strategies.
+当前的开发环境可以像其他插件钩子一样通过 `this.environment` 访问。`modules` 列表现在仅包含当前环境中的模块节点。每个环境更新可以定义不同的更新策略。
 
-This hook is also now called for additional watch events and not only for `'update'`. Use `type` to differentiate between them.
+此钩子现在不仅在 `'update'` 时调用，还用于其他监视事件。使用 `type` 来区分它们。
 
-## Migration Guide
+## 迁移指南
 
-Filter and narrow down the affected module list so that the HMR is more accurate.
+过滤并缩小受影响的模块列表，以使 HMR 更准确。
 
 ```js
 handleHotUpdate({ modules }) {
   return modules.filter(condition)
 }
 
-// Migrate to:
+// 迁移到:
 
 hotUpdate({ modules }) {
   return modules.filter(condition)
 }
 ```
 
-Return an empty array and perform a full reload:
+返回一个空数组并执行完整重新加载:
 
 ```js
 handleHotUpdate({ server, modules, timestamp }) {
-  // Invalidate modules manually
+  // 手动使模块失效
   const invalidatedModules = new Set()
   for (const mod of modules) {
     server.moduleGraph.invalidateModule(
@@ -79,10 +79,10 @@ handleHotUpdate({ server, modules, timestamp }) {
   return []
 }
 
-// Migrate to:
+// 迁移到:
 
 hotUpdate({ modules, timestamp }) {
-  // Invalidate modules manually
+  // 手动使模块失效
   const invalidatedModules = new Set()
   for (const mod of modules) {
     this.environment.moduleGraph.invalidateModule(
@@ -97,7 +97,7 @@ hotUpdate({ modules, timestamp }) {
 }
 ```
 
-Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+返回一个空数组，并通过向客户端发送自定义事件执行完整的自定义 HMR 处理:
 
 ```js
 handleHotUpdate({ server }) {
@@ -109,7 +109,7 @@ handleHotUpdate({ server }) {
   return []
 }
 
-// Migrate to...
+// 迁移到...
 
 hotUpdate() {
   this.environment.hot.send({

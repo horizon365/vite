@@ -1,45 +1,41 @@
-# Plugins
+# 插件
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or Compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+Vite 旨在为常见的 Web 开发模式提供开箱即用的支持。在搜索 Vite 或兼容的 Rollup 插件之前，请查看[功能指南](../guide/features.md)。许多在 Rollup 项目中需要插件的情况已经在 Vite 中得到了覆盖。
 :::
 
-Check out [Using Plugins](../guide/using-plugins) for information on how to use plugins.
-
-## Official Plugins
-
-### [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)
-
-- Provides Vue 3 Single File Components support.
+## 官方插件
 
 ### [@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx)
 
-- Provides Vue 3 JSX support (via [dedicated Babel transform](https://github.com/vuejs/jsx-next)).
+- 提供 Vue 3 单文件组件支持。
+
+### [@vitejs/plugin-vue-jsx]()
 
 ### [@vitejs/plugin-vue2](https://github.com/vitejs/vite-plugin-vue2)
 
-- Provides Vue 2.7 Single File Components support.
+- 提供 Vue 2.7 单文件组件支持。
 
-### [@vitejs/plugin-vue2-jsx](https://github.com/vitejs/vite-plugin-vue2-jsx)
+### [@vitejs/plugin-vue2-jsx]()
 
-- Provides Vue 2.7 JSX support (via [dedicated Babel transform](https://github.com/vuejs/jsx-vue2/)).
+- 提供 Vue 2.7 JSX 支持(通过[专用的 Babel 变换](https://github.com/vuejs/jsx-vue2/))。
 
-### [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react)
+### [@vitejs/plugin-react]()
 
-- Uses esbuild and Babel, achieving fast HMR with a small package footprint and the flexibility of being able to use the Babel transform pipeline. Without additional Babel plugins, only esbuild is used during builds.
+- 使用 esbuild 和 Babel，实现快速的 HMR，具有较小的包体积，并且能够使用 Babel 变换管道。如果没有额外的 Babel 插件，在构建过程中仅使用 esbuild。
 
-### [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
+### [@vitejs/plugin-react-swc]()
 
-- Replaces Babel with SWC during development. During production builds, SWC+esbuild are used when using plugins, and esbuild only otherwise. For big projects that don't require non-standard React extensions, cold start and Hot Module Replacement (HMR) can be significantly faster.
+- 在开发过程中用 SWC 替换 Babel。在生产构建中，使用插件时使用 SWC+esbuild，否则仅使用 esbuild。对于不需要非标准 React 扩展的大型项目，冷启动和热模块替换(HMR)可以显著加快。
 
-### [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)
+### [@vitejs/插件 - 兼容性](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy)
 
-- Provides legacy browsers support for the production build.
+- 为生产构建提供对旧版浏览器的支持。
 
-## Community Plugins
+## 社区插件
 
-Check out [awesome-vite](https://github.com/vitejs/awesome-vite#plugins) - you can also submit a PR to list your plugins there.
+请查看 [awesome-vite](https://github.com/vitejs/awesome-vite#plugins) - 您也可以提交 PR 以在此处列出您的插件。
 
-## Rollup Plugins
+## Rollup 插件
 
-[Vite plugins](../guide/api-plugin) are an extension of Rollup's plugin interface. Check out the [Rollup Plugin Compatibility section](../guide/api-plugin#rollup-plugin-compatibility) for more information.
+[Vite 插件](../guide/api-plugin) 是 Rollup 插件接口的扩展。请参阅[Rollup 插件兼容性部分](../guide/api-plugin#rollup-plugin-compatibility)以获取更多信息。

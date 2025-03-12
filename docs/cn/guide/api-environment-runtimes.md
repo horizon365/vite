@@ -1,19 +1,19 @@
-# Environment API for Runtimes
+# 环境API用于运行时间
 
 :::warning Experimental
 Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
 
-Resources:
+资源:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+-
+-
 
 Please share your feedback with us.
 :::
 
-## Environment Factories
+## 环境工厂
 
-Environments factories are intended to be implemented by Environment providers like Cloudflare, and not by end users. Environment factories return a `EnvironmentOptions` for the most common case of using the target runtime for both dev and build environments. The default environment options can also be set so the user doesn't need to do it.
+环境工厂旨在由Cloudflare等环境提供商实施，而不是由最终用户实施。环境工厂为使用目标运行时和构建环境使用目标运行时返回`EnvironmentOptions` 。还可以设置默认环境选项，以便用户不需要执行此操作。
 
 ```ts
 function createWorkerdEnvironment(
@@ -45,7 +45,7 @@ function createWorkerdEnvironment(
 }
 ```
 
-Then the config file can be written as:
+然后，配置文件可以写为:
 
 ```js
 import { createWorkerdEnvironment } from 'vite-environment-workerd'
@@ -66,21 +66,21 @@ export default {
 }
 ```
 
-and frameworks can use an environment with the workerd runtime to do SSR using:
+框架可以使用Workerd运行时使用环境来使用以下方式进行SSR:
 
 ```js
 const ssrEnvironment = server.environments.ssr
 ```
 
-## Creating a New Environment Factory
+## 创建一个新的环境工厂
 
-A Vite dev server exposes two environments by default: a `client` environment and an `ssr` environment. The client environment is a browser environment by default, and the module runner is implemented by importing the virtual module `/@vite/client` to client apps. The SSR environment runs in the same Node runtime as the Vite server by default and allows application servers to be used to render requests during dev with full HMR support.
+Vite Dev服务器默认情况下曝光了两个环境: `client`环境和`ssr`环境。默认情况下，客户端环境是浏览器环境，并且通过将虚拟模块`/@vite/client`导入客户端应用程序来实现模块Runner。默认情况下，SSR环境在与Vite Server的相同节点运行时运行，并允许在具有完整HMR支持的DEV期间使用应用程序服务器来渲染请求。
 
-The transformed source code is called a module, and the relationships between the modules processed in each environment are kept in a module graph. The transformed code for these modules is sent to the runtimes associated with each environment to be executed. When a module is evaluated in the runtime, its imported modules will be requested triggering the processing of a section of the module graph.
+转换后的源代码称为模块，并且在每个环境中处理的模块之间的关系都保存在模块图中。这些模块的转换代码发送到与要执行的每个环境关联的运行时间。当在运行时评估模块时，将请求其导入的模块触发模块图的一节处理。
 
-A Vite Module Runner allows running any code by processing it with Vite plugins first. It is different from `server.ssrLoadModule` because the runner implementation is decoupled from the server. This allows library and framework authors to implement their layer of communication between the Vite server and the runner. The browser communicates with its corresponding environment using the server Web Socket and through HTTP requests. The Node Module runner can directly do function calls to process modules as it is running in the same process. Other environments could run modules connecting to a JS runtime like workerd, or a Worker Thread as Vitest does.
+Vite模块Runner允许首先使用Vite插件处理任何代码。它与`server.ssrLoadModule`不同，因为Runner实现与服务器分离。这使库和框架作者可以在Vite Server和Runner之间实现其通信层。浏览器使用服务器Web套接字和HTTP请求与其相应的环境进行通信。节点模块Runner可以在同一进程中运行时直接进行函数调用来处理模块。其他环境可以运行连接到JS运行时的模块，例如Workerd或Worker线程，就像Vitest一样。
 
-One of the goals of this feature is to provide a customizable API to process and run code. Users can create new environment factories using the exposed primitives.
+此功能的目标之一是提供可自定义的API来处理和运行代码。用户可以使用裸露的原始图创建新的环境工厂。
 
 ```ts
 import { DevEnvironment, HotChannel } from 'vite'
@@ -110,9 +110,9 @@ function createWorkerdDevEnvironment(
 
 ## `ModuleRunner`
 
-A module runner is instantiated in the target runtime. All APIs in the next section are imported from `vite/module-runner` unless stated otherwise. This export entry point is kept as lightweight as possible, only exporting the minimal needed to create module runners.
+模块跑步者在目标运行时进行了实例化。除非另有说明，否则下一节中的所有API将从`vite/module-runner`导入。此导出入口点尽可能轻巧，仅导出创建模块跑步者所需的最小值。
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 export class ModuleRunner {
@@ -127,26 +127,26 @@ export class ModuleRunner {
    */
   public async import<T = any>(url: string): Promise<T>
   /**
-   * Clear all caches including HMR listeners.
+   * 清除包括HMR听众在内的所有缓存。
    */
   public clearCache(): void
   /**
-   * Clear all caches, remove all HMR listeners, reset sourcemap support.
-   * This method doesn't stop the HMR connection.
+   * 清除所有缓存，删除所有HMR侦听器，重置Sourcemap支持。
+   * 此方法不会停止HMR连接。
    */
   public async close(): Promise<void>
   /**
-   * Returns `true` if the runner has been closed by calling `close()`.
+   * 返回`true`如果跑步者通过致电`close()`关闭。
    */
   public isClosed(): boolean
 }
 ```
 
-The module evaluator in `ModuleRunner` is responsible for executing the code. Vite exports `ESModulesEvaluator` out of the box, it uses `new AsyncFunction` to evaluate the code. You can provide your own implementation if your JavaScript runtime doesn't support unsafe evaluation.
+`ModuleRunner`中的模块评估器负责执行代码。 Vite Exports `ESModulesEvaluator`开箱即用，它使用`new AsyncFunction`来评估代码。如果您的JavaScript运行时不支持不安全的评估，则可以提供自己的实现。
 
-Module runner exposes `import` method. When Vite server triggers `full-reload` HMR event, all affected modules will be re-executed. Be aware that Module Runner doesn't update `exports` object when this happens (it overrides it), you would need to run `import` or get the module from `evaluatedModules` again if you rely on having the latest `exports` object.
+模块Runner公开`import`方法。当Vite服务器触发`full-reload` HMR事件时，所有受影响的模块将被重新执行。请注意，当发生这种情况时，模块Runner不会更新`exports`对象（它覆盖它），如果您依靠最新的`exports`对象，则需要运行`import`或从`evaluatedModules`中获取模块。
 
-**Example Usage:**
+**示例用法:**
 
 ```js
 import { ModuleRunner, ESModulesEvaluator } from 'vite/module-runner'
@@ -174,22 +174,22 @@ import type { Debug } from '@type-challenges/utils'
 
 type InterceptorOptions = Debug<InterceptorOptionsRaw>
 type ModuleRunnerHmr = Debug<ModuleRunnerHmrRaw>
-/** see below */
+/** 见下文 */
 type ModuleRunnerTransport = unknown
 
-// ---cut---
+//  - -切 - -
 interface ModuleRunnerOptions {
   /**
-   * A set of methods to communicate with the server.
+   * 一组与服务器通信的方法。
    */
   transport: ModuleRunnerTransport
   /**
-   * Configure how source maps are resolved.
-   * Prefers `node` if `process.setSourceMapsEnabled` is available.
-   * Otherwise it will use `prepareStackTrace` by default which overrides
-   * `Error.prepareStackTrace` method.
-   * You can provide an object to configure how file contents and
-   * source maps are resolved for files that were not processed by Vite.
+   * 配置如何解决源地图。
+   * 如果有`process.setSourceMapsEnabled`可用，则更喜欢`node` 。
+   * 否则，它将使用`prepareStackTrace`默认情况下覆盖
+   * `Error.prepareStackTrace`方法。
+   * 您可以提供一个对象来配置文件内容和
+   * 源地图已解决用于未通过Vite处理的文件。
    */
   sourcemapInterceptor?:
     | false
@@ -197,14 +197,14 @@ interface ModuleRunnerOptions {
     | 'prepareStackTrace'
     | InterceptorOptions
   /**
-   * Disable HMR or configure HMR options.
+   * 禁用HMR或配置HMR选项。
    *
    * @default true
    */
   hmr?: boolean | ModuleRunnerHmr
   /**
-   * Custom module cache. If not provided, it creates a separate module
-   * cache for each module runner instance.
+   * 自定义模块缓存。如果未提供，它将创建一个单独的模块
+   * 每个模块Runner实例的缓存。
    */
   evaluatedModules?: EvaluatedModules
 }
@@ -212,7 +212,7 @@ interface ModuleRunnerOptions {
 
 ## `ModuleEvaluator`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts twoslash
 import type { ModuleRunnerContext as ModuleRunnerContextRaw } from 'vite/module-runner'
@@ -220,17 +220,17 @@ import type { Debug } from '@type-challenges/utils'
 
 type ModuleRunnerContext = Debug<ModuleRunnerContextRaw>
 
-// ---cut---
+//  - -切 - -
 export interface ModuleEvaluator {
   /**
-   * Number of prefixed lines in the transformed code.
+   * 转换的代码中的前缀线数。
    */
   startOffset?: number
   /**
-   * Evaluate code that was transformed by Vite.
-   * @param context Function context
-   * @param code Transformed code
-   * @param id ID that was used to fetch the module
+   * 评估由Vite转换的代码。
+   * @param上下文功能上下文
+   * @Param代码转换代码
+   * @Param ID ID用于获取模块
    */
   runInlinedModule(
     context: ModuleRunnerContext,
@@ -238,24 +238,24 @@ export interface ModuleEvaluator {
     id: string,
   ): Promise<any>
   /**
-   * evaluate externalized module.
-   * @param file File URL to the external module
+   * 评估外部化模块。
+   * @Param文件文件URL到外部模块
    */
   runExternalModule(file: string): Promise<any>
 }
 ```
 
-Vite exports `ESModulesEvaluator` that implements this interface by default. It uses `new AsyncFunction` to evaluate code, so if the code has inlined source map it should contain an [offset of 2 lines](https://tc39.es/ecma262/#sec-createdynamicfunction) to accommodate for new lines added. This is done automatically by the `ESModulesEvaluator`. Custom evaluators will not add additional lines.
+Vite导出`ESModulesEvaluator`默认情况下实现此接口。它使用`new AsyncFunction`评估代码，因此，如果代码已内衬源图，则应包含[2行的偏移](/0)，以适应添加的新行。这是由`ESModulesEvaluator`自动完成的。自定义评估者不会添加其他行。
 
 ## `ModuleRunnerTransport`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts twoslash
 import type { ModuleRunnerTransportHandlers } from 'vite/module-runner'
-/** an object */
+/** 一个对象 */
 type HotPayload = unknown
-// ---cut---
+//  - -切 - -
 interface ModuleRunnerTransport {
   connect?(handlers: ModuleRunnerTransportHandlers): Promise<void> | void
   disconnect?(): Promise<void> | void
@@ -265,9 +265,9 @@ interface ModuleRunnerTransport {
 }
 ```
 
-Transport object that communicates with the environment via an RPC or by directly calling the function. When `invoke` method is not implemented, the `send` method and `connect` method is required to be implemented. Vite will construct the `invoke` internally.
+通过RPC或直接调用该功能与环境通信的传输对象。当未实现`invoke`方法时，需要实现`send`方法和`connect`方法。 Vite将在内部构建`invoke` 。
 
-You need to couple it with the `HotChannel` instance on the server like in this example where module runner is created in the worker thread:
+您需要将其与服务器上的`HotChannel`实例进行搭配，就像在此示例中一样，在Worker线程中创建模块Runner:
 
 ::: code-group
 
@@ -276,7 +276,7 @@ import { parentPort } from 'node:worker_threads'
 import { fileURLToPath } from 'node:url'
 import { ESModulesEvaluator, ModuleRunner } from 'vite/module-runner'
 
-/** @type {import('vite/module-runner').ModuleRunnerTransport} */
+/** @Type {import（'Vite/Module-Runner'）。Modulerunnertransport} */
 const transport = {
   connect({ onMessage, onDisconnection }) {
     parentPort.on('message', onMessage)
@@ -349,7 +349,7 @@ await createServer({
 
 :::
 
-A different example using an HTTP request to communicate between the runner and the server:
+使用HTTP请求的另一个示例在跑步者和服务器之间进行通信:
 
 ```ts
 import { ESModulesEvaluator, ModuleRunner } from 'vite/module-runner'
@@ -365,7 +365,7 @@ export const runner = new ModuleRunner(
         return response.json()
       },
     },
-    hmr: false, // disable HMR as HMR requires transport.connect
+    hmr: false, // 禁用HMR，因为HMR需要运输。连接
   },
   new ESModulesEvaluator(),
 )
@@ -373,7 +373,7 @@ export const runner = new ModuleRunner(
 await runner.import('/entry.js')
 ```
 
-In this case, the `handleInvoke` method in the `NormalizedHotChannel` can be used:
+在这种情况下，可以使用`NormalizedHotChannel`中的`handleInvoke`方法:
 
 ```ts
 const customEnvironment = new DevEnvironment(name, config, context)
@@ -389,6 +389,6 @@ server.onRequest((request: Request) => {
 })
 ```
 
-But note that for HMR support, `send` and `connect` methods are required. The `send` method is usually called when the custom event is triggered (like, `import.meta.hot.send("my-event")`).
+但是请注意，对于HMR支持，需要`send`和`connect`方法。触发自定义事件时通常调用`send`方法（例如， `import.meta.hot.send("my-event")` ）。
 
-Vite exports `createServerHotChannel` from the main entry point to support HMR during Vite SSR.
+Vite从主入口点出口`createServerHotChannel`以支持Vite SSR期间的HMR。

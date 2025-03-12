@@ -1,24 +1,21 @@
-# Server Options
+# 服务器选项
 
-Unless noted, the options in this section are only applied to dev.
+除非指出，否则本节中的选项仅适用于开发人员。
 
 ## server.host
 
-- **Type:** `string | boolean`
-- **Default:** `'localhost'`
+- **类型:** `字符串 |
+- **默认值:** `'localhost'`
 
-Specify which IP addresses the server should listen on.
-Set this to `0.0.0.0` or `true` to listen on all addresses, including LAN and public addresses.
-
-This can be set via the CLI using `--host 0.0.0.0` or `--host`.
+指定服务器应聆听的IP地址。
 
 ::: tip NOTE
 
-There are cases when other servers might respond instead of Vite.
+在某些情况下，其他服务器可能会响应而不是VITE。
 
-The first case is when `localhost` is used. Node.js under v17 reorders the result of DNS-resolved addresses by default. When accessing `localhost`, browsers use DNS to resolve the address and that address might differ from the address which Vite is listening to. Vite prints the resolved address when it differs.
+第一种情况是使用`localhost`时。 v17下的node.js默认情况下将DNS分辨地址的结果重新定位。访问`localhost`时，浏览器使用DNS解决地址，该地址可能与Vite正在听的地址有所不同。 Vite在不同时打印了解决的地址。
 
-You can set [`dns.setDefaultResultOrder('verbatim')`](https://nodejs.org/api/dns.html#dns_dns_setdefaultresultorder_order) to disable the reordering behavior. Vite will then print the address as `localhost`.
+您可以设置[`dns.setDefaultResultOrder('verbatim')`]()以禁用重新排序行为。然后，Vite将将地址打印为`localhost` 。
 
 ```js twoslash [vite.config.js]
 import { defineConfig } from 'vite'
@@ -27,84 +24,76 @@ import dns from 'node:dns'
 dns.setDefaultResultOrder('verbatim')
 
 export default defineConfig({
-  // omit
+  // 忽略
 })
 ```
 
-The second case is when wildcard hosts (e.g. `0.0.0.0`) are used. This is because servers listening on non-wildcard hosts take priority over those listening on wildcard hosts.
+第二种情况是使用通配符主机（例如`0.0.0.0` ）。这是因为在非Wildcard主机上聆听的服务器优先于在通配符主机上聆听的服务器。
 
 :::
 
 ::: tip Accessing the server on WSL2 from your LAN
 
-When running Vite on WSL2, it is not sufficient to set `host: true` to access the server from your LAN.
-See [the WSL document](https://learn.microsoft.com/en-us/windows/wsl/networking#accessing-a-wsl-2-distribution-from-your-local-area-network-lan) for more details.
+在WSL2上运行VITE时，不足以设置`host: true`来从LAN访问服务器。
+有关更多详细信息，请参见[WSL文档]()。
 
 :::
 
 ## server.allowedHosts
 
-- **Type:** `string[] | true`
-- **Default:** `[]`
+- | 是的
+- **默认值:** `[]`
 
-The hostnames that Vite is allowed to respond to.
-`localhost` and domains under `.localhost` and all IP addresses are allowed by default.
-When using HTTPS, this check is skipped.
+允许Vite响应的主机名。
+默认情况下，允许`localhost`和`.localhost`下的域，所有IP地址均被允许。
+使用HTTPS时，此检查会跳过。
 
-If a string starts with `.`, it will allow that hostname without the `.` and all subdomains under the hostname. For example, `.example.com` will allow `example.com`, `foo.example.com`, and `foo.bar.example.com`. If set to `true`, the server is allowed to respond to requests for any hosts.
+如果字符串以`.`开头，则它将允许在没有`.`和所有子域的主机名中的主机名。例如， `.example.com`将允许`example.com`和`foo.bar.example.com` `foo.example.com`如果设置为`true` ，则允许服务器响应任何主机的请求。
 
 ::: details What hosts are safe to be added?
 
-Hosts that you have control over which IP addresses they resolve to are safe to add to the list of allowed hosts.
+您可以控制他们解决的IP地址的主机可以安全地添加到允许的主机列表中。
 
-For example, if you own a domain `vite.dev`, you can add `vite.dev` and `.vite.dev` to the list. If you don't own that domain and you cannot trust the owner of that domain, you should not add it.
+例如，如果您拥有一个域`vite.dev` ，则可以在列表中添加`vite.dev`和`.vite.dev` 。如果您不拥有该域，并且不能信任该域的所有者，则不应添加它。
 
-Especially, you should never add Top-Level Domains like `.com` to the list. This is because anyone can purchase a domain like `example.com` and control the IP address it resolves to.
+特别是，您绝对不应在列表中添加像`.com`类的顶级域。这是因为任何人都可以购买像`example.com`这样的域并控制其解决的IP地址。
 
 :::
 
 ::: danger
 
-Setting `server.allowedHosts` to `true` allows any website to send requests to your dev server through DNS rebinding attacks, allowing them to download your source code and content. We recommend always using an explicit list of allowed hosts. See [GHSA-vg6x-rcgg-rjx6](https://github.com/vitejs/vite/security/advisories/GHSA-vg6x-rcgg-rjx6) for more details.
+设置`server.allowedHosts`到`true`允许任何网站通过DNS重新启动攻击将请求发送到您的开发服务器，从而可以下载您的源代码和内容。我们建议始终使用允许主机的明确列表。有关更多详细信息，请参见[GHSA-VG6X-RCGG-RJX6]() 。
 
 :::
 
 ::: details Configure via environment variable
-You can set the environment variable `__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS` to add an additional allowed host.
+您可以设置环境变量`__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS`以添加额外的主机。
 :::
 
 ## server.port
 
-- **Type:** `number`
-- **Default:** `5173`
+-
+- **默认值:** `5173`
 
-Specify server port. Note if the port is already being used, Vite will automatically try the next available port so this may not be the actual port the server ends up listening on.
+指定服务器端口。请注意，如果已经使用了端口，Vite将自动尝试下一个可用的端口，以便这可能不是服务器最终侦听的实际端口。
 
 ## server.strictPort
 
-- **Type:** `boolean`
-
-Set to `true` to exit if port is already in use, instead of automatically trying the next available port.
+- **类型:** `boolean`
 
 ## server.https
 
-- **Type:** `https.ServerOptions`
+-
 
-Enable TLS + HTTP/2. Note this downgrades to TLS only when the [`server.proxy` option](#server-proxy) is also used.
+启用TLS + HTTP/2。请注意，仅当还使用[`server.proxy`选项]()时，此降级仅在TLS。
 
-The value can also be an [options object](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) passed to `https.createServer()`.
-
-A valid certificate is needed. For a basic setup, you can add [@vitejs/plugin-basic-ssl](https://github.com/vitejs/vite-plugin-basic-ssl) to the project plugins, which will automatically create and cache a self-signed certificate. But we recommend creating your own certificates.
+需要有效的证书。对于基本设置，您可以在项目插件中添加[@vitejs/plugin-basic-ssl]() ，该插件将自动创建和缓存自签名的证书。但是我们建议创建自己的证书。
 
 ## server.open
 
-- **Type:** `boolean | string`
+- **类型:** `布尔 |
 
-Automatically open the app in the browser on server start. When the value is a string, it will be used as the URL's pathname. If you want to open the server in a specific browser you like, you can set the env `process.env.BROWSER` (e.g. `firefox`). You can also set `process.env.BROWSER_ARGS` to pass additional arguments (e.g. `--incognito`).
-
-`BROWSER` and `BROWSER_ARGS` are also special environment variables you can set in the `.env` file to configure it. See [the `open` package](https://github.com/sindresorhus/open#app) for more details.
-
-**Example:**
+**例子:**
 
 ```js
 export default defineConfig({
@@ -116,55 +105,55 @@ export default defineConfig({
 
 ## server.proxy
 
-- **Type:** `Record<string, string | ProxyOptions>`
+- |
 
-Configure custom proxy rules for the dev server. Expects an object of `{ key: options }` pairs. Any requests that request path starts with that key will be proxied to that specified target. If the key starts with `^`, it will be interpreted as a `RegExp`. The `configure` option can be used to access the proxy instance. If a request matches any of the configured proxy rules, the request won't be transformed by Vite.
+为开发服务器配置自定义代理规则。期望一个对象为`{ key: options }`对。任何请求路径启动的请求都将代理该指定目标。如果钥匙以`^`开头，则将其解释为`RegExp` 。 `configure`选项可用于访问代理实例。如果请求与任何配置的代理规则匹配，则该请求不会通过Vite进行转换。
 
-Note that if you are using non-relative [`base`](/en/config/shared-options.md#base), you must prefix each key with that `base`.
+请注意，如果您使用的是非相关性[`base`]() ，则必须使用该键前缀为`base` 。
 
-Extends [`http-proxy`](https://github.com/http-party/node-http-proxy#options). Additional options are [here](https://github.com/vitejs/vite/blob/main/packages/vite/src/node/server/middlewares/proxy.ts#L13).
+扩展[`http-proxy`]() 。其他选项在[这里]()。
 
-In some cases, you might also want to configure the underlying dev server (e.g. to add custom middlewares to the internal [connect](https://github.com/senchalabs/connect) app). In order to do that, you need to write your own [plugin](/en/guide/using-plugins.html) and use [configureServer](/en/guide/api-plugin.html#configureserver) function.
+在某些情况下，您可能还需要配置基础开发服务器（例如，将自定义中间件添加到内部[连接]()应用程序中）。为此，您需要编写自己的[插件]()并使用[Configureserver](/2)函数。
 
-**Example:**
+**例子:**
 
 ```js
 export default defineConfig({
   server: {
     proxy: {
-      // string shorthand:
-      // http://localhost:5173/foo
-      //   -> http://localhost:4567/foo
+      // 字符串速记:
+      // http:// localhost:5173/foo
+      //   - > [http:// localhost:4567/foo](http://localhost:4567/foo)
       '/foo': 'http://localhost:4567',
-      // with options:
-      // http://localhost:5173/api/bar
-      //   -> http://jsonplaceholder.typicode.com/bar
+      // 带有选项:
+      // http:// localhost:5173/api/bar
+      //   - > [http://jsonplaceholder.typicode.com/bar](http://jsonplaceholder.typicode.com/bar)
       '/api': {
         target: 'http://jsonplaceholder.typicode.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
-      // with RegExp:
-      // http://localhost:5173/fallback/
-      //   -> http://jsonplaceholder.typicode.com/
+      // 与REGEXP:
+      // http:// localhost:5173/flastback/
+      //   - > [http://jsonplaceholder.typicode.com/](http://jsonplaceholder.typicode.com/)
       '^/fallback/.*': {
         target: 'http://jsonplaceholder.typicode.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/fallback/, ''),
       },
-      // Using the proxy instance
+      // 使用代理实例
       '/api': {
         target: 'http://jsonplaceholder.typicode.com',
         changeOrigin: true,
         configure: (proxy, options) => {
-          // proxy will be an instance of 'http-proxy'
+          // 代理将是“ http-proxy”的实例
         },
       },
-      // Proxying websockets or socket.io:
-      // ws://localhost:5173/socket.io
-      //   -> ws://localhost:5174/socket.io
-      // Exercise caution using `rewriteWsOrigin` as it can leave the
-      // proxying open to CSRF attacks.
+      // 代理Websockets或socket.io:
+      // ws:// localhost:5173/socket.io
+      //   - > ws:// localhost:5174/socket.io
+      // 谨慎使用`rewriteWsOrigin` ，因为它可以离开
+      // 代表CSRF攻击开放。
       '/socket.io': {
         target: 'ws://localhost:5174',
         ws: true,
@@ -177,65 +166,65 @@ export default defineConfig({
 
 ## server.cors
 
-- **Type:** `boolean | CorsOptions`
-- **Default:** `{ origin: /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/ }` (allows localhost, `127.0.0.1` and `::1`)
+- **类型:** `布尔 |
+- **默认值:** `{arount:/^https?://(？:（？:…emangemed.plocalhost|127\.0\.0\.1|[:: 1]）（？:: \ d+）？$/}  127.0.0.1  :: 1`）
 
-Configure CORS for the dev server. Pass an [options object](https://github.com/expressjs/cors#configuration-options) to fine tune the behavior or `true` to allow any origin.
+为开发服务器配置CORS。传递[选项对象]()以微调行为或`true`以允许任何原点。
 
 ::: danger
 
-Setting `server.cors` to `true` allows any website to send requests to your dev server and download your source code and content. We recommend always using an explicit list of allowed origins.
+设置`server.cors`到`true`允许任何网站将请求发送到您的开发服务器并下载您的源代码和内容。我们建议始终使用允许起源的明确列表。
 
 :::
 
 ## server.headers
 
-- **Type:** `OutgoingHttpHeaders`
+-
 
-Specify server response headers.
+指定服务器响应标头。
 
 ## server.hmr
 
-- **Type:** `boolean | { protocol?: string, host?: string, port?: number, path?: string, timeout?: number, overlay?: boolean, clientPort?: number, server?: Server }`
+- **类型:** `布尔 | {协议？:字符串，主机？:字符串，端口？:数字，路径？:字符串，超时？:number，覆盖？
 
-Disable or configure HMR connection (in cases where the HMR websocket must use a different address from the http server).
+禁用或配置HMR连接（如果HMR Websocket必须使用与HTTP服务器不同的地址）。
 
-Set `server.hmr.overlay` to `false` to disable the server error overlay.
+设置`server.hmr.overlay`到`false`以禁用服务器错误覆盖。
 
-`protocol` sets the WebSocket protocol used for the HMR connection: `ws` (WebSocket) or `wss` (WebSocket Secure).
+`protocol`设置用于HMR连接的Websocket协议: `ws` （WebSocket）或`wss` （WebSocket Secure）。
 
-`clientPort` is an advanced option that overrides the port only on the client side, allowing you to serve the websocket on a different port than the client code looks for it on.
+`clientPort`是一个高级选项，仅在客户端覆盖端口，使您可以在与客户端代码寻求的不同端口上使用Websocket。
 
-When `server.hmr.server` is defined, Vite will process the HMR connection requests through the provided server. If not in middleware mode, Vite will attempt to process HMR connection requests through the existing server. This can be helpful when using self-signed certificates or when you want to expose Vite over a network on a single port.
+定义`server.hmr.server`时，Vite将通过提供的服务器处理HMR连接请求。如果不是处于中间件模式，Vite将尝试通过现有服务器处理HMR连接请求。当使用自签名证书或要通过单个端口上的网络公开VITE时，这可能会有所帮助。
 
-Check out [`vite-setup-catalogue`](https://github.com/sapphi-red/vite-setup-catalogue) for some examples.
+查看[`vite-setup-catalogue`]()以获取一些示例。
 
 ::: tip NOTE
 
-With the default configuration, reverse proxies in front of Vite are expected to support proxying WebSocket. If the Vite HMR client fails to connect WebSocket, the client will fall back to connecting the WebSocket directly to the Vite HMR server bypassing the reverse proxies:
+使用默认配置，VITE前面的反向代理有望支持代理Websocket。如果VITE HMR客户端无法连接Websocket，则客户端将落后于将Websocket直接连接到Vite HMR服务器，绕过反向代理:
 
 ```
 Direct websocket connection fallback. Check out https://vite.dev/config/server-options.html#server-hmr to remove the previous connection error.
 ```
 
-The error that appears in the Browser when the fallback happens can be ignored. To avoid the error by directly bypassing reverse proxies, you could either:
+浏览器中出现后回来时出现的错误可以忽略。为了通过直接绕过反向代理来避免错误，您可以:
 
-- configure the reverse proxy to proxy WebSocket too
-- set [`server.strictPort = true`](#server-strictport) and set `server.hmr.clientPort` to the same value with `server.port`
-- set `server.hmr.port` to a different value from [`server.port`](#server-port)
+- 也将反向代理配置为代理Websocket
+- 设置[`server.strictPort = true`](#server-strictport)并将`server.hmr.clientPort`设置为相同的值`server.port`
+- 将`server.hmr.port`设置为与[`server.port`](#server-port)不同的值
 
 :::
 
 ## server.warmup
 
-- **Type:** `{ clientFiles?: string[], ssrFiles?: string[] }`
-- **Related:** [Warm Up Frequently Used Files](/en/guide/performance.html#warm-up-frequently-used-files)
+- **类型:** `{ clientFiles?: string[], ssrFiles?: string[] }`
+- **相关:**[热身经常使用的文件](/en/guide/performance.html#warm-up-frequently-used-files)
 
-Warm up files to transform and cache the results in advance. This improves the initial page load during server starts and prevents transform waterfalls.
+热身文件可以提前转换和缓存结果。这可以改善服务器启动期间的初始页面负载，并防止转化瀑布。
 
-`clientFiles` are files that are used in the client only, while `ssrFiles` are files that are used in SSR only. They accept an array of file paths or [`tinyglobby`](https://github.com/SuperchupuDev/tinyglobby) patterns relative to the `root`.
+`clientFiles`是仅在客户端中使用的文件，而`ssrFiles`是仅在SSR中使用的文件。他们接受相对于`root`的文件路径或[`tinyglobby`]()模式。
 
-Make sure to only add files that are frequently used to not overload the Vite dev server on startup.
+确保仅添加经常在启动上不超载Vite Dev Server超载的文件。
 
 ```js
 export default defineConfig({
@@ -250,43 +239,43 @@ export default defineConfig({
 
 ## server.watch
 
-- **Type:** `object | null`
+- **类型:** `对象 | null`
 
-File system watcher options to pass on to [chokidar](https://github.com/paulmillr/chokidar/tree/3.6.0#api).
+文件系统观察器选项将传递给[Chokidar]() 。
 
-The Vite server watcher watches the `root` and skips the `.git/`, `node_modules/`, and Vite's `cacheDir` and `build.outDir` directories by default. When updating a watched file, Vite will apply HMR and update the page only if needed.
+默认情况下`node_modules/` Vite Server Watcher观看`root` ，并跳过`.git/`和Vite的`cacheDir`和`build.outDir`目录。更新观察文件时，Vite将应用HMR并仅在需要时更新页面。
 
-If set to `null`, no files will be watched. `server.watcher` will provide a compatible event emitter, but calling `add` or `unwatch` will have no effect.
+如果设置为`null` ，则不会观看任何文件。 `server.watcher`将提供兼容的事件发射器，但致电`add`或`unwatch`将无效。
 
 ::: warning Watching files in `node_modules`
 
-It's currently not possible to watch files and packages in `node_modules`. For further progress and workarounds, you can follow [issue #8619](https://github.com/vitejs/vite/issues/8619).
+目前无法在`node_modules`中观看文件和软件包。对于进一步的进度和解决方法，您可以关注[第8619期]()。
 
 :::
 
 ::: warning Using Vite on Windows Subsystem for Linux (WSL) 2
 
-When running Vite on WSL2, file system watching does not work when a file is edited by Windows applications (non-WSL2 process). This is due to [a WSL2 limitation](https://github.com/microsoft/WSL/issues/4739). This also applies to running on Docker with a WSL2 backend.
+在WSL2上运行VITE时，当Windows应用程序编辑文件（non-WSL2进程）时，文件系统观看不起作用。这是由于[WSL2限制]()。这也适用于使用WSL2后端在Docker上运行。
 
-To fix it, you could either:
+要修复它，您可以:
 
-- **Recommended**: Use WSL2 applications to edit your files.
-  - It is also recommended to move the project folder outside of a Windows filesystem. Accessing Windows filesystem from WSL2 is slow. Removing that overhead will improve performance.
-- Set `{ usePolling: true }`.
-  - Note that [`usePolling` leads to high CPU utilization](https://github.com/paulmillr/chokidar/tree/3.6.0#performance).
+- **建议**:使用WSL2应用程序编辑您的文件。
+  - 还建议将项目文件夹移到Windows文件系统之外。从WSL2访问Windows文件系统很慢。删除开销将提高性能。
+- 设置`{ usePolling: true }` 。
+  - 请注意， [`usePolling`导致高CPU利用率]()。
 
 :::
 
 ## server.middlewareMode
 
-- **Type:** `boolean`
-- **Default:** `false`
+- **类型:** `boolean`
+- **默认值:** `false`
 
-Create Vite server in middleware mode.
+在中间件模式下创建Vite服务器。
 
-- **Related:** [appType](./shared-options#apptype), [SSR - Setting Up the Dev Server](/en/guide/ssr#setting-up-the-dev-server)
+- **相关:** [AppType](./shared-options#apptype) ， [SSR-设置Dev Server](/en/guide/ssr#setting-up-the-dev-server)
 
-- **Example:**
+- **例子:**
 
 ```js twoslash
 import express from 'express'
@@ -295,20 +284,20 @@ import { createServer as createViteServer } from 'vite'
 async function createServer() {
   const app = express()
 
-  // Create Vite server in middleware mode
+  // 在中间件模式下创建Vite服务器
   const vite = await createViteServer({
     server: { middlewareMode: true },
-    // don't include Vite's default HTML handling middlewares
+    // 不要包括Vite的默认HTML处理中间Wares
     appType: 'custom',
   })
-  // Use vite's connect instance as middleware
+  // 使用Vite的连接实例作为中间件
   app.use(vite.middlewares)
 
   app.use('*', async (req, res) => {
-    // Since `appType` is `'custom'`, should serve response here.
-    // Note: if `appType` is `'spa'` or `'mpa'`, Vite includes middlewares
-    // to handle HTML requests and 404s so user middlewares should be added
-    // before Vite's middlewares to take effect instead
+    // 由于`appType`是`'custom'` ，因此应在此处提供回应。
+    // 注意:如果`appType`是`'spa'`或`'mpa'` ，则VITE包括中间。
+    // 处理HTML请求和404s，以便应添加用户中间件
+    // 在Vite的中间Wares生效之前
   })
 }
 
@@ -317,40 +306,40 @@ createServer()
 
 ## server.fs.strict
 
-- **Type:** `boolean`
-- **Default:** `true` (enabled by default since Vite 2.7)
+- **类型:** `boolean`
+- **默认值:** `true` （默认为Vite 2.7以来启用）
 
-Restrict serving files outside of workspace root.
+限制工作空间根部之外的文件。
 
 ## server.fs.allow
 
-- **Type:** `string[]`
+- **类型:** `string[]`
 
-Restrict files that could be served via `/@fs/`. When `server.fs.strict` is set to `true`, accessing files outside this directory list that aren't imported from an allowed file will result in a 403.
+限制可以通过`/@fs/`提供的文件。当设置为`server.fs.strict` `true` ，该目录列表之外未从允许文件导入的文件将导致403。
 
-Both directories and files can be provided.
+可以提供目录和文件。
 
-Vite will search for the root of the potential workspace and use it as default. A valid workspace met the following conditions, otherwise will fall back to the [project root](/en/guide/#index-html-and-project-root).
+Vite将搜索潜在工作空间的根，并将其用作默认设置。有效的工作空间满足以下条件，否则将落回[项目根](/en/guide/#index-html-and-project-root)。
 
-- contains `workspaces` field in `package.json`
-- contains one of the following file
+- 在`package.json`中包含`workspaces`字段
+- 包含以下文件之一
   - `lerna.json`
   - `pnpm-workspace.yaml`
 
-Accepts a path to specify the custom workspace root. Could be a absolute path or a path relative to [project root](/en/guide/#index-html-and-project-root). For example:
+接受指定自定义工作区根的路径。可能是相对于[项目根的](/en/guide/#index-html-and-project-root)绝对路径或路径。例如:
 
 ```js
 export default defineConfig({
   server: {
     fs: {
-      // Allow serving files from one level up to the project root
+      // 允许将文件从一个级别到项目root
       allow: ['..'],
     },
   },
 })
 ```
 
-When `server.fs.allow` is specified, the auto workspace root detection will be disabled. To extend the original behavior, a utility `searchForWorkspaceRoot` is exposed:
+指定`server.fs.allow`时，将禁用自动工作区根检测。为了扩展原始行为，公用事业`searchForWorkspaceRoot`暴露了:
 
 ```js
 import { defineConfig, searchForWorkspaceRoot } from 'vite'
@@ -359,9 +348,9 @@ export default defineConfig({
   server: {
     fs: {
       allow: [
-        // search up for workspace root
+        // 搜索工作区根
         searchForWorkspaceRoot(process.cwd()),
-        // your custom rules
+        // 您的自定义规则
         '/path/to/custom/allow_directory',
         '/path/to/custom/allow_file.demo',
       ],
@@ -372,16 +361,16 @@ export default defineConfig({
 
 ## server.fs.deny
 
-- **Type:** `string[]`
-- **Default:** `['.env', '.env.*', '*.{crt,pem}', '**/.git/**']`
+- **类型:** `string[]`
+- **默认值:** `['.env', '.env.*', '*.{crt,pem}', '**/.git/**']`
 
-Blocklist for sensitive files being restricted to be served by Vite dev server. This will have higher priority than [`server.fs.allow`](#server-fs-allow). [picomatch patterns](https://github.com/micromatch/picomatch#globbing-features) are supported.
+敏感文件的集体列表仅限于Vite Dev Server提供。这将具有高于[`server.fs.allow`](#server-fs-allow)的优先级。支持[Picomatch模式]()。
 
 ## server.origin
 
-- **Type:** `string`
+- **类型:** `string`
 
-Defines the origin of the generated asset URLs during development.
+定义开发过程中生成的资产URL的起源。
 
 ```js
 export default defineConfig({
@@ -393,20 +382,20 @@ export default defineConfig({
 
 ## server.sourcemapIgnoreList
 
-- **Type:** `false | (sourcePath: string, sourcemapPath: string) => boolean`
-- **Default:** `(sourcePath) => sourcePath.includes('node_modules')`
+- **类型:** `false | （sourcepath:string，sourcemappath:string）=> boolean`
+- **默认值:** `(sourcePath) => sourcePath.includes('node_modules')`
 
-Whether or not to ignore source files in the server sourcemap, used to populate the [`x_google_ignoreList` source map extension](https://developer.chrome.com/articles/x-google-ignore-list/).
+是否忽略服务器源中的源文件，用于填充[`x_google_ignoreList`源地图扩展名]()。
 
-`server.sourcemapIgnoreList` is the equivalent of [`build.rollupOptions.output.sourcemapIgnoreList`](https://rollupjs.org/configuration-options/#output-sourcemapignorelist) for the dev server. A difference between the two config options is that the rollup function is called with a relative path for `sourcePath` while `server.sourcemapIgnoreList` is called with an absolute path. During dev, most modules have the map and the source in the same folder, so the relative path for `sourcePath` is the file name itself. In these cases, absolute paths makes it convenient to be used instead.
+`server.sourcemapIgnoreList`是开发服务器的[`build.rollupOptions.output.sourcemapIgnoreList`]()等效。两个配置选项之间的区别在于，汇总函数用`sourcePath`的相对路径调用，而`server.sourcemapIgnoreList`则以绝对路径为单位。在开发过程中，大多数模块在同一文件夹中具有地图和源，因此`sourcePath`的相对路径是文件名本身。在这些情况下，绝对路径可以方便地使用。
 
-By default, it excludes all paths containing `node_modules`. You can pass `false` to disable this behavior, or, for full control, a function that takes the source path and sourcemap path and returns whether to ignore the source path.
+默认情况下，它不包括包含`node_modules`的所有路径。您可以传递`false`以禁用此行为，或者为了完全控制，可以采用源路径和Sourcemap路径并返回是否忽略源路径。
 
 ```js
 export default defineConfig({
   server: {
-    // This is the default value, and will add all files with node_modules
-    // in their paths to the ignore list.
+    // 这是默认值，将添加所有文件
+    // 在他们通往忽略列表的道路上。
     sourcemapIgnoreList(sourcePath, sourcemapPath) {
       return sourcePath.includes('node_modules')
     },
@@ -415,5 +404,5 @@ export default defineConfig({
 ```
 
 ::: tip Note
-[`server.sourcemapIgnoreList`](#server-sourcemapignorelist) and [`build.rollupOptions.output.sourcemapIgnoreList`](https://rollupjs.org/configuration-options/#output-sourcemapignorelist) need to be set independently. `server.sourcemapIgnoreList` is a server only config and doesn't get its default value from the defined rollup options.
+[`server.sourcemapIgnoreList`]()和[`build.rollupOptions.output.sourcemapIgnoreList`]()需要独立设置。 `server.sourcemapIgnoreList`是服务器仅配置，并且不会从定义的汇总选项中获取其默认值。
 :::

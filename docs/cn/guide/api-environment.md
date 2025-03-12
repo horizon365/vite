@@ -1,38 +1,38 @@
-# Environment API
+# 环境API
 
 :::warning Experimental
 Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
 
-Resources:
+资源:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+-
+-
 
 Please share your feedback with us.
 :::
 
-## Formalizing Environments
+## 形式化环境
 
-Vite 6 formalizes the concept of Environments. Until Vite 5, there were two implicit Environments (`client`, and optionally `ssr`). The new Environment API allows users and framework authors to create as many environments as needed to map the way their apps work in production. This new capability required a big internal refactoring, but a lot of effort has been placed on backward compatibility. The initial goal of Vite 6 is to move the ecosystem to the new major as smoothly as possible, delaying the adoption of these new experimental APIs until enough users have migrated and frameworks and plugin authors have validated the new design.
+Vite 6正式化了环境的概念。在Vite 5之前，有两个隐式环境（ `client` ，可选为`ssr` ）。新的环境API允许用户和框架作者根据需要创建尽可能多的环境，以绘制其应用程序在生产中的工作方式。这种新功能需要大量的内部重构，但是在向后兼容方面已大量精力。 Vite 6的最初目标是尽可能顺利地将生态系统移至新专业，从而延迟这些新的实验API，直到足够的用户迁移，框架和插件作者已经验证了新设计。
 
-## Closing the Gap Between Build and Dev
+## 缩小构建与开发人员之间的差距
 
-For a simple SPA/MPA, no new APIs around environments are exposed to the config. Internally, Vite will apply the options to a `client` environment, but it's not necessary to know of this concept when configuring Vite. The config and behavior from Vite 5 should work seamlessly here.
+对于简单的SPA/MPA，环境周围没有新的API暴露于配置。在内部，Vite将把选项应用于`client`环境，但是在配置Vite时不必知道此概念。 Vite 5的配置和行为应在此处无缝工作。
 
-When we move to a typical server-side rendered (SSR) app, we'll have two environments:
+当我们转到典型的服务器端渲染（SSR）应用程序时，我们将有两个环境:
 
-- `client`: runs the app in the browser.
-- `server`: runs the app in node (or other server runtimes) which renders pages before sending them to the browser.
+- `client` :在浏览器中运行应用程序。
+- `server` :在将页面发送到浏览器之前，在节点（或其他服务器运行时间）中运行该应用程序。
 
-In dev, Vite executes the server code in the same Node process as the Vite dev server, giving a close approximation to the production environment. However, it is also possible for servers to run in other JS runtimes, like [Cloudflare's workerd](https://github.com/cloudflare/workerd) which have different constraints. Modern apps may also run in more than two environments, e.g. a browser, a node server, and an edge server. Vite 5 didn't allow to properly represent these environments.
+在DEV中，Vite在与Vite Dev Server相同的节点进程中执行服务器代码，并与生产环境近似。但是，服务器也可以在其他JS运行时运行，例如[CloudFlare的Workerd](https://github.com/cloudflare/workerd)具有不同的约束。现代应用程序也可以在两个以上的环境中运行，例如浏览器，节点服务器和边缘服务器。 Vite 5不允许正确表示这些环境。
 
-Vite 6 allows users to configure their app during build and dev to map all of its environments. During dev, a single Vite dev server can now be used to run code in multiple different environments concurrently. The app source code is still transformed by Vite dev server. On top of the shared HTTP server, middlewares, resolved config, and plugins pipeline, the Vite dev server now has a set of independent dev environments. Each of them is configured to match the production environment as closely as possible, and is connected to a dev runtime where the code is executed (for workerd, the server code can now run in miniflare locally). In the client, the browser imports and executes the code. In other environments, a module runner fetches and evaluates the transformed code.
+Vite 6允许用户在构建和开发过程中配置其应用程序，以映射其所有环境。在开发过程中，现在可以使用单个Vite Dev服务器在多个不同的环境中同时运行代码。 App源代码仍由Vite Dev Server转换。在共享的HTTP服务器，中间Wares，已解决的配置和插件管道之上，Vite Dev Server现在具有一组独立的DEV环境。每个人都配置为尽可能匹配生产环境，并连接到执行代码的开发运行时（对于Workerd，服务器代码现在可以在本地运行）。在客户端中，浏览器导入并执行代码。在其他环境中，模块跑步者获取并评估转换后的代码。
 
-![Vite Environments](../../images/vite-environments.svg)
+![Vite环境](../../images/vite-environments.svg)
 
-## Environments Configuration
+## 环境配置
 
-For an SPA/MPA, the configuration will look similar to Vite 5. Internally these options are used to configure the `client` environment.
+对于SPA/MPA，该配置看起来与Vite 5相似。在内部，这些选项用于配置`client`环境。
 
 ```js
 export default defineConfig({
@@ -45,9 +45,9 @@ export default defineConfig({
 })
 ```
 
-This is important because we'd like to keep Vite approachable and avoid exposing new concepts until they are needed.
+这很重要，因为我们想保持Vite的平易近人，并避免将新概念暴露在需要之前。
 
-If the app is composed of several environments, then these environments can be configured explicitly with the `environments` config option.
+如果应用程序由多种环境组成，则可以使用`environments`配置选项明确配置这些环境。
 
 ```js
 export default {
@@ -68,9 +68,9 @@ export default {
 }
 ```
 
-When not explicitly documented, environment inherits the configured top-level config options (for example, the new `server` and `edge` environments will inherit the `build.sourcemap: false` option). A small number of top-level options, like `optimizeDeps`, only apply to the `client` environment, as they don't work well when applied as a default to server environments. The `client` environment can also be configured explicitly through `environments.client`, but we recommend to do it with the top-level options so the client config remains unchanged when adding new environments.
+如果未明确记录，环境将继承配置的顶级配置选项（例如，新的`server`和`edge`环境将继承`build.sourcemap: false`选项）。少数顶级选项（例如`optimizeDeps` ）仅适用于`client`环境，因为当将其应用于服务器环境中时，它们的运行不佳。 `client`环境也可以从`environments.client`到6进行明确配置，但是我们建议使用顶级选项进行操作，以便添加新环境时客户端配置保持不变。
 
-The `EnvironmentOptions` interface exposes all the per-environment options. There are environment options that apply to both `build` and `dev`, like `resolve`. And there are `DevEnvironmentOptions` and `BuildEnvironmentOptions` for dev and build specific options (like `dev.warmup` or `build.outDir`). Some options like `optimizeDeps` only applies to dev, but is kept as top level instead of nested in `dev` for backward compatibility.
+`EnvironmentOptions`接口揭示了所有环境选项。有环境选项适用于`build`和`dev` ，例如`resolve` 。开发人员有`DevEnvironmentOptions`和`BuildEnvironmentOptions` ，并建立特定的选项（例如`dev.warmup`或`build.outDir` ）。像`optimizeDeps`这样的一些选项仅适用于开发人员，但作为最高水平而不是嵌套在`dev`中以进行向后兼容。
 
 ```ts
 interface EnvironmentOptions {
@@ -83,20 +83,20 @@ interface EnvironmentOptions {
 }
 ```
 
-The `UserConfig` interface extends from the `EnvironmentOptions` interface, allowing to configure the client and defaults for other environments, configured through the `environments` option. The `client` and a server environment named `ssr` are always present during dev. This allows backward compatibility with `server.ssrLoadModule(url)` and `server.moduleGraph`. During build, the `client` environment is always present, and the `ssr` environment is only present if it is explicitly configured (using `environments.ssr` or for backward compatibility `build.ssr`). An app doesn't need to use the `ssr` name for its SSR environment, it could name it `server` for example.
+`UserConfig`接口从`EnvironmentOptions`接口延伸，允许配置通过`environments`选项配置的其他环境的客户端和默认值。在开发过程中，始终存在`client`名为`ssr`的服务器环境。这允许向后兼容`server.ssrLoadModule(url)`和`server.moduleGraph` 。在构建过程中，始终存在`client`环境，并且只有在明确配置的情况下才存在`ssr`环境（使用`environments.ssr`或向后兼容`build.ssr` ）。一个应用不需要为其SSR环境使用`ssr`名称，例如，它可以命名`server`
 
 ```ts
 interface UserConfig extends EnvironmentOptions {
   environments: Record<string, EnvironmentOptions>
-  // other options
+  // 其他选项
 }
 ```
 
-Note that the `ssr` top-level property is going to be deprecated once the Environment API is stable. This option has the same role as `environments`, but for the default `ssr` environment and only allowed configuring of a small set of options.
+请注意，一旦环境API稳定，将弃用`ssr`顶级属性。此选项具有与`environments`相同的角色，但对于默认`ssr`环境，仅允许配置一小部分选项。
 
-## Custom Environment Instances
+## 自定义环境实例
 
-Low level configuration APIs are available so runtime providers can provide environments with proper defaults for their runtimes. These environments can also spawn other processes or threads to run the modules during dev in a closer runtime to the production environment.
+可提供低级配置API，因此运行时提供商可以为其运行时提供适当的默认值。这些环境还可以催生其他过程或线程，以在开发过程中运行模块，以靠近生产环境。
 
 ```js
 import { customEnvironment } from 'vite-environment-provider'
@@ -115,26 +115,26 @@ export default {
 }
 ```
 
-## Backward Compatibility
+## 向后兼容
 
-The current Vite server API are not yet deprecated and are backward compatible with Vite 5. The new Environment API is experimental.
+当前的Vite Server API尚未弃用，并且与Vite 5兼容。新环境API是实验性的。
 
-The `server.moduleGraph` returns a mixed view of the client and ssr module graphs. Backward compatible mixed module nodes will be returned from all its methods. The same scheme is used for the module nodes passed to `handleHotUpdate`.
+`server.moduleGraph`返回客户端和SSR模块图的混合视图。向后兼容的混合模块节点将从其所有方法中返回。用于传递到`handleHotUpdate`模块节点使用相同的方案。
 
-We don't recommend switching to Environment API yet. We are aiming for a good portion of the user base to adopt Vite 6 before so plugins don't need to maintain two versions. Checkout the future breaking changes section for information on future deprecations and upgrade path:
+我们不建议您改用环境API。我们的目标是在用户群中有很大一部分在使用Vite 6之前采用Vite 6，因此插件无需维护两个版本。查看未来的破坏变化部分，以获取有关未来折旧和升级路径的信息:
 
-- [`this.environment` in Hooks](/en/changes/this-environment-in-hooks)
-- [HMR `hotUpdate` Plugin Hook](/en/changes/hotupdate-hook)
-- [Move to per-environment APIs](/en/changes/per-environment-apis)
-- [SSR using `ModuleRunner` API](/en/changes/ssr-using-modulerunner)
-- [Shared plugins during build](/en/changes/shared-plugins-during-build)
+- [`this.environment`在钩子中](/en/changes/this-environment-in-hooks)
+- [HMR `hotUpdate`插件钩](/en/changes/hotupdate-hook)
+- [移至每个环境API](/en/changes/per-environment-apis)
+- [SSR使用`ModuleRunner` API](/en/changes/ssr-using-modulerunner)
+- [在构建过程中共享插件](/en/changes/shared-plugins-during-build)
 
-## Target Users
+## 目标用户
 
-This guide provides the basic concepts about environments for end users.
+本指南为最终用户提供了有关环境的基本概念。
 
-Plugin authors have a more consistent API available to interact with the current environment configuration. If you're building on top of Vite, the [Environment API Plugins Guide](./api-environment-plugins.md) guide describes the way extended plugin APIs available to support multiple custom environments.
+插件作者具有更一致的API，可与当前环境配置进行交互。如果您要在Vite之上构建，则[环境API插件指南](./api-environment-plugins.md)指南介绍了用于支持多个自定义环境的扩展插件API。
 
-Frameworks could decide to expose environments at different levels. If you're a framework author, continue reading the [Environment API Frameworks Guide](./api-environment-frameworks) to learn about the Environment API programmatic side.
+框架可以决定在不同层面上揭露环境。如果您是框架作者，请继续阅读《[环境API框架指南》](./api-environment-frameworks) ，以了解环境API编程方面。
 
-For Runtime providers, the [Environment API Runtimes Guide](./api-environment-runtimes.md) explains how to offer custom environment to be consumed by frameworks and users.
+对于运行时提供商，[环境API Runtimes指南](./api-environment-runtimes.md)说明了如何提供框架和用户消费的自定义环境。

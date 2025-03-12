@@ -1,56 +1,56 @@
-# Building for Production
+# 建造生产
 
-When it is time to deploy your app for production, simply run the `vite build` command. By default, it uses `<root>/index.html` as the build entry point, and produces an application bundle that is suitable to be served over a static hosting service. Check out the [Deploying a Static Site](./static-deploy) for guides about popular services.
+当该将应用程序部署用于生产时，只需运行`vite build`命令即可。默认情况下，它将`<root>/index.html`用作构建入口点，并生产适合在静态托管服务上提供的应用程序捆绑包。查看[部署静态站点的]()有关流行服务的指南。
 
-## Browser Compatibility
+## 浏览器兼容性
 
-By default, the production bundle assumes support for modern JavaScript, such as [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta), [nullish coalescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing), and [BigInt](https://caniuse.com/bigint). The default browser support range is:
+默认情况下，生产捆绑包为现代JavaScript的支持，例如[本机ES模块]()，[本机ESM Dynamic Import](/1) ， [`import.meta`](/2) ，[无效的合并](/3)和[Bigint](/4) 。默认浏览器支持范围是:
 
 <!-- Search for the `ESBUILD_MODULES_TARGET` constant for more information -->
 
-- Chrome >=87
-- Firefox >=78
-- Safari >=14
-- Edge >=88
+- Chrome> = 87
+- Firefox> = 78
+- Safari> = 14
+- 边缘> = 88
 
-You can specify custom targets via the [`build.target` config option](/en/config/build-options.md#build-target), where the lowest target is `es2015`. If a lower target is set, Vite will still require these minimum browser support ranges as it relies on [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), and [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta):
+您可以通过[`build.target`配置选项]()指定自定义目标，其中最低目标为`es2015` 。如果设定了较低的目标，则VITE仍然需要这些最小浏览器支持范围，因为它依赖于[本机ESM动态导入](/1)，而[`import.meta`](/2) :
 
 <!-- Search for the `defaultEsbuildSupported` constant for more information -->
 
-- Chrome >=64
-- Firefox >=67
-- Safari >=11.1
-- Edge >=79
+- Chrome> = 64
+- Firefox> = 67
+- Safari> = 11.1
+- 边缘> = 79
 
-Note that by default, Vite only handles syntax transforms and **does not cover polyfills**. You can check out https://cdnjs.cloudflare.com/polyfill/ which automatically generates polyfill bundles based on the user's browser UserAgent string.
+请注意，默认情况下，Vite仅处理语法会转换，并且**不涵盖多填充**。您可以查看[https://cdnjs.cloudflare.com/polyfill/](https://cdnjs.cloudflare.com/polyfill/) ，它会根据用户的浏览器UserAgent String自动生成polyfill捆绑包。
 
-Legacy browsers can be supported via [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy), which will automatically generate legacy chunks and corresponding ES language feature polyfills. The legacy chunks are conditionally loaded only in browsers that do not have native ESM support.
+可以通过[@vitejs/plugin-legacy]()支持传统浏览器，该浏览器将自动生成旧版块和相应的ES语言功能polyfills。传统块有条件地仅在没有本机ESM支持的浏览器中加载。
 
-## Public Base Path
+## 公共基本道路
 
-- Related: [Asset Handling](./assets)
+- 相关:[资产处理](./assets)
 
-If you are deploying your project under a nested public path, simply specify the [`base` config option](/en/config/shared-options.md#base) and all asset paths will be rewritten accordingly. This option can also be specified as a command line flag, e.g. `vite build --base=/my/public/path/`.
+如果您将项目部署在嵌套的公共路径下，只需指定[`base`配置选项](/en/config/shared-options.md#base)，所有资产路径将相应地重写。此选项也可以指定为命令行标志，例如`vite build --base=/my/public/path/` 。
 
-JS-imported asset URLs, CSS `url()` references, and asset references in your `.html` files are all automatically adjusted to respect this option during build.
+JS Imported Asset URL，CSS `url()`参考和您的`.html`文件中的资产引用均自动调整以尊重构建过程中的此选项。
 
-The exception is when you need to dynamically concatenate URLs on the fly. In this case, you can use the globally injected `import.meta.env.BASE_URL` variable which will be the public base path. Note this variable is statically replaced during build so it must appear exactly as-is (i.e. `import.meta.env['BASE_URL']` won't work).
+例外是当您需要动态连接URL时。在这种情况下，您可以使用全球注入的`import.meta.env.BASE_URL`变量，这将是公共基本路径。请注意，该变量在构建过程中被静态替换，因此必须完全显示为IS（即`import.meta.env['BASE_URL']`不起作用）。
 
-For advanced base path control, check out [Advanced Base Options](#advanced-base-options).
+对于高级基本路径控制，请查看[高级基本选项](#advanced-base-options)。
 
-### Relative base
+### 相对基础
 
-If you don't know the base path in advance, you may set a relative base path with `"base": "./"` or `"base": ""`. This will make all generated URLs to be relative to each file.
+如果您不提前知道基本路径，则可以用`"base": "./"`或`"base": ""`设置相对基本路径。这将使所有生成的URL与每个文件相对。
 
 :::warning Support for older browsers when using relative bases
 
-`import.meta` support is required for relative bases. If you need to support [browsers that do not support `import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta), you can use [the `legacy` plugin](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy).
+`import.meta`相对基础需要支撑。如果您需要支持[不支持`import.meta`浏览器]()，则可以使用[`legacy`插件](/1)。
 
 :::
 
-## Customizing the Build
+## 自定义构建
 
-The build can be customized via various [build config options](/en/config/build-options.md). Specifically, you can directly adjust the underlying [Rollup options](https://rollupjs.org/configuration-options/) via `build.rollupOptions`:
+可以通过各种[构建配置选项](/en/config/build-options.md)自定义构建。具体来说，您可以直接[通过](/1)`build.rollupOptions` :
 
 ```js [vite.config.js]
 export default defineConfig({
@@ -62,27 +62,27 @@ export default defineConfig({
 })
 ```
 
-For example, you can specify multiple Rollup outputs with plugins that are only applied during build.
+例如，您可以使用仅在构建过程中应用的插件指定多个汇总输出。
 
-## Chunking Strategy
+## 分块策略
 
-You can configure how chunks are split using `build.rollupOptions.output.manualChunks` (see [Rollup docs](https://rollupjs.org/configuration-options/#output-manualchunks)). If you use a framework, refer to their documentation for configuring how chunks are splitted.
+您可以使用`build.rollupOptions.output.manualChunks`来配置如何拆分块的方式（请参阅[汇总文档]()）。如果您使用框架，请参阅其文档以配置如何拆分块。
 
-## Load Error Handling
+## 负载错误处理
 
-Vite emits `vite:preloadError` event when it fails to load dynamic imports. `event.payload` contains the original import error. If you call `event.preventDefault()`, the error will not be thrown.
+Vite发射`vite:preloadError`事件未能加载动态导入。 `event.payload`包含原始导入错误。如果您致电`event.preventDefault()` ，则不会抛出错误。
 
 ```js twoslash
 window.addEventListener('vite:preloadError', (event) => {
-  window.location.reload() // for example, refresh the page
+  window.location.reload() // 例如，刷新页面
 })
 ```
 
-When a new deployment occurs, the hosting service may delete the assets from previous deployments. As a result, a user who visited your site before the new deployment might encounter an import error. This error happens because the assets running on that user's device are outdated and it tries to import the corresponding old chunk, which is deleted. This event is useful for addressing this situation.
+当发生新的部署时，托管服务可以从以前的部署中删除资产。结果，在新部署之前访问您的网站的用户可能会遇到导入错误。发生此错误是因为该用户设备上运行的资产已过时，并且试图导入已删除的相应旧块。此事件对于解决这种情况很有用。
 
-## Rebuild on Files Changes
+## 重建文件更改
 
-You can enable rollup watcher with `vite build --watch`. Or, you can directly adjust the underlying [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch) via `build.watch`:
+您可以使用`vite build --watch`启用汇总观察器。或者，您可以直接调整[`WatcherOptions`]()通过`build.watch` :
 
 ```js [vite.config.js]
 export default defineConfig({
@@ -94,11 +94,11 @@ export default defineConfig({
 })
 ```
 
-With the `--watch` flag enabled, changes to the `vite.config.js`, as well as any files to be bundled, will trigger a rebuild.
+启用了`--watch`标志后，更改`vite.config.js` ，以及要捆绑的任何文件，都会触发重建。
 
-## Multi-Page App
+## 多页应用
 
-Suppose you have the following source code structure:
+假设您具有以下源代码结构:
 
 ```
 ├── package.json
@@ -110,9 +110,9 @@ Suppose you have the following source code structure:
     └── nested.js
 ```
 
-During dev, simply navigate or link to `/nested/` - it works as expected, just like for a normal static file server.
+在DEV期间，只需导航或链接到`/nested/`它可以按预期工作，就像普通的静态文件服务器一样。
 
-During build, all you need to do is to specify multiple `.html` files as entry points:
+在构建过程中，您需要做的就是将多个`.html`文件指定为入口点:
 
 ```js twoslash [vite.config.js]
 import { dirname, resolve } from 'node:path'
@@ -133,15 +133,15 @@ export default defineConfig({
 })
 ```
 
-If you specify a different root, remember that `__dirname` will still be the folder of your vite.config.js file when resolving the input paths. Therefore, you will need to add your `root` entry to the arguments for `resolve`.
+如果指定不同的根，请记住，在解决输入路径时， `__dirname`仍然是vite.config.js文件的文件夹。因此，您需要将您的`root`条目添加到`resolve`参数中。
 
-Note that for HTML files, Vite ignores the name given to the entry in the `rollupOptions.input` object and instead respects the resolved id of the file when generating the HTML asset in the dist folder. This ensures a consistent structure with the way the dev server works.
+请注意，对于HTML文件，VITE忽略了`rollupOptions.input`对象中条目的名称，而是尊重文件的已解决的ID时，在DIST文件夹中生成HTML资产时。这确保了开发服务器的工作方式一致的结构。
 
-## Library Mode
+## 库模式
 
-When you are developing a browser-oriented library, you are likely spending most of the time on a test/demo page that imports your actual library. With Vite, you can use your `index.html` for that purpose to get the smooth development experience.
+当您开发面向浏览器的库时，您可能会大部分时间都在导入实际库的测试/演示页面上。使用Vite，您可以使用`index.html`来获得平稳的开发体验。
 
-When it is time to bundle your library for distribution, use the [`build.lib` config option](/en/config/build-options.md#build-lib). Make sure to also externalize any dependencies that you do not want to bundle into your library, e.g. `vue` or `react`:
+是时候捆绑库进行分发时，请使用[`build.lib` config选项](/en/config/build-options.md#build-lib)。确保还将您不想捆绑到库中的所有依赖项外部化，例如`vue`或`react` :
 
 ::: code-group
 
@@ -157,16 +157,16 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'lib/main.js'),
       name: 'MyLib',
-      // the proper extensions will be added
+      // 将添加适当的扩展名
       fileName: 'my-lib',
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
+      // 确保外部化不应该捆绑的dep
+      // 进入您的图书馆
       external: ['vue'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
+        // 提供用于UMD构建中的全局变量
+        // 用于外部底部
         globals: {
           vue: 'Vue',
         },
@@ -193,12 +193,12 @@ export default defineConfig({
       name: 'MyLib',
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
+      // 确保外部化不应该捆绑的dep
+      // 进入您的图书馆
       external: ['vue'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
+        // 提供用于UMD构建中的全局变量
+        // 用于外部底部
         globals: {
           vue: 'Vue',
         },
@@ -210,7 +210,7 @@ export default defineConfig({
 
 :::
 
-The entry file would contain exports that can be imported by users of your package:
+输入文件将包含包装用户可以导入的导出:
 
 ```js [lib/main.js]
 import Foo from './Foo.vue'
@@ -218,12 +218,12 @@ import Bar from './Bar.vue'
 export { Foo, Bar }
 ```
 
-Running `vite build` with this config uses a Rollup preset that is oriented towards shipping libraries and produces two bundle formats:
+使用此配置运行`vite build`使用汇总预设，该预设面向运输库，并产生两种捆绑格式:
 
-- `es` and `umd` (for single entry)
-- `es` and `cjs` (for multiple entries)
+- `es`和`umd` （用于单个条目）
+- `es`和`cjs` （对于多个条目）
 
-The formats can be configured with the [`build.lib.formats`](/en/config/build-options.md#build-lib) option.
+格式可以使用[`build.lib.formats`](/en/config/build-options.md#build-lib)选项配置。
 
 ```
 $ vite build
@@ -232,7 +232,7 @@ dist/my-lib.js      0.08 kB / gzip: 0.07 kB
 dist/my-lib.umd.cjs 0.30 kB / gzip: 0.16 kB
 ```
 
-Recommended `package.json` for your lib:
+建议您的lib `package.json` :
 
 ::: code-group
 
@@ -274,11 +274,11 @@ Recommended `package.json` for your lib:
 
 :::
 
-### CSS support
+### CSS支持
 
-If your library imports any CSS, it will be bundled as a single CSS file besides the built JS files, e.g. `dist/my-lib.css`. The name defaults to `build.lib.fileName`, but can also be changed with [`build.lib.cssFileName`](/en/config/build-options.md#build-lib).
+如果您的库导入任何CSS，则它将被捆绑为单个CSS文件，除了已构建的JS文件，例如`dist/my-lib.css` 。名称默认为`build.lib.fileName` ，但也可以使用[`build.lib.cssFileName`](/en/config/build-options.md#build-lib)更改。
 
-You can export the CSS file in your `package.json` to be imported by users:
+您可以在`package.json`中导出CSS文件以由用户导入:
 
 ```json {12}
 {
@@ -298,73 +298,73 @@ You can export the CSS file in your `package.json` to be imported by users:
 ```
 
 ::: tip File Extensions
-If the `package.json` does not contain `"type": "module"`, Vite will generate different file extensions for Node.js compatibility. `.js` will become `.mjs` and `.cjs` will become `.js`.
+如果`package.json`不包含`"type": "module"` ，则VITE将生成Node.js兼容性的不同文件扩展。 `.js`将变成`.mjs`和`.cjs`将变为`.js` 。
 :::
 
 ::: tip Environment Variables
-In library mode, all [`import.meta.env.*`](./env-and-mode.md) usage are statically replaced when building for production. However, `process.env.*` usage are not, so that consumers of your library can dynamically change it. If this is undesirable, you can use `define: { 'process.env.NODE_ENV': '"production"' }` for example to statically replace them, or use [`esm-env`](https://github.com/benmccann/esm-env) for better compatibility with bundlers and runtimes.
+在图书馆模式下，在构建生产时，所有[`import.meta.env.*`](./env-and-mode.md)使用都将静态替换。但是，没有`process.env.*`用法，因此您的库消费者可以动态地更改它。如果这是不可取的，则可以使用`define: { 'process.env.NODE_ENV': '"production"' }`来静态替换它们，或者使用[`esm-env`](/1)以更好地与捆绑器和运行时间兼容。
 :::
 
 ::: warning Advanced Usage
-Library mode includes a simple and opinionated configuration for browser-oriented and JS framework libraries. If you are building non-browser libraries, or require advanced build flows, you can use [Rollup](https://rollupjs.org) or [esbuild](https://esbuild.github.io) directly.
+库模式包括针对面向浏览器和JS框架库的简单且自明的配置。如果要构建非浏览器库，或需要高级构建流，则可以直接使用[汇总]()或[Esbuild]() 。
 :::
 
-## Advanced Base Options
+## 高级基本选项
 
 ::: warning
-This feature is experimental. [Give Feedback](https://github.com/vitejs/vite/discussions/13834).
+此功能是实验性的。[给予反馈]()。
 :::
 
-For advanced use cases, the deployed assets and public files may be in different paths, for example to use different cache strategies.
-A user may choose to deploy in three different paths:
+对于高级用例，部署的资产和公共文件可能处于不同的路径，例如使用不同的缓存策略。
+用户可以选择在三个不同的路径中部署:
 
-- The generated entry HTML files (which may be processed during SSR)
-- The generated hashed assets (JS, CSS, and other file types like images)
-- The copied [public files](assets.md#the-public-directory)
+- 生成的条目HTML文件（可以在SSR期间处理）
+- 生成的哈希资产（JS，CSS和其他文件类型（如图像））
+- 复制的[公共文件](assets.md#the-public-directory)
 
-A single static [base](#public-base-path) isn't enough in these scenarios. Vite provides experimental support for advanced base options during build, using `experimental.renderBuiltUrl`.
+在这些情况下，单个静态[基础](#public-base-path)是不够的。 Vite使用`experimental.renderBuiltUrl`为构建过程中的高级基本选项提供了实验支持。
 
 ```ts twoslash
 import type { UserConfig } from 'vite'
-// prettier-ignore
+// 漂亮的尼古尔
 const config: UserConfig = {
-// ---cut-before---
-experimental: {
-  renderBuiltUrl(filename, { hostType }) {
-    if (hostType === 'js') {
-      return { runtime: `window.__toCdnUrl(${JSON.stringify(filename)})` }
-    } else {
-      return { relative: true }
-    }
+  // ---在----
+  experimental: {
+    renderBuiltUrl(filename, { hostType }) {
+      if (hostType === 'js') {
+        return { runtime: `window.__toCdnUrl(${JSON.stringify(filename)})` }
+      } else {
+        return { relative: true }
+      }
+    },
   },
-},
-// ---cut-after---
+  // ---切割---
 }
 ```
 
-If the hashed assets and public files aren't deployed together, options for each group can be defined independently using asset `type` included in the second `context` param given to the function.
+如果没有将哈希资产和公共文件部署在一起，则可以使用给出该功能的第二个`context`参数中包含的资产`type`独立定义每个组的选项。
 
 ```ts twoslash
 import type { UserConfig } from 'vite'
 import path from 'node:path'
-// prettier-ignore
+// 漂亮的尼古尔
 const config: UserConfig = {
-// ---cut-before---
-experimental: {
-  renderBuiltUrl(filename, { hostId, hostType, type }) {
-    if (type === 'public') {
-      return 'https://www.domain.com/' + filename
-    } else if (path.extname(hostId) === '.js') {
-      return {
-        runtime: `window.__assetsPath(${JSON.stringify(filename)})`
+  // ---在----
+  experimental: {
+    renderBuiltUrl(filename, { hostId, hostType, type }) {
+      if (type === 'public') {
+        return 'https://www.domain.com/' + filename
+      } else if (path.extname(hostId) === '.js') {
+        return {
+          runtime: `window.__assetsPath(${JSON.stringify(filename)})`,
+        }
+      } else {
+        return 'https://cdn.domain.com/assets/' + filename
       }
-    } else {
-      return 'https://cdn.domain.com/assets/' + filename
-    }
+    },
   },
-},
-// ---cut-after---
+  // ---切割---
 }
 ```
 
-Note that the `filename` passed is a decoded URL, and if the function returns a URL string, it should also be decoded. Vite will handle the encoding automatically when rendering the URLs. If an object with `runtime` is returned, encoding should be handled yourself where needed as the runtime code will be rendered as is.
+请注意，传递的`filename`是一个解码的URL，如果函数返回URL字符串，也应将其解码。渲染URL时，Vite将自动处理编码。如果返回具有`runtime`对象，则应在需要的地方处理编码，因为运行时代码将按原样渲染。

@@ -1,132 +1,132 @@
-# Command Line Interface
+# 命令行接口
 
-## Dev server
+## 开发服务器
 
 ### `vite`
 
-Start Vite dev server in the current directory. `vite dev` and `vite serve` are aliases for `vite`.
+在当前目录中启动Vite Dev Server。 `vite dev`和`vite serve`是`vite`的别名。
 
-#### Usage
+#### 用法
 
 ```bash
 vite [root]
 ```
 
-#### Options
+#### 选项
 
-| Options                   |                                                                                                                                                                                      |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--host [host]`           | Specify hostname (`string`)                                                                                                                                                          |
-| `--port <port>`           | Specify port (`number`)                                                                                                                                                              |
-| `--open [path]`           | Open browser on startup (`boolean \| string`)                                                                                                                                        |
-| `--cors`                  | Enable CORS (`boolean`)                                                                                                                                                              |
-| `--strictPort`            | Exit if specified port is already in use (`boolean`)                                                                                                                                 |
-| `--force`                 | Force the optimizer to ignore the cache and re-bundle (`boolean`)                                                                                                                    |
-| `-c, --config <file>`     | Use specified config file (`string`)                                                                                                                                                 |
-| `--base <path>`           | Public base path (default: `/`) (`string`)                                                                                                                                           |
-| `-l, --logLevel <level>`  | info \| warn \| error \| silent (`string`)                                                                                                                                           |
-| `--clearScreen`           | Allow/disable clear screen when logging (`boolean`)                                                                                                                                  |
-| `--configLoader <loader>` | Use `bundle` to bundle the config with esbuild, or `runner` (experimental) to process it on the fly, or `native` (experimental) to load using the native runtime (default: `bundle`) |
-| `--profile`               | Start built-in Node.js inspector (check [Performance bottlenecks](/en/guide/troubleshooting#performance-bottlenecks))                                                                |
-| `-d, --debug [feat]`      | Show debug logs (`string \| boolean`)                                                                                                                                                |
-| `-f, --filter <filter>`   | Filter debug logs (`string`)                                                                                                                                                         |
-| `-m, --mode <mode>`       | Set env mode (`string`)                                                                                                                                                              |
-| `-h, --help`              | Display available CLI options                                                                                                                                                        |
-| `-v, --version`           | Display version number                                                                                                                                                               |
+| 选项                      |                                                                                                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `--host [host]`           | 指定主机名（ `string` ）                                                                                                           |
+| `--port <port>`           | 指定端口（ `number` ）                                                                                                             |
+| `--open [path]`           | 在启动上打开浏览器（`boolean \| 字符串`）                                                                                          |
+| `--cors`                  | 启用CORS（ `boolean` ）                                                                                                            |
+| `--strictPort`            | 退出如果指定的端口已经使用（ `boolean` ）                                                                                          |
+| `--force`                 | 强迫优化器忽略缓存并重新包裹（ `boolean` ）                                                                                        |
+| `-c, --config <file>`     | 使用指定的配置文件（ `string` ）                                                                                                   |
+| `--base <path>`           | 公共基本路径（默认值: `/` ）（ `string` ）                                                                                         |
+| `-l, --logLevel <level>`  | 信息\| 警告\| 错误 \| 沉默（ `string` ）                                                                                           |
+| `--clearScreen`           | 记录时允许/禁用清晰的屏幕（ `boolean` ）                                                                                           |
+| `--configLoader <loader>` | 使用`bundle`将配置与Esbuild或`runner` （实验）将其捆绑在一起，或使用本机运行时（默认: `bundle` ）进行加载`native` （实验）（实验） |
+| `--profile`               | 启动内置Node.js Inspector（检查[性能瓶颈]/en/guide/troubleshooting#performance-bottlenecks)）                                      |
+| `-d, --debug [feat]`      | 显示调试日志（`字符串\| 布尔值                                                                                                     |
+| `-f, --filter <filter>`   | 过滤器调试日志（ `string` ）                                                                                                       |
+| `-m, --mode <mode>`       | 设置env模式（ `string` ）                                                                                                          |
+| `-h, --help`              | 显示可用的CLI选项                                                                                                                  |
+| `-v, --version`           | 显示版本号                                                                                                                         |
 
-## Build
+## 建造
 
 ### `vite build`
 
-Build for production.
+建造生产。
 
-#### Usage
+#### 用法
 
 ```bash
 vite build [root]
 ```
 
-#### Options
+#### 选项
 
-| Options                        |                                                                                                                        |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| `--target <target>`            | Transpile target (default: `"modules"`) (`string`)                                                                     |
-| `--outDir <dir>`               | Output directory (default: `dist`) (`string`)                                                                          |
-| `--assetsDir <dir>`            | Directory under outDir to place assets in (default: `"assets"`) (`string`)                                             |
-| `--assetsInlineLimit <number>` | Static asset base64 inline threshold in bytes (default: `4096`) (`number`)                                             |
-| `--ssr [entry]`                | Build specified entry for server-side rendering (`string`)                                                             |
-| `--sourcemap [output]`         | Output source maps for build (default: `false`) (`boolean \| "inline" \| "hidden"`)                                    |
-| `--minify [minifier]`          | Enable/disable minification, or specify minifier to use (default: `"esbuild"`) (`boolean \| "terser" \| "esbuild"`)    |
-| `--manifest [name]`            | Emit build manifest json (`boolean \| string`)                                                                         |
-| `--ssrManifest [name]`         | Emit ssr manifest json (`boolean \| string`)                                                                           |
-| `--emptyOutDir`                | Force empty outDir when it's outside of root (`boolean`)                                                               |
-| `-w, --watch`                  | Rebuilds when modules have changed on disk (`boolean`)                                                                 |
-| `-c, --config <file>`          | Use specified config file (`string`)                                                                                   |
-| `--base <path>`                | Public base path (default: `/`) (`string`)                                                                             |
-| `-l, --logLevel <level>`       | Info \| warn \| error \| silent (`string`)                                                                             |
-| `--clearScreen`                | Allow/disable clear screen when logging (`boolean`)                                                                    |
-| `--configLoader <loader>`      | Use `bundle` to bundle the config with esbuild or `runner` (experimental) to process it on the fly (default: `bundle`) |
-| `--profile`                    | Start built-in Node.js inspector (check [Performance bottlenecks](/en/guide/troubleshooting#performance-bottlenecks))  |
-| `-d, --debug [feat]`           | Show debug logs (`string \| boolean`)                                                                                  |
-| `-f, --filter <filter>`        | Filter debug logs (`string`)                                                                                           |
-| `-m, --mode <mode>`            | Set env mode (`string`)                                                                                                |
-| `-h, --help`                   | Display available CLI options                                                                                          |
-| `--app`                        | Build all environments, same as `builder: {}` (`boolean`, experimental)                                                |
+| 选项                           |                                                                                                           |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `--target <target>`            | 变形目标（默认值: `"modules"` ）（ `string` ）                                                            |
+| `--outDir <dir>`               | 输出目录（默认值: `dist` ）（ `string` ）                                                                 |
+| `--assetsDir <dir>`            | Outdir下的目录将资产放置在（默认值: `"assets"` ）（ `string` ）中                                         |
+| `--assetsInlineLimit <number>` | 静态资产基本64字节中的内联阈值（默认值: `4096` ）（ `number` ）                                           |
+| `--ssr [entry]`                | 构建服务器端渲染的指定条目（ `string` ）                                                                  |
+| `--sourcemap [output]`         | 构建的输出源地图（默认值: `false` ）（`boolean \| “排队” \| “隐藏”`）                                     |
+| `--minify [minifier]`          | 启用/禁用降低，或指定使用的缩影（默认值: `"esbuild"` ）（boolean \ boolean \| “ Terser” \| “ esbuild”``） |
+| `--manifest [name]`            | 发射构建清单JSON（布尔\| 字符串`）                                                                        |
+| `--ssrManifest [name]`         | 发射ssr sust json（布尔\| 字符串`）                                                                       |
+| `--emptyOutDir`                | 当它在根部之外（ `boolean` ）                                                                             |
+| `-w, --watch`                  | 当模块在磁盘上更改（ `boolean` ）时重建                                                                   |
+| `-c, --config <file>`          | 使用指定的配置文件（ `string` ）                                                                          |
+| `--base <path>`                | 公共基本路径（默认值: `/` ）（ `string` ）                                                                |
+| `-l, --logLevel <level>`       | 信息\| 警告\| 错误 \| 沉默（ `string` ）                                                                  |
+| `--clearScreen`                | 记录时允许/禁用清晰的屏幕（ `boolean` ）                                                                  |
+| `--configLoader <loader>`      | 使用`bundle`将配置与Esbuild或`runner` （实验）将其捆绑在一起（默认: `bundle` ）                           |
+| `--profile`                    | 启动内置Node.js Inspector（检查[性能瓶颈](/en/guide/troubleshooting#performance-bottlenecks)）            |
+| `-d, --debug [feat]`           | 显示调试日志（`字符串\| 布尔值                                                                            |
+| `-f, --filter <filter>`        | 过滤器调试日志（ `string` ）                                                                              |
+| `-m, --mode <mode>`            | 设置env模式（ `string` ）                                                                                 |
+| `-h, --help`                   | 显示可用的CLI选项                                                                                         |
+| `--app`                        | 构建所有环境，与`builder: {}` （ `boolean` ，实验）相同                                                   |
 
-## Others
+## 其他的
 
 ### `vite optimize`
 
-Pre-bundle dependencies.
+束前依赖性。
 
-**Deprecated**: the pre-bundle process runs automatically and does not need to be called.
+**弃用**:预捆式过程自动运行，无需调用。
 
-#### Usage
+#### 用法
 
 ```bash
 vite optimize [root]
 ```
 
-#### Options
+#### 选项
 
-| Options                   |                                                                                                                        |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `--force`                 | Force the optimizer to ignore the cache and re-bundle (`boolean`)                                                      |
-| `-c, --config <file>`     | Use specified config file (`string`)                                                                                   |
-| `--base <path>`           | Public base path (default: `/`) (`string`)                                                                             |
-| `-l, --logLevel <level>`  | Info \| warn \| error \| silent (`string`)                                                                             |
-| `--clearScreen`           | Allow/disable clear screen when logging (`boolean`)                                                                    |
-| `--configLoader <loader>` | Use `bundle` to bundle the config with esbuild or `runner` (experimental) to process it on the fly (default: `bundle`) |
-| `-d, --debug [feat]`      | Show debug logs (`string \| boolean`)                                                                                  |
-| `-f, --filter <filter>`   | Filter debug logs (`string`)                                                                                           |
-| `-m, --mode <mode>`       | Set env mode (`string`)                                                                                                |
-| `-h, --help`              | Display available CLI options                                                                                          |
+| 选项                      |                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------- |
+| `--force`                 | 强迫优化器忽略缓存并重新包裹（ `boolean` ）                                     |
+| `-c, --config <file>`     | 使用指定的配置文件（ `string` ）                                                |
+| `--base <path>`           | 公共基本路径（默认值: `/` ）（ `string` ）                                      |
+| `-l, --logLevel <level>`  | 信息\| 警告\| 错误 \| 沉默（ `string` ）                                        |
+| `--clearScreen`           | 记录时允许/禁用清晰的屏幕（ `boolean` ）                                        |
+| `--configLoader <loader>` | 使用`bundle`将配置与Esbuild或`runner` （实验）将其捆绑在一起（默认: `bundle` ） |
+| `-d, --debug [feat]`      | 显示调试日志（`字符串\| 布尔值                                                  |
+| `-f, --filter <filter>`   | 过滤器调试日志（ `string` ）                                                    |
+| `-m, --mode <mode>`       | 设置env模式（ `string` ）                                                       |
+| `-h, --help`              | 显示可用的CLI选项                                                               |
 
 ### `vite preview`
 
-Locally preview the production build. Do not use this as a production server as it's not designed for it.
+本地预览生产构建。不要将其用作生产服务器，因为它不是为其设计的。
 
-#### Usage
+#### 用法
 
 ```bash
 vite preview [root]
 ```
 
-#### Options
+#### 选项
 
-| Options                   |                                                                                                                        |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `--host [host]`           | Specify hostname (`string`)                                                                                            |
-| `--port <port>`           | Specify port (`number`)                                                                                                |
-| `--strictPort`            | Exit if specified port is already in use (`boolean`)                                                                   |
-| `--open [path]`           | Open browser on startup (`boolean \| string`)                                                                          |
-| `--outDir <dir>`          | Output directory (default: `dist`)(`string`)                                                                           |
-| `-c, --config <file>`     | Use specified config file (`string`)                                                                                   |
-| `--base <path>`           | Public base path (default: `/`) (`string`)                                                                             |
-| `-l, --logLevel <level>`  | Info \| warn \| error \| silent (`string`)                                                                             |
-| `--clearScreen`           | Allow/disable clear screen when logging (`boolean`)                                                                    |
-| `--configLoader <loader>` | Use `bundle` to bundle the config with esbuild or `runner` (experimental) to process it on the fly (default: `bundle`) |
-| `-d, --debug [feat]`      | Show debug logs (`string \| boolean`)                                                                                  |
-| `-f, --filter <filter>`   | Filter debug logs (`string`)                                                                                           |
-| `-m, --mode <mode>`       | Set env mode (`string`)                                                                                                |
-| `-h, --help`              | Display available CLI options                                                                                          |
+| 选项                      |                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------- |
+| `--host [host]`           | 指定主机名（ `string` ）                                                        |
+| `--port <port>`           | 指定端口（ `number` ）                                                          |
+| `--strictPort`            | 退出如果指定的端口已经使用（ `boolean` ）                                       |
+| `--open [path]`           | 在启动上打开浏览器（`boolean \| 字符串`）                                       |
+| `--outDir <dir>`          | 输出目录（默认值: `dist` ）（ `string` ）                                       |
+| `-c, --config <file>`     | 使用指定的配置文件（ `string` ）                                                |
+| `--base <path>`           | 公共基本路径（默认值: `/` ）（ `string` ）                                      |
+| `-l, --logLevel <level>`  | 信息\| 警告\| 错误 \| 沉默（ `string` ）                                        |
+| `--clearScreen`           | 记录时允许/禁用清晰的屏幕（ `boolean` ）                                        |
+| `--configLoader <loader>` | 使用`bundle`将配置与Esbuild或`runner` （实验）将其捆绑在一起（默认: `bundle` ） |
+| `-d, --debug [feat]`      | 显示调试日志（`字符串\| 布尔值                                                  |
+| `-f, --filter <filter>`   | 过滤器调试日志（ `string` ）                                                    |
+| `-m, --mode <mode>`       | 设置env模式（ `string` ）                                                       |
+| `-h, --help`              | 显示可用的CLI选项                                                               |

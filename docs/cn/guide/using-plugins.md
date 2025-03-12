@@ -1,10 +1,10 @@
-# Using Plugins
+# 使用插件
 
-Vite can be extended using plugins, which are based on Rollup's well-designed plugin interface with a few extra Vite-specific options. This means that Vite users can rely on the mature ecosystem of Rollup plugins, while also being able to extend the dev server and SSR functionality as needed.
+Vite 可以通过插件进行扩展，这些插件基于 Rollup 设计良好的插件接口，并添加了一些特定于 Vite 的选项。这意味着 Vite 用户可以依赖 Rollup 插件的成熟生态系统，同时还可以根据需要扩展开发服务器和 SSR 功能。
 
-## Adding a Plugin
+## 添加插件
 
-To use a plugin, it needs to be added to the `devDependencies` of the project and included in the `plugins` array in the `vite.config.js` config file. For example, to provide support for legacy browsers, the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) can be used:
+要使用插件，需要将其添加到项目的 `devDependencies` 中，并将其包含在 `vite.config.js` 配置文件中的 `plugins` 数组中。例如，为了支持旧版浏览器，可以使用官方的 [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy):
 
 ```
 $ npm add -D @vitejs/plugin-legacy
@@ -23,27 +23,27 @@ export default defineConfig({
 })
 ```
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins`还接受包括几个插件作为单个元素的预设。这对于使用多个插件实现的复杂功能（例如框架集成）很有用。阵列将在内部扁平。
 
 Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
 
-## Finding Plugins
+## 查找插件
 
 :::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+Vite 旨在为常见的 Web 开发模式提供开箱即用的支持。在搜索 Vite 或兼容的 Rollup 插件之前，请查看 [功能指南](../guide/features.md)。许多在 Rollup 项目中需要插件的情况已经在 Vite 中得到了覆盖。
 :::
 
-Check out the [Plugins section](../plugins/) for information about official plugins. Community plugins are listed in [awesome-vite](https://github.com/vitejs/awesome-vite#plugins).
+请查看 [插件部分](../plugins/) 以获取有关官方插件的信息。社区插件列在 [awesome-vite](https://github.com/vitejs/awesome-vite#plugins) 中。
 
-You can also find plugins that follow the [recommended conventions](./api-plugin.md#conventions) using a [npm search for vite-plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) for Vite plugins or a [npm search for rollup-plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) for Rollup plugins.
+您还可以使用[NPM搜索Vite-Plugin的VITE插件](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity)或[NPM搜索汇总](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity)插件的NPM搜索，以遵循[推荐约定的](/0)插件。
 
-## Enforcing Plugin Ordering
+## 强制插件顺序
 
-For compatibility with some Rollup plugins, it may be needed to enforce the order of the plugin or only apply at build time. This should be an implementation detail for Vite plugins. You can enforce the position of a plugin with the `enforce` modifier:
+为了与某些 Rollup 插件兼容，可能需要强制插件的顺序或仅在构建时应用。这应该是 Vite 插件的实现细节。您可以使用 `enforce` 修饰符来强制插件的位置:
 
-- `pre`: invoke plugin before Vite core plugins
-- default: invoke plugin after Vite core plugins
-- `post`: invoke plugin after Vite build plugins
+- `pre`: 在 Vite 核心插件之前调用插件
+- 默认:在 Vite 核心插件之后调用插件
+- `post`: 在 Vite 构建插件之后调用插件
 
 ```js twoslash [vite.config.js]
 import image from '@rollup/plugin-image'
@@ -59,11 +59,11 @@ export default defineConfig({
 })
 ```
 
-Check out [Plugins API Guide](./api-plugin.md#plugin-ordering) for detailed information.
+请查看 [插件 API 指南](./api-plugin.md#plugin-ordering) 以获取详细信息。
 
 ## Conditional Application
 
-By default, plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+默认情况下，插件在服务和构建时都会被调用。如果需要在服务或构建过程中有条件地应用插件，可以使用 `apply` 属性在 `'build'` 或 `'serve'` 期间调用它们:
 
 ```js twoslash [vite.config.js]
 import typescript2 from 'rollup-plugin-typescript2'
@@ -79,6 +79,6 @@ export default defineConfig({
 })
 ```
 
-## Building Plugins
+## 构建插件
 
-Check out the [Plugins API Guide](./api-plugin.md) for documentation about creating plugins.
+请查看 [插件 API 指南](./api-plugin.md) 以获取有关创建插件的文档。

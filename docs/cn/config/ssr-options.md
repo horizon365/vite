@@ -1,62 +1,62 @@
-# SSR Options
+# SSR 选项
 
-Unless noted, the options in this section are applied to both dev and build.
+除非特别指出，本节中的选项将同时应用于开发和构建。
 
 ## ssr.external
 
-- **Type:** `string[] | true`
-- **Related:** [SSR Externals](/en/guide/ssr#ssr-externals)
+- | 是的
+- **相关:** [SSR 外部依赖](/en/guide/ssr#ssr-externals)
 
-Externalize the given dependencies and their transitive dependencies for SSR. By default, all dependencies are externalized except for linked dependencies (for HMR). If you prefer to externalize the linked dependency, you can pass its name to this option.
+将给定的依赖项及其传递依赖项进行外部化，以便用于 SSR。默认情况下，除了链接的依赖项(用于 HMR)外，所有依赖项都会被外部化。如果您希望将链接的依赖项也外部化，可以将该依赖项的名称传递给此选项。
 
-If `true`, all dependencies including linked dependencies are externalized.
+如果设置为 `true`，则所有依赖项，包括链接的依赖项，都会被外部化。
 
-Note that the explicitly listed dependencies (using `string[]` type) will always take priority if they're also listed in `ssr.noExternal` (using any type).
+请注意，显式列出的依赖项(使用 `string[]` 类型)将始终优先于 `ssr.noExternal`(使用任何类型)中列出的依赖项。
 
 ## ssr.noExternal
 
-- **Type:** `string | RegExp | (string | RegExp)[] | true`
-- **Related:** [SSR Externals](/en/guide/ssr#ssr-externals)
+- **类型:** `字符串 | REGEXP | (细绳 | REGEXP)[] | 是的
+- **相关:** [SSR 外部依赖](/en/guide/ssr#ssr-externals)
 
-Prevent listed dependencies from being externalized for SSR, which they will get bundled in build. By default, only linked dependencies are not externalized (for HMR). If you prefer to externalize the linked dependency, you can pass its name to the `ssr.external` option.
+防止列出的依赖项在 SSR 中被外部化，这些依赖项将在构建时被捆绑。默认情况下，只有链接的依赖项不会被外部化(用于 HMR)。如果您希望将链接的依赖项外部化，可以将该依赖项的名称传递给 `ssr.external` 选项。
 
-If `true`, no dependencies are externalized. However, dependencies explicitly listed in `ssr.external` (using `string[]` type) can take priority and still be externalized. If `ssr.target: 'node'` is set, Node.js built-ins will also be externalized by default.
+如果设置为 `true`，则没有任何依赖项会被外部化。但是，在 `ssr.external`(使用 `string[]` 类型)中明确列出的依赖项可以优先考虑并仍然被外部化。如果设置了 `ssr.target: 'node'`，则 Node.js 内置模块也会默认被外部化。
 
-Note that if both `ssr.noExternal: true` and `ssr.external: true` are configured, `ssr.noExternal` takes priority and no dependencies are externalized.
+请注意，如果同时配置了 `ssr.noExternal: true` 和 `ssr.external: true`，则 `ssr.noExternal` 优先，没有任何依赖项会被外部化。
 
 ## ssr.target
 
-- **Type:** `'node' | 'webworker'`
-- **Default:** `node`
+- **类型:** `'节点' | 'Webworker'
+- **默认值:** `node`
 
-Build target for the SSR server.
+SSR 服务器的构建目标。
 
 ## ssr.resolve.conditions
 
-- **Type:** `string[]`
-- **Default:** `['module', 'node', 'development|production']` (`defaultServerConditions`) (`['module', 'browser', 'development|production']` (`defaultClientConditions`) for `ssr.target === 'webworker'`)
-- **Related:** [Resolve Conditions](./shared-options.md#resolve-conditions)
+- **类型:** `string[]`
+- **默认值:** `['模块'，'node'，'开发|生产'] ` (`默认情况下`) (`['模块'，'浏览器'，“开发”|生产']` (`defaultClientConditions`) for ` ssr.target ==='webworker'`)
+- **相关:** [解析条件](./shared-options.md#resolve-conditions)
 
-These conditions are used in the plugin pipeline, and only affect non-externalized dependencies during the SSR build. Use `ssr.resolve.externalConditions` to affect externalized imports.
+这些条件用于插件管道中，仅影响SSR构建过程中的非外部化依赖。使用 `ssr.resolve.externalConditions` 来影响外部化导入。
 
 ## ssr.resolve.externalConditions
 
-- **Type:** `string[]`
-- **Default:** `['node']`
+- **类型:** `string[]`
+- **默认值:** `['node']`
 
-Conditions that are used during ssr import (including `ssrLoadModule`) of externalized direct dependencies (external dependencies imported by Vite).
+在SSR导入(包括 `ssrLoadModule`)外部直接依赖(由 Vite 导入的外部依赖)时使用的条件。
 
 :::tip
 
-When using this option, make sure to run Node with [`--conditions` flag](https://nodejs.org/docs/latest/api/cli.html#-c-condition---conditionscondition) with the same values in both dev and build to get a consistent behavior.
+使用此选项时，请确保在dev中以相同的值和构建中的相同值运行[`--conditions`](https://nodejs.org/docs/latest/api/cli.html#-c-condition---conditionscondition) ，以获得一致的行为。
 
-For example, when setting `['node', 'custom']`, you should run `NODE_OPTIONS='--conditions custom' vite` in dev and `NODE_OPTIONS="--conditions custom" node ./dist/server.js` after build.
+例如，当设置 `['node', 'custom']` 时，您应该在开发中运行 `NODE_OPTIONS='--conditions custom' vite`，在构建后运行 `NODE_OPTIONS="--conditions custom" node ./dist/server.js`。
 
 :::
 
 ### ssr.resolve.mainFields
 
-- **Type:** `string[]`
-- **Default:** `['module', 'jsnext:main', 'jsnext']`
+- **类型:** `string[]`
+- **默认值:** `['module', 'jsnext:main', 'jsnext']`
 
-List of fields in `package.json` to try when resolving a package's entry point. Note this takes lower precedence than conditional exports resolved from the `exports` field: if an entry point is successfully resolved from `exports`, the main field will be ignored. This setting only affect non-externalized dependencies.
+在解析包的入口点时尝试的 `package.json` 中的字段列表。请注意，这比从 `exports` 字段解析的条件导出具有更低的优先级:如果从 `exports` 成功解析了一个入口点，则主字段将被忽略。此设置仅影响非外部化依赖。

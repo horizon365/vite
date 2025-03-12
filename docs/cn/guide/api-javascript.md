@@ -1,16 +1,16 @@
 # JavaScript API
 
-Vite's JavaScript APIs are fully typed, and it's recommended to use TypeScript or enable JS type checking in VS Code to leverage the intellisense and validation.
+Vite的JavaScript API已完全键入，建议使用Typescript或在VS代码中启用JS类型检查以利用Intellisense和验证。
 
 ## `createServer`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 async function createServer(inlineConfig?: InlineConfig): Promise<ViteDevServer>
 ```
 
-**Example Usage:**
+**示例用法:**
 
 ```ts twoslash
 import { fileURLToPath } from 'node:url'
@@ -19,7 +19,7 @@ import { createServer } from 'vite'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const server = await createServer({
-  // any valid user config options, plus `mode` and `configFile`
+  // 任何有效的用户配置选项，加`mode`和`configFile`
   configFile: false,
   root: __dirname,
   server: {
@@ -33,115 +33,85 @@ server.bindCLIShortcuts({ print: true })
 ```
 
 ::: tip NOTE
-When using `createServer` and `build` in the same Node.js process, both functions rely on `process.env.NODE_ENV` to work properly, which also depends on the `mode` config option. To prevent conflicting behavior, set `process.env.NODE_ENV` or the `mode` of the two APIs to `development`. Otherwise, you can spawn a child process to run the APIs separately.
+当在同一node.js进程中使用`createServer`和`build` ，两个函数都依赖于`process.env.NODE_ENV`来正常工作，这也取决于`mode`配置选项。为了防止冲突的行为，将两个API中的`process.env.NODE_ENV`或`mode`个设置为`development` 。否则，您可以产生子过程分别运行API。
 :::
 
 ::: tip NOTE
-When using [middleware mode](/en/config/server-options.html#server-middlewaremode) combined with [proxy config for WebSocket](/en/config/server-options.html#server-proxy), the parent http server should be provided in `middlewareMode` to bind the proxy correctly.
+当使用[中间件模式](/en/config/server-options.html#server-middlewaremode)与[Websocket的代理配置](/en/config/server-options.html#server-proxy)结合使用时，应在`middlewareMode`中提供父http服务器以正确绑定代理。
 
-<details>
-<summary>Example</summary>
-
-```ts twoslash
-import http from 'http'
-import { createServer } from 'vite'
-
-const parentServer = http.createServer() // or express, koa, etc.
-
-const vite = await createServer({
-  server: {
-    // Enable middleware mode
-    middlewareMode: {
-      // Provide the parent http server for proxy WebSocket
-      server: parentServer,
-    },
-    proxy: {
-      '/ws': {
-        target: 'ws://localhost:3000',
-        // Proxying WebSocket
-        ws: true,
-      },
-    },
-  },
-})
-
-// @noErrors: 2339
-parentServer.use(vite.middlewares)
-```
-
-</details>
+<details><summary>例子</summary><pre><code class="language-ts">import http from 'http' import { createServer } from 'vite' const parentServer = http.createServer() // or express, koa, etc. const vite = await createServer({ server: { // Enable middleware mode middlewareMode: { // Provide the parent http server for proxy WebSocket server: parentServer, }, proxy: { '/ws': { target: 'ws://localhost:3000', // Proxying WebSocket ws: true, }, }, }, }) // @noErrors: 2339 parentServer.use(vite.middlewares)</code></pre></details>
 :::
 
 ## `InlineConfig`
 
-The `InlineConfig` interface extends `UserConfig` with additional properties:
+`InlineConfig`接口扩展了`UserConfig`属性:
 
-- `configFile`: specify config file to use. If not set, Vite will try to automatically resolve one from project root. Set to `false` to disable auto resolving.
-- `envFile`: Set to `false` to disable `.env` files.
+- `configFile` :指定要使用的配置文件。如果未设置，Vite将尝试自动从项目根中解析一个。设置为`false`以禁用自动解析。
+- `envFile` :设置为`false`禁用`.env`文件。
 
 ## `ResolvedConfig`
 
-The `ResolvedConfig` interface has all the same properties of a `UserConfig`, except most properties are resolved and non-undefined. It also contains utilities like:
+`ResolvedConfig`接口具有`UserConfig`的所有相同属性，除了大多数属性是解决和未定义的。它还包含类似的公用事业:
 
-- `config.assetsInclude`: A function to check if an `id` is considered an asset.
-- `config.logger`: Vite's internal logger object.
+- `config.assetsInclude` :检查`id`资产的函数。
+- `config.logger` :Vite的内部记录器对象。
 
 ## `ViteDevServer`
 
 ```ts
 interface ViteDevServer {
   /**
-   * The resolved Vite config object.
+   * 已解决的Vite配置对象。
    */
   config: ResolvedConfig
   /**
-   * A connect app instance
-   * - Can be used to attach custom middlewares to the dev server.
-   * - Can also be used as the handler function of a custom http server
-   *   or as a middleware in any connect-style Node.js frameworks.
+   * 连接应用程序实例
+   *  - 可用于将自定义中间件连接到开发服务器。
+   *  - 也可以用作自定义HTTP服务器的处理程序功能
+   *   或作为任何连接式node.js框架中的中间件。
    *
    * https://github.com/senchalabs/connect#use-middleware
    */
   middlewares: Connect.Server
   /**
-   * Native Node http server instance.
-   * Will be null in middleware mode.
+   * 本机节点HTTP服务器实例。
+   * 将在中间件模式下为null。
    */
   httpServer: http.Server | null
   /**
-   * Chokidar watcher instance. If `config.server.watch` is set to `null`,
-   * it will not watch any files and calling `add` or `unwatch` will have no effect.
+   * Chokidar Watcher实例。如果设置`null` `config.server.watch`
+   * 它不会观看任何文件，呼叫`add`或`unwatch`将无效。
    * https://github.com/paulmillr/chokidar/tree/3.6.0#api
    */
   watcher: FSWatcher
   /**
-   * Web socket server with `send(payload)` method.
+   * 使用`send(payload)`方法的Web插座服务器。
    */
   ws: WebSocketServer
   /**
-   * Rollup plugin container that can run plugin hooks on a given file.
+   * 可以在给定文件上运行插件挂钩的滚动插件容器。
    */
   pluginContainer: PluginContainer
   /**
-   * Module graph that tracks the import relationships, url to file mapping
-   * and hmr state.
+   * 跟踪导入关系的模块图，url要文件映射
+   * 和HMR状态。
    */
   moduleGraph: ModuleGraph
   /**
-   * The resolved urls Vite prints on the CLI (URL-encoded). Returns `null`
-   * in middleware mode or if the server is not listening on any port.
+   * 已解决的URL Vite在CLI上打印（URL编码）。返回`null`
+   * 在中间软件模式下，或者服务器未在任何端口上收听。
    */
   resolvedUrls: ResolvedServerUrls | null
   /**
-   * Programmatically resolve, load and transform a URL and get the result
-   * without going through the http request pipeline.
+   * 通过编程方式解决，加载和转换URL并获得结果
+   * 无需浏览HTTP请求管道。
    */
   transformRequest(
     url: string,
     options?: TransformOptions,
   ): Promise<TransformResult | null>
   /**
-   * Apply Vite built-in HTML transforms and any plugin HTML transforms.
+   * 应用Vite内置的HTML变换和任何插件HTML变换。
    */
   transformIndexHtml(
     url: string,
@@ -149,57 +119,57 @@ interface ViteDevServer {
     originalUrl?: string,
   ): Promise<string>
   /**
-   * Load a given URL as an instantiated module for SSR.
+   * 加载给定的URL作为SSR的实例化模块。
    */
   ssrLoadModule(
     url: string,
     options?: { fixStacktrace?: boolean },
   ): Promise<Record<string, any>>
   /**
-   * Fix ssr error stacktrace.
+   * 修复SSR错误stackTrace。
    */
   ssrFixStacktrace(e: Error): void
   /**
-   * Triggers HMR for a module in the module graph. You can use the `server.moduleGraph`
-   * API to retrieve the module to be reloaded. If `hmr` is false, this is a no-op.
+   * 触发模块图中的模块的HMR。您可以使用`server.moduleGraph`
+   * API检索要重新加载的模块。如果`hmr`是错误的，则是一个no-op。
    */
   reloadModule(module: ModuleNode): Promise<void>
   /**
-   * Start the server.
+   * 启动服务器。
    */
   listen(port?: number, isRestart?: boolean): Promise<ViteDevServer>
   /**
-   * Restart the server.
+   * 重新启动服务器。
    *
-   * @param forceOptimize - force the optimizer to re-bundle, same as --force cli flag
+   * @Param ForcePtimize-强制优化器重新束缚，与 -  Force CLI标志相同
    */
   restart(forceOptimize?: boolean): Promise<void>
   /**
-   * Stop the server.
+   * 停止服务器。
    */
   close(): Promise<void>
   /**
-   * Bind CLI shortcuts
+   * 结合CLI快捷方式
    */
   bindCLIShortcuts(options?: BindCLIShortcutsOptions<ViteDevServer>): void
   /**
-   * Calling `await server.waitForRequestsIdle(id)` will wait until all static imports
-   * are processed. If called from a load or transform plugin hook, the id needs to be
-   * passed as a parameter to avoid deadlocks. Calling this function after the first
-   * static imports section of the module graph has been processed will resolve immediately.
-   * @experimental
+   * 呼叫`await server.waitForRequestsIdle(id)`将等到所有静态进口
+   * 已处理。如果从负载或转换插件钩中调用，则ID需要为
+   * 作为参数传递以避免僵局。第一个呼叫此功能
+   * 已处理模块图的静态导入部分将立即解决。
+   * @entimentiment
    */
   waitForRequestsIdle: (ignoredId?: string) => Promise<void>
 }
 ```
 
 :::info
-`waitForRequestsIdle` is meant to be used as a escape hatch to improve DX for features that can't be implemented following the on-demand nature of the Vite dev server. It can be used during startup by tools like Tailwind to delay generating the app CSS classes until the app code has been seen, avoiding flashes of style changes. When this function is used in a load or transform hook, and the default HTTP1 server is used, one of the six http channels will be blocked until the server processes all static imports. Vite's dependency optimizer currently uses this function to avoid full-page reloads on missing dependencies by delaying loading of pre-bundled dependencies until all imported dependencies have been collected from static imported sources. Vite may switch to a different strategy in a future major release, setting `optimizeDeps.crawlUntilStaticImports: false` by default to avoid the performance hit in large applications during cold start.
+`waitForRequestsIdle`被用作逃生舱口，以改善DX的DX，以遵循Vite Dev服务器的按需性质实现的功能。可以在启动期间使用诸如Tailwind之类的工具来使用它来延迟生成应用CSS类，直到看到应用程序代码为止，避免了样式更改的闪光。当在负载或变换钩中使用此功能并使用默认的HTTP1服务器时，将阻止六个HTTP通道之一，直到服务器处理所有静态导入为止。 Vite的依赖性优化器当前使用此功能来避免通过延迟预捆绑依赖项的加载，直到从静态导入的来源收集到所有导入的依赖关系，以避免对缺失依赖的全页重新加载。 Vite可能会在未来的主要版本中切换到不同的策略，默认情况下设定`optimizeDeps.crawlUntilStaticImports: false` ，以避免在冷启动过程中大量应用中的性能命中。
 :::
 
 ## `build`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 async function build(
@@ -207,7 +177,7 @@ async function build(
 ): Promise<RollupOutput | RollupOutput[]>
 ```
 
-**Example Usage:**
+**示例用法:**
 
 ```ts twoslash [vite.config.js]
 import path from 'node:path'
@@ -229,19 +199,19 @@ await build({
 
 ## `preview`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 async function preview(inlineConfig?: InlineConfig): Promise<PreviewServer>
 ```
 
-**Example Usage:**
+**示例用法:**
 
 ```ts twoslash
 import { preview } from 'vite'
 
 const previewServer = await preview({
-  // any valid user config options, plus `mode` and `configFile`
+  // 任何有效的用户配置选项，加`mode`和`configFile`
   preview: {
     port: 8080,
     open: true,
@@ -257,33 +227,33 @@ previewServer.bindCLIShortcuts({ print: true })
 ```ts
 interface PreviewServer {
   /**
-   * The resolved vite config object
+   * 已解决的Vite配置对象
    */
   config: ResolvedConfig
   /**
-   * A connect app instance.
-   * - Can be used to attach custom middlewares to the preview server.
-   * - Can also be used as the handler function of a custom http server
-   *   or as a middleware in any connect-style Node.js frameworks
+   * 连接应用程序实例。
+   *  - 可用于将自定义中间件附加到预览服务器上。
+   *  - 也可以用作自定义HTTP服务器的处理程序功能
+   *   或作为任何连接式node.js框架中的中间件
    *
    * https://github.com/senchalabs/connect#use-middleware
    */
   middlewares: Connect.Server
   /**
-   * native Node http server instance
+   * 本机节点http服务器实例
    */
   httpServer: http.Server
   /**
-   * The resolved urls Vite prints on the CLI (URL-encoded). Returns `null`
-   * if the server is not listening on any port.
+   * 已解决的URL Vite在CLI上打印（URL编码）。返回`null`
+   * 如果服务器未在任何端口上收听。
    */
   resolvedUrls: ResolvedServerUrls | null
   /**
-   * Print server urls
+   * 打印服务器URL
    */
   printUrls(): void
   /**
-   * Bind CLI shortcuts
+   * 结合CLI快捷方式
    */
   bindCLIShortcuts(options?: BindCLIShortcutsOptions<PreviewServer>): void
 }
@@ -291,7 +261,7 @@ interface PreviewServer {
 
 ## `resolveConfig`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 async function resolveConfig(
@@ -303,11 +273,11 @@ async function resolveConfig(
 ): Promise<ResolvedConfig>
 ```
 
-The `command` value is `serve` in dev and preview, and `build` in build.
+`command`值是开发和预览中的`serve` ，而构建中的`build` 。
 
 ## `mergeConfig`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 function mergeConfig(
@@ -317,12 +287,12 @@ function mergeConfig(
 ): Record<string, any>
 ```
 
-Deeply merge two Vite configs. `isRoot` represents the level within the Vite config which is being merged. For example, set `false` if you're merging two `build` options.
+深层合并两个Vite配置。 `isRoot`代表正在合并的Vite配置中的级别。例如，如果您要合并两个`build`选项，请设置`false`
 
 ::: tip NOTE
-`mergeConfig` accepts only config in object form. If you have a config in callback form, you should call it before passing into `mergeConfig`.
+`mergeConfig`仅接受对象形式的配置。如果您有回调表格的配置，则应在传递到`mergeConfig`之前将其调用。
 
-You can use the `defineConfig` helper to merge a config in callback form with another config:
+您可以使用`defineConfig`助手将回调表格中的配置与另一个配置合并:
 
 ```ts twoslash
 import {
@@ -334,7 +304,7 @@ import {
 declare const configAsCallback: UserConfigFnObject
 declare const configAsObject: UserConfig
 
-// ---cut---
+//  - -切 - -
 export default defineConfig((configEnv) =>
   mergeConfig(configAsCallback(configEnv), configAsObject),
 )
@@ -344,7 +314,7 @@ export default defineConfig((configEnv) =>
 
 ## `searchForWorkspaceRoot`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 function searchForWorkspaceRoot(
@@ -353,18 +323,18 @@ function searchForWorkspaceRoot(
 ): string
 ```
 
-**Related:** [server.fs.allow](/en/config/server-options.md#server-fs-allow)
+**相关:** [server.fs.allow](/en/config/server-options.md#server-fs-allow)
 
-Search for the root of the potential workspace if it meets the following conditions, otherwise it would fallback to `root`:
+如果符合以下条件，请搜索潜在工作空间的根部，否则会退回到`root` :
 
-- contains `workspaces` field in `package.json`
-- contains one of the following file
+- 在`package.json`中包含`workspaces`字段
+- 包含以下文件之一
   - `lerna.json`
   - `pnpm-workspace.yaml`
 
 ## `loadEnv`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 function loadEnv(
@@ -374,25 +344,25 @@ function loadEnv(
 ): Record<string, string>
 ```
 
-**Related:** [`.env` Files](./env-and-mode.md#env-files)
+**相关:** [`.env`文件](./env-and-mode.md#env-files)
 
-Load `.env` files within the `envDir`. By default, only env variables prefixed with `VITE_` are loaded, unless `prefixes` is changed.
+在`envDir`中加载`.env`文件。默认情况下，除非更改`prefixes` ，否则仅加载了带有`VITE_`前缀的ENV变量。
 
 ## `normalizePath`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 function normalizePath(id: string): string
 ```
 
-**Related:** [Path Normalization](./api-plugin.md#path-normalization)
+**相关:**[路径归一化](./api-plugin.md#path-normalization)
 
-Normalizes a path to interoperate between Vite plugins.
+使在VITE插件之间互操作的路径归一条路径。
 
 ## `transformWithEsbuild`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 async function transformWithEsbuild(
@@ -403,11 +373,11 @@ async function transformWithEsbuild(
 ): Promise<ESBuildTransformResult>
 ```
 
-Transform JavaScript or TypeScript with esbuild. Useful for plugins that prefer matching Vite's internal esbuild transform.
+用Esbuild转换JavaScript或打字稿。对于更喜欢匹配Vite的内部Esbuild变换的插件很有用。
 
 ## `loadConfigFromFile`
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 async function loadConfigFromFile(
@@ -423,13 +393,13 @@ async function loadConfigFromFile(
 } | null>
 ```
 
-Load a Vite config file manually with esbuild.
+用Esbuild手动加载Vite配置文件。
 
 ## `preprocessCSS`
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13815)
+- **实验:**[给予反馈]()
 
-**Type Signature:**
+**类型签名:**
 
 ```ts
 async function preprocessCSS(
@@ -446,8 +416,8 @@ interface PreprocessCSSResult {
 }
 ```
 
-Pre-processes `.css`, `.scss`, `.sass`, `.less`, `.styl` and `.stylus` files to plain CSS so it can be used in browsers or parsed by other tools. Similar to the [built-in CSS pre-processing support](/en/guide/features#css-pre-processors), the corresponding pre-processor must be installed if used.
+预处理`.css`和`.styl` `.stylus` `.sass`到普通CSS `.scss` `.less`可以在浏览器中使用或通过其他工具解析。与[内置的CSS预处理支持](/en/guide/features#css-pre-processors)类似，如果使用时，必须安装相应的预处理器。
 
-The pre-processor used is inferred from the `filename` extension. If the `filename` ends with `.module.{ext}`, it is inferred as a [CSS module](https://github.com/css-modules/css-modules) and the returned result will include a `modules` object mapping the original class names to the transformed ones.
+从`filename`扩展程序推断使用的前处理器。如果`filename`以`.module.{ext}`结束，则将其推断为[CSS模块]()，并且返回的结果将包括一个`modules`对象，将原始类名映射到转换后的名称。
 
-Note that pre-processing will not resolve URLs in `url()` or `image-set()`.
+请注意，预处理不会在`url()`或`image-set()`中解析URL。

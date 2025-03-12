@@ -1,61 +1,61 @@
-# Releases
+# 发行
 
-Vite releases follow [Semantic Versioning](https://semver.org/). You can see the latest stable version of Vite in the [Vite npm package page](https://www.npmjs.com/package/vite).
+Vite 版本遵循[语义版本控制](https://semver.org/)。您可以在[Vite npm 包页面](https://www.npmjs.com/package/vite)中看到最新的稳定版本。
 
-A full changelog of past releases is [available on GitHub](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md).
+[GitHub上提供了](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md)过去版本的完整变更日志。
 
-## Release Cycle
+## 发布周期
 
-Vite does not have a fixed release cycle.
+Vite 没有固定的发布周期。
 
-- **Patch** releases are released as needed (usually every week).
-- **Minor** releases always contain new features and are released as needed. Minor releases always have a beta pre-release phase (usually every two months).
-- **Major** releases generally align with [Node.js EOL schedule](https://endoflife.date/nodejs), and will be announced ahead of time. These releases will go through long-term discussions with the ecosystem, and have alpha and beta pre-release phases (usually every year).
+- **补丁**发布根据需要(通常每周)发布。
+- **次要**发布总是包含新功能，并根据需要发布。次要发布总是有一个 beta 预发布阶段(通常每两个月一次)。
+- **主要**发布通常与[Node.js EOL 计划](https://endoflife.date/nodejs)保持一致，并将提前宣布。这些发布将与生态系统进行长期讨论，并具有 alpha 和 beta 预发布阶段(通常每年)。
 
-The Vite versions ranges that are supported by the Vite team is automatically determined by:
+Vite 团队支持的 Vite 版本范围由以下方式自动确定:
 
-- **Current Minor** gets regular fixes.
-- **Previous Major** (only for its latest minor) and **Previous Minor** receives important fixes and security patches.
-- **Second-to-last Major** (only for its latest minor) and **Second-to-last Minor** receives security patches.
-- All versions before these are no longer supported.
+- **当前次要**版本会定期修复。
+- **上一个主要**版本(仅限其最新的次要版本)和**上一个次要**版本会收到重要修复和安全补丁。
+- **倒数第二个主要**版本(仅限其最新的次要版本)和**倒数第二个次要**版本会收到安全补丁。
+- 在这些版本之前的版本不再支持。
 
-As an example, if the Vite latest is at 5.3.10:
+例如，如果 Vite 的最新版本为 5.3.10:
 
-- Regular patches are released for `vite@5.3`.
-- Important fixes and security patches are backported to `vite@4` and `vite@5.2`.
-- Security patches are also backported to `vite@3`, and `vite@5.1`.
-- `vite@2` and `vite@5.0` are no longer supported. Users should upgrade to receive updates.
+- 会定期为 `vite@5.3` 发布补丁。
+- 重要的修复和安全补丁将回退到 `vite@4` 和 `vite@5.2`。
+- 安全补丁也将回退到 `vite@3` 和 `vite@5.1`。
+- `vite@2` 和 `vite@5.0` 不再支持。用户应升级以接收更新。
 
-We recommend updating Vite regularly. Check out the [Migration Guides](https://vite.dev/guide/migration.html) when you update to each Major. The Vite team works closely with the main projects in the ecosystem to ensure the quality of new versions. We test new Vite versions before releasing them through the [vite-ecosystem-ci project](https://github.com/vitejs/vite-ecosystem-ci). Most projects using Vite should be able to quickly offer support or migrate to new versions as soon as they are released.
+我们建议定期更新 Vite。当您更新到每个主要版本时，请查看[迁移指南](https://vite.dev/guide/migration.html)。Vite 团队与生态系统中的主要项目紧密合作，以确保新版本的质量。在通过[Vite-ecosystem-ci 项目](https://github.com/vitejs/vite-ecosystem-ci)发布之前，我们测试了新的 Vite 版本。大多数使用 Vite 的项目都应该能够在发布后立即提供支持或迁移到新版本。
 
-## Semantic Versioning Edge Cases
+## 语义版本控制的边缘情况
 
-### TypeScript Definitions
+### TypeScript 定义
 
-We may ship incompatible changes to TypeScript definitions between minor versions. This is because:
+我们可能会在次要版本之间发布不兼容的 TypeScript 定义更改。这是因为:
 
-- Sometimes TypeScript itself ships incompatible changes between minor versions, and we may have to adjust types to support newer versions of TypeScript.
-- Occasionally we may need to adopt features that are only available in a newer version of TypeScript, raising the minimum required version of TypeScript.
-- If you are using TypeScript, you can use a semver range that locks the current minor and manually upgrade when a new minor version of Vite is released.
+- 有时 TypeScript 本身在次要版本之间会发布不兼容的更改，我们可能需要调整类型以支持新版本的 TypeScript。
+- 偶尔我们可能需要采用仅在较新版本的 TypeScript 中可用的功能，从而提高最低所需版本的 TypeScript。
+- 如果您使用 TypeScript，可以使用锁定当前次要版本的 semver 范围，并在发布新的 Vite 次要版本时手动升级。
 
-### esbuild
+### Esbuild
 
-[esbuild](https://esbuild.github.io/) is pre-1.0.0 and sometimes it has a breaking change we may need to include to have access to newer features and performance improvements. We may bump the esbuild's version in a Vite Minor.
+[esbuild](https://esbuild.github.io/) 仍在 1.0.0 之前，有时它会有破坏性的更改，我们可能需要包含这些更改以获得较新功能和性能改进。我们可能会在 Vite 次要版本中提升 esbuild 的版本。
 
-### Node.js non-LTS versions
+### Node.js 非 LTS 版本
 
-Non-LTS Node.js versions (odd-numbered) are not tested as part of Vite's CI, but they should still work before their [EOL](https://endoflife.date/nodejs).
+非 LTS Node.js 版本(奇数版本)未作为 Vite CI 的一部分进行测试，但它们仍应在[EOL](https://endoflife.date/nodejs)之前工作。
 
-## Pre Releases
+## 预发布
 
-Minor releases typically go through a non-fixed number of beta releases. Major releases will go through an alpha phase and a beta phase.
+次要版本通常会经过非固定的 beta 预发布阶段。主要版本将经历 alpha 阶段和 beta 阶段。
 
-Pre-releases allow early adopters and maintainers from the Ecosystem to do integration and stability testing, and provide feedback. Do not use pre-releases in production. All pre-releases are considered unstable and may ship breaking changes in between. Always pin to exact versions when using pre-releases.
+预发布允许早期采用者和生态系统维护者进行集成和稳定性测试，并提供反馈。请勿在生产环境中使用预发布版本。所有预发布版本都被认为是不稳定的，可能会在发布之间引入破坏性更改。使用预发布版本时，请始终将其固定在精确版本上。
 
 ## Deprecations
 
-We periodically deprecate features that have been superseded by better alternatives in Minor releases. Deprecated features will continue to work with a type or logged warning. They will be removed in the next major release after entering deprecated status. The [Migration Guide](https://vite.dev/guide/migration.html) for each major will list these removals and document an upgrade path for them.
+我们会在次要版本中定期弃用被更好替代方案取代的功能。弃用的功能将继续使用类型或记录的警告。它们将在进入弃用状态后的下一个主要版本中被移除。每个主要版本的[迁移指南](https://vite.dev/guide/migration.html)将列出这些移除，并为其记录升级路径。
 
 ## Experimental Features
 
-Some features are marked as experimental when released in a stable version of Vite. Experimental features allow us to gather real-world experience to influence their final design. The goal is to let users provide feedback by testing them in production. Experimental features themselves are considered unstable, and should only be used in a controlled manner. These features may change between Minors, so users must pin their Vite version when they rely on them. We will create [a GitHub discussion](https://github.com/vitejs/vite/discussions/categories/feedback?discussions_q=is%3Aopen+label%3Aexperimental+category%3AFeedback) for each experimental feature.
+在稳定版本的 Vite 中发布时，某些功能被标记为实验性。实验性功能使我们能够收集现实世界的经验，以影响其最终设计。目的是让用户通过在生产环境中测试这些功能来提供反馈。实验性功能本身被认为是不稳定的，只能以受控的方式使用。这些功能可能会在次要版本之间发生变化，因此用户在依赖这些功能时必须固定 Vite 版本。我们将为每个实验性功能创建[GitHub 讨论](https://github.com/vitejs/vite/discussions/categories/feedback?discussions_q=is%3Aopen+label%3Aexperimental+category%3AFeedback)。

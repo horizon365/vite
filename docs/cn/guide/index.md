@@ -1,36 +1,36 @@
-# Getting Started
+# 入门
 
-<audio id="vite-audio">
-  <source src="/vite.mp3" type="audio/mpeg">
+<audio id="!">
+  <source id="!">
 </audio>
 
-## Overview
+## 概述
 
-Vite (French word for "quick", pronounced `/vit/`<button style="border:none;padding:3px;border-radius:4px;vertical-align:bottom" id="play-vite-audio" onclick="document.getElementById('vite-audio').play();"><svg style="height:2em;width:2em"><use href="/voice.svg#voice" /></svg></button>, like "veet") is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two major parts:
+vite（“快速”的法语单词，发音为`/vit/`<button style="border:none;padding:3px;border-radius:4px;vertical-align:bottom" id="play-vite-audio" onclick="document.getElementById('vite-audio').play();"><svg style="height:2em;width:2em"><use href="/voice.svg#voice" /></svg></button> ，例如“ Veet”）是一种构建工具，旨在为现代网络项目提供更快，更精美的开发体验。它由两个主要部分组成:
 
-- A dev server that provides [rich feature enhancements](./features) over [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), for example extremely fast [Hot Module Replacement (HMR)](./features#hot-module-replacement).
+- 提供与[本机ES模块](./features)相比，提供[丰富功能增强功能的]()开发服务器，例如极快的[热模块更换（HMR）](./features#hot-module-replacement) 。
 
-- A build command that bundles your code with [Rollup](https://rollupjs.org), pre-configured to output highly optimized static assets for production.
+- 将您的代码与[汇总]()捆绑在一起的构建命令，并预先配置，以输出高度优化的静态资产进行生产。
 
-Vite is opinionated and comes with sensible defaults out of the box. Read about what's possible in the [Features Guide](./features). Support for frameworks or integration with other tools is possible through [Plugins](./using-plugins). The [Config Section](../config/) explains how to adapt Vite to your project if needed.
+Vite是自以为是的，并带有明智的默认设置。阅读[功能指南](./features)中的可能性。通过[插件](./using-plugins)可以支持框架或与其他工具集成。 [“配置”部分](../config/)说明了如何在需要的情况下将Vite适应您的项目。
 
-Vite is also highly extensible via its [Plugin API](./api-plugin) and [JavaScript API](./api-javascript) with full typing support.
+Vite也可以通过其[插件API](./api-plugin)和[JavaScript API](./api-javascript)高度扩展，并具有完整的打字支持。
 
-You can learn more about the rationale behind the project in the [Why Vite](./why) section.
+您可以在[“ Why Vite”](./why)部分中了解有关该项目背后的基本原理的更多信息。
 
-## Browser Support
+## 浏览器支持
 
-During development, Vite sets [`esnext` as the transform target](https://esbuild.github.io/api/#target), because we assume a modern browser is used and it supports all of the latest JavaScript and CSS features. This prevents syntax lowering, letting Vite serve modules as close as possible to the original source code.
+在开发过程中，Vite将[`esnext`设置为转换目标]()，因为我们假设使用了现代浏览器，并且它支持所有最新的JavaScript和CSS功能。这样可以防止语法降低，让Vite服务模块尽可能接近原始源代码。
 
 For the production build, by default Vite targets browsers that support modern JavaScript, such as [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta), [nullish coalescing](https://caniuse.com/mdn-javascript_operators_nullish_coalescing), and [BigInt](https://caniuse.com/bigint). Legacy browsers can be supported via the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy). See the [Building for Production](./build) section for more details.
 
-## Trying Vite Online
+## 在线尝试VITE
 
-You can try Vite online on [StackBlitz](https://vite.new/). It runs the Vite-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine. You can navigate to `vite.new/{template}` to select which framework to use.
+您可以在[Stackblitz]()上在线尝试VITE。它直接在浏览器中运行基于Vite的构建设置，因此它几乎与本地设置相同，但不需要在计算机上安装任何内容。您可以导航到`vite.new/{template}`以选择要使用的框架。
 
-The supported template presets are:
+支持的模板预设是:
 
-|             JavaScript              |                TypeScript                 |
+|             JavaScript              |                  打字稿                   |
 | :---------------------------------: | :---------------------------------------: |
 | [vanilla](https://vite.new/vanilla) | [vanilla-ts](https://vite.new/vanilla-ts) |
 |     [vue](https://vite.new/vue)     |     [vue-ts](https://vite.new/vue-ts)     |
@@ -41,10 +41,10 @@ The supported template presets are:
 |   [solid](https://vite.new/solid)   |   [solid-ts](https://vite.new/solid-ts)   |
 |    [qwik](https://vite.new/qwik)    |    [qwik-ts](https://vite.new/qwik-ts)    |
 
-## Scaffolding Your First Vite Project
+## 脚手架您的第一个Vite项目
 
 ::: tip Compatibility Note
-Vite requires [Node.js](https://nodejs.org/en/) version 18+ or 20+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.
+Vite需要[Node.js]()版本18+或20+。但是，某些模板需要更高的node.js版本才能正常工作，如果您的软件包管理器警告它，请升级。
 :::
 
 ::: code-group
@@ -67,14 +67,14 @@ $ bun create vite
 
 :::
 
-Then follow the prompts!
+然后按照提示！
 
-You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold a Vite + Vue project, run:
+您还可以直接指定要通过其他命令行选项使用的项目名称和模板。例如，要脚手架vite + vue项目，请运行:
 
 ::: code-group
 
 ```bash [npm]
-# npm 7+, extra double-dash is needed:
+# NPM 7+，需要额外的双键:
 $ npm create vite@latest my-vue-app -- --template vue
 ```
 
@@ -92,29 +92,29 @@ $ bun create vite my-vue-app --template vue
 
 :::
 
-See [create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) for more details on each supported template: `vanilla`, `vanilla-ts`, `vue`, `vue-ts`, `react`, `react-ts`, `react-swc`, `react-swc-ts`, `preact`, `preact-ts`, `lit`, `lit-ts`, `svelte`, `svelte-ts`, `solid`, `solid-ts`, `qwik`, `qwik-ts`.
+有关每个受支持的模板的更多详细信息`preact-ts`请参见[创建](): `vanilla` `lit` `react-swc` `react-ts` `react-swc-ts` `preact` b， `lit-ts` ， `svelte` ， `vanilla-ts` `vue` `react` `vue-ts` `solid` ， `solid-ts` `qwik` `qwik-ts` `svelte-ts`
 
-You can use `.` for the project name to scaffold in the current directory.
+您可以将`.`用于项目名称进行当前目录中的脚手架。
 
-## Community Templates
+## 社区模板
 
-create-vite is a tool to quickly start a project from a basic template for popular frameworks. Check out Awesome Vite for [community maintained templates](https://github.com/vitejs/awesome-vite#templates) that include other tools or target different frameworks.
+Create-Vite是一种工具，可以快速从基本模板开始用于流行框架的项目。查看包括其他工具或针对不同框架的[社区维护模板]()的真棒Vite。
 
-For a template at `https://github.com/user/project`, you can try it out online using `https://github.stackblitz.com/user/project` (adding `.stackblitz` after `github` to the URL of the project).
+对于`https://github.com/user/project`处的模板，您可以使用`https://github.stackblitz.com/user/project`在线尝试（在项目的URL `github`后添加`.stackblitz` ）。
 
-You can also use a tool like [degit](https://github.com/Rich-Harris/degit) to scaffold your project with one of the templates. Assuming the project is on GitHub and uses `main` as the default branch, you can create a local copy using:
+您还可以使用[Degit]()等工具用其中一个模板来脚克式项目。假设该项目在GitHub上并使用`main`作为默认分支，则可以使用以下方式创建本地副本:
 
 ```bash
-npx degit user/project#main my-project
+npx degit user/project#主要的我的项目
 cd my-project
 
 npm install
 npm run dev
 ```
 
-## Manual Installation
+## 手动安装
 
-In your project, you can install the `vite` CLI using:
+在您`vite`项目中，您可以使用:
 
 ::: code-group
 
@@ -136,13 +136,13 @@ $ bun add -D vite
 
 :::
 
-And create an `index.html` file like this:
+并创建一个这样的`index.html`文件:
 
 ```html
 <p>Hello Vite!</p>
 ```
 
-Then run the appropriate CLI command in your terminal:
+然后在您的终端中运行适当的CLI命令:
 
 ::: code-group
 
@@ -164,26 +164,26 @@ $ bunx vite
 
 :::
 
-The `index.html` will be served on `http://localhost:5173`.
+`index.html`将在`http://localhost:5173`上提供。
 
-## `index.html` and Project Root
+## `index.html`和项目根
 
-One thing you may have noticed is that in a Vite project, `index.html` is front-and-central instead of being tucked away inside `public`. This is intentional: during development Vite is a server, and `index.html` is the entry point to your application.
+您可能注意到的一件事是，在一个Vite项目中， `index.html`是前中央和中央，而不是被藏在`public`中。这是有意的:开发期间Vite是服务器，而`index.html`是您应用程序的切入点。
 
-Vite treats `index.html` as source code and part of the module graph. It resolves `<script type="module" src="...">` that references your JavaScript source code. Even inline `<script type="module">` and CSS referenced via `<link href>` also enjoy Vite-specific features. In addition, URLs inside `index.html` are automatically rebased so there's no need for special `%PUBLIC_URL%` placeholders.
+Vite将`index.html`视为源代码和模块图的一部分。它解决了`<script id="!">`引用您的JavaScript源代码的1。即使通过`<link id="$">`引用的内联`<script id="#">`和CSS也享受特定于Vite的功能。此外， `index.html`内部的URL会自动重新固定，因此不需要`%PUBLIC_URL%`占位符。
 
-Similar to static http servers, Vite has the concept of a "root directory" which your files are served from. You will see it referenced as `<root>` throughout the rest of the docs. Absolute URLs in your source code will be resolved using the project root as base, so you can write code as if you are working with a normal static file server (except way more powerful!). Vite is also capable of handling dependencies that resolve to out-of-root file system locations, which makes it usable even in a monorepo-based setup.
+与静态HTTP服务器类似，Vite具有您文件提供的“根目录”的概念。您将在其余文档中看到它被称为`<root>` 。源代码中的绝对URL将使用项目根作为基础解决，因此您可以像使用普通的静态文件服务器一样编写代码（除了更强大的方式！）。 Vite还能够处理依赖性的依赖项，这些依赖项可以解决根外文件系统位置，这即使在基于MonorePo的设置中也可以使用。
 
-Vite also supports [multi-page apps](./build#multi-page-app) with multiple `.html` entry points.
+Vite还支持具有多个`.html`入口点的[多页应用程序](./build#multi-page-app)。
 
-#### Specifying Alternative Root
+#### 指定替代根
 
-Running `vite` starts the dev server using the current working directory as root. You can specify an alternative root with `vite serve some/sub/dir`.
-Note that Vite will also resolve [its config file (i.e. `vite.config.js`)](/en/config/#configuring-vite) inside the project root, so you'll need to move it if the root is changed.
+运行`vite`使用当前工作目录作为root启动DEV服务器。您可以用`vite serve some/sub/dir`指定替代根。
+请注意，VITE还将在项目根中解决[其配置文件（IE `vite.config.js` ）](/en/config/#configuring-vite) ，因此，如果更改了根，则需要移动它。
 
-## Command Line Interface
+## 命令行接口
 
-In a project where Vite is installed, you can use the `vite` binary in your npm scripts, or run it directly with `npx vite`. Here are the default npm scripts in a scaffolded Vite project:
+在安装Vite的项目中，您可以在NPM脚本中使用`vite`二进制文件，也可以使用`npx vite`直接运行。这是一个脚手架Vite项目中的默认NPM脚本:
 
 <!-- prettier-ignore -->
 ```json [package.json]
@@ -196,13 +196,13 @@ In a project where Vite is installed, you can use the `vite` binary in your npm 
 }
 ```
 
-You can specify additional CLI options like `--port` or `--open`. For a full list of CLI options, run `npx vite --help` in your project.
+您可以指定其他CLI选项，例如`--port`或`--open` 。有关CLI选项的完整列表，请在项目中运行`npx vite --help` 。
 
-Learn more about the [Command Line Interface](./cli.md)
+了解有关[命令行接口的](./cli.md)更多信息
 
-## Using Unreleased Commits
+## 使用未发行的提交
 
-If you can't wait for a new release to test the latest features, you can install a specific commit of Vite with https://pkg.pr.new:
+如果您迫不及待地想要一个新版本来测试最新功能，则可以使用https://pkg.pr.new:Vite的特定提交:
 
 ::: code-group
 
@@ -224,9 +224,9 @@ $ bun add -D https://pkg.pr.new/vite@SHA
 
 :::
 
-Replace `SHA` with any of [Vite's commit SHAs](https://github.com/vitejs/vite/commits/main/). Note that only commits within the last month will work, as older commit releases are purged.
+用[Vite的任何提交SHA]()替换`SHA` 。请注意，只有在上个月内提交，随着较旧的提交版本被清除。
 
-Alternatively, you can also clone the [vite repo](https://github.com/vitejs/vite) to your local machine and then build and link it yourself ([pnpm](https://pnpm.io/) is required):
+另外，您也可以将[Vite Repo]()克隆到本地计算机，然后自己构建和链接它（需要[PNPM](/1) ）:
 
 ```bash
 git clone https://github.com/vitejs/vite.git
@@ -234,15 +234,15 @@ cd vite
 pnpm install
 cd packages/vite
 pnpm run build
-pnpm link --global # use your preferred package manager for this step
+pnpm link --global # 在此步骤中使用您首选的软件包管理器
 ```
 
-Then go to your Vite based project and run `pnpm link --global vite` (or the package manager that you used to link `vite` globally). Now restart the development server to ride on the bleeding edge!
+然后转到您的基于Vite的项目并运行`pnpm link --global vite` （或您用来在全球链接`vite`软件包管理器）。现在，重新启动开发服务器以在出血边缘上行驶！
 
 ::: tip Dependencies using Vite
-To replace the Vite version used by dependencies transitively, you should use [npm overrides](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#overrides) or [pnpm overrides](https://pnpm.io/package_json#pnpmoverrides).
+为了替换依赖项使用的VITE版本，您应该使用[NPM替代]()或[PNPM替代版本](/1)。
 :::
 
-## Community
+## 社区
 
-If you have questions or need help, reach out to the community at [Discord](https://chat.vite.dev) and [GitHub Discussions](https://github.com/vitejs/vite/discussions).
+如果您有疑问或需要帮助，请在[Discord]()和[Github讨论](/1)中与社区联系。

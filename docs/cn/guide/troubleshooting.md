@@ -1,200 +1,200 @@
-# Troubleshooting
+# 故障排除
 
-See [Rollup's troubleshooting guide](https://rollupjs.org/troubleshooting/) for more information too.
+有关更多信息，请参见[Rollup的故障排除指南](/0)。
 
-If the suggestions here don't work, please try posting questions on [GitHub Discussions](https://github.com/vitejs/vite/discussions) or in the `#help` channel of [Vite Land Discord](https://chat.vite.dev).
+如果这里的建议不起作用，请尝试在[GitHub讨论](/0)或[Vite Land Cornord](/1)的`#help`频道中发布问题。
 
 ## CJS
 
-### Vite CJS Node API deprecated
+### Vite CJS节点API弃用
 
-The CJS build of Vite's Node API is deprecated and will be removed in Vite 6. See the [GitHub discussion](https://github.com/vitejs/vite/discussions/13928) for more context. You should update your files or frameworks to import the ESM build of Vite instead.
+Vite节点API的CJ构建已弃用，并将在Vite 6中删除。有关更多上下文，请参见[GitHub讨论](/0)。您应该更新文件或框架，以导入VITE的ESM构建。
 
-In a basic Vite project, make sure:
+在基本的Vite项目中，请确保:
 
-1. The `vite.config.js` file content is using the ESM syntax.
-2. The closest `package.json` file has `"type": "module"`, or use the `.mjs`/`.mts` extension, e.g. `vite.config.mjs` or `vite.config.mts`.
+1. `vite.config.js`文件内容使用ESM语法。
+2. 最接近的`package.json`文件具有`"type": "module"` ，或使用`.mjs` `.mts`名，例如`vite.config.mjs`或`vite.config.mts` 。
 
-For other projects, there are a few general approaches:
+对于其他项目，还有一些一般的方法:
 
-- **Configure ESM as default, opt-in to CJS if needed:** Add `"type": "module"` in the project `package.json`. All `*.js` files are now interpreted as ESM and need to use the ESM syntax. You can rename a file with the `.cjs` extension to keep using CJS instead.
-- **Keep CJS as default, opt-in to ESM if needed:** If the project `package.json` does not have `"type": "module"`, all `*.js` files are interpreted as CJS. You can rename a file with the `.mjs` extension to use ESM instead.
-- **Dynamically import Vite:** If you need to keep using CJS, you can dynamically import Vite using `import('vite')` instead. This requires your code to be written in an `async` context, but should still be manageable as Vite's API is mostly asynchronous.
+- **将ESM配置为默认值，如果需要，请选择进入CJS:**在项目`package.json`中添加`"type": "module"` 。现在，所有`*.js`文件都被解释为ESM，需要使用ESM语法。您可以重命名带有`.cjs`扩展名的文件，以继续使用CJS。
+- **将CJ保留为默认值，如果需要，请选择进入ESM:**如果项目`package.json`没有`"type": "module"` ，则将所有`*.js`文件解释为CJ。您可以将带有`.mjs`扩展名的文件重命名以使用ESM。
+- **动态导入VITE:**如果您需要继续使用CJ，则可以使用`import('vite')`代替动态导入VITE。这需要您的代码在`async`上下文中编写，但由于Vite的API大多是同步的，因此仍然可以管理。
 
-If you're unsure where the warning is coming from, you can run your script with the `VITE_CJS_TRACE=true` flag to log the stack trace:
+如果您不确定警告来自何处，则可以使用`VITE_CJS_TRACE=true`标志运行脚本来记录堆栈跟踪:
 
 ```bash
 VITE_CJS_TRACE=true vite dev
 ```
 
-If you'd like to temporarily ignore the warning, you can run your script with the `VITE_CJS_IGNORE_WARNING=true` flag:
+如果您想暂时忽略警告，则可以使用`VITE_CJS_IGNORE_WARNING=true`标志运行脚本:
 
 ```bash
 VITE_CJS_IGNORE_WARNING=true vite dev
 ```
 
-Note that postcss config files do not support ESM + TypeScript (`.mts` or `.ts` in `"type": "module"`) yet. If you have postcss configs with `.ts` and added `"type": "module"` to package.json, you'll also need to rename the postcss config to use `.cts`.
+请注意，PostCSS配置文件不支持ESM + Typescript（ `"type": "module"`中的`.mts`或`.ts` ）。如果您的PostCSS配置具有`.ts` ，并将`"type": "module"`添加到软件包。JSON，您还需要重命名PostCSS配置以使用`.cts` 。
 
 ## CLI
 
 ### `Error: Cannot find module 'C:\foo\bar&baz\vite\bin\vite.js'`
 
-The path to your project folder may include `&`, which doesn't work with `npm` on Windows ([npm/cmd-shim#45](https://github.com/npm/cmd-shim/issues/45)).
+您的项目文件夹的路径可能包括`&` ，该路径在Windows上与`npm`不起作用（ [NPM/CMD-SHIM＃45](/0) ）。
 
-You will need to either:
+您将需要任何一个:
 
-- Switch to another package manager (e.g. `pnpm`, `yarn`)
-- Remove `&` from the path to your project
+- 切换到另一个软件包管理器`yarn` `pnpm`
+- 从项目的路径中删除`&`
 
-## Config
+## config
 
-### This package is ESM only
+### 此软件包仅是ESM
 
-When importing a ESM only package by `require`, the following error happens.
+在以`require`导入ESM的软件包时，会发生以下错误。
 
-> Failed to resolve "foo". This package is ESM only but it was tried to load by `require`.
+> 无法解决“ foo”。该软件包仅是ESM，但尝试将其加载为`require` 。
 
-> Error [ERR_REQUIRE_ESM]: require() of ES Module /path/to/dependency.js from /path/to/vite.config.js not supported.
-> Instead change the require of index.js in /path/to/vite.config.js to a dynamic import() which is available in all CommonJS modules.
+> 错误[err_require_esm]:来自/path/path/to/to/vite.config.js不支持的ES模块/path/path/path/path/path/path/path的requive（）。
+> 而是将/path/path/path/to/vite.config.js中的index.js的要求更改为所有commonjs模块中可用的动态import（）。
 
-In Node.js <=22, ESM files cannot be loaded by [`require`](https://nodejs.org/docs/latest-v22.x/api/esm.html#require) by default.
+在node.js <= 22中，默认情况下，ESM文件不能由[`require`](/0)加载。
 
-While it may work using [`--experimental-require-module`](https://nodejs.org/docs/latest-v22.x/api/modules.html#loading-ecmascript-modules-using-require), or Node.js >22, or in other runtimes, we still recommend converting your config to ESM by either:
+虽然它可以使用[`--experimental-require-module`](/0)或node.js> 22或在其他运行时工作，但我们仍然建议将您的配置转换为ESM:
 
-- adding `"type": "module"` to the nearest `package.json`
-- renaming `vite.config.js`/`vite.config.ts` to `vite.config.mjs`/`vite.config.mts`
+- 将`"type": "module"`添加到最近的`package.json`
+- 重命名`vite.config.js` / `vite.config.ts`至`vite.config.mjs` / `vite.config.mts`
 
 ### `failed to load config from '/path/to/config*/vite.config.js'`
 
-> failed to load config from '/path/to/config\*/vite.config.js'
-> error when starting dev server:
-> Error: Build failed with 1 error:
-> error: Must use "outdir" when there are multiple input files
+> 无法从'/path/to/config\*/vite.config.js'加载配置
+> 启动开发服务器时的错误:
+> 错误:构建失败，有1个错误:
+> 错误:当有多个输入文件时，必须使用“ OUTDIR”
 
-The error above may occur if the path to your project folder contains `*`, which esbuild treats as a glob. You will need to rename your directory to remove the `*`.
+如果您的项目文件夹的路径包含`*` ，则可能会发生上述错误，而Esbuild将其视为地球。您将需要重命名您的目录才能删除`*` 。
 
-## Dev Server
+## 开发服务器
 
-### Requests are stalled forever
+### 请求永远停滞不前
 
-If you are using Linux, file descriptor limits and inotify limits may be causing the issue. As Vite does not bundle most of the files, browsers may request many files which require many file descriptors, going over the limit.
+如果您使用的是Linux，则文件描述符限制和插入限制可能会导致问题。由于Vite不会捆绑大多数文件，因此浏览器可能会要求许多需要许多文件描述符的文件，这些文件超出了限制。
 
-To solve this:
+解决这个问题:
 
-- Increase file descriptor limit by `ulimit`
+- 将文件描述符限制增加`ulimit`
 
   ```shell
-  # Check current limit
+  # 检查当前限制
   $ ulimit -Sn
-  # Change limit (temporary)
-  $ ulimit -Sn 10000 # You might need to change the hard limit too
-  # Restart your browser
+  # 更改限制（临时）
+  $ ulimit -Sn 10000 # 您可能还需要更改硬限制
+  # 重新启动您的浏览器
   ```
 
-- Increase the following inotify related limits by `sysctl`
+- 将以下识别相关限制增加`sysctl`
 
   ```shell
-  # Check current limits
+  # 检查当前限制
   $ sysctl fs.inotify
-  # Change limits (temporary)
+  # 更改限制（临时）
   $ sudo sysctl fs.inotify.max_queued_events=16384
   $ sudo sysctl fs.inotify.max_user_instances=8192
   $ sudo sysctl fs.inotify.max_user_watches=524288
   ```
 
-If the above steps don't work, you can try adding `DefaultLimitNOFILE=65536` as an un-commented config to the following files:
+如果以上步骤不起作用，则可以尝试将`DefaultLimitNOFILE=65536`作为未注重配置添加到以下文件:
 
 - /etc/systemd/system.conf
 - /etc/systemd/user.conf
 
-For Ubuntu Linux, you may need to add the line `* - nofile 65536` to the file `/etc/security/limits.conf` instead of updating systemd config files.
+对于Ubuntu Linux，您可能需要将行`* - nofile 65536`添加到文件`/etc/security/limits.conf`中，而不是更新SystemD配置文件。
 
-Note that these settings persist but a **restart is required**.
+请注意，这些设置持续存在，但**需要重新启动**。
 
-Alternatively, if the server is running inside a VS Code devcontainer, the request may appear to be stalled. To fix this issue, see
-[Dev Containers / VS Code Port Forwarding](#dev-containers-vs-code-port-forwarding).
+另外，如果服务器在VS代码DevContainer内部运行，则该请求似乎会停滞不前。要解决此问题，请参阅
+[开发容器 / VS代码端口转发](/0)。
 
-### Network requests stop loading
+### 网络请求停止加载
 
-When using a self-signed SSL certificate, Chrome ignores all caching directives and reloads the content. Vite relies on these caching directives.
+使用自签名的SSL证书时，Chrome忽略了所有缓存指令并重新加载内容。 Vite依靠这些缓存指令。
 
-To resolve the problem use a trusted SSL cert.
+为了解决问题，请使用受信任的SSL证书。
 
-See: [Cache problems](https://helpx.adobe.com/mt/experience-manager/kb/cache-problems-on-chrome-with-SSL-certificate-errors.html), [Chrome issue](https://bugs.chromium.org/p/chromium/issues/detail?id=110649#c8)
+请参阅:[缓存问题](/0)，[镀铬问题](/1)
 
-#### macOS
+#### macos
 
-You can install a trusted cert via the CLI with this command:
+您可以使用此命令通过CLI安装受信任的证书:
 
 ```
 security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db your-cert.cer
 ```
 
-Or, by importing it into the Keychain Access app and updating the trust of your cert to "Always Trust."
+或者，通过将其导入到钥匙扣访问应用程序中，并将证书的信任更新以“始终信任”。
 
-### 431 Request Header Fields Too Large
+### 431请求标题字段太大
 
-When the server / WebSocket server receives a large HTTP header, the request will be dropped and the following warning will be shown.
+当服务器 / WebSocket服务器接收大型HTTP标头时，将删除请求，并显示以下警告。
 
-> Server responded with status code 431. See https://vite.dev/guide/troubleshooting.html#_431-request-header-fields-too-large.
+> 服务器使用状态代码431响应。请参阅[https://vite.dev/guide/troubleshooting.html#\_431-request-header-field-fields-too-large](https://vite.dev/guide/troubleshooting.html#_431-request-header-fields-too-large) 。
 
-This is because Node.js limits request header size to mitigate [CVE-2018-12121](https://www.cve.org/CVERecord?id=CVE-2018-12121).
+这是因为Node.js限制请求标头大小以减轻[CVE-2018-12121](/0) 。
 
-To avoid this, try to reduce your request header size. For example, if the cookie is long, delete it. Or you can use [`--max-http-header-size`](https://nodejs.org/api/cli.html#--max-http-header-sizesize) to change max header size.
+为了避免这种情况，请尝试减少您的请求标题尺寸。例如，如果cookie长，请删除它。或者，您可以使用[`--max-http-header-size`](/0)来更改最大标头大小。
 
-### Dev Containers / VS Code Port Forwarding
+### 开发容器 / VS代码端口转发
 
-If you are using a Dev Container or port forwarding feature in VS Code, you may need to set the [`server.host`](/en/config/server-options.md#server-host) option to `127.0.0.1` in the config to make it work.
+如果您在VS代码中使用DEV容器或端口转发功能，则可能需要将[`server.host`](/0)选项设置为配置中的`127.0.0.1`选项以使其正常工作。
 
-This is because [the port forwarding feature in VS Code does not support IPv6](https://github.com/microsoft/vscode-remote-release/issues/7029).
+这是因为[VS代码中的端口转发功能不支持IPv6](/0) 。
 
-See [#16522](https://github.com/vitejs/vite/issues/16522) for more details.
+有关更多详细信息，请参见[＃16522](/0) 。
 
 ## HMR
 
-### Vite detects a file change but the HMR is not working
+### Vite检测文件更改，但HMR不起作用
 
-You may be importing a file with a different case. For example, `src/foo.js` exists and `src/bar.js` contains:
+您可能正在导入具有不同情况的文件。例如，存在`src/foo.js` ，其中`src/bar.js`包含:
 
 ```js
-import './Foo.js' // should be './foo.js'
+import './Foo.js' // 应该是'./foo.js'
 ```
 
-Related issue: [#964](https://github.com/vitejs/vite/issues/964)
+相关问题: [＃964](/0)
 
-### Vite does not detect a file change
+### Vite不会检测到文件更改
 
-If you are running Vite with WSL2, Vite cannot watch file changes in some conditions. See [`server.watch` option](/en/config/server-options.md#server-watch).
+如果您使用WSL2运行Vite，Vite将无法在某些情况下观看文件更改。请参阅[`server.watch`选项](/0)。
 
-### A full reload happens instead of HMR
+### 全面重新加载而不是HMR
 
-If HMR is not handled by Vite or a plugin, a full reload will happen as it's the only way to refresh the state.
+如果没有通过Vite或插件来处理HMR，则将进行完整的重新加载，因为它是刷新状态的唯一方法。
 
-If HMR is handled but it is within a circular dependency, a full reload will also happen to recover the execution order. To solve this, try breaking the loop. You can run `vite --debug hmr` to log the circular dependency path if a file change triggered it.
+如果处理HMR，但它在循环依赖性范围内，则还将恢复执行令。要解决这个问题，请尝试打破循环。如果文件更改触发，则可以运行`vite --debug hmr`以记录循环依赖路径。
 
-## Build
+## 建造
 
-### Built file does not work because of CORS error
+### 构建文件由于CORS错误而行不通
 
-If the HTML file output was opened with `file` protocol, the scripts won't run with the following error.
+如果使用`file`协议打开HTML文件输出，则脚本不会在以下错误中运行。
 
-> Access to script at 'file:///foo/bar.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, isolated-app, chrome-extension, chrome, https, chrome-untrusted.
+> 从原始'null'中访问'file:///foo/bar.js'的脚本已被CORS策略阻止:跨原点请求仅支持协议方案:http，数据，数据，隔离应用，应用程序，chrome-extension，chrome，chrome，chrome，https，https，https，chrome nothted。
 
-> Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///foo/bar.js. (Reason: CORS request not http).
+> 交叉原始请求被阻止:相同的原始策略删除在file:///foo/bar.js上读取远程资源。 （原因:CORS请求不是HTTP）。
 
-See [Reason: CORS request not HTTP - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp) for more information about why this happens.
+请参阅[原因:CORS请求不是HTTP -HTTP | MDN]（ [https://developer.mozilla.org/en-us/docs/web/http/cors/errors/corsrequestnothttp](/0) ）有关此原因发生的更多信息。
 
-You will need to access the file with `http` protocol. The easiest way to achieve this is to run `npx vite preview`.
+您将需要使用`http`协议访问文件。实现此目标的最简单方法是运行`npx vite preview` 。
 
-## Optimized Dependencies
+## 优化的依赖项
 
-### Outdated pre-bundled deps when linking to a local package
+### 链接到本地软件包时过时的预捆扎DEP
 
-The hash key used to invalidate optimized dependencies depends on the package lock contents, the patches applied to dependencies, and the options in the Vite config file that affects the bundling of node modules. This means that Vite will detect when a dependency is overridden using a feature as [npm overrides](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides), and re-bundle your dependencies on the next server start. Vite won't invalidate the dependencies when you use a feature like [npm link](https://docs.npmjs.com/cli/v9/commands/npm-link). In case you link or unlink a dependency, you'll need to force re-optimization on the next server start by using `vite --force`. We recommend using overrides instead, which are supported now by every package manager (see also [pnpm overrides](https://pnpm.io/package_json#pnpmoverrides) and [yarn resolutions](https://yarnpkg.com/configuration/manifest/#resolutions)).
+用于优化依赖项无效的哈希密钥取决于软件包锁定内容，应用于依赖项的补丁以及影响节点模块捆绑的Vite配置文件中的选项。这意味着Vite将使用功能作为[NPM覆盖的](/0)功能检测依赖性何时被覆盖，并将您对下一个服务器启动的依赖关系重新包裹。当您使用诸如[NPM链接](/1)之类的功能时，Vite不会使依赖关系无效。如果您链接或取消链接依赖关系，则需要在下一个服务器上强迫重新优化，从使用`vite --force`开始。我们建议使用覆盖，现在每个软件包管理器都支持它（另请参见[PNPM覆盖](/2)和[纱线分辨率](/3)）。
 
-## Performance Bottlenecks
+## 性能瓶颈
 
-If you suffer any application performance bottlenecks resulting in slow load times, you can start the built-in Node.js inspector with your Vite dev server or when building your application to create the CPU profile:
+如果您遭受任何应用程序性能瓶颈，导致加载时间缓慢，则可以使用Vite Dev Server或构建应用程序以创建CPU配置文件时启动内置Node.js Inspector:
 
 ::: code-group
 
@@ -209,48 +209,48 @@ vite build --profile
 :::
 
 ::: tip Vite Dev Server
-Once your application is opened in the browser, just await finish loading it and then go back to the terminal and press `p` key (will stop the Node.js inspector) then press `q` key to stop the dev server.
+在浏览器中打开应用程序后，只需等待完成加载它，然后返回终端并按`p`键（将停止Node.js Inspector），然后按`q`键停止Dev Server。
 :::
 
-Node.js inspector will generate `vite-profile-0.cpuprofile` in the root folder, go to https://www.speedscope.app/, and upload the CPU profile using the `BROWSE` button to inspect the result.
+Node.js Inspector将在根文件夹中生成`vite-profile-0.cpuprofile` ，转到[https://www.speedscope.app/](https://www.speedscope.app/) ，并使用`BROWSE`按钮上传CPU配置文件以检查结果。
 
-You can install [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect), which lets you inspect the intermediate state of Vite plugins and can also help you to identify which plugins or middlewares are the bottleneck in your applications. The plugin can be used in both dev and build modes. Check the readme file for more details.
+您可以安装[vite-plugin-insporce](/0) ，它使您可以检查Vite插件的中间状态，还可以帮助您确定应用程序中哪些插件或中间Wares是瓶颈。该插件可以在DEV和构建模式中使用。检查读数文件以获取更多详细信息。
 
-## Others
+## 其他的
 
-### Module externalized for browser compatibility
+### 用于浏览器兼容性的模块外部化
 
-When you use a Node.js module in the browser, Vite will output the following warning.
+当您在浏览器中使用Node.js模块时，Vite将输出以下警告。
 
-> Module "fs" has been externalized for browser compatibility. Cannot access "fs.readFile" in client code.
+> 模块“ FS”已被外部化，以供浏览器兼容。无法在客户端代码中访问“ fs.ReadFile”。
 
-This is because Vite does not automatically polyfill Node.js modules.
+这是因为Vite不会自动polyfill node.js模块。
 
-We recommend avoiding Node.js modules for browser code to reduce the bundle size, although you can add polyfills manually. If the module is imported from a third-party library (that's meant to be used in the browser), it's advised to report the issue to the respective library.
+我们建议避免使用浏览器代码的Node.js模块以减小捆绑尺寸，尽管您可以手动添加polyfills。如果该模块是从第三方库导入的（该图书馆要在浏览器中使用），建议将问题报告给相应的库。
 
-### Syntax Error / Type Error happens
+### 语法错误 /类型错误发生
 
-Vite cannot handle and does not support code that only runs on non-strict mode (sloppy mode). This is because Vite uses ESM and it is always [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) inside ESM.
+Vite无法处理，并且不支持仅在非图案模式（马虎模式）上运行的代码。这是因为Vite使用ESM，并且它始终是ESM内部的[严格模式](/0)。
 
-For example, you might see these errors.
+例如，您可能会看到这些错误。
 
-> [ERROR] With statements cannot be used with the "esm" output format due to strict mode
+> [错误]与语句有关，由于严格模式，无法与“ ESM”输出格式使用
 
-> TypeError: Cannot create property 'foo' on boolean 'false'
+> TypeError:无法在布尔值'false上创建属性“ foo”
 
-If these codes are used inside dependencies, you could use [`patch-package`](https://github.com/ds300/patch-package) (or [`yarn patch`](https://yarnpkg.com/cli/patch) or [`pnpm patch`](https://pnpm.io/cli/patch)) for an escape hatch.
+如果这些代码在依赖项内使用，则可以使用[`patch-package`](/0) （或[`yarn patch`](/1)或[`pnpm patch`](/2) ）进行逃生舱口。
 
-### Browser extensions
+### 浏览器扩展
 
-Some browser extensions (like ad-blockers) may prevent the Vite client from sending requests to the Vite dev server. You may see a white screen without logged errors in this case. Try disabling extensions if you have this issue.
+某些浏览器扩展名（例如广告街区）可能会阻止Vite客户端向Vite Dev Server发送请求。在这种情况下，您可能会看到一个没有记录错误的白色屏幕。如果有此问题，请尝试禁用扩展。
 
-### Cross drive links on Windows
+### Windows上的交叉驱动链接
 
-If there's a cross drive links in your project on Windows, Vite may not work.
+如果您在Windows上的项目中有一个交叉驱动器链接，则VITE可能无法正常工作。
 
-An example of cross drive links are:
+交叉驱动器链接的一个示例是:
 
-- a virtual drive linked to a folder by `subst` command
-- a symlink/junction to a different drive by `mklink` command (e.g. Yarn global cache)
+- 由`subst`命令链接到文件夹的虚拟驱动器
+- 通过`mklink`命令（例如YARN Global Cache）到另一个驱动器的符号链接/交界处
 
-Related issue: [#10802](https://github.com/vitejs/vite/issues/10802)
+相关问题: [＃10802](/0)

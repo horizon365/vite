@@ -8,6 +8,6 @@ outline: false
 import BlogIndex from '../.vitepress/theme/components/BlogIndex.vue'
 </script>
 
-# Latest From the Vite Blog
+# Vite博客最新动态
 
 <BlogIndex/>

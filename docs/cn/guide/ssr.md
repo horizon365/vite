@@ -1,20 +1,20 @@
-# Server-Side Rendering (SSR)
+# 服务器端渲染（SSR）
 
 :::tip Note
-SSR specifically refers to front-end frameworks (for example React, Preact, Vue, and Svelte) that support running the same application in Node.js, pre-rendering it to HTML, and finally hydrating it on the client. If you are looking for integration with traditional server-side frameworks, check out the [Backend Integration guide](./backend-integration) instead.
+SSR专门指的是前端框架（例如React，preeact，Vue和Svelte），该框架支持在Node.js中运行相同应用程序的前端框架，并将其预先呈现给HTML，最后在客户端上进行水合。如果您正在寻找与传统服务器端框架集成，请查看“[后端集成指南”](/0) 。
 
-The following guide also assumes prior experience working with SSR in your framework of choice, and will only focus on Vite-specific integration details.
+以下指南还假定您选择的框架中与SSR合作的事先经验，并且只会关注特定于Vite的集成细节。
 :::
 
 :::warning Low-level API
-This is a low-level API meant for library and framework authors. If your goal is to create an application, make sure to check out the higher-level SSR plugins and tools at [Awesome Vite SSR section](https://github.com/vitejs/awesome-vite#ssr) first. That said, many applications are successfully built directly on top of Vite's native low-level API.
+这是用于图书馆和框架作者的低级API。如果您的目标是创建一个应用程序，请确保首先查看[Awesome Vite SSR部分](/0)的高级SSR插件和工具。也就是说，许多应用程序是成功直接建立在Vite的本地低级API之上的。
 
-Currently, Vite is working on an improved SSR API with the [Environment API](https://github.com/vitejs/vite/discussions/16358). Check out the link for more details.
+目前，Vite正在使用[环境API](/0)进行改进的SSR API。查看链接以获取更多详细信息。
 :::
 
-## Example Projects
+## 示例项目
 
-Vite provides built-in support for server-side rendering (SSR). [`create-vite-extra`](https://github.com/bluwy/create-vite-extra) contains example SSR setups you can use as references for this guide:
+Vite为服务器端渲染（SSR）提供了内置支持。 [`create-vite-extra`](/0)包含示例SSR设置，您可以用作本指南的参考:
 
 - [Vanilla](https://github.com/bluwy/create-vite-extra/tree/master/template-ssr-vanilla)
 - [Vue](https://github.com/bluwy/create-vite-extra/tree/master/template-ssr-vue)
@@ -23,11 +23,11 @@ Vite provides built-in support for server-side rendering (SSR). [`create-vite-ex
 - [Svelte](https://github.com/bluwy/create-vite-extra/tree/master/template-ssr-svelte)
 - [Solid](https://github.com/bluwy/create-vite-extra/tree/master/template-ssr-solid)
 
-You can also scaffold these projects locally by [running `create-vite`](./index.md#scaffolding-your-first-vite-project) and choose `Others > create-vite-extra` under the framework option.
+您还可以通过[运行`create-vite`](/0)并在框架选项下选择`Others > create-vite-extra`在本地脚克式这些项目。
 
-## Source Structure
+## 来源结构
 
-A typical SSR application will have the following source file structure:
+典型的SSR应用程序将具有以下源文件结构:
 
 ```
 - index.html
@@ -38,32 +38,32 @@ A typical SSR application will have the following source file structure:
   - entry-server.js  # renders the app using the framework's SSR API
 ```
 
-The `index.html` will need to reference `entry-client.js` and include a placeholder where the server-rendered markup should be injected:
+`index.html`将需要参考`entry-client.js` ，并包括一个应注入服务器渲染的标记的占位符:
 
 ```html [index.html]
 <div id="app"><!--ssr-outlet--></div>
 <script type="module" src="/src/entry-client.js"></script>
 ```
 
-You can use any placeholder you prefer instead of `<!--ssr-outlet-->`, as long as it can be precisely replaced.
+您可以使用您喜欢的任何占位持有人而不是`<!--ssr-outlet-->` ，只要可以精确替换。
 
-## Conditional Logic
+## 条件逻辑
 
-If you need to perform conditional logic based on SSR vs. client, you can use
+如果您需要基于SSR与客户端执行有条件的逻辑，则可以使用
 
 ```js twoslash
 import 'vite/client'
-// ---cut---
+//  - -切 - -
 if (import.meta.env.SSR) {
-  // ... server only logic
+  // ...仅服务器逻辑
 }
 ```
 
-This is statically replaced during build so it will allow tree-shaking of unused branches.
+在构建过程中，这将在静态上替换，因此它可以使未使用的分支震惊。
 
-## Setting Up the Dev Server
+## 设置开发服务器
 
-When building an SSR app, you likely want to have full control over your main server and decouple Vite from the production environment. It is therefore recommended to use Vite in middleware mode. Here is an example with [express](https://expressjs.com/) (v4):
+构建SSR应用程序时，您可能希望完全控制主服务器，并将Vite与生产环境中分离。因此，建议在中间件模式下使用VITE。这是[Express](/0) （V4）的示例:
 
 ```js{15-18} twoslash [server.js]
 import fs from 'node:fs'
@@ -103,9 +103,9 @@ async function createServer() {
 createServer()
 ```
 
-Here `vite` is an instance of [ViteDevServer](./api-javascript#vitedevserver). `vite.middlewares` is a [Connect](https://github.com/senchalabs/connect) instance which can be used as a middleware in any connect-compatible Node.js framework.
+这里`vite`是[Vitedevserver](./api-javascript#vitedevserver)的实例。 `vite.middlewares`是一个[连接](https://github.com/senchalabs/connect)实例，可以用作任何连接兼容的node.js框架中的中间件。
 
-The next step is implementing the `*` handler to serve server-rendered HTML:
+下一步是实现`*`处理程序以服务服务器渲染的HTML:
 
 ```js twoslash [server.js]
 // @noErrors
@@ -113,12 +113,12 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-/** @type {import('express').Express} */
+/** @Type {import（'express'）。express} */
 var app
-/** @type {import('vite').ViteDevServer}  */
+/** @Type {import（'vite'）。vitedevserver}  */
 var vite
 
-// ---cut---
+//  - -切 - -
 app.use('*', async (req, res, next) => {
   const url = req.originalUrl
 
@@ -130,18 +130,18 @@ app.use('*', async (req, res, next) => {
     )
 
     // 2. Apply Vite HTML transforms. This injects the Vite HMR client,
-    //    and also applies HTML transforms from Vite plugins, e.g. global
+    //    and also applies HTML transforms from Vite plugins, e.g.全球的
     //    preambles from @vitejs/plugin-react
     template = await vite.transformIndexHtml(url, template)
 
-    // 3. Load the server entry. ssrLoadModule automatically transforms
+    // 3。加载服务器条目。 SSRLOADMODULE自动转换
     //    ESM source code to be usable in Node.js! There is no bundling
-    //    required, and provides efficient invalidation similar to HMR.
+    //    需要，并提供类似于HMR的有效无效。
     const { render } = await vite.ssrLoadModule('/src/entry-server.js')
 
     // 4. render the app HTML. This assumes entry-server.js's exported
-    //     `render` function calls appropriate framework SSR APIs,
-    //    e.g. ReactDOMServer.renderToString()
+    //
+    //    例如ReactDOMServer.renderToString()
     const appHtml = await render(url)
 
     // 5. Inject the app-rendered HTML into the template.
@@ -150,15 +150,15 @@ app.use('*', async (req, res, next) => {
     // 6. Send the rendered HTML back.
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (e) {
-    // If an error is caught, let Vite fix the stack trace so it maps back
-    // to your actual source code.
+    // 如果捕获错误，请让Vite修复堆栈跟踪，以便将其映射
+    // 到您的实际源代码。
     vite.ssrFixStacktrace(e)
     next(e)
   }
 })
 ```
 
-The `dev` script in `package.json` should also be changed to use the server script instead:
+还应更改`package.json`中的`dev`脚本以使用服务器脚本:
 
 ```diff [package.json]
   "scripts": {
@@ -167,14 +167,14 @@ The `dev` script in `package.json` should also be changed to use the server scri
   }
 ```
 
-## Building for Production
+## 建造生产
 
-To ship an SSR project for production, we need to:
+要运送SSR项目进行生产，我们需要:
 
-1. Produce a client build as normal;
-2. Produce an SSR build, which can be directly loaded via `import()` so that we don't have to go through Vite's `ssrLoadModule`;
+1. 产生客户的构建正常；
+2. 产生一个可以直接通过`import()`加载的SSR构建，因此我们不必经过Vite的`ssrLoadModule` ；
 
-Our scripts in `package.json` will look like this:
+我们的脚本在`package.json`中看起来像这样:
 
 ```json [package.json]
 {
@@ -186,107 +186,107 @@ Our scripts in `package.json` will look like this:
 }
 ```
 
-Note the `--ssr` flag which indicates this is an SSR build. It should also specify the SSR entry.
+注意指示这是SSR构建的`--ssr`标志。它还应指定SSR条目。
 
-Then, in `server.js` we need to add some production specific logic by checking `process.env.NODE_ENV`:
+然后，在`server.js`中，我们需要通过检查`process.env.NODE_ENV` :
 
-- Instead of reading the root `index.html`, use the `dist/client/index.html` as the template, since it contains the correct asset links to the client build.
+- 而不是读取root `index.html` ，而是将`dist/client/index.html`用作模板，因为它包含了与客户端构建的正确资产链接。
 
-- Instead of `await vite.ssrLoadModule('/src/entry-server.js')`, use `import('./dist/server/entry-server.js')` (this file is the result of the SSR build).
+- 而不是`await vite.ssrLoadModule('/src/entry-server.js')`使用`import('./dist/server/entry-server.js')` （此文件是SSR构建的结果）。
 
-- Move the creation and all usage of the `vite` dev server behind dev-only conditional branches, then add static file serving middlewares to serve files from `dist/client`.
+- 将`vite` dev服务器的创建和所有用法移动在仅开发的条件分支后面，然后添加静态文件中的中间用水中的静态文件以从`dist/client`中提供文件。
 
-Refer to the [example projects](#example-projects) for a working setup.
+请参阅[示例项目](#example-projects)以进行工作设置。
 
-## Generating Preload Directives
+## 生成预紧力指令
 
-`vite build` supports the `--ssrManifest` flag which will generate `.vite/ssr-manifest.json` in build output directory:
+`vite build`支持将在构建输出目录中生成`.vite/ssr-manifest.json` `--ssrManifest`标志:
 
 ```diff
 - "build:client": "vite build --outDir dist/client",
 + "build:client": "vite build --outDir dist/client --ssrManifest",
 ```
 
-The above script will now generate `dist/client/.vite/ssr-manifest.json` for the client build (Yes, the SSR manifest is generated from the client build because we want to map module IDs to client files). The manifest contains mappings of module IDs to their associated chunks and asset files.
+现在，上面的脚本将为客户端构建生成`dist/client/.vite/ssr-manifest.json` （是的，SSR清单是从客户端构建生成的，因为我们想将模块ID映射到客户端文件）。清单中包含模块ID的映射到其关联的块和资产文件。
 
-To leverage the manifest, frameworks need to provide a way to collect the module IDs of the components that were used during a server render call.
+为了利用清单，框架需要提供一种方法来收集服务器渲染调用过程中使用的组件的模块ID。
 
-`@vitejs/plugin-vue` supports this out of the box and automatically registers used component module IDs on to the associated Vue SSR context:
+`@vitejs/plugin-vue`支持此功能，并自动将使用组件模块ID寄给关联的VUE SSR上下文:
 
 ```js [src/entry-server.js]
 const ctx = {}
 const html = await vueServerRenderer.renderToString(app, ctx)
-// ctx.modules is now a Set of module IDs that were used during the render
+// CTX.Modules现在是一组渲染过程中使用的模块ID
 ```
 
-In the production branch of `server.js` we need to read and pass the manifest to the `render` function exported by `src/entry-server.js`. This would provide us with enough information to render preload directives for files used by async routes! See [demo source](https://github.com/vitejs/vite-plugin-vue/blob/main/playground/ssr-vue/src/entry-server.js) for a full example. You can also use this information for [103 Early Hints](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103).
+在`server.js`的生产分支中，我们需要读取并将清单传递给由`src/entry-server.js`导出的`render`函数。这将为我们提供足够的信息来渲染针对异步路线使用的文件的预紧指令！有关完整示例，请参见[演示源](/0)。您也可以将此信息用于[103个早期提示](/1)。
 
-## Pre-Rendering / SSG
+## 预渲染 / SSG
 
-If the routes and the data needed for certain routes are known ahead of time, we can pre-render these routes into static HTML using the same logic as production SSR. This can also be considered a form of Static-Site Generation (SSG). See [demo pre-render script](https://github.com/vitejs/vite-plugin-vue/blob/main/playground/ssr-vue/prerender.js) for working example.
+如果提前知道某些路由所需的路由和数据，我们可以使用与生产SSR相同的逻辑将这些路由预渲染到静态HTML中。这也可以被视为一种静态位点产生（SSG）的形式。有关工作示例，请参见[演示预渲染脚本](/0)。
 
-## SSR Externals
+## SSR外部
 
-Dependencies are "externalized" from Vite's SSR transform module system by default when running SSR. This speeds up both dev and build.
+依赖性在运行SSR时默认情况下从Vite的SSR变换模块系统中“外部化”。这加快了开发和构建。
 
-If a dependency needs to be transformed by Vite's pipeline, for example, because Vite features are used untranspiled in them, they can be added to [`ssr.noExternal`](../config/ssr-options.md#ssr-noexternal).
+例如，如果需要通过Vite的管道来转换依赖关系，因为在其中未转移的Vite特征，则可以将其添加到[`ssr.noExternal`](../config/ssr-options.md#ssr-noexternal) 。
 
-For linked dependencies, they are not externalized by default to take advantage of Vite's HMR. If this isn't desired, for example, to test dependencies as if they aren't linked, you can add it to [`ssr.external`](../config/ssr-options.md#ssr-external).
+对于链接的依赖关系，默认情况下，它们不被外部化以利用Vite的HMR。例如，如果不需要，例如测试依赖项，就好像未链接一样，您可以将其添加到[`ssr.external`]../config/ssr-options.md#ssr-external) 。
 
 :::warning Working with Aliases
-If you have configured aliases that redirect one package to another, you may want to alias the actual `node_modules` packages instead to make it work for SSR externalized dependencies. Both [Yarn](https://classic.yarnpkg.com/en/docs/cli/add/#toc-yarn-add-alias) and [pnpm](https://pnpm.io/aliases/) support aliasing via the `npm:` prefix.
+如果您配置了将一个软件包重定向到另一个软件包的别名，则可能需要使实际的`node_modules`软件包别名，以使其适用于SSR外部化依赖关系。[纱线](/0)和[PNPM](/1)都通过`npm:`前缀支持混叠。
 :::
 
-## SSR-specific Plugin Logic
+## SSR特异性插件逻辑
 
-Some frameworks such as Vue or Svelte compile components into different formats based on client vs. SSR. To support conditional transforms, Vite passes an additional `ssr` property in the `options` object of the following plugin hooks:
+基于客户端与SSR，一些框架（例如VUE或Svelte编译组件）成不同的格式。为了支持有条件的变换，Vite在以下插件钩的`options`对象中传递了一个额外的`ssr`属性:
 
 - `resolveId`
 - `load`
 - `transform`
 
-**Example:**
+**例子:**
 
 ```js twoslash
-/** @type {() => import('vite').Plugin} */
-// ---cut---
+/** @Type {（）=> import（'vite'）。插件} */
+//  - -切 - -
 export function mySSRPlugin() {
   return {
     name: 'my-ssr',
     transform(code, id, options) {
       if (options?.ssr) {
-        // perform ssr-specific transform...
+        // 执行特定于SSR的转换...
       }
     },
   }
 }
 ```
 
-The options object in `load` and `transform` is optional, rollup is not currently using this object but may extend these hooks with additional metadata in the future.
+`load`和`transform`中的选件对象是可选的，汇总当前不使用此对象，但将来可能会使用其他元数据扩展这些钩子。
 
 :::tip Note
-Before Vite 2.7, this was informed to plugin hooks with a positional `ssr` param instead of using the `options` object. All major frameworks and plugins are updated but you may find outdated posts using the previous API.
+在Vite 2.7之前，它被告知使用位置`ssr` param而不是使用`options`对象的插件钩。所有主要的框架和插件都将更新，但您可能会使用以前的API找到过时的帖子。
 :::
 
-## SSR Target
+## SSR目标
 
-The default target for the SSR build is a node environment, but you can also run the server in a Web Worker. Packages entry resolution is different for each platform. You can configure the target to be Web Worker using the `ssr.target` set to `'webworker'`.
+SSR构建的默认目标是节点环境，但是您也可以在Web Worker中运行服务器。每个平台的包装输入分辨率都不同。您可以使用`ssr.target`设置为`'webworker'`目标将目标配置为Web Worker。
 
-## SSR Bundle
+## SSR捆绑包
 
-In some cases like `webworker` runtimes, you might want to bundle your SSR build into a single JavaScript file. You can enable this behavior by setting `ssr.noExternal` to `true`. This will do two things:
+在某些情况下，例如`webworker`运行时间，您可能需要将SSR构建捆绑到一个JavaScript文件中。您可以通过设置`ssr.noExternal`到`true`来启用此行为。这将做两件事:
 
-- Treat all dependencies as `noExternal`
-- Throw an error if any Node.js built-ins are imported
+- 将所有依赖性视为`noExternal`
+- 如果导入任何node.js indin-ins，就会丢下错误
 
-## SSR Resolve Conditions
+## SSR解决条件
 
-By default package entry resolution will use the conditions set in [`resolve.conditions`](../config/shared-options.md#resolve-conditions) for the SSR build. You can use [`ssr.resolve.conditions`](../config/ssr-options.md#ssr-resolve-conditions) and [`ssr.resolve.externalConditions`](../config/ssr-options.md#ssr-resolve-externalconditions) to customize this behavior.
+默认情况下，软件包输入分辨率将使用SSR构建[`resolve.conditions`](/0)中设置的条件。您可以使用[`ssr.resolve.conditions`](/1)和[`ssr.resolve.externalConditions`](/2)自定义此行为。
 
 ## Vite CLI
 
-The CLI commands `$ vite dev` and `$ vite preview` can also be used for SSR apps. You can add your SSR middlewares to the development server with [`configureServer`](/en/guide/api-plugin#configureserver) and to the preview server with [`configurePreviewServer`](/en/guide/api-plugin#configurepreviewserver).
+CLI命令`$ vite dev`和`$ vite preview`也可以用于SSR应用程序。您可以[`configureServer`](/0) SSR MiddleWares添加到开发服务器中，并使用[`configurePreviewServer`](/1)添加到预览服务器中。
 
 :::tip Note
-Use a post hook so that your SSR middleware runs _after_ Vite's middlewares.
+使用帖子挂钩，以便您的SSR中间件在Vite的中间Wares*之后*运行。
 :::

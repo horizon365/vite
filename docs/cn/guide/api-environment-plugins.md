@@ -1,25 +1,25 @@
-# Environment API for Plugins
+# 插件的环境API
 
 :::warning Experimental
 Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
 
-Resources:
+资源:
 
-- [Feedback discussion](https://github.com/vitejs/vite/discussions/16358) where we are gathering feedback about the new APIs.
-- [Environment API PR](https://github.com/vitejs/vite/pull/16471) where the new API were implemented and reviewed.
+-
+-
 
 Please share your feedback with us.
 :::
 
-## Accessing the Current Environment in Hooks
+## 访问挂钩的当前环境
 
-Given that there were only two Environments until Vite 6 (`client` and `ssr`), a `ssr` boolean was enough to identify the current environment in Vite APIs. Plugin Hooks received a `ssr` boolean in the last options parameter, and several APIs expected an optional last `ssr` parameter to properly associate modules to the correct environment (for example `server.moduleGraph.getModuleByUrl(url, { ssr })`).
+鉴于只有两个环境直到Vite 6（ `client`和`ssr` ），因此`ssr`布尔值足以识别Vite API中的当前环境。插件挂钩在最后一个选项参数中收到了`ssr`布尔值，并且几个API期望可选的最后`ssr`参数可以将模块正确关联到正确的环境（例如`server.moduleGraph.getModuleByUrl(url, { ssr })` ）。
 
-With the advent of configurable environments, we now have a uniform way to access their options and instance in plugins. Plugin hooks now expose `this.environment` in their context, and APIs that previously expected a `ssr` boolean are now scoped to the proper environment (for example `environment.moduleGraph.getModuleByUrl(url)`).
+随着可配置环境的出现，我们现在有一种统一的方法来访问插件中的选项和实例。现在，插件钩在其上下文中公开`this.environment` ，并且以前期望`ssr`布尔值的API现在范围为适当的环境（例如`environment.moduleGraph.getModuleByUrl(url)` ）。
 
-The Vite server has a shared plugin pipeline, but when a module is processed it is always done in the context of a given environment. The `environment` instance is available in the plugin context.
+Vite服务器具有共享插件管道，但是当处理模块时，它总是在给定环境的上下文中完成。 `environment`实例可在插件上下文中可用。
 
-A plugin could use the `environment` instance to change how a module is processed depending on the configuration for the environment (which can be accessed using `environment.config`).
+插件可以使用`environment`实例来更改模块的处理方式，具体取决于环境的配置（可以使用`environment.config`访问该模块）。
 
 ```ts
   transform(code, id) {
@@ -27,9 +27,9 @@ A plugin could use the `environment` instance to change how a module is processe
   }
 ```
 
-## Registering New Environments Using Hooks
+## 使用钩子注册新环境
 
-Plugins can add new environments in the `config` hook (for example to have a separate module graph for [RSC](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components)):
+插件可以在`config`挂钩中添加新环境（例如，为[RSC]()具有单独的模块图）:
 
 ```ts
   config(config: UserConfig) {
@@ -37,12 +37,12 @@ Plugins can add new environments in the `config` hook (for example to have a sep
   }
 ```
 
-An empty object is enough to register the environment, default values from the root level environment config.
+一个空对象足以注册环境，默认值来自根级环境环境配置。
 
-## Configuring Environment Using Hooks
+## 使用钩子配置环境
 
-While the `config` hook is running, the complete list of environments isn't yet known and the environments can be affected by both the default values from the root level environment config or explicitly through the `config.environments` record.
-Plugins should set default values using the `config` hook. To configure each environment, they can use the new `configEnvironment` hook. This hook is called for each environment with its partially resolved config including resolution of final defaults.
+虽然`config`挂钩正在运行，但尚不清楚环境的完整列表，并且环境可能会受到根级环境配置的默认值的影响，也可以通过`config.environments`记录明确。
+插件应使用`config`挂钩设置默认值。要配置每个环境，他们可以使用新的`configEnvironment`钩。对于每个环境，其部分解决的配置都被调用，包括最终默认值的分辨率。
 
 ```ts
   configEnvironment(name: string, options: EnvironmentOptions) {
@@ -50,12 +50,12 @@ Plugins should set default values using the `config` hook. To configure each env
       options.resolve.conditions = // ...
 ```
 
-## The `hotUpdate` Hook
+## `hotUpdate`钩
 
-- **Type:** `(this: { environment: DevEnvironment }, options: HotUpdateOptions) => Array<EnvironmentModuleNode> | void | Promise<Array<EnvironmentModuleNode> | void>`
-- **See also:** [HMR API](./api-hmr)
+- **类型:** `（this:{环境:devenvironment}，选项:hotupdateoptions）=> array<EnvironmentModuleNode> | 空白 | 承诺<数组<EnvironmentModuleNode> | void>`
+- **另请参阅:** [HMR API](./api-hmr)
 
-The `hotUpdate` hook allows plugins to perform custom HMR update handling for a given environment. When a file changes, the HMR algorithm is run for each environment in series according to the order in `server.environments`, so the `hotUpdate` hook will be called multiple times. The hook receives a context object with the following signature:
+`hotUpdate`挂钩允许插件为给定环境执行自定义的HMR更新处理。当文件更改时，根据`server.environments`中的顺序为每个环境运行HMR算法，因此`hotUpdate`挂钩将多次调用。钩子接收一个具有以下签名的上下文对象:
 
 ```ts
 interface HotUpdateOptions {
@@ -68,24 +68,24 @@ interface HotUpdateOptions {
 }
 ```
 
-- `this.environment` is the module execution environment where a file update is currently being processed.
+- `this.environment`是当前正在处理文件更新的模块执行环境。
 
-- `modules` is an array of modules in this environment that are affected by the changed file. It's an array because a single file may map to multiple served modules (e.g. Vue SFCs).
+- `modules`是在此环境中的一个模块数组，受更改的文件影响。这是一个数组，因为一个文件可以映射到多个服务模块（例如VUE SFC）。
 
-- `read` is an async read function that returns the content of the file. This is provided because, on some systems, the file change callback may fire too fast before the editor finishes updating the file, and direct `fs.readFile` will return empty content. The read function passed in normalizes this behavior.
+- `read`是返回文件内容的异步读取函数。之所以提供这是因为在某些系统上，文件更改回调可能会在编辑器完成更新文件之前发射太快，而直接`fs.readFile`将返回空内容。读取功能通过以归一化的行为。
 
-The hook can choose to:
+钩子可以选择:
 
-- Filter and narrow down the affected module list so that the HMR is more accurate.
+- 过滤并缩小受影响的模块列表，以使 HMR 更准确。
 
-- Return an empty array and perform a full reload:
+- 返回一个空数组并执行完整重新加载:
 
   ```js
   hotUpdate({ modules, timestamp }) {
     if (this.environment.name !== 'client')
       return
 
-    // Invalidate modules manually
+    // 手动使模块失效
     const invalidatedModules = new Set()
     for (const mod of modules) {
       this.environment.moduleGraph.invalidateModule(
@@ -100,7 +100,7 @@ The hook can choose to:
   }
   ```
 
-- Return an empty array and perform complete custom HMR handling by sending custom events to the client:
+- 返回一个空数组，并通过向客户端发送自定义事件执行完整的自定义 HMR 处理:
 
   ```js
   hotUpdate() {
@@ -116,44 +116,44 @@ The hook can choose to:
   }
   ```
 
-  Client code should register the corresponding handler using the [HMR API](./api-hmr) (this could be injected by the same plugin's `transform` hook):
+  客户端代码应使用[HMR API](./api-hmr)注册相应的处理程序（这可以由同一插件的`transform`钩注入）:
 
   ```js
   if (import.meta.hot) {
     import.meta.hot.on('special-update', (data) => {
-      // perform custom update
+      // 执行自定义更新
     })
   }
   ```
 
-## Per-environment Plugins
+## 每个环境插件
 
-A plugin can define what are the environments it should apply to with the `applyToEnvironment` function.
+插件可以定义其应应用于`applyToEnvironment`功能的环境。
 
 ```js
 const UnoCssPlugin = () => {
-  // shared global state
+  // 共享全球状态
   return {
     buildStart() {
-      // init per-environment state with WeakMap<Environment,Data>
-      // using this.environment
+      // 具有虚弱图表<环境，数据>的初始环境状态
+      // 使用此环境
     },
     configureServer() {
-      // use global hooks normally
+      // 通常使用全局钩子
     },
     applyToEnvironment(environment) {
-      // return true if this plugin should be active in this environment,
-      // or return a new plugin to replace it.
-      // if the hook is not used, the plugin is active in all environments
+      // 如果此插件应在此环境中处于活动状态，请返回true，
+      // 或返回新插件以替换它。
+      // 如果未使用钩子，则插件在所有环境中都处于活动状态
     },
     resolveId(id, importer) {
-      // only called for environments this plugin apply to
+      // 仅要求环境这个插件适用于
     },
   }
 }
 ```
 
-If a plugin isn't environment aware and has state that isn't keyed on the current environment, the `applyToEnvironment` hook allows to easily make it per-environment.
+如果插件不知道环境，并且具有在当前环境上没有键入的状态，则`applyToEnvironment`挂钩可以轻松地使其每个环境。
 
 ```js
 import { nonShareablePlugin } from 'non-shareable-plugin'
@@ -170,7 +170,7 @@ export default defineConfig({
 })
 ```
 
-Vite exports a `perEnvironmentPlugin` helper to simplify these cases where no other hooks are required:
+Vite导出了`perEnvironmentPlugin`个助手，以简化不需要其他钩子的情况:
 
 ```js
 import { nonShareablePlugin } from 'non-shareable-plugin'
@@ -184,39 +184,39 @@ export default defineConfig({
 })
 ```
 
-## Environment in Build Hooks
+## 建筑钩子中的环境
 
-In the same way as during dev, plugin hooks also receive the environment instance during build, replacing the `ssr` boolean.
-This also works for `renderChunk`, `generateBundle`, and other build only hooks.
+以与开发期间相同的方式，插件挂钩在构建过程中还会接收环境实例，以取代`ssr`布尔值。
+这也适用于`renderChunk`和`generateBundle`构建仅钩子。
 
-## Shared Plugins During Build
+## 在构建过程中共享插件
 
-Before Vite 6, the plugins pipelines worked in a different way during dev and build:
+在Vite 6之前，插件管道在开发过程中以不同的方式工作:
 
-- **During dev:** plugins are shared
-- **During Build:** plugins are isolated for each environment (in different processes: `vite build` then `vite build --ssr`).
+- **在开发期间:**插件共享
+- **在构建过程中:**为每个环境隔离插件（在不同的过程中: `vite build`然后`vite build --ssr` ）。
 
-This forced frameworks to share state between the `client` build and the `ssr` build through manifest files written to the file system. In Vite 6, we are now building all environments in a single process so the way the plugins pipeline and inter-environment communication can be aligned with dev.
+这个强制框架可以通过写入文件系统的清单文件之间的`client`构建和`ssr`构建之间共享状态。在Vite 6中，我们现在正在一个过程中构建所有环境，因此插件管道和环境之间的通信可以与DEV对齐。
 
-In a future major (Vite 7 or 8), we aim to have complete alignment:
+在未来的专业（Vite 7或8）中，我们的目标是完全一致:
 
-- **During both dev and build:** plugins are shared, with [per-environment filtering](#per-environment-plugins)
+- **在开发和构建过程中:**共享插件，并进行[每个环境过滤](#per-environment-plugins)
 
-There will also be a single `ResolvedConfig` instance shared during build, allowing for caching at entire app build process level in the same way as we have been doing with `WeakMap<ResolvedConfig, CachedData>` during dev.
+在构建过程中还将共享一个`ResolvedConfig`个实例，以与我们在开发过程中使用`WeakMap<ResolvedConfig, id="!">`相同的方式在整个应用程序构建过程级别进行缓存。
 
-For Vite 6, we need to do a smaller step to keep backward compatibility. Ecosystem plugins are currently using `config.build` instead of `environment.config.build` to access configuration, so we need to create a new `ResolvedConfig` per-environment by default. A project can opt-in into sharing the full config and plugins pipeline setting `builder.sharedConfigBuild` to `true`.
+对于Vite 6，我们需要迈出较小的步骤以保持向后兼容性。生态系统插件当前使用`config.build`而不是`environment.config.build`用于访问配置，因此我们需要默认情况下创建一个新的`ResolvedConfig`每个环境。一个项目可以选择共享完整的配置和插件管道设置`builder.sharedConfigBuild`至`true` 。
 
-This option would only work of a small subset of projects at first, so plugin authors can opt-in for a particular plugin to be shared by setting the `sharedDuringBuild` flag to `true`. This allows for easily sharing state both for regular plugins:
+此选项首先只能使用一小部分项目，因此插件作者可以通过将`sharedDuringBuild`标志设置为`true`来选择要共享的特定插件。这允许在常规插件中轻松共享状态:
 
 ```js
 function myPlugin() {
-  // Share state among all environments in dev and build
+  // 在开发环境中分享状态并建立
   const sharedState = ...
   return {
     name: 'shared-plugin',
     transform(code, id) { ... },
 
-    // Opt-in into a single instance for all environments
+    // 选择进入所有环境的实例
     sharedDuringBuild: true,
   }
 }

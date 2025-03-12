@@ -1,23 +1,23 @@
-# Worker Options
+# 工人选项
 
 Unless noted, the options in this section are applied to all dev, build, and preview.
 
 ## worker.format
 
-- **Type:** `'es' | 'iife'`
-- **Default:** `'iife'`
+- | 'iife'
+- **默认值:** `'iife'`
 
-Output format for worker bundle.
+工人包的输出格式。
 
 ## worker.plugins
 
-- **Type:** [`() => (Plugin | Plugin[])[]`](./shared-options#plugins)
+- |
 
-Vite plugins that apply to the worker bundles. Note that [config.plugins](./shared-options#plugins) only applies to workers in dev, it should be configured here instead for build.
-The function should return new plugin instances as they are used in parallel rollup worker builds. As such, modifying `config.worker` options in the `config` hook will be ignored.
+适用于工人包的 Vite 插件。请注意，[config.plugins](./shared-options#plugins) 仅适用于开发环境中的工人，应在此处配置以用于构建。
+该函数应返回新的插件实例，因为它们用于并行的 Rollup 工人构建。因此，在 `config` 钩子中修改 `config.worker` 选项将被忽略。
 
 ## worker.rollupOptions
 
-- **Type:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
+-
 
-Rollup options to build worker bundle.
+Rollup 选项用于构建工人包。

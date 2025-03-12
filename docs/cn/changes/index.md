@@ -1,18 +1,14 @@
 # Breaking Changes
 
-List of breaking changes in Vite including API deprecations, removals, and changes. Most of the changes below can be opt-in using the [`future` option](/en/config/shared-options.html#future) in your Vite config.
+## 计划
 
-## Planned
+这些变更是为 Vite 的下一个主要版本计划的。在可能的情况下，弃用或使用警告将指导您，我们正在与框架、插件作者和用户联系以应用这些变更。
 
-These changes are planned for the next major version of Vite. The deprecation or usage warnings will guide you where possible, and we're reaching out to framework, plugin authors, and users to apply these changes.
+-
 
-- _No planned changes yet_
+## 考虑
 
-## Considering
-
-These changes are being considered and are often experimental APIs that intend to improve upon current usage patterns. As not all changes are listed here, please check out the [Experimental Label in Vite GitHub Discussions](https://github.com/vitejs/vite/discussions/categories/feedback?discussions_q=label%3Aexperimental+category%3AFeedback) for the full list.
-
-We don't recommend switching to these APIs yet. They are included in Vite to help us gather feedback. Please check these proposals and let us know how they work in your use case in each's linked GitHub Discussions.
+我们不建议您现在切换到这些 API。它们被包含在 Vite 中是为了帮助我们收集反馈。请检查这些提案，并在每个提案链接的 GitHub 讨论中告诉我们它们在您的使用场景中如何工作。
 
 - [`this.environment` in Hooks](/en/changes/this-environment-in-hooks)
 - [HMR `hotUpdate` Plugin Hook](/en/changes/hotupdate-hook)
@@ -20,8 +16,8 @@ We don't recommend switching to these APIs yet. They are included in Vite to hel
 - [SSR using `ModuleRunner` API](/en/changes/ssr-using-modulerunner)
 - [Shared plugins during build](/en/changes/shared-plugins-during-build)
 
-## Past
+## 过去
 
-The changes below has been done or reverted. They are no longer relevant in the current major version.
+下面的变更已经完成或被撤销。它们在当前主要版本中已不再相关。
 
-- _No past changes yet_
+- _暂无过去的变更_

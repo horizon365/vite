@@ -1,42 +1,42 @@
-# Backend Integration
+# 后端集成
 
 :::tip Note
-If you want to serve the HTML using a traditional backend (e.g. Rails, Laravel) but use Vite for serving assets, check for existing integrations listed in [Awesome Vite](https://github.com/vitejs/awesome-vite#integrations-with-backends).
+如果您想使用传统的后端(例如 Rails、Laravel)来提供 HTML，但使用 Vite 来提供资源，请检查 [Awesome Vite](https://github.com/vitejs/awesome-vite#integrations-with-backends) 中列出的现有集成。
 
-If you need a custom integration, you can follow the steps in this guide to configure it manually
+如果您需要自定义集成，则可以按照本指南中的步骤手动配置
 :::
 
-1. In your Vite config, configure the entry and enable build manifest:
+1. 在您的 Vite 配置中，配置入口并启用构建清单:
 
    ```js twoslash [vite.config.js]
    import { defineConfig } from 'vite'
-   // ---cut---
+   //  - -切 - -
    export default defineConfig({
      server: {
        cors: {
-         // the origin you will be accessing via browser
+         // 您将通过浏览器访问的源
          origin: 'http://my-backend.example.com',
        },
      },
      build: {
-       // generate .vite/manifest.json in outDir
+       // 在Outdir中生成。
        manifest: true,
        rollupOptions: {
-         // overwrite default .html entry
+         // 覆盖默认.html条目
          input: '/path/to/main.js',
        },
      },
    })
    ```
 
-   If you haven't disabled the [module preload polyfill](/en/config/build-options.md#build-polyfillmodulepreload), you also need to import the polyfill in your entry
+   如果您尚未禁用 [模块预加载 polyfill](/en/config/build-options.md#build-polyfillmodulepreload)，则还需要在您的入口文件中导入 polyfill
 
    ```js
-   // add the beginning of your app entry
+   // 添加到应用程序入口文件的开头
    import 'vite/modulepreload-polyfill'
    ```
 
-2. For development, inject the following in your server's HTML template (substitute `http://localhost:5173` with the local URL Vite is running at):
+2. 为了开发，请在服务器的 HTML 模板中注入以下内容(用 Vite 运行的本地 URL 替换 `http://localhost:5173`):
 
    ```html
    <!-- if development -->
@@ -44,14 +44,14 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <script type="module" src="http://localhost:5173/main.js"></script>
    ```
 
-   In order to properly serve assets, you have two options:
+   为了正确提供资源，您有两个选择:
 
-   - Make sure the server is configured to proxy static assets requests to the Vite server
-   - Set [`server.origin`](/en/config/server-options.md#server-origin) so that generated asset URLs will be resolved using the back-end server URL instead of a relative path
+   - 确保服务器配置为将静态资源请求代理到 Vite 服务器
+   - 设置 [`server.origin`](/en/config/server-options.md#server-origin)，以便生成的资源 URL 将使用后端服务器 URL 而不是相对路径来解析
 
-   This is needed for assets such as images to load properly.
+   这对于图像等资源正确加载是必需的。
 
-   Note if you are using React with `@vitejs/plugin-react`, you'll also need to add this before the above scripts, since the plugin is not able to modify the HTML you are serving (substitute `http://localhost:5173` with the local URL Vite is running at):
+   注意，如果您使用的是 React 并且使用了 `@vitejs/plugin-react`，则还需要在上述脚本之前添加以下内容，因为该插件无法修改您提供的 HTML(用 Vite 运行的本地 URL 替换 `http://localhost:5173`):
 
    ```html
    <script type="module">
@@ -63,7 +63,7 @@ If you need a custom integration, you can follow the steps in this guide to conf
    </script>
    ```
 
-3. For production: after running `vite build`, a `.vite/manifest.json` file will be generated alongside other asset files. An example manifest file looks like this:
+3. 对于生产:运行 `vite build` 后，将与其他资源文件一起生成 `.vite/manifest.json` 文件。示例清单文件如下所示:
 
    ```json [.vite/manifest.json]
    {
@@ -101,17 +101,17 @@ If you need a custom integration, you can follow the steps in this guide to conf
    }
    ```
 
-   - The manifest has a `Record<name, chunk>` structure
-   - For entry or dynamic entry chunks, the key is the relative src path from project root.
-   - For non entry chunks, the key is the base name of the generated file prefixed with `_`.
-   - For the CSS file generated when [`build.cssCodeSplit`](/en/config/build-options.md#build-csscodesplit) is `false`, the key is `style.css`.
-   - Chunks will contain information on its static and dynamic imports (both are keys that map to the corresponding chunk in the manifest), and also its corresponding CSS and asset files (if any).
+   - 清单具有 `Record<name, chunk>` 结构
+   - 对于入口或动态入口块，键是项目根目录的相对源路径。
+   - 对于非入口块，键是生成文件的基本名称，前缀为 `_`。
+   - 对于当 [`build.cssCodeSplit`](/en/config/build-options.md#build-csscodesplit) 为 `false` 时生成的 CSS 文件，键为 `style.css`。
+   - 块将包含有关其静态和动态导入的信息(两者都是映射到清单中相应块的键)，以及其相应的 CSS 和资源文件(如果有)。
 
-4. You can use this file to render links or preload directives with hashed filenames.
+4. 您可以使用此文件来渲染带有哈希文件名的链接或预加载指令。
 
-   Here is an example HTML template to render the proper links. The syntax here is for
-   explanation only, substitute with your server templating language. The `importedChunks`
-   function is for illustration and isn't provided by Vite.
+   这是一个示例HTML模板，用于呈现正确的链接。这里的语法是
+   仅说明，用您的服务器模板语言代替。 `importedChunks`
+   功能是用于插图的，而不是Vite提供的。
 
    ```html
    <!-- if production -->
@@ -129,18 +129,18 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <link rel="modulepreload" href="/{{ chunk.file }}" />
    ```
 
-   Specifically, a backend generating HTML should include the following tags given a manifest
-   file and an entry point:
+   具体而言，后端生成HTML应包括以下标签给定的标签
+   文件和一个入口点:
 
-   - A `<link rel="stylesheet">` tag for each file in the entry point chunk's `css` list
-   - Recursively follow all chunks in the entry point's `imports` list and include a
-     `<link rel="stylesheet">` tag for each CSS file of each imported chunk.
-   - A tag for the `file` key of the entry point chunk (`<script type="module">` for JavaScript,
-     or `<link rel="stylesheet">` for CSS)
-   - Optionally, `<link rel="modulepreload">` tag for the `file` of each imported JavaScript
-     chunk, again recursively following the imports starting from the entry point chunk.
+   - 在入口点块`css`列表中的每个文件的`<link rel="stylesheet">`标签
+   - 递归地遵循入口点`imports`列表中的所有块，并包括一个
+     每个导入块的每个CSS文件的`<link rel="stylesheet">` 。
+   - 入口点块`file`键的标签( `<script type="module">` javaScript，1
+     或CSS `<link rel="stylesheet">` )
+   - 可选，每个导入的JavaScript中的`file`标签`<link rel="modulepreload">`
+     块，再次递归遵循从入口点开始的进口。
 
-   Following the above example manifest, for the entry point `views/foo.js` the following tags should be included in production:
+   遵循上述示例表明，对于入口点`views/foo.js`以下标签应包含在生产中:
 
    ```html
    <link rel="stylesheet" href="assets/foo-5UjPuW-k.css" />
@@ -150,7 +150,7 @@ If you need a custom integration, you can follow the steps in this guide to conf
    <link rel="modulepreload" href="assets/shared-B7PI925R.js" />
    ```
 
-   While the following should be included for the entry point `views/bar.js`:
+   虽然应包括针对入口点`views/bar.js`以下内容:
 
    ```html
    <link rel="stylesheet" href="assets/shared-ChJ_j-JJ.css" />
@@ -160,8 +160,8 @@ If you need a custom integration, you can follow the steps in this guide to conf
    ```
 
    ::: details Pseudo implementation of `importedChunks`
-   An example pseudo implementation of `importedChunks` in TypeScript (This will
-   need to be adapted for your programming language and templating language):
+   一个示例在打字稿中的`importedChunks`的伪实现(这将
+   需要适应您的编程语言和模板语言):
 
    ```ts
    import type { Manifest, ManifestChunk } from 'vite'

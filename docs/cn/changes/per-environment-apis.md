@@ -1,15 +1,15 @@
-# Move to per-environment APIs
+#
 
 ::: tip Feedback
-Give us feedback at [Environment API feedback discussion](https://github.com/vitejs/vite/discussions/16358)
+请在 [环境API反馈讨论](https://github.com/vitejs/vite/discussions/16358) 中给我们反馈
 :::
 
-Multiple APIs from `ViteDevServer` related to module graph and modules transforms have been moved to the `DevEnvironment` instances.
+与模块图和模块转换相关的多个`ViteDevServer` API已移至`DevEnvironment`实例。
 
-Affect scope: `Vite Plugin Authors`
+影响范围:`Vite 插件作者`
 
 ::: warning Future Deprecation
-The `Environment` instance was first introduced at `v6.0`. The deprecation of `server.moduleGraph` and other methods that are now in environments is planned for `v7.0`. We don't recommend moving away from server methods yet. To identify your usage, set these in your vite config.
+`Environment`实例首次在`v6.0`中引入。`server.moduleGraph`和其他现在位于环境中的方法的弃用计划在`v7.0`中进行。我们目前不建议从服务器方法迁移。要识别您的使用情况，请在Vite配置中设置以下内容。
 
 ```ts
 future: {
@@ -20,14 +20,14 @@ future: {
 
 :::
 
-## Motivation
+## 动机
 
-In Vite v5 and before, a single Vite dev server always had two environments (`client` and `ssr`). The `server.moduleGraph` had mixed modules from both of these environments. Nodes were connected through `clientImportedModules` and `ssrImportedModules` lists (but a single `importers` list was maintained for each). A transformed module was represented by an `id` and a `ssr` boolean. This boolean needed to be passed to APIs, for example `server.moduleGraph.getModuleByUrl(url, ssr)` and `server.transformRequest(url, { ssr })`.
+在Vite v5及之前版本中，单个Vite开发服务器始终有两个环境(`client`和`ssr`)。`server.moduleGraph`包含了来自这两个环境的混合模块。节点通过`clientImportedModules`和`ssrImportedModules`列表连接(但每个列表都维护了一个单独的`importers`列表)。一个转换后的模块由一个`id`和一个`ssr`布尔值表示。这个布尔值需要传递给API，例如`server.moduleGraph.getModuleByUrl(url, ssr)`和`server.transformRequest(url, { ssr })`。
 
-In Vite v6, it is now possible to create any number of custom environments (`client`, `ssr`, `edge`, etc). A single `ssr` boolean isn't enough anymore. Instead of changing the APIs to be of the form `server.transformRequest(url, { environment })`, we moved these methods to the environment instance allowing them to be called without a Vite dev server.
+在Vite v6中，现在可以创建任意数量的自定义环境(如`client`、`ssr`、`edge`等)。单个`ssr`布尔值不再足够。我们没有将这些API更改为`server.transformRequest(url, { environment })`的形式，而是将这些方法移到了环境实例中，允许它们在没有Vite开发服务器的情况下调用。
 
-## Migration Guide
+## 迁移指南
 
-- `server.moduleGraph` -> [`environment.moduleGraph`](/en/guide/api-environment#separate-module-graphs)
-- `server.transformRequest(url, ssr)` -> `environment.transformRequest(url)`
-- `server.warmupRequest(url, ssr)` -> `environment.warmupRequest(url)`
+- `server.moduleGraph` > [`environment.moduleGraph`](/en/guide/api-environment#separate-module-graphs)
+- `server.transformRequest(url, ssr)` > `environment.transformRequest(url)`
+- `server.warmupRequest(url, ssr)` > `environment.warmupRequest(url)`
