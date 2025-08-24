@@ -1,6 +1,6 @@
 # 建造生产
 
-当该将应用程序部署用于生产时，只需运行`vite build`命令即可。默认情况下，它将`<root>/index.html`用作构建入口点，并生产适合在静态托管服务上提供的应用程序捆绑包。查看[部署静态站点的]()有关流行服务的指南。
+当该将应用程序部署用于生产时，只需运行`vite build`命令即可。默认情况下，它将`<root>/index.html`用作构建入口点，并生产适合在静态托管服务上提供的应用程序捆绑包。查看[部署静态站点的](/0)有关流行服务的指南。
 
 ## 浏览器兼容性
 
@@ -66,7 +66,7 @@ export default defineConfig({
 
 ## 分块策略
 
-您可以使用`build.rollupOptions.output.manualChunks`来配置如何拆分块的方式（请参阅[汇总文档]()）。如果您使用框架，请参阅其文档以配置如何拆分块。
+您可以使用`build.rollupOptions.output.manualChunks`来配置如何拆分块的方式（请参阅[汇总文档](/0)）。如果您使用框架，请参阅其文档以配置如何拆分块。
 
 ## 负载错误处理
 
@@ -141,7 +141,7 @@ export default defineConfig({
 
 当您开发面向浏览器的库时，您可能会大部分时间都在导入实际库的测试/演示页面上。使用Vite，您可以使用`index.html`来获得平稳的开发体验。
 
-是时候捆绑库进行分发时，请使用[`build.lib` config选项](/en/config/build-options.md#build-lib)。确保还将您不想捆绑到库中的所有依赖项外部化，例如`vue`或`react` :
+是时候捆绑库进行分发时，请使用[`build.lib` config选项](/0)。确保还将您不想捆绑到库中的所有依赖项外部化，例如`vue`或`react` :
 
 ::: code-group
 

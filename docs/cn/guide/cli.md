@@ -27,7 +27,7 @@ vite [root]
 | `-l, --logLevel <level>`  | 信息\| 警告\| 错误 \| 沉默（ `string` ）                                                                                           |
 | `--clearScreen`           | 记录时允许/禁用清晰的屏幕（ `boolean` ）                                                                                           |
 | `--configLoader <loader>` | 使用`bundle`将配置与Esbuild或`runner` （实验）将其捆绑在一起，或使用本机运行时（默认: `bundle` ）进行加载`native` （实验）（实验） |
-| `--profile`               | 启动内置Node.js Inspector（检查[性能瓶颈]/en/guide/troubleshooting#performance-bottlenecks)）                                      |
+| `--profile`               | 启动内置Node.js Inspector（检查[性能瓶颈](/0)）                                                                                    |
 | `-d, --debug [feat]`      | 显示调试日志（`字符串\| 布尔值                                                                                                     |
 | `-f, --filter <filter>`   | 过滤器调试日志（ `string` ）                                                                                                       |
 | `-m, --mode <mode>`       | 设置env模式（ `string` ）                                                                                                          |

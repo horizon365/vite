@@ -1,14 +1,14 @@
 # 环境API
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+环境API是实验性的。我们将在Vite 6期间保持API的稳定性，以便生态系统可以进行实验并在此基础上构建。我们计划在Vite 7中通过可能的破坏性变更来稳定这些新API。
 
 资源:
 
--
--
+- [反馈讨论](https://github.com/vitejs/vite/discussions/16358) 我们正在收集有关新API的反馈。
+- [环境API PR](https://github.com/vitejs/vite/pull/16471) 在这里实现了新的API并进行了审查。
 
-Please share your feedback with us.
+请与我们分享您的反馈。
 :::
 
 ## 形式化环境
@@ -24,11 +24,11 @@ Vite 6正式化了环境的概念。在Vite 5之前，有两个隐式环境（ `
 - `client` :在浏览器中运行应用程序。
 - `server` :在将页面发送到浏览器之前，在节点（或其他服务器运行时间）中运行该应用程序。
 
-在DEV中，Vite在与Vite Dev Server相同的节点进程中执行服务器代码，并与生产环境近似。但是，服务器也可以在其他JS运行时运行，例如[CloudFlare的Workerd](https://github.com/cloudflare/workerd)具有不同的约束。现代应用程序也可以在两个以上的环境中运行，例如浏览器，节点服务器和边缘服务器。 Vite 5不允许正确表示这些环境。
+在DEV中，Vite在与Vite Dev Server相同的节点进程中执行服务器代码，并与生产环境近似。但是，服务器也可以在其他JS运行时运行，例如[CloudFlare的Workerd](/0)具有不同的约束。现代应用程序也可以在两个以上的环境中运行，例如浏览器，节点服务器和边缘服务器。 Vite 5不允许正确表示这些环境。
 
 Vite 6允许用户在构建和开发过程中配置其应用程序，以映射其所有环境。在开发过程中，现在可以使用单个Vite Dev服务器在多个不同的环境中同时运行代码。 App源代码仍由Vite Dev Server转换。在共享的HTTP服务器，中间Wares，已解决的配置和插件管道之上，Vite Dev Server现在具有一组独立的DEV环境。每个人都配置为尽可能匹配生产环境，并连接到执行代码的开发运行时（对于Workerd，服务器代码现在可以在本地运行）。在客户端中，浏览器导入并执行代码。在其他环境中，模块跑步者获取并评估转换后的代码。
 
-![Vite环境](../../images/vite-environments.svg)
+![Vite Environments](../../images/vite-environments.svg)
 
 ## 环境配置
 

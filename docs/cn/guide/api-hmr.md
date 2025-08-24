@@ -54,7 +54,7 @@ if (import.meta.hot) {
 }
 ```
 
-## Intellisense用于打字稿
+## TypeScript的IntelliSense
 
 Vite在[`vite/client.d.ts`](https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts)中提供了`import.meta.hot`的类型定义。您可以在`src`目录中创建一个`env.d.ts`文件，以便TypeScript能够识别这些类型定义:
 
@@ -97,7 +97,7 @@ export declare const foo: () => void
 
 // @filename: /example.js
 import 'vite/client'
-//  - -切 - -
+// ---cut---
 import { foo } from './foo.js'
 
 foo()

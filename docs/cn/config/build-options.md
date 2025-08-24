@@ -4,11 +4,11 @@
 
 ## build.target
 
-- **类型:** `字符串 | 字符串[]`
+- |
 - **默认值:** `'modules'`
 - **相关:**[浏览器兼容性](/en/guide/build#browser-compatibility)
 
-最终捆绑包的浏览器兼容性目标。默认值是Vite特殊值`'modules'` ，它针对具有[本机ES模块]()，[本机ESM Dynamic Import]()和[`import.meta`]()支持的浏览器。 Vite将取代`'modules'`到`['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']`
+最终捆绑包的浏览器兼容性目标。默认值是Vite特殊值`'modules'` ，它针对具有[本机ES模块](/0)，[本机ESM Dynamic Import](/1)和[`import.meta`](/2)支持的浏览器。 Vite将取代`'modules'`到`['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']`
 
 另一个特殊值是`'esnext'`假设天然动态导入支持，并且只会执行最小的换击。
 
@@ -49,7 +49,7 @@ type ResolveModulePreloadDependenciesFn = (
 每个动态导入都将调用`resolveDependencies`功能，并在其依赖的块列表中列出，并且还将为输入HTML文件中导入的每个块调用它。可以通过这些过滤或更多的注入依赖项返回新的依赖项数组，并修改了其路径。 `deps`路径相对于`build.outDir`路径。返回值应该是`build.outDir`相对路径。
 
 ```js twoslash
-/** @Type {import（'vite'）。userconfig} */
+/** @type {import('vite').UserConfig} */
 const config = {
   // 漂亮的尼古尔
   build: {
@@ -68,8 +68,8 @@ const config = {
 
 ## build.polyfillModulePreload
 
-- **类型:** `boolean`
-- **默认值:** `true`
+-
+-
 - **弃用**使用`build.modulePreload.polyfill`代替
 
 是否要自动注入[模块预紧填充物]()。
@@ -136,16 +136,16 @@ git LFS占位符自动被排除在内线之外，因为他们不包含其代表�
 
 ## build.sourcemap
 
-- **类型:** `布尔 | '排队' | “隐藏”
+- | '排队' | “隐藏”
 - **默认值:** `false`
 
 生成生产源图。如果`true` ，将创建一个单独的Sourcemap文件。如果`'inline'` ，则作为数据UI，SourceMap将附加到结果输出文件上。 `'hidden'`作品像`true`一样，除了捆绑文件中相应的Sourcemap注释被抑制了。
 
 ## build.rollupOptions
 
--
+- **类型:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
 
-直接自定义基础汇总捆绑包。这与可以从汇编配置文件导出的选项相同，并将与Vite的内部汇总选项合并。有关更多详细信息，请参见[汇总选项文档]()。
+直接自定义基础汇总捆绑包。这与可以从汇编配置文件导出的选项相同，并将与Vite的内部汇总选项合并。有关更多详细信息，请参见[汇总选项文档](/0)。
 
 ## build.commonjsOptions
 
@@ -187,7 +187,7 @@ export default defineConfig({
 
 ## build.manifest
 
-- **类型:** `布尔 |
+- |
 - **默认值:** `false`
 - **相关:**[后端集成](/en/guide/backend-integration)
 

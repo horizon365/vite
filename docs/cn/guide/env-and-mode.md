@@ -6,15 +6,15 @@ Vite在特殊`import.meta.env`对象下暴露了某些常数。这些常数被�
 
 在所有情况下，都可以使用一些内置常数:
 
-- **`import.meta.env.MODE`** :{字符串}应用程序正在运行的[模式](#modes)。
+- **`import.meta.env.MODE`** :{字符串}应用程序正在运行的[模式](/0)。
 
-- **`import.meta.env.BASE_URL`** :{string}基本URL该应用程序正在提供。这是由[`base`配置选项](/en/config/shared-options.md#base)确定的。
+- **`import.meta.env.BASE_URL`** :{string}基本URL该应用程序正在提供。这是由[`base`配置选项](/0)确定的。
 
 - **`import.meta.env.PROD`** :{boolean}该应用是在生产中运行的（使用`NODE_ENV='production'`运行DEV服务器还是运行使用`NODE_ENV='production'`构建的应用程序）。
 
 - **`import.meta.env.DEV`** :{boolean}应用程序是否在开发中运行（始终与`import.meta.env.PROD`相反）
 
-- **`import.meta.env.SSR`** :{boolean}应用程序是否在[服务器](./ssr.md#conditional-logic)中运行。
+- **`import.meta.env.SSR`** :{boolean}应用程序是否在[服务器](/0)中运行。
 
 ## env变量
 
@@ -34,7 +34,7 @@ console.log(import.meta.env.VITE_SOME_KEY) // “ 123”
 console.log(import.meta.env.DB_PASSWORD) // 不明确的
 ```
 
-如果要自定义ENV变量前缀，请参见[EnvpRefix](/en/config/shared-options.html#envprefix)选项。
+如果要自定义ENV变量前缀，请参见[EnvpRefix](/0)选项。
 
 :::tip Env parsing
 如上所示， `VITE_SOME_KEY`是一个数字，但解析时返回字符串。布尔值变量也会发生同样的情况。在代码中使用时，请确保将其转换为所需类型。
@@ -42,7 +42,7 @@ console.log(import.meta.env.DB_PASSWORD) // 不明确的
 
 ### `.env`文件
 
-Vite使用[DotEnv]()从您的[环境目录](/1)中的以下文件加载其他环境变量:
+Vite使用[DotEnv](/0)从您的[环境目录](/1)中的以下文件加载其他环境变量:
 
 ```
 .env                # loaded in all cases
@@ -63,7 +63,7 @@ Vite使用[DotEnv]()从您的[环境目录](/1)中的以下文件加载其他环
 
 :::
 
-此外，Vite使用[Dotenv-Expand]()扩展了包装盒中编写的Env文件中写入的变量。要了解有关语法的更多信息，请查看[他们的文档](/1)。
+此外，Vite使用[Dotenv-Expand](/0)扩展了包装盒中编写的Env文件中写入的变量。要了解有关语法的更多信息，请查看[他们的文档](/1)。
 
 请注意，如果您想在环境价值内使用`$` ，则必须使用`\`逃脱它。
 
@@ -99,9 +99,9 @@ VITE_BAR=bar
 
 :::
 
-## Intellisense用于打字稿
+## TypeScript的IntelliSense
 
-默认情况下，Vite提供了`import.meta.env`合[`vite/client.d.ts`]()中的类型定义。虽然您可以在`.env.[mode]`文件中定义更多自定义的ENV变量，但您可能需要获取带有`VITE_`前缀的用户定义的ENV变量的TypeScript Intellisense。
+默认情况下，Vite提供了`import.meta.env`合[`vite/client.d.ts`](/0)中的类型定义。虽然您可以在`.env.[mode]`文件中定义更多自定义的ENV变量，但您可能需要获取带有`VITE_`前缀的用户定义的ENV变量的TypeScript Intellisense。
 
 为了实现这一目标，您可以创建一个`src`中的`vite-env.d.ts`目录，然后按这样的增强`ImportMetaEnv` :
 
@@ -118,7 +118,7 @@ interface ImportMeta {
 }
 ```
 
-如果您的代码依赖于浏览器环境（例如[DOM]()和[Webworker）](/1)的类型，则可以在`tsconfig.json`中更新[LIB](/2)字段。
+如果您的代码依赖于浏览器环境（例如[DOM](/0)和[Webworker）](/1)的类型，则可以在`tsconfig.json`中更新[LIB](/2)字段。
 
 ```json [tsconfig.json]
 {
@@ -128,7 +128,7 @@ interface ImportMeta {
 
 :::warning Imports will break type augmentation
 
-如果`ImportMetaEnv`增强不起作用，请确保您在`vite-env.d.ts`中没有任何`import`语句。有关更多信息，请参见[TypeScript文档]()。
+如果`ImportMetaEnv`增强不起作用，请确保您在`vite-env.d.ts`中没有任何`import`语句。有关更多信息，请参见[TypeScript文档](/0)。
 
 :::
 
@@ -143,7 +143,7 @@ Vite还支持替换HTML文件中的常数。具有特殊`%CONST_NAME%`语法的`
 
 如果ENV在`import.meta.env`中不存在，例如`%NON_EXISTENT%` ，它将被忽略和替换，这与JS中的`import.meta.env.NON_EXISTENT`不同，在该JS中被替换为`undefined` 。
 
-鉴于许多框架使用了VITE，因此在有条件等复杂替换方面有意地未经公开。可以使用[现有的Userland插件]()或实现[`transformIndexHtml`挂钩](/1)的自定义插件来扩展Vite。
+鉴于许多框架使用了VITE，因此在有条件等复杂替换方面有意地未经公开。可以使用[现有的Userland插件](/0)或实现[`transformIndexHtml`挂钩](/1)的自定义插件来扩展Vite。
 
 ## 模式
 

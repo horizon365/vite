@@ -1,14 +1,14 @@
 # 插件的环境API
 
 :::warning Experimental
-Environment API is experimental. We'll keep the APIs stable during Vite 6 to let the ecosystem experiment and build on top of it. We're planning to stabilize these new APIs with potential breaking changes in Vite 7.
+环境API是实验性的。我们将在Vite 6期间保持API的稳定性，以便生态系统可以进行实验并在此基础上构建。我们计划在Vite 7中通过可能的破坏性变更来稳定这些新API。
 
 资源:
 
--
--
+- [反馈讨论](https://github.com/vitejs/vite/discussions/16358) 我们正在收集有关新API的反馈。
+- [环境API PR](https://github.com/vitejs/vite/pull/16471) 在这里实现了新的API并进行了审查。
 
-Please share your feedback with us.
+请与我们分享您的反馈。
 :::
 
 ## 访问挂钩的当前环境

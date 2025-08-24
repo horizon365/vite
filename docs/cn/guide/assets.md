@@ -5,7 +5,7 @@
 
 ## 作为 URL 导入资源
 
-进口静态资产将返回已解决的公共URL时:
+导入静态资源时，将返回其解析后的公共 URL:
 
 ```js twoslash
 import 'vite/client'
