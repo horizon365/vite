@@ -124,6 +124,25 @@ export default defineConfig({
         defer: '',
       },
     ],
+    [
+      'script',
+      {
+        async: '',
+        src: `https://www.googletagmanager.com/gtag/js?id=G-T74DET9M08`,
+      },
+    ],
+
+    // 2) 初始化 + 关闭自动 page_view（避免 SPA 里重复统计）
+    [
+      'script',
+      {},
+      `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-T74DET9M08', { send_page_view: false });
+      `,
+    ],
   ],
 
   locales: {
