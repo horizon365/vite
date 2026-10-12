@@ -160,6 +160,10 @@ export default defineConfig({
             activeMatch: '/cn/plugins/',
           },
           {
+            text: 'Nuxt UI 中文文档',
+            link: 'https://nuxt-ui.vite.js.cn/zh/',
+          },
+          {
             text: 'Resources',
             items: [
               { text: 'Team', link: '/cn/team' },
@@ -226,6 +230,10 @@ export default defineConfig({
             text: 'Plugins',
             link: '/en/plugins/',
             activeMatch: '/en/plugins/',
+          },
+          {
+            text: 'Nuxt UI Docs',
+            link: 'https://nuxt-ui.vite.js.cn/',
           },
           {
             text: 'Resources',
@@ -295,6 +303,10 @@ export default defineConfig({
             activeMatch: '/ja/plugins/',
           },
           {
+            text: 'Nuxt UI ドキュメント',
+            link: 'https://nuxt-ui.vite.js.cn/ja/',
+          },
+          {
             text: 'Resources',
             items: [
               { text: 'Team', link: '/ja/team' },
@@ -360,6 +372,10 @@ export default defineConfig({
             text: 'Plugins',
             link: '/es/plugins/',
             activeMatch: '/es/plugins/',
+          },
+          {
+            text: 'Docs de Nuxt UI',
+            link: 'https://nuxt-ui.vite.js.cn/es/',
           },
           {
             text: 'Resources',
@@ -429,6 +445,10 @@ export default defineConfig({
             activeMatch: '/pt/plugins/',
           },
           {
+            text: 'Docs do Nuxt UI',
+            link: 'https://nuxt-ui.vite.js.cn/pt/',
+          },
+          {
             text: 'Resources',
             items: [
               { text: 'Team', link: '/pt/team' },
@@ -494,6 +514,10 @@ export default defineConfig({
             text: 'Plugins',
             link: '/ko/plugins/',
             activeMatch: '/ko/plugins/',
+          },
+          {
+            text: 'Nuxt UI 문서',
+            link: 'https://nuxt-ui.vite.js.cn/ko/',
           },
           {
             text: 'Resources',
@@ -563,6 +587,10 @@ export default defineConfig({
             activeMatch: '/de/plugins/',
           },
           {
+            text: 'Nuxt UI-Dokumentation',
+            link: 'https://nuxt-ui.vite.js.cn/de/',
+          },
+          {
             text: 'Resources',
             items: [
               { text: 'Team', link: '/de/team' },
@@ -628,6 +656,10 @@ export default defineConfig({
             text: 'Plugins',
             link: '/ru/plugins/',
             activeMatch: '/ru/plugins/',
+          },
+          {
+            text: 'Документация Nuxt UI',
+            link: 'https://nuxt-ui.vite.js.cn/ru/',
           },
           {
             text: 'Resources',
